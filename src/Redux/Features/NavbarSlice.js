@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState={
  
-    toggleSidebar:false
+    toggleSidebar:false,
+topnavData:[]
+
+
 }
 const NavBarSlice=createSlice({
     name:"navbar",
@@ -11,8 +14,20 @@ const NavBarSlice=createSlice({
         openSidebar:(state,action)=>
         {
             state.toggleSidebar=!state.toggleSidebar
+        },
+        telemedicine:(state,action)=>
+        {
+           state.topnavData=[{
+            name:"categorys",
+            link:"/telemedicine/category"
+           },
+           {
+            name:"Doctor",
+            link:"/telemedicine/doctor"
+           }
+         ]
         }
     }
 })
 export default NavBarSlice.reducer
-export const  {openSidebar}=NavBarSlice.actions
+export const  {openSidebar,telemedicine}=NavBarSlice.actions
