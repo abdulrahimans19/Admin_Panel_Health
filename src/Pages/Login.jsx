@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/login.png";
 import { useNavigate } from "react-router-dom";
-import doctorImage from "../assets/login/images/login.png"
+import doctorImage from "../assets/login/images/Doctor.png"
 const Login = () => {
   const [loginType, setLoginType] = useState("doctor");
 
@@ -81,7 +81,7 @@ const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
             key={loginType}
             src={doctorImage}
             alt={`Login Image - ${loginType}`}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full transition duration-75"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

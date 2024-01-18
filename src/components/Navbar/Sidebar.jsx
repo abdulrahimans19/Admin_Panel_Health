@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion, useAnimation } from "framer-motion";
 import DropDown from "./DropDown";
 import { useLocation, useNavigate } from "react-router-dom";
+import TeleMedicine from "../../Pages/Admin/TeleMedicine";
+import { telemedicine } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
+  const dispatch = useDispatch();
   const { toggleSidebar } = useSelector((state) => {
     return state.navbar;
   });
@@ -70,7 +73,7 @@ function SideBar() {
               <span class="ms-3 ">Dashboard</span>
             </a>
           </li>
-          <DropDown
+          {/* <DropDown
             title="Booking"
             dropdowndata={[
               { title: "all Booking", link: "/all-booking" },
@@ -79,17 +82,18 @@ function SideBar() {
             ]}
             setCurrentRoute={setCurrentRoute}
             currentRoute={currentRoute}
-          />
-   
+          /> */}
+
           <li>
             <a
               onClick={() => {
-                setCurrentRoute("/telemedicine");
-                navigate("/telemedicine");
+                dispatch(telemedicine());
+                setCurrentRoute("/telemedicine/category");
+                navigate("/telemedicine/category");
               }}
-               href="#"
+              href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === "/telemedicine"
+                currentRoute === "/telemedicine/category"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -114,7 +118,7 @@ function SideBar() {
                 setCurrentRoute("/homecare");
                 navigate("/homecare");
               }}
-               href="#"
+              href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
                 currentRoute === "/homecare"
                   ? "bg-white text-black "
@@ -141,7 +145,7 @@ function SideBar() {
                 setCurrentRoute("/pharmacy");
                 navigate("/pharmacy");
               }}
-               href="#"
+              href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
                 currentRoute === "/pharmacy"
                   ? "bg-white text-black "
@@ -168,7 +172,7 @@ function SideBar() {
                 setCurrentRoute("/food");
                 navigate("/food");
               }}
-               href="#"
+              href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
                 currentRoute === "/food" ? "bg-white text-black " : "text-white"
               } `}
@@ -192,7 +196,7 @@ function SideBar() {
                 setCurrentRoute("/transaction");
                 navigate("/transaction");
               }}
-               href="#"
+              href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
                 currentRoute === "/transaction"
                   ? "bg-white text-black "
