@@ -2,9 +2,15 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 function LoggedInUser() {
-  const user = localStorage.getItem("doctor_token");
-console.log(user);
-  return user ? <Navigate to="/" /> : <Outlet />;
+  const user = JSON.parse(localStorage.getItem("sophwe_token"));
+
+  return user?.user_role == "Admin" ? (
+    <Navigate to="/dashboard" />
+  ) : user?.user_role == "DOCTOR" ? (
+    <Navigate to="/doctor/home" />
+  ) : (
+    <Outlet />
+  );
 }
 
 export default LoggedInUser;
