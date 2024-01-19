@@ -3,7 +3,7 @@ import axios from "axios";
 
 const initialState = {
   amount: 9,
-role:null,
+  role: null,
   isLoading: true,
 };
 // export const  getCartData=createAsyncThunk('cart/getcartDAta',async ()=>
@@ -18,7 +18,7 @@ const AdminSlice = createSlice({
   reducers: {
     setRole: (state, action) => {
       console.log(action);
-      state.role = "admin"
+      state.role = "admin";
     },
   },
   // extraReducers:(builder)=>

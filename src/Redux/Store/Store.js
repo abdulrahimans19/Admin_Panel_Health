@@ -5,7 +5,7 @@ import NavbarSlice from "../Features/NavbarSlice";
 export const store = configureStore({
   reducer: {
     admin: AdminSlice,
-    doctor:DoctorSlice,
-    navbar:NavbarSlice
+    doctor: DoctorSlice,
+    navbar: NavbarSlice,
   },
 });
