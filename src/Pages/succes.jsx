@@ -27,10 +27,10 @@ const Success = () => {
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center", 
     justifyContent: "center",
   };
-
+ 
   return (
     <div style={containerStyle}>
       <div style={leftSideStyle}>
@@ -59,7 +59,7 @@ const Success = () => {
                 </div>
               </div>
               <div class="flex-col justify-start items-start gap-[30px] flex">
-              <button className="h-[68px] px-[80px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
+                <button className="h-[68px] px-[80px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
                   <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
                     Done
                   </div>
