@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "http://localhost:8000";
+const baseURL = "https://sophwe.theowpc.com/api/";
 
 const Instance = axios.create({ baseURL });
 

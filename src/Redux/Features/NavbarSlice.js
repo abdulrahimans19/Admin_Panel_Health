@@ -26,8 +26,12 @@ const NavBarSlice=createSlice({
             link:"/telemedicine/doctor"
            }
          ]
+        },
+        cleartopNav:(state,action)=>
+        {
+            state.topnavData=[]
         }
     }
 })
 export default NavBarSlice.reducer
-export const  {openSidebar,telemedicine}=NavBarSlice.actions
+export const  {openSidebar,telemedicine,cleartopNav}=NavBarSlice.actions
