@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion, useAnimation } from "framer-motion";
 import DropDown from "./DropDown";
 import { useLocation, useNavigate } from "react-router-dom";
-import TeleMedicine from "../../Pages/Admin/TeleMedicine";
+// import TeleMedicine from "../../Pages/Admin/TeleMedicine";
 import { telemedicine } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
