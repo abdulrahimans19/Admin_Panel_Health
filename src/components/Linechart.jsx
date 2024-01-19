@@ -6,7 +6,7 @@ const MyChart = () => {
   const series = [
     {
       name: "Series 1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91],
+      data: [30, 40, 45, 50, 49, 60, 70, 91, 100, 105, 110, 133],
     },
     // Add more series as needed
   ];

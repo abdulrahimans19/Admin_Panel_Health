@@ -16,6 +16,7 @@ const Login = () => {
 
   const [errmsg, setErrmsg] = useState("");
   const [bgImage, setbgImage] = useState("../assets/login/images/login.png");
+
   const LoginUser = (e) => {
     e.preventDefault();
 
@@ -23,16 +24,22 @@ const Login = () => {
 
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
+    console.log(UserData);
 
-    LoginUserdata(UserData)
-      .then((data) => {
-        console.log(data.data.accessToken);
-        localStorage.setItem("Userdata", data.data.accessToken);
-        navigate("/");
-      })
-      .catch((err) => {
-        setErrmsg("email/password is incorrect");
-      });
+    if (toggledata) {
+      LoginUserdata(UserData)
+        .then((data) => {
+          console.log();
+
+          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+          navigate("/");
+        })
+        .catch((err) => {
+          setErrmsg("email/password is incorrect");
+        });
+    } else {
+      console.log("doctor log in");
+    }
 
     // Validate(UserData.email).then(data=>
     //   {
@@ -142,9 +149,10 @@ const Login = () => {
             {/* Example: */}
             <div class="relative">
               <input
+                name="email"
                 type="email"
                 id="floating_outlined"
-                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-2 border-black appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
               <label
@@ -157,9 +165,10 @@ const Login = () => {
 
             <div class="relative">
               <input
+                name="password"
                 type="password"
                 id="floating_outlined"
-                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-2 border-black appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
               <label

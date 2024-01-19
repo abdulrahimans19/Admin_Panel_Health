@@ -14,6 +14,7 @@ import Food from "./Pages/Admin/Food";
 import Transaction from "./Pages/Admin/Transaction";
 import Doctor from "./Pages/Admin/Doctor";
 import DoctorHome from "./Pages/Doctor/DoctorHome";
+import LoggedInDoctor from "./ProtectedRoutes/LoggedInDoctor";
 
 function App() {
   return (
@@ -31,10 +32,10 @@ function App() {
         </Route>
       </Route>
 
-      <Route element={<DoctorHome />} path="/doctor/home" />
-
-
-
+      
+      <Route element={<LoggedInDoctor />}>
+        <Route element={<DoctorHome />} path="/doctor/home" />
+      </Route>
 
       <Route element={<LoggedInUser />}>
         <Route element={<Login />} path="/login" />
