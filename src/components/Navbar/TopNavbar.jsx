@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const { toggleSidebar, topnavData } = useSelector((state) => {
     return state.navbar;
