@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL = "https://sophwe.theowpc.com/api/";
+const baseURL=process.env.REACT_APP_BASEURL
 
 const Instance = axios.create({ baseURL });
 
