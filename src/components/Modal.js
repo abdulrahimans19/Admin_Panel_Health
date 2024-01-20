@@ -1,16 +1,15 @@
 import React from "react";
-import buttonImage from "../../assets/images/element-plus.png";
 
-export default function ComunButton({ text, callback }) {
+export default function Modal() {
   const [showModal, setShowModal] = React.useState(false);
   return (
-    <div>
+    <>
       <button
-        className="rounded bg-black text-white p-3 items-center flex bg-no-repeat"
+        className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button"
         onClick={() => setShowModal(true)}
       >
-        <img src={buttonImage} className="w-5 h-5 mr-2 object-contain" alt="" />
-        <div className="sm:block">{text}</div>
+        Open regular modal
       </button>
       {showModal ? (
         <>
@@ -63,6 +62,6 @@ export default function ComunButton({ text, callback }) {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-    </div>
+    </>
   );
 }

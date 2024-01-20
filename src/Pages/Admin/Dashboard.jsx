@@ -26,29 +26,21 @@ export default function Dashboard() {
         </div>
 
         <div class="flex flex-col  shadow p-4">
-  <div class="-m-1.5 overflow-x-auto">
-    <div class="p-1.5 min-w-full inline-block align-middle">
-      <div class="">
-        <div className="flex  justify-between">
-        <p className="text-xl font-semibold">
-  Lab appointment Details
-</p>
-<p className="font-semibold">
-  see all
-</p>
+          <div class="-m-1.5 overflow-x-auto">
+            <div class="p-1.5 min-w-full inline-block align-middle">
+              <div class="">
+                <div className="flex  justify-between">
+                  <p className="text-xl font-semibold">
+                    Lab appointment Details
+                  </p>
+                  <p className="font-semibold">see all</p>
+                </div>
+
+                <AppoimentTable />
+              </div>
+            </div>
+          </div>
         </div>
-
-
-    <AppoimentTable/>
-
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
       </div>
     </div>
   );
