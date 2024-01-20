@@ -12,6 +12,10 @@ import Homecare from "./Pages/Admin/Homecare";
 import Pharmacy from "./Pages/Admin/Pharmacy";
 import Food from "./Pages/Admin/Food";
 import Transaction from "./Pages/Admin/Transaction";
+import ForgotPassword from "./Pages/Forgot";
+import Success from "./Pages/succes";
+import Otp from "./Pages/Otp";
+import SetNewPass from "./Pages/SetNewPass";
 import Doctor from "./Pages/Admin/Doctor";
 import DoctorHome from "./Pages/Doctor/DoctorHome";
 import LoggedInDoctor from "./ProtectedRoutes/LoggedInDoctor";
@@ -40,6 +44,11 @@ function App() {
       <Route element={<LoggedInUser />}>
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
+        <Route element={<ForgotPassword />} path="/forgot" />
+        <Route element={<Success />} path="/Success" />
+        <Route element={<Otp />} path="/otp" />
+        <Route element={<SetNewPass />} path="/set-password" />
+
       </Route>
     </Routes>
   );
