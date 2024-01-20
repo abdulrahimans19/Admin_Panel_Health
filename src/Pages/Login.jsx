@@ -1,10 +1,11 @@
-// Login.js
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/login.png";
 import { useNavigate } from "react-router-dom";
-import doctorImage from "../assets/login/images/login.png"
+import doctorImage from "../assets/login/images/Doctor.png";
+
+
 const Login = () => {
   const [loginType, setLoginType] = useState("doctor");
 
@@ -15,7 +16,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [errmsg, setErrmsg] = useState("");
-const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
+  const [bgImage, setbgImage] = useState("../assets/login/images/login.png");
+  
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [email, setEmail] = useState('');
+
+  
+
   const LoginUser = (e) => {
     e.preventDefault();
 
@@ -24,15 +31,23 @@ const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
 
-    LoginUserdata(UserData)
-      .then((data) => {
-        console.log(data.data.accessToken);
-        localStorage.setItem("Userdata", data.data.accessToken);
-        navigate("/");
-      })
-      .catch((err) => {
-        setErrmsg("email/password is incorrect");
-      });
+     
+    
+
+    if (toggledata) {
+      LoginUserdata(UserData)
+        .then((data) => {
+          console.log();
+
+          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+          navigate("/");
+        })
+        .catch((err) => {
+          setErrmsg("email or password is incorrect");
+        });
+    } else {
+      console.log("doctor log in");
+    }
 
     // Validate(UserData.email).then(data=>
     //   {
@@ -43,31 +58,43 @@ const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
     //     })
   };
 
-  const getImageUrl = (data) => {
-    console.log('owrngirg');
-    console.log(data);
-  data === "doctor"
-      ? setbgImage("doctor")
-      : setbgImage("../assets/login/images/login.png")
-  };
+  // const getImageUrl = (data) => {
+  //   console.log("owrngirg");
+  //   console.log(data);
+  //   data === "doctor"
+  //     ? setbgImage("doctor")
+  //     : setbgImage("../assets/login/images/login.png");
+  // };
 
   const [toggledata, setToggledata] = useState(true);
   const toggle = (data) => {
     if (data == "doctor") {
       setToggledata(false);
-     
     } else {
       setToggledata(true);
-     
     }
   };
 
+
+  // email validation
+  const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+
+    // Check if the email is valid using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsValidEmail(emailRegex.test(newEmail));
+  };
+
+
+
+  
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Left side with image */}
       <div className="hidden lg:flex items-center justify-center w-1/2 bg-indigo-500">
-    { toggledata? 
-       <motion.img
+        {toggledata ? (
+          <motion.img
             key={loginType}
             src={AdminImage}
             alt={`Login Image - ${loginType}`}
@@ -77,18 +104,18 @@ const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           />
-             :  <motion.img
+        ) : (
+          <motion.img
             key={loginType}
             src={doctorImage}
             alt={`Login Image - ${loginType}`}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full transition duration-75"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           />
-
-    }
+        )}
       </div>
 
       <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
@@ -130,31 +157,62 @@ const [bgImage, setbgImage] = useState("../assets/login/images/login.png")
 
             <div className="flex items-center justify-center">
               <h2 className="mt-6 text-5xl p-5 font-extrabold text-gray-900">
-                Hello {!toggledata? "Doctor" : "Admin"}!
+                Hello {!toggledata ? "Doctor" : "Admin"}!
               </h2>
-            
             </div>
             <div className="flex items-center justify-center">
               <h2 className="mt-6 text-3xl font-thin text-gray-400">
-               welcome back
+                welcome back
               </h2>
-            
             </div>
           </div>
-          <form className="mt-8 space-y-6">
+          <form onSubmit={LoginUser} className="mt-8 space-y-6">
             {/* Your form elements go here */}
             {/* Example: */}
             <div class="relative">
-    <input type="email" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-2 border-black appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-    <label for="floating_outlined" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Floating outlined</label>
-</div>
 
-<div class="relative">
-    <input type="password" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border-2 border-black appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-    <label for="floating_outlined" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">Floating outlined</label>
-</div>
+              <input
+              value={email}
+               onChange={handleEmailChange}
+                name="email"
+                type="email"
+                id="floating_outlined"
+                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+              />
+             {!isValidEmail && <p style={{ color: 'red' }}>Invalid email address</p>}
+
+              
+              <label
+                for="floating_outlined"
+                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              >
+                Floating outlined
+              </label>
+            </div>
+
+            <div class="relative">
+              <input
+                name="password"
+                type="password"
+                id="floating_outlined1"
+                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
+              />
+                          {errmsg && <p style={{ color: 'red' }}>{errmsg}</p>}
+
+
+
+              <label
+                for="floating_outlined1"
+                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              >
+                Floating outlined
+              </label>
+            </div>
 
             <div>
+
               <button
                 type="submit"
                 className="bg-blue-950 text-white p-2 w-full rounded-md hover:bg-blue-800"
