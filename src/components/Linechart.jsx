@@ -87,7 +87,7 @@ const [foodChart, setFoodChart] = useState(true)
             food
           </p>
           <p
-            onClick={() => {
+            onClick={() => { 
               lineChartDataChange();
             }}
             className={`${!foodChart&&"font-bold underline"}   cursor-pointer text-xl underline-offset-8 decoration-4`}
