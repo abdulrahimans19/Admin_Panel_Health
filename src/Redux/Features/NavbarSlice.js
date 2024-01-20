@@ -23,10 +23,18 @@ const NavBarSlice = createSlice({
         },
       ];
     },
+    homecare:(state,action)=>{
+      state.topnavData=[
+        {
+          name:"Categories",
+          link:"/homecare/categories"
+        }
+      ]
+    },
     cleartopNav: (state, action) => {
       state.topnavData = [];
     },
   },
 });
 export default NavBarSlice.reducer;
-export const { openSidebar, telemedicine, cleartopNav } = NavBarSlice.actions;
+export const { openSidebar, telemedicine, cleartopNav,homecare } = NavBarSlice.actions;

@@ -28,6 +28,8 @@ function App() {
         <Route element={<Home />} path="">
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
+          <Route element={<Homecare />} path="/homecare/categories" />
+
           <Route element={<Doctor />} path="/telemedicine/doctor" />
           <Route element={<Homecare />} path="/homecare" />
           <Route element={<Pharmacy />} path="/pharmacy" />

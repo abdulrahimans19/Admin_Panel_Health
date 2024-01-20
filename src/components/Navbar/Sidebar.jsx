@@ -4,7 +4,7 @@ import { motion, useAnimation } from "framer-motion";
 import DropDown from "./DropDown";
 import { useLocation, useNavigate } from "react-router-dom";
 // import TeleMedicine from "../../Pages/Admin/TeleMedicine";
-import { telemedicine } from "../../Redux/Features/NavbarSlice";
+import { telemedicine,homecare } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
   const dispatch = useDispatch();
@@ -115,12 +115,13 @@ function SideBar() {
           <li>
             <a
               onClick={() => {
-                setCurrentRoute("/homecare");
-                navigate("/homecare");
+                dispatch(homecare())
+                setCurrentRoute("/homecare/categories");
+                navigate("/homecare/categories");
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === "/homecare"
+                currentRoute === "/homecare/categories"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
