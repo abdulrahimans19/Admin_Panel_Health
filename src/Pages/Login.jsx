@@ -1,10 +1,11 @@
-// Login.js
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/login.png";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/Doctor.png";
+
+
 const Login = () => {
   const [loginType, setLoginType] = useState("doctor");
 
@@ -16,6 +17,11 @@ const Login = () => {
 
   const [errmsg, setErrmsg] = useState("");
   const [bgImage, setbgImage] = useState("../assets/login/images/login.png");
+  
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [email, setEmail] = useState('');
+
+  
 
   const LoginUser = (e) => {
     e.preventDefault();
@@ -24,7 +30,9 @@ const Login = () => {
 
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-    console.log(UserData);
+
+     
+    
 
     if (toggledata) {
       LoginUserdata(UserData)
@@ -35,7 +43,7 @@ const Login = () => {
           navigate("/");
         })
         .catch((err) => {
-          setErrmsg("email/password is incorrect");
+          setErrmsg("email or password is incorrect");
         });
     } else {
       console.log("doctor log in");
@@ -67,6 +75,20 @@ const Login = () => {
     }
   };
 
+
+  // email validation
+  const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+
+    // Check if the email is valid using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setIsValidEmail(emailRegex.test(newEmail));
+  };
+
+
+
+  
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Left side with image */}
@@ -148,13 +170,19 @@ const Login = () => {
             {/* Your form elements go here */}
             {/* Example: */}
             <div class="relative">
+
               <input
+              value={email}
+               onChange={handleEmailChange}
                 name="email"
                 type="email"
                 id="floating_outlined"
                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
+             {!isValidEmail && <p style={{ color: 'red' }}>Invalid email address</p>}
+
+              
               <label
                 for="floating_outlined"
                 class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
@@ -171,6 +199,10 @@ const Login = () => {
                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-black bg-gray-100 rounded-lg border-2 border-black appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
               />
+                          {errmsg && <p style={{ color: 'red' }}>{errmsg}</p>}
+
+
+
               <label
                 for="floating_outlined1"
                 class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
@@ -180,6 +212,7 @@ const Login = () => {
             </div>
 
             <div>
+
               <button
                 type="submit"
                 className="bg-blue-950 text-white p-2 w-full rounded-md hover:bg-blue-800"
