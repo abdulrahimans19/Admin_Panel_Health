@@ -50,4 +50,5 @@ const NavBarSlice = createSlice({
   },
 });
 export default NavBarSlice.reducer;
-export const { openSidebar, telemedicine, cleartopNav,pharmacyNav } = NavBarSlice.actions;
+export const { openSidebar, telemedicine, cleartopNav, pharmacyNav } =
+  NavBarSlice.actions;

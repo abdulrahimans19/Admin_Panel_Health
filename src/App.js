@@ -7,7 +7,7 @@ import LoggedOutUser from "./ProtectedRoutes/AdminLoggedIn";
 import Home from "./Pages/Admin/Home";
 import Register from "./Pages/Register";
 import Dashboard from "./Pages/Admin/Dashboard";
-import TeleMedicine from "./Pages/Admin/TeleMedicine";
+import TeleMedicine from "./Pages/Admin/telemedicine/TeleMedicine";
 import Homecare from "./Pages/Admin/Homecare";
 // import Pharmacy from "./Pages/Admin/Pharmacy";
 import Food from "./Pages/Admin/Food";
@@ -16,7 +16,7 @@ import ForgotPassword from "./Pages/Forgot";
 import Success from "./Pages/succes";
 import Otp from "./Pages/Otp";
 import SetNewPass from "./Pages/SetNewPass";
-import Doctor from "./Pages/Admin/Doctor";
+import Doctor from "./Pages/Admin/telemedicine/Doctor";
 import DoctorHome from "./Pages/Doctor/DoctorHome";
 import LoggedInDoctor from "./ProtectedRoutes/LoggedInDoctor";
 import PharmaCategory from "./Pages/Admin/pharmacy/PharmaCategory";
@@ -48,7 +48,6 @@ function App() {
         </Route>
       </Route>
 
-      
       <Route element={<LoggedInDoctor />}>
         <Route element={<DoctorHome />} path="/doctor/home" />
       </Route>
@@ -60,7 +59,6 @@ function App() {
         <Route element={<Success />} path="/Success" />
         <Route element={<Otp />} path="/otp" />
         <Route element={<SetNewPass />} path="/set-password" />
-
       </Route>
     </Routes>
   );
