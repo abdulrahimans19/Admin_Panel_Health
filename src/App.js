@@ -9,7 +9,7 @@ import Register from "./Pages/Register";
 import Dashboard from "./Pages/Admin/Dashboard";
 import TeleMedicine from "./Pages/Admin/TeleMedicine";
 import Homecare from "./Pages/Admin/Homecare";
-import Pharmacy from "./Pages/Admin/Pharmacy";
+// import Pharmacy from "./Pages/Admin/Pharmacy";
 import Food from "./Pages/Admin/Food";
 import Transaction from "./Pages/Admin/Transaction";
 import ForgotPassword from "./Pages/Forgot";
@@ -19,6 +19,10 @@ import SetNewPass from "./Pages/SetNewPass";
 import Doctor from "./Pages/Admin/Doctor";
 import DoctorHome from "./Pages/Doctor/DoctorHome";
 import LoggedInDoctor from "./ProtectedRoutes/LoggedInDoctor";
+import PharmaCategory from "./Pages/Admin/pharmacy/PharmaCategory";
+import PharmaProduct from "./Pages/Admin/pharmacy/PharmaProduct";
+import PharmaOrder from "./Pages/Admin/pharmacy/PharmaOrder";
+import PharmaReview from "./Pages/Admin/pharmacy/PharmaReview";
 
 function App() {
   return (
@@ -29,8 +33,16 @@ function App() {
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
           <Route element={<Doctor />} path="/telemedicine/doctor" />
+
+          <Route element={<PharmaCategory />} path="/pharmacy/category" />
+          <Route element={<PharmaProduct />} path="/pharmacy/product" />
+          <Route element={<PharmaOrder />} path="/pharmacy/order" />
+          <Route element={<PharmaReview />} path="/pharmacy/review" />
+
+
+
           <Route element={<Homecare />} path="/homecare" />
-          <Route element={<Pharmacy />} path="/pharmacy" />
+          {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
         </Route>
