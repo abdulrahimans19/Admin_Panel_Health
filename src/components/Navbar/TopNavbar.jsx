@@ -80,9 +80,10 @@ function NavBar() {
                 </div>
               </div>
               <div
-                className={`${
-                  topnavData[0] && "p-1"
-                } rounded-md flex justify-start gap-5 bg-gray-900`}
+             className={`${
+              topnavData[0] && "p-1"
+            } rounded-md flex justify-start gap-5 bg-gray-900 overflow-x-auto`}
+            style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
               >
                 {topnavData[0] &&
                   topnavData.map((data) => {
