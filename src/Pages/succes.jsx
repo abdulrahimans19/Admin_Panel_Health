@@ -27,10 +27,10 @@ const Success = () => {
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", 
+    alignItems: "center",
     justifyContent: "center",
   };
- 
+
   return (
     <div style={containerStyle}>
       <div style={leftSideStyle}>
