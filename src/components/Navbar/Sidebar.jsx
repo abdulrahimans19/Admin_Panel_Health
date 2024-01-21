@@ -4,7 +4,7 @@ import { motion, useAnimation } from "framer-motion";
 import DropDown from "./DropDown";
 import { useLocation, useNavigate } from "react-router-dom";
 // import TeleMedicine from "../../Pages/Admin/TeleMedicine";
-import { telemedicine,homecare } from "../../Redux/Features/NavbarSlice";
+import { pharmacyNav, telemedicine,homecare } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
   const dispatch = useDispatch();
@@ -143,6 +143,7 @@ function SideBar() {
           <li>
             <a
               onClick={() => {
+                dispatch(pharmacyNav());
                 setCurrentRoute("/pharmacy");
                 navigate("/pharmacy");
               }}
@@ -218,18 +219,15 @@ function SideBar() {
             </a>
           </li>
 
-
           <li className="pt-24">
             <a
               onClick={() => {
-           localStorage.removeItem("sophwe_token")
-           navigate("/login")
+                localStorage.removeItem("sophwe_token");
+                navigate("/login");
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === ""
-                  ? "bg-white text-black "
-                  : "text-red-500"
+                currentRoute === "" ? "bg-white text-black " : "text-red-500"
               } `}
             >
               <svg
@@ -245,8 +243,6 @@ function SideBar() {
               <span class="ms-3 ">logout</span>
             </a>
           </li>
-
-
         </ul>
       </div>
     </aside>

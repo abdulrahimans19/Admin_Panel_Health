@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import images from "../../assets/images/image";
+const {category,testtube,book}=images;
 const initialState = {
   toggleSidebar: false,
   topnavData: [],
@@ -24,12 +25,44 @@ const NavBarSlice = createSlice({
       ];
     },
     homecare:(state,action)=>{
-      state.topnavData=[
+      state.topnavData = [
         {
-          name:"Categories",
-          link:"/homecare/categories"
+          name: "Categories",
+          link: "/homecare/categories",
+          // logo:category
+        },
+        {
+          name:"Lab Items",
+          link:"/homecare/lab-items",
+          // logo:testtube
+        },
+        {
+          name:"Appoinment Details",
+          link:"/homecare/appoinment-details",
+          // logo:book
         }
-      ]
+      ];
+    },
+    pharmacyNav:(state,payload)=>
+    {state.topnavData = [
+      {
+        name:"categories",
+        link:""
+      },
+      {
+        name:"Products",
+        link:""
+      },
+      {
+        name:"Order",
+        link:""
+      },
+      {
+        name:"Review",
+        link:""
+      }
+    ]
+
     },
     cleartopNav: (state, action) => {
       state.topnavData = [];
@@ -37,4 +70,4 @@ const NavBarSlice = createSlice({
   },
 });
 export default NavBarSlice.reducer;
-export const { openSidebar, telemedicine, cleartopNav,homecare } = NavBarSlice.actions;
+export const { openSidebar, telemedicine, cleartopNav,pharmacyNav,homecare } = NavBarSlice.actions;

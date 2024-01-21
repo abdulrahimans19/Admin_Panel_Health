@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 const MyChart = () => {
-  // Sample data
+ 
+const [foodChart, setFoodChart] = useState(true)
+
+
   const series = [
     {
       name: "Series 1",
       data: [30, 40, 45, 50, 49, 60, 70, 91, 100, 105, 110, 133],
     },
-    // Add more series as needed
+
   ];
 
   const options = {
@@ -37,6 +40,11 @@ const MyChart = () => {
     grid: {
       borderColor: "#f1f1f1", // Grid line color for light background
     },
+  };
+
+  const lineChartDataChange = () => {
+    console.log("line chart changes");
+    setFoodChart(!foodChart)
   };
 
   return (
@@ -69,6 +77,24 @@ const MyChart = () => {
           type="line"
           height={350}
         />
+        <div className="flex gap-3 p-3">
+          <p
+            onClick={() => {
+              lineChartDataChange();
+            }}
+            className={`${foodChart&&"font-bold underline"}  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
+          >
+            food
+          </p>
+          <p
+            onClick={() => {
+              lineChartDataChange();
+            }}
+            className={`${!foodChart&&"font-bold underline"}   cursor-pointer text-xl underline-offset-8 decoration-4`}
+          >
+            pharmacy
+          </p>
+        </div>
       </div>
     </div>
   );

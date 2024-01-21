@@ -11,6 +11,6 @@ useEffect(()=>
 dispatch(telemedicine())
 },[])
   return (
-    <div>doctor</div>
+    <div>doctorss</div>
   )
 }
