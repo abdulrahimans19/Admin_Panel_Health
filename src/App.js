@@ -25,6 +25,7 @@ import PharmaCategory from "./Pages/Admin/pharmacy/PharmaCategory";
 import PharmaProduct from "./Pages/Admin/pharmacy/PharmaProduct";
 import PharmaOrder from "./Pages/Admin/pharmacy/PharmaOrder";
 import PharmaReview from "./Pages/Admin/pharmacy/PharmaReview";
+import AppoinmentDetails from "./Pages/Admin/homecare/AppoinmentDetails";
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
           <Route element={<HomecareLabItems/>} path="homecare/lab-items" />
-          <Route element={<HomecareLabItems/>} path="homecare/appoinment-details" />
+          <Route element={<AppoinmentDetails/>} path="homecare/appoinment-details" />
+          
           <Route element={<Homecare />} path="/homecare/categories"/>
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 

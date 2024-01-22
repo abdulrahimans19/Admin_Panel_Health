@@ -36,7 +36,7 @@ export function HomecareLabItems() {
   function addcategory() {
     console.log("this is add category in homecare @@@@@@@");
   }
-  const editCat = (data) => {
+  const filterCallback = (data) => {
     console.log(data);
   };
   return (
@@ -94,7 +94,7 @@ export function HomecareLabItems() {
         
       </div>
       <div className="relative">
-          <FilterDropDown/>
+          <FilterDropDown text={"Filter by category"} callback={filterCallback}/>
         </div>
       </div>
       

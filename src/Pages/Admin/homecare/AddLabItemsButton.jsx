@@ -1,5 +1,7 @@
-import React from 'react'
+import React from "react";
 import buttonImage from "../../../assets/images/element-plus.png";
+import AddImage from "../../../assets/images/addImage.png";
+import FilterDropDown from "./FilterDropDown";
 
 function AddLabItemsButton({ text, callback }) {
   const [showModal, setShowModal] = React.useState(false);
@@ -14,75 +16,49 @@ function AddLabItemsButton({ text, callback }) {
         <div className="sm:block">{text}</div>
       </button>
       {showModal && (
-          <>
-            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-              <div className="relative w-auto my-6 mx-auto max-w-screen-md ">
-                {/*content*/}
-                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full  bg-white outline-none focus:outline-none">
-                  {/*header*/}
-                  <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                    
-                    <button
-                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                      onClick={() => setShowModal(false)}
-                    >
-                  
+        <>
+          <div className="fixed inset-0 z-50 overflow-hidden">
+            <div className="flex items-center justify-center min-h-screen">
+              <div className="bg-white rounded-lg shadow-lg p-8 w-auto relative">
+                Create test
+                <div className="flex">
+                  <div className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400 mr-4">
+                    <button>
+                      <img
+                        src={AddImage}
+                        alt=""
+                        className="w-20 h-30 mb-2 p-2"
+                      />
                     </button>
+                    <p className="text-xs text-center p-2">
+                      Drag and drop an image here or click to select one
+                    </p>
                   </div>
-                  {/*body*/}
-                  <div className="relative p-6 flex-auto">
-                    <div className="flex">
-                      {/* Left box with 70% width */}
-                      <div className="w-3/5 pr-5">
-                        <img
-                          className="w-28 h-28"
-                          src="https://via.placeholder.com/110x110"
-                        />
-                      </div>
-                      {/* Right box with 30% width */}
-                      <div className="w-2/5">
-                        {/* Heading */}
-                        <h2 className="text-lg font-semibold mb-3">
-                           Category
-                        </h2>
-                        {/* "Type Category Name" text */}
-                        <p className="text-blueGray-500 mb-2">
-                          Type Category Name
-                        </p>
-                        {/* Input field */}
-                        <input
-                          type="text"
-                          placeholder="Enter category name"
-                          className="w-full sm:w-30 p-3.5 bg-white rounded-lg border border-blue-100"
-                        />
-                      </div>
-                    </div>
+
+                  <div className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400 mr-4">
+                    {/* Content for the second column */}
+                    <p>Select category</p>
+                    <FilterDropDown/>
                   </div>
-                  {/*footer*/}
-                  <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                    <button
-                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Close
-                    </button>
-                    <button
-                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Save Changes
-                    </button>
+                  <div className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400">
+                    {/* Content for the third column */}
+                    <p>asfasf</p>
                   </div>
                 </div>
+                <button 
+                onClick={()=>{setShowModal(false)}}>
+                save
+              </button>
               </div>
+              
             </div>
-            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-          </>
-        )}
+          </div>
+
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
-export default AddLabItemsButton
+export default AddLabItemsButton;
