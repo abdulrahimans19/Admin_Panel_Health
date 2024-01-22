@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { telemedicine } from "../../../Redux/Features/NavbarSlice";
-import CatCard from "../../../components/CatCard";
+import CatCard from "../../../components/Tables/Cards/CatCard";
 import lungsimg from "../../../assets/images/3d-fluency-lungs.png";
 import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";

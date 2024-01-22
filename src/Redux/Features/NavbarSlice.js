@@ -23,25 +23,26 @@ const NavBarSlice = createSlice({
         },
       ];
     },
-    pharmacyNav: (state, payload) => {
-      state.topnavData = [
-        {
-          name: "categories",
-          link: "",
-        },
-        {
-          name: "Products",
-          link: "",
-        },
-        {
-          name: "Order",
-          link: "",
-        },
-        {
-          name: "Review",
-          link: "",
-        },
-      ];
+    pharmacyNav:(state,payload)=>
+    {state.topnavData = [
+      {
+        name:"categories",
+        link:"/pharmacy/category"
+      },
+      {
+        name:"Products",
+        link:"/pharmacy/product"
+      },
+      {
+        name:"Order",
+        link:"/pharmacy/order"
+      },
+      {
+        name:"Review",
+        link:"/pharmacy/review"
+      }
+    ]
+
     },
     cleartopNav: (state, action) => {
       state.topnavData = [];
