@@ -20,7 +20,6 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        //navigate("/link/");
         return <DoctorRequstTable isRequsted={true} status={"requests"} />;
 
       case 2:
