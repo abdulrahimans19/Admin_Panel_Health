@@ -92,9 +92,7 @@ function NavBar() {
                     return (
                       <div
                         onClick={() => {
-                          navigate(data.link)
-
-
+                          navigate(data.link);
                         }}
                         className={`${
                           window.location.pathname == data.link
