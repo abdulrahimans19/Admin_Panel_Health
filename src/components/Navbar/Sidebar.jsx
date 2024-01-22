@@ -4,7 +4,7 @@ import { motion, useAnimation } from "framer-motion";
 import DropDown from "./DropDown";
 import { useLocation, useNavigate } from "react-router-dom";
 // import TeleMedicine from "../../Pages/Admin/TeleMedicine";
-import { pharmacyNav, telemedicine } from "../../Redux/Features/NavbarSlice";
+import { pharmacyNav, telemedicine,homecare } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
   const dispatch = useDispatch();
