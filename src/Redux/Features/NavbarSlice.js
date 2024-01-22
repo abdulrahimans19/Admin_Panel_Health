@@ -47,41 +47,22 @@ const NavBarSlice = createSlice({
     {state.topnavData = [
       {
         name:"categories",
-        link:""
+        link:"/pharmacy/category"
       },
       {
         name:"Products",
-        link:""
+        link:"/pharmacy/product"
       },
       {
         name:"Order",
-        link:""
+        link:"/pharmacy/order"
       },
       {
         name:"Review",
-        link:""
+        link:"/pharmacy/review"
       }
     ]
-  },
-    pharmacyNav: (state, payload) => {
-      state.topnavData = [
-        {
-          name: "categories",
-          link: "",
-        },
-        {
-          name: "Products",
-          link: "",
-        },
-        {
-          name: "Order",
-          link: "",
-        },
-        {
-          name: "Review",
-          link: "",
-        },
-      ];
+
     },
     cleartopNav: (state, action) => {
       state.topnavData = [];

@@ -4,9 +4,10 @@ import image from "../../../assets/images/doctor-ittle-girl.png";
 import feverImage from "../../../assets/images/face-thermometer.png";
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/Button';
-import CatCard from '../../../components/CatCard';
+
 import ComunButton from '../../../components/Navbar/ComenButton';
 import AddNewCategoryButton from './AddNewCategoryButton';
+import CatCard from '../../../components/Tables/Cards/CatCard';
 
 
 export default function Homecare() {

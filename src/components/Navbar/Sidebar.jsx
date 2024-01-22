@@ -144,12 +144,12 @@ function SideBar() {
             <a
               onClick={() => {
                 dispatch(pharmacyNav());
-                setCurrentRoute("/pharmacy");
-                navigate("/pharmacy");
+                setCurrentRoute("/pharmacy/category");
+                navigate("/pharmacy/category");
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === "/pharmacy"
+                currentRoute === "/pharmacy/category"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
