@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 import DoctorRequstTable from "../../../components/Tables/telemedicin/DoctorRequstTable";
+import blockimg from "../../../assets/images/Vector.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Doctor() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(1);
 
@@ -17,14 +20,33 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        return <DoctorRequstTable />;
-      // Add cases for other tabs if needed
+        return <DoctorRequstTable isRequsted={true} status={"requests"} />;
+
+      case 2:
+        return (
+          <DoctorRequstTable
+            btImg={blockimg}
+            btText={"Block"}
+            status={"approved"}
+          />
+        );
+      case 3:
+        return <DoctorRequstTable btText={"Canselled"} status={"canselled"} />;
+      case 4:
+        return (
+          <DoctorRequstTable
+            btImg={blockimg}
+            btText={"UnBlock"}
+            status={"unBlock"}
+          />
+        );
+
       default:
-        return null; // Return null for cases not handled
+        return <DoctorRequstTable isRequsted={true} />; // Return null for cases not handled
     }
   };
   return (
-    <div>
+    <div className="container">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
         <ul className="flex flex-wrap -mb-px">
           <li className="me-2">
@@ -37,7 +59,7 @@ export default function Doctor() {
               }`}
               onClick={() => handleTabClick(1)}
             >
-              Profile
+              Requests
             </a>
           </li>
           <li className="me-2">
@@ -50,7 +72,7 @@ export default function Doctor() {
               }`}
               onClick={() => handleTabClick(2)}
             >
-              Dashboard
+              Approved
             </a>
           </li>
           <li className="me-2">
@@ -63,7 +85,7 @@ export default function Doctor() {
               }`}
               onClick={() => handleTabClick(3)}
             >
-              Settings
+              Cancelled
             </a>
           </li>
           <li className="me-2">
@@ -76,11 +98,12 @@ export default function Doctor() {
               }`}
               onClick={() => handleTabClick(4)}
             >
-              Contacts
+              Blocked
             </a>
           </li>
         </ul>
       </div>
+
       {renderTabContent()}
     </div>
   );
