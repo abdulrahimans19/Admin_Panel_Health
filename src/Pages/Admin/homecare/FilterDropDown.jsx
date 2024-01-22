@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 function FilterDropDown() {
+  const [isOpen,setIsOpen]=useState(false)
   return (
     <div>
+      <div >
       <button
+      id="dropdownButton"
         data-dropdown-toggle="dropdownDelay"
         data-dropdown-delay="500"
         data-dropdown-trigger="hover"
-        class="text-black bg-white focus:ring-1 focus:outline-none focus:ring-black hover:bg-white rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center "
+        onClick={()=> setIsOpen((prev)=> !prev)}
+        class="text-black shadow-sm ring-1 ring-inset ring-gray-300 bg-white focus:ring-1 focus:outline-none focus:ring-black hover:bg-white rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center "
         type="button"
       >
         Filter by category{" "}
@@ -26,47 +30,26 @@ function FilterDropDown() {
             d="m1 1 4 4 4-4"
           />
         </svg>
+        
       </button>
-
-      {/* <!-- Dropdown menu --> */}
-      <div class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-        <ul
-          class="py-2 text-sm text-gray-700 dark:text-gray-200"
-          aria-labelledby="dropdownDelayButton"
+    <div id="dropdown" class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+    <ul
+      class="py-2 text-sm text-gray-700 dark:text-gray-200"
+      aria-labelledby="dropdownDelayButton"
+    >
+      <li>
+        <a
+          href="#"
+          class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
         >
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Settings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Earnings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block px-4 py-2 hover:bg-white dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Sign out
-            </a>
-          </li>
-        </ul>
+          Dashboard
+        </a>
+      </li>
+    </ul>
+  </div>
+    
+      {/* <!-- Dropdown menu --> */}
+      
       </div>
     </div>
   );

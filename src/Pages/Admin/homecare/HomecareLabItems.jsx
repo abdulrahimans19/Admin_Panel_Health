@@ -4,6 +4,9 @@ import { homecare } from "../../../Redux/Features/NavbarSlice";
 import ComunButton from "../../../components/Navbar/ComenButton";
 import AddLabItemsButton from "./AddLabItemsButton";
 import FilterDropDown from "./FilterDropDown";
+import AllTests from "./LabItems/AllTests";
+import Recommended from "./LabItems/Recommended";
+import Disabled from "./LabItems/Disabled";
 
 
 export function HomecareLabItems() {
@@ -19,7 +22,11 @@ export function HomecareLabItems() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        return ;
+        return <AllTests/>;
+      case 2:
+        return <Recommended/>;
+      case 3:
+        return <Disabled/>;
         
       // Add cases for other tabs if needed
       default:
