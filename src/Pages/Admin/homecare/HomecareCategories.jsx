@@ -7,7 +7,7 @@ import Button from '../../../components/Button';
 
 import ComunButton from '../../../components/Navbar/ComenButton';
 import AddNewCategoryButton from './AddNewCategoryButton';
-import CatCard from '../../../components/Tables/Cards/CatCard';
+import CatCard from '../../../components/Cards/CatCard';
 
 
 export default function Homecare() {
