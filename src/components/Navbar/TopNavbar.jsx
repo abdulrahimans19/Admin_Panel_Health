@@ -5,7 +5,6 @@ import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 function NavBar() {
   const dispatch = useDispatch();
 
@@ -81,10 +80,13 @@ function NavBar() {
                 </div>
               </div>
               <div
-             className={`${
-              topnavData[0] && "p-1"
-            } rounded-md flex justify-start gap-5 bg-gray-900 overflow-x-auto`}
-            style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
+                className={`${
+                  topnavData[0] && "p-1"
+                } rounded-md flex justify-start gap-5 bg-gray-900 overflow-x-auto`}
+                style={{
+                  scrollbarWidth: "none",
+                  WebkitOverflowScrolling: "touch",
+                }}
               >
                 {topnavData[0] &&
                   topnavData.map((data) => {
