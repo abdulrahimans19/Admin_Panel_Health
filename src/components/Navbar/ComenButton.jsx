@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import buttonImage from "../../assets/images/element-plus.png";
 
 export default function ComunButton({ text, callback }) {

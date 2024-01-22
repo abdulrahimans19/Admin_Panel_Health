@@ -5,6 +5,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 function NavBar() {
   const dispatch = useDispatch();
 

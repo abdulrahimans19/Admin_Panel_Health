@@ -1,58 +1,19 @@
-import React from "react";
+import React from 'react'
+import buttonImage from "../../../assets/images/element-plus.png";
 
-export default function CatCard({ data, callback, isHomecareCategory }) {
+function AddLabItemsButton({ text, callback }) {
   const [showModal, setShowModal] = React.useState(false);
 
-  const cardHeight = isHomecareCategory ? 260 : 240;
   return (
-    <div
-      className={`max-w-sm mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ${
-        isHomecareCategory
-          ? "p-8 bg-gray-100" // Adjust padding and background for Homecare
-          : "p-4"
-      }`}
-      style={{ height: cardHeight }}
-    >
-      {/* Image in the center */}
-      <div className="flex items-center justify-center h-full">
-        <img
-          className={`object-fill object-center w-full  ${
-            isHomecareCategory ? "object-center w-20 h-24" : "h-40"
-          }`}
-          src={data?.image}
-          alt="Your Image"
-        />
-      </div>
-
-      {/* Name below the image */}
-      <div className={`${isHomecareCategory ? "" : "p-4"}`}>
-        <p className="text-lg font-semibold text-gray-800">{data?.name}</p>
-      </div>
-
-      {/* Pencil icon at the top right corner */}
-      <div
-        onClick={() => {
-          callback(data);
-        }}
-        className=" top-0 right-0 p-4 absolute"
+    <div>
+      <button
+        className="rounded bg-black text-white p-3 items-center flex bg-no-repeat"
+        onClick={() => setShowModal(true)}
       >
-        <svg
-          class="cursor-pointer feather feather-edit"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-          onClick={() => setShowModal(true)}
-        >
-          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-        </svg>
-        {showModal && (
+        <img src={buttonImage} className="w-5 h-5 mr-2 object-contain" alt="" />
+        <div className="sm:block">{text}</div>
+      </button>
+      {showModal && (
           <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
               <div className="relative w-auto my-6 mx-auto max-w-screen-md ">
@@ -82,11 +43,11 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
                       <div className="w-2/5">
                         {/* Heading */}
                         <h2 className="text-lg font-semibold mb-3">
-                          Category
+                           Category
                         </h2>
                         {/* "Type Category Name" text */}
                         <p className="text-blueGray-500 mb-2">
-                          Edit Category Name
+                          Type Category Name
                         </p>
                         {/* Input field */}
                         <input
@@ -120,7 +81,8 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         )}
-      </div>
     </div>
-  );
+  )
 }
+
+export default AddLabItemsButton
