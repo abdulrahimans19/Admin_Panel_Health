@@ -24,6 +24,10 @@
   color: white;
 }
 
+.svg-icon-active path {
+  stroke: black;
+}
+
 .App-link {
   color: #61dafb;
 }
