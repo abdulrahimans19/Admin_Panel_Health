@@ -358,19 +358,33 @@ const Login = () => {
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder="Email Address"
               />
-              {!isValidEmail && (
-                <p style={{ color: "red" }}>Invalid email address</p>
-              )}
+             {!isValidEmail && <p style={{ color: 'red' }}>Invalid email address</p>}
+
+              
+              <label
+                for="floating_outlined"
+                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              >
+Email Adress              </label>
             </div>
 
             <div className="relative">
               <input
+              
                 name="password"
                 type="password"
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder=" Password"
               />
-              {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
+                          {errmsg && <p style={{ color: 'red' }}>{errmsg}</p>}
+
+
+
+              <label
+                for="floating_outlined1"
+                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              >
+Password              </label>
             </div>
 
             <div>
