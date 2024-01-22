@@ -220,7 +220,6 @@
 // };
 
 // export default Login;
-
 import React, { useState } from "react";
 import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/adminLogin.png";
@@ -269,7 +268,6 @@ const Login = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Left side with image */}
       <div className="hidden lg:flex items-center justify-center w-1/2 bg-indigo-500">
         <img
           src={selectedOption === "Admin" ? AdminImage : doctorImage}
@@ -343,7 +341,7 @@ const Login = () => {
             </div>
 
             <div className="flex items-center justify-center">
-              <h2 className="mt-6 mr-20 text-3xl font-thin text-gray-400">
+              <h2 className=" mr-20 text-3xl font-thin text-gray-400">
                 Welcome back
               </h2>
             </div>
@@ -358,52 +356,49 @@ const Login = () => {
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder="Email Address"
               />
-             {!isValidEmail && <p style={{ color: 'red' }}>Invalid email address</p>}
-
-              
-              <label
-                for="floating_outlined"
-                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-              >
-Email Adress              </label>
+              {!isValidEmail && (
+                <p style={{ color: "red" }}>Invalid email address</p>
+              )}
             </div>
 
             <div className="relative">
               <input
-              
                 name="password"
                 type="password"
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder=" Password"
               />
-                          {errmsg && <p style={{ color: 'red' }}>{errmsg}</p>}
-
-
-
-              <label
-                for="floating_outlined1"
-                class="absolute text-sm text-gray-500   duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-100 px-2 peer-focus:px-2 peer-focus:text-blue-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-              >
-Password              </label>
+              {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
             </div>
+            {selectedOption === "Doctor" && (
+              <a
+                href="/forgot"
+                className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] mr-10 flex justify-end items-center"
+              >
+                Forgot Password?
+              </a>
+            )}
 
             <div>
               <button
-                className="w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center mt-10"
+                className="w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center "
                 type="submit"
               >
                 <div className="text-white text-1xl font-semibold font-['Roboto Flex']">
                   Login
                 </div>
               </button>
-            </div>
-            <div className="flex justify-end items-center">
-              <a
-                href="/forgot"
-                className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] mr-10"
-              >
-                Forgot Password?
-              </a>
+              {selectedOption === "Doctor" && (
+                <div className="flex items-center ml-20 mt-6">
+                  <span>Dont have an account? </span>
+                  <a
+                    href="/register"
+                    className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] "
+                  >
+                    Signup
+                  </a>
+                </div>
+              )}
             </div>
           </form>
         </div>
