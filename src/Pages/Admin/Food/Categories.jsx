@@ -1,48 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import CatCard from "../../../components/Cards/CatCard";
 import lungsimg from "../../../assets/images/3d-fluency-lungs.png";
 import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";
-import CatCard from "../../../components/Cards/CatCard";
-import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
-import buttonImage from "../../../assets/images/element-plus.png"
-import ProductModal from "../../../components/Modal/AddProductModal";
-export default function PharmaProduct() {
+import buttonImage from "../../../assets/images/element-plus.png";
+import AddCategory from "../../../components/Modal/AddCategory";
+import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
+
+
+export default function FoodCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
-const [AddProductModal, setAddProductModal] = useState(false)
+const [AddCategoryModal, setAddCategoryModal] = useState(false)
+const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
+  const dispatch = useDispatch();
+
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
-
-  const dispatch = useDispatch();
+  const abc = { name: "Pulmonology", image: lungsimg };
+  const ab = { name: "Hepatology", image: heartimg };
   const editCat = (data) => {
     console.log(data);
   };
+
   const addcategory = () => {
     console.log("add category modal");
   };
 
-  const abc = { name: "Pulmonology", image: lungsimg };
-  const ab = { name: "Hepatology", image: heartimg };
+ 
+
   useEffect(() => {
-    dispatch(pharmacyNav());
+    dispatch(foodNavdata());
   }, []);
+
   return (
     <div>
       <div className="flex gap-3 p-3">
         <p
-          onClick={() => {
-            changeCategory();
-          }}
+          // onClick={() => {
+          //   changeCategory();
+          // }}
           className={`${
             categoryMenu && "font-bold underline"
           }  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
         >
-          products
+          Categories
         </p>
-        <p
+        {/* <p
           onClick={() => {
             changeCategory();
           }}
@@ -50,8 +57,8 @@ const [AddProductModal, setAddProductModal] = useState(false)
             !categoryMenu && "font-bold underline"
           }   cursor-pointer text-xl underline-offset-8 decoration-4`}
         >
-          Disabled
-        </p>
+          SubCategory
+        </p> */}
       </div>
 
       <div className="flex justify-between">
@@ -61,29 +68,26 @@ const [AddProductModal, setAddProductModal] = useState(false)
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">5 categories</p>
         </div>
-        <div>
-          {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
-          <div className="" onClick={()=>
-          {
-            setAddProductModal(true)
-          }}>
-          <AddItemButton text={"Add Products"} img={buttonImage} />
+        {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
-          </div>
+        <div className="flex gap-3">
 
-          <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option disabled value="">
-                Filter By Category
-              </option>
-              <option value="full">full body</option>
-              <option value="Fever">Fever</option>
-            </select>
-          </div>
+        <div onClick={()=>
+        {
+          setAddCategoryModal(true)
+        }}>
+          <AddItemButton text={"Add new categories"} img={buttonImage} />
+          
         </div>
+        <div onClick={()=>
+        {
+          setAddSubCategoryModal(true)
+        }}>
+          <AddItemButton text={"Add sub Categories"} img={buttonImage} />
+          
+        </div>
+        </div>
+       
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
@@ -91,11 +95,11 @@ const [AddProductModal, setAddProductModal] = useState(false)
           <CatCard data={abc} callback={editCat} />
           <CatCard data={abc} callback={editCat} />
           <CatCard data={abc} callback={editCat} />
-          <ProductCard data={abc} callback={editCat} />
           <CatCard data={abc} callback={editCat} />
         </div>
-      </div>
-     { AddProductModal&&<ProductModal setAddProductModal={setAddProductModal}/>}
+      </div>\
+      {AddCategoryModal&& <AddCategory setShowModal={setAddCategoryModal} />}
+     {addSubCategoryModal&& <AddSubCategoryModal onClose={setAddSubCategoryModal}/>}
     </div>
   );
 }

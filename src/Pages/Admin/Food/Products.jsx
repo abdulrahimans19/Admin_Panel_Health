@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
 import lungsimg from "../../../assets/images/3d-fluency-lungs.png";
 import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";
@@ -9,7 +9,7 @@ import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png"
 import ProductModal from "../../../components/Modal/AddProductModal";
-export default function PharmaProduct() {
+export default function FoodProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
 const [AddProductModal, setAddProductModal] = useState(false)
   const changeCategory = () => {
@@ -27,7 +27,7 @@ const [AddProductModal, setAddProductModal] = useState(false)
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
   useEffect(() => {
-    dispatch(pharmacyNav());
+    dispatch(foodNavdata());
   }, []);
   return (
     <div>

@@ -171,12 +171,12 @@ function SideBar() {
           <li>
             <a
               onClick={() => {
-                setCurrentRoute("/food");
-                navigate("/food");
+                setCurrentRoute("/food/categories");
+                navigate("/food/categories");
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === "/food" ? "bg-white text-black " : "text-white"
+                currentRoute === "/food/categories" ? "bg-white text-black " : "text-white"
               } `}
             >
               <svg
