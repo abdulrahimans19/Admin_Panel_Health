@@ -522,7 +522,7 @@ function SideBar() {
             </a>
           </li>
 
-          <li className="pt-24">
+          <li className="pt-20">
             <a
               onClick={() => {
                 localStorage.removeItem("sophwe_token");
