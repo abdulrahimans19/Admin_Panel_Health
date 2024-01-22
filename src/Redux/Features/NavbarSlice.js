@@ -27,19 +27,19 @@ const NavBarSlice = createSlice({
     {state.topnavData = [
       {
         name:"categories",
-        link:""
+        link:"/pharmacy/category"
       },
       {
         name:"Products",
-        link:""
+        link:"/pharmacy/product"
       },
       {
         name:"Order",
-        link:""
+        link:"/pharmacy/order"
       },
       {
         name:"Review",
-        link:""
+        link:"/pharmacy/review"
       }
     ]
 
@@ -50,4 +50,5 @@ const NavBarSlice = createSlice({
   },
 });
 export default NavBarSlice.reducer;
-export const { openSidebar, telemedicine, cleartopNav,pharmacyNav } = NavBarSlice.actions;
+export const { openSidebar, telemedicine, cleartopNav, pharmacyNav } =
+  NavBarSlice.actions;
