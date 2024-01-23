@@ -1,20 +1,33 @@
 import React, { useState } from "react";
+import AddLabItemsButton from "../../AddLabItemsButton";
+import LabModal from "./LabModal";
 
 function TestCard() {
   const [showList, setShowList] = useState(false);
-  const toggleMenu = () => {
+  const [showModal, setShowModal] = React.useState(false);
+  // const [showModal1, setShowModal1] = React.useState(false);
+
+
+  const toggleMenu =() => {
+    console.log("GFHBN");
     setShowList(!showList);
   };
+
+  const toggleModal=()=>{
+    setShowModal(!showModal)
+  }
+
   return (
     <div>
-      <div class="">
+        <LabModal showModal={showModal} callback={toggleModal}/>
+      <div class="relative">
         {/* <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->  */}
 
         <div class="px-5 py-2.5 rounded-lg border border-zinc-300 flex-col">
           <div class="flex-col justify-start items-start flex">
             <div className="flex gap-2">
               <div className="">
-                <p class=" text-lg font-semibold">
+                <p class="text-lg font-semibold">
                   Comprehensive full body check up with vitamin
                 </p>
               </div>
@@ -47,12 +60,13 @@ function TestCard() {
                     <ul class="py-2" aria-labelledby="dropdownButton">
                       <li>
                         <a
-                        onClick={toggleMenu}
+                        onClick={toggleModal}
                           href="#"
                           class="block px-4 py-2 text-sm text-neutral-950 hover:bg-gray-100 dark:text-black dark:hover:text-black"
                         >
                           Edit
                         </a>
+                        
                       </li>
                       <li>
                         <a

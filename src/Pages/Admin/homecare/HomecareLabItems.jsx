@@ -1,15 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { homecare } from "../../../Redux/Features/NavbarSlice";
 import ComunButton from "../../../components/Navbar/ComenButton";
+
 import AddLabItemsButton from "./AddLabItemsButton";
 import FilterDropDown from "./FilterDropDown";
 import AllTests from "./LabItems/AllTests";
 import Recommended from "./LabItems/Recommended";
 import Disabled from "./LabItems/Disabled";
+import LabModal from "./LabItems/lab_components/LabModal";
 
 
 export function HomecareLabItems() {
+  
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleMenu=()=> {
+    console.log("GFHBN");
+    setShowModal(!showModal)
+  };
   
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(1);
@@ -41,12 +50,16 @@ export function HomecareLabItems() {
   };
   return (
     <div>
+      
+        <LabModal showModal={showModal} callback={toggleMenu}/>
+        
       <div className="flex justify-between">
         <div>
           <h2 className="font-bold text-lg">Categories</h2>
           <p>2 available categories</p>
         </div>
-        <AddLabItemsButton text={"Add lab items "} callback={addcategory} />
+        <AddLabItemsButton showModel={showModal}  text={"Add lab items "} callback={toggleMenu} />
+        
       </div>
       <div className="flex justify-between">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
