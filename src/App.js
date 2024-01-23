@@ -25,6 +25,10 @@ import PharmaCategory from "./Pages/Admin/pharmacy/PharmaCategory";
 import PharmaProduct from "./Pages/Admin/pharmacy/PharmaProduct";
 import PharmaOrder from "./Pages/Admin/pharmacy/PharmaOrder";
 import PharmaReview from "./Pages/Admin/pharmacy/PharmaReview";
+import FoodCategory from "./Pages/Admin/Food/Categories";
+import FoodProduct from "./Pages/Admin/Food/Products";
+import FoodOrder from "./Pages/Admin/Food/Orders";
+import FoodReview from "./Pages/Admin/Food/Review";
 
 function App() {
   return (
@@ -46,6 +50,14 @@ function App() {
           <Route element={<PharmaProduct />} path="/pharmacy/product" />
           <Route element={<PharmaOrder />} path="/pharmacy/order" />
           <Route element={<PharmaReview />} path="/pharmacy/review" />
+
+
+
+          <Route element={<FoodCategory />} path="/food/categories" />
+          <Route element={<FoodProduct />} path="/food/product" />
+          <Route element={<FoodOrder />} path="/food/order" />
+          <Route element={<FoodReview />} path="/food/review" />
+
 
 
 
