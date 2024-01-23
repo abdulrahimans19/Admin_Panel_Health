@@ -6,10 +6,10 @@ const Instance = axios.create({ baseURL });
 
 Instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("sophwe_token");
-
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+    const token = JSON.parse(localStorage.getItem("sophwe_token"));
+    console.log(token?.tokens);
+    if (token?.tokens?.access_token) {
+      config.headers["Authorization"] = "Bearer " + token?.tokens?.access_token;
     }
     config.headers["Content-Type"] = "application/json";
     return config;

@@ -17,7 +17,7 @@ export default function Homecare() {
   }, []);
   const cardText = { name: "Full body checkup", image: image };
   const fever = { name: "Fever", image: feverImage };
-  function addcategory() {
+  function addCategory() {
     console.log("this is add category in homecare @@@@@@@");
   }
   const editCat = (data) => {
@@ -31,7 +31,7 @@ export default function Homecare() {
           <h2 className="font-bold text-lg">Categories</h2>
           <p>2 available categories</p>
         </div>
-        <AddNewCategoryButton text={"Add new categories"} callback={addcategory} />
+        <ComunButton text={"Add new categories"} callback={addCategory} />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
       </div>
