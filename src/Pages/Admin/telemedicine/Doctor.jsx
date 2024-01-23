@@ -51,7 +51,7 @@ export default function Doctor() {
         <ul className="flex flex-wrap -mb-px">
           <li className="me-2">
             <a
-              href="#"
+              href=""
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
                 activeTab === 1
                   ? "text-black border-b-2 border-b-black"
