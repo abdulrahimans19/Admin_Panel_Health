@@ -1,14 +1,13 @@
 import axios from "axios";
-const baseURL=process.env.REACT_APP_BASEURL
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const Instance = axios.create({ baseURL });
 
 Instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("sophwe_token");
-
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+    const token = JSON.parse(localStorage.getItem("sophwe_token"));
+    if (token?.tokens?.access_token) {
+      config.headers["Authorization"] = "Bearer " + token?.tokens?.access_token;
     }
     config.headers["Content-Type"] = "application/json";
     return config;

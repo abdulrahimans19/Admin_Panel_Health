@@ -9,6 +9,7 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
+import { getPharmaCategory } from "../../../API/ApiCall";
 
 
 export default function PharmaCategory() {
@@ -17,9 +18,8 @@ const [AddCategoryModal, setAddCategoryModal] = useState(false)
 const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
   const dispatch = useDispatch();
 
-  const changeCategory = () => {
-    setCategoryMenu(!categoryMenu);
-  };
+
+const [categoryData, setCategoryData] = useState([])
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
   const editCat = (data) => {
@@ -34,6 +34,14 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
 
   useEffect(() => {
     dispatch(pharmacyNav());
+    getPharmaCategory().then(({data})=>
+    {console.log(
+      data.data.mainCategories
+      );
+      setCategoryData(data.data.mainCategories)
+
+    
+    })
   }, []);
 
   return (
@@ -66,7 +74,7 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">5 categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">{categoryData.length} categories</p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
@@ -91,11 +99,12 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          <CatCard data={ab} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
+          {categoryData[0]&&categoryData.map((data)=>
+          {
+            return <CatCard data={data} callback={editCat} />
+
+          })}
+       
         </div>
       </div>\
       {AddCategoryModal&& <AddCategory setShowModal={setAddCategoryModal} />}

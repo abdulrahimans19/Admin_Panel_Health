@@ -211,7 +211,6 @@ const Register = () => {
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder=" Password"
               />
-              {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
             </div>
             <div className="relative">
               <input
@@ -220,7 +219,6 @@ const Register = () => {
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder="Confirm Password"
               />
-              {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
             </div>
             <div>
               <button
@@ -228,7 +226,7 @@ const Register = () => {
                 type="submit"
               >
                 <div className="text-white text-1xl font-semibold font-['Roboto Flex']">
-                  Login
+                  Sign up
                 </div>
               </button>
             </div>

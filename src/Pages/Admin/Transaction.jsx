@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import { cleartopNav } from "../../Redux/Features/NavbarSlice";
+import {
+  getTransactionForHomeCare,
+  getTransactionForPharmacy,
+  getTransactionForFood,
+} from "../../API/ApiCall";
 
 // Component for date input
 const DateInput = ({ label, selectedDate, onChange }) => (
-  <div className="text-gray-500 text-base font-normal font-['Roboto'] leading-tight tracking-tight relative">
+  <div className="text-gray-500 text-base font-normal leading-tight tracking-tight relative">
     {label}
-    <div className="text-slate-400 text-base font-normal font-['Roboto'] leading-tight tracking-tight mt-3 relative">
+    <div className="text-slate-400 text-base font-normal leading-tight tracking-tight mt-3 relative">
       <DatePicker
         selected={selectedDate}
         className="border text-gray-900 w-[118px] h-12 px-4 py-2.5 justify-start items-center gap-2 flex rounded-lg"
@@ -47,77 +54,49 @@ const CategoryFilter = ({ selectedCategory, onSelect }) => (
 // Component for transactions
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
-  const [filteredTransactions, setFilteredTransactions] = useState([]);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [totalAmountForSelectedCategory, setTotalAmountForSelectedCategory] =
     useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Homecare");
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    // Fetch or set your transactions data here
-    // For example purposes, using dummy data
-    const dummyData = [
-      {
-        orderId: "123",
-        customer: "John Doe",
-        paymentType: "Credit Card",
-        transactionId: "789",
-        date: "2024-01-23",
-        amount: 50.0,
-        invoice: "INV-001",
-        category: "Homecare",
-      },
-      {
-        orderId: "123",
-        customer: "John Doe",
-        paymentType: "Credit Card",
-        transactionId: "789",
-        date: "2024-01-23",
-        amount: 50.0,
-        invoice: "INV-001",
-        category: "Homecare",
-      },
-      {
-        orderId: "123",
-        customer: "John Doe",
-        paymentType: "Credit Card",
-        transactionId: "789",
-        date: "2024-01-23",
-        amount: 50.0,
-        invoice: "INV-001",
-        category: "Homecare",
-      },
-      // Add more dummy data as needed
-    ];
+    dispatch(cleartopNav());
+    fetchTransactions();
+  }, [dispatch, startDate, endDate, selectedCategory]);
 
-    setTransactions(dummyData);
-    setFilteredTransactions(dummyData);
-    updateTotalAmount(dummyData);
-  }, []);
+  const fetchTransactions = () => {
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
 
-  const updateTotalAmount = (updatedTransactions) => {
-    const total = updatedTransactions.reduce(
-      (acc, transaction) => acc + transaction.amount,
-      0
-    );
-    setTotalAmountForSelectedCategory(total.toFixed(2));
+    let fetchFunction;
+    switch (selectedCategory) {
+      case "Homecare":
+        fetchFunction = getTransactionForHomeCare;
+        break;
+      case "Pharmacy":
+        fetchFunction = getTransactionForPharmacy;
+        break;
+      case "Food":
+        fetchFunction = getTransactionForFood;
+        break;
+      default:
+        fetchFunction = getTransactionForHomeCare;
+    }
+
+    fetchFunction(formattedStartDate, formattedEndDate).then(({ data }) => {
+      setTransactions(data.data.transaction);
+      setTotalAmountForSelectedCategory(data.data.total_income);
+    });
   };
 
-  const filterTransactions = () => {
-    const filtered = transactions.filter((transaction) => {
-      const transactionDate = new Date(transaction.date);
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      return (
-        transactionDate >= start &&
-        transactionDate <= end &&
-        transaction.category === selectedCategory
-      );
-    });
-
-    setFilteredTransactions(filtered);
-    updateTotalAmount(filtered);
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   const handleStartDateChange = (date) => {
@@ -130,7 +109,7 @@ const Transactions = () => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    filterTransactions();
+    fetchTransactions();
   };
 
   return (
@@ -178,35 +157,41 @@ const Transactions = () => {
               Amount
             </th>
             <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+              Status
+            </th>
+            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
               Invoice
             </th>
           </tr>
         </thead>
         <tbody>
-          {filteredTransactions.map((item, index) => (
+          {transactions.map((item, index) => (
             <tr
-              key={item.transactionId}
+              key={item}
               className={`border ${
                 index % 2 === 0 ? "bg-gray-100" : "bg-white"
               }`}
             >
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.orderId}
+                {item.transaction}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.customer}
+                {item.profile_id.first_name} {item.profile_id.last_name}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
                 {item.paymentType}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.transactionId}
+                {item.payment_id}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
                 {item.date}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.amount}
+                {item.discount_price}
+              </td>
+              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+                {item.order_status}
               </td>
               <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
                 {item.invoice}

@@ -2,43 +2,40 @@ import React from "react";
 
 export default function ProductCard({ data, callback }) {
   return (
-    <div className="max-w-sm mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
+    <div className="max-w-sm  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
       {/* Image in the center */}
-      <img
-        className="object-cover object-center w-full h-40"
-        src={data?.image}
-        alt="Your Image"
-      />
+      <div className="flex  justify-center">
+        <img
+          className="object-cover object-center  max-h-40 "
+          src={data?.image}
+          alt="Your Image"
+        />
+      </div>
 
       {/* Name below the image */}
       <div className="p-4">
-        <p className="text-lg font-semibold text-gray-800">{data?.name}</p>
+        <p className="text-lg  font-semibold text-gray-800">
+          {data?.name}
+        </p>
       </div>
 
       {/* Pencil icon at the top right corner */}
-     
-     <div>
 
-        
-     </div>
-     <div className="top-0 absolute p-2">
+      <div></div>
+      <div className="top-0 absolute p-2">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" value="" class="sr-only peer" />
+          <div class="w-6 h-3 bg-red-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[0px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all  peer-checked:bg-green-600"></div>
+          <span class="ms-3 text-sm font-medium text-gray-900 "></span>
+        </label>
+      </div>
 
-     <label class="relative inline-flex items-center cursor-pointer">
-  <input type="checkbox" value="" class="sr-only peer"/>
-  <div class="w-6 h-3 bg-red-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[0px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all  peer-checked:bg-green-600"></div>
-  <span class="ms-3 text-sm font-medium text-gray-900 "></span>
-</label>
-     </div>
-     
       <div
         onClick={() => {
           callback(data);
         }}
         className=" top-0 right-0 p-4 absolute"
       >
-        
-
-
         <svg
           class="cursor-pointer feather feather-edit"
           fill="none"
