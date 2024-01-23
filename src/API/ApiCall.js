@@ -9,6 +9,9 @@ export const Validate = async (data) => {
 export const LoginUserdata = async (data) => {
   return await Instance.post("/auth/sign-in", data);
 };
+export const getPharmaCategory = async () => {
+  return await Instance.get("/main-categories/pharma");
+};
 
 export const SignupUserdata = async(data) =>{
   return await Instance.post("/auth/doctor/sign-up", data);
