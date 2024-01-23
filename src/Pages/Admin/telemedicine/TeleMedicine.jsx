@@ -19,14 +19,11 @@ export default function TeleMedicine() {
   async function getCategory() {
     try {
       const response = await MainDoctorCategories();
-      setCategories(response.data);
+      setCategories(response?.data?.data?.mainCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
   }
-  console.log(categories);
-  const abc = { name: "Pulmonology", image: lungsimg };
-  const ab = { name: "Hepatology", image: heartimg };
 
   const [showModal, setShowModal] = useState(false);
 
@@ -38,22 +35,23 @@ export default function TeleMedicine() {
   }
 
   return (
-    <div className="container mt-20">
+    <div className="container mt-5">
       <div className="flex justify-between">
         <div>
           <h2 className="font-bold text-500" style={{ fontSize: "20px" }}>
             Categories
           </h2>
-          <p className="text-gray-400 text-xs">2 available categories</p>
+          <p className="text-gray-400 text-xs">
+            {categories.length} available categories
+          </p>
         </div>
         <ComunButton text={"Add new categories"} callback={addCategory} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-        <CatCard data={ab} callback={editCat} />
-        <CatCard data={abc} callback={editCat} />
-        <CatCard data={abc} callback={editCat} />
-        <CatCard data={abc} callback={editCat} />
-        <CatCard data={abc} callback={editCat} />
+        {categories[0] &&
+          categories.map((data) => {
+            return <CatCard data={data} callback={editCat} />;
+          })}
       </div>
     </div>
   );

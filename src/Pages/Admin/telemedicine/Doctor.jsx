@@ -4,15 +4,27 @@ import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 import DoctorRequstTable from "../../../components/Tables/telemedicin/DoctorRequstTable";
 import blockimg from "../../../assets/images/Vector.png";
 import { useNavigate } from "react-router-dom";
+import { DoctorRequests } from "../../../API/ApiCall";
 
 export default function Doctor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [requests, setRequests] = useState([]);
+  const [approved, setApproved] = useState([]);
+  const [cancelled, setCancelled] = useState([]);
+  const [Blocked, setBlocked] = useState([]);
   const [activeTab, setActiveTab] = useState(1);
 
   useEffect(() => {
+    getDoctorRequests();
     dispatch(telemedicine());
   }, []);
+
+  function getDoctorRequests() {
+    DoctorRequests().then((data) => {
+      setRequests(data?.data?.data?.doctors);
+    });
+  }
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -20,7 +32,13 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        return <DoctorRequstTable isRequsted={true} status={"requests"} />;
+        return (
+          <DoctorRequstTable
+            isRequsted={true}
+            status={"requests"}
+            data={requests}
+          />
+        );
 
       case 2:
         return (
@@ -30,9 +48,8 @@ export default function Doctor() {
             status={"approved"}
           />
         );
+
       case 3:
-        return <DoctorRequstTable btText={"Canselled"} status={"canselled"} />;
-      case 4:
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -46,12 +63,12 @@ export default function Doctor() {
     }
   };
   return (
-    <div className="container mt-20">
+    <div className="container mt-5">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-        <ul className="flex flex-wrap -mb-px ">
+        <ul className="flex ">
           <li className="me-2">
             <a
-              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
+              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer ${
                 activeTab === 1
                   ? "text-black border-b-2 border-b-black"
                   : "text-gray-500"
@@ -63,7 +80,7 @@ export default function Doctor() {
           </li>
           <li className="me-2">
             <a
-              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
+              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer ${
                 activeTab === 2
                   ? "text-black border-b-2 border-b-black"
                   : "text-gray-500"
@@ -73,9 +90,9 @@ export default function Doctor() {
               Approved
             </a>
           </li>
-          <li className="me-2">
+          {/* <li className="me-2">
             <a
-              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
+              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer ${
                 activeTab === 3
                   ? "text-black border-b-2 border-b-black"
                   : "text-gray-500"
@@ -84,15 +101,15 @@ export default function Doctor() {
             >
               Cancelled
             </a>
-          </li>
+          </li> */}
           <li className="me-2">
             <a
-              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
-                activeTab === 4
+              className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer ${
+                activeTab === 3
                   ? "text-black border-b-2 border-b-black"
                   : "text-gray-500"
               }`}
-              onClick={() => handleTabClick(4)}
+              onClick={() => handleTabClick(3)}
             >
               Blocked
             </a>
