@@ -38,7 +38,7 @@ const AddSubCategoryModal = ({ onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center">
       <div className="bg-black opacity-50 fixed inset-0"></div>
       <div className="bg-white p-8 max-w-md w-full rounded-lg shadow-lg z-50">
-        <h2 className="text-2xl font-bold mb-4">Modal Title</h2>
+        <h2 className="text-2xl font-bold mb-4">Add Subcategory</h2>
 
         <label htmlFor="dropdown" className="block text-sm font-medium text-gray-700">
           Select category:

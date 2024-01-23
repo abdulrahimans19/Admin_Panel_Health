@@ -16,7 +16,7 @@ export default function Dashboard() {
   }, []);
   return (
     <div>
-      <h1 className="text-2xl font-bold p-2 ">DashBoard</h1>
+      <h1 className="text-2xl font-bold p-2 mt-5">DashBoard</h1>
       <div class="grid grid-cols-1 md:grid-cols-1  lg:grid-cols-3 gap-4 mb-4">
         <div class="grid grid-cols-1 md:grid-cols-3   gap-4 mb-4 lg:col-span-2">
           <PriceDisplayCard />
