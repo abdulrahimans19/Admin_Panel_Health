@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { cleartopNav } from "../../Redux/Features/NavbarSlice";
 
 // Fetch orders data from API (replace with your actual implementation)
 const fetchOrders = async () => {
@@ -16,6 +18,13 @@ function PharmacyDashboard() {
   useEffect(() => {
     fetchOrders().then(setOrders);
   }, []);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(cleartopNav());
+  }, []);
+
 
   const handleSearchChange = (event) => {
     // Update search query and filter orders

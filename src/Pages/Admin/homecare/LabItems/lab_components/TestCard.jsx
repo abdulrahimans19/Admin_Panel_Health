@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { motion, useAnimationControls } from "framer-motion";
 
 function TestCard() {
-  const [showList, setShowList] = React.useState(false);
-  function onclickss() {
+  const [showList, setShowList] = useState(false);
+  const toggleMenu = () => {
     setShowList(!showList);
-  }
+  };
   return (
     <div>
       <div class="">
@@ -24,7 +23,7 @@ function TestCard() {
                 style={{ width: "30px", height: "30px", cursor: "pointer" }}
               >
                 <button
-                  onClick={() => onclickss()}
+                  onClick={toggleMenu}
                   id="dropdownButton"
                   data-dropdown-toggle="dropdown"
                   class="inline-block dark:focus:ring-gray-700 rounded-lg text-sm p-0.5"
@@ -40,14 +39,15 @@ function TestCard() {
                     <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
                   </svg>
                 </button>
-                {showList ? (
+                {showList && (
                   <div
                     id="dropdown"
-                    class="z-10 absolute right-16 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+                    class=" absolute right-16 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
                   >
                     <ul class="py-2" aria-labelledby="dropdownButton">
                       <li>
                         <a
+                        onClick={toggleMenu}
                           href="#"
                           class="block px-4 py-2 text-sm text-neutral-950 hover:bg-gray-100 dark:text-black dark:hover:text-black"
                         >
@@ -56,6 +56,7 @@ function TestCard() {
                       </li>
                       <li>
                         <a
+                        onClick={toggleMenu}
                           href="#"
                           class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:text-red-600"
                         >
@@ -64,6 +65,8 @@ function TestCard() {
                       </li>
                       <li>
                         <a
+                        onClick={toggleMenu}
+
                           href="#"
                           class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100  dark:text-black dark:hover:text-black"
                         >
@@ -72,7 +75,7 @@ function TestCard() {
                       </li>
                     </ul>
                   </div>
-                ) : null }
+                ) }
               </div>
             </div>
             <div class="justify-start items-start gap-2.5 inline-flex">
