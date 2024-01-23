@@ -68,7 +68,7 @@ function TestCard() {
                       cx="12"
                       cy="17"
                       r="0.5"
-                      transform="rotate(90 12 17)"
+                      transform="rotate(90 12 17)" 
                       stroke="#000000"
                       stroke-linecap="round"
                       stroke-linejoin="round"
