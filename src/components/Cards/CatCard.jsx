@@ -6,30 +6,27 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
 
   const cardHeight = isHomecareCategory ? 260 : 240;
   return (
-    <div className="max-w-sm  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
+    <div className="w-44  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
       {/* Image in the center */}
       <div className="flex  justify-center">
-
-      <img
-        className="object-cover object-center  max-h-40 "
-        src={data?.image}
-        alt="Your Image"
-      />
+        <img
+          className="object-cover object-center p-4  max-h-40 "
+          src={data?.image}
+          alt="Your Image"
+        />
       </div>
-   
 
       {/* Name below the image */}
       <div className="p-4">
-        <p className="text-lg  font-semibold text-gray-800">{data?.name}teert</p>
+        <p className="text-lg  font-semibold text-gray-800">
+          {data?.name}teert
+        </p>
       </div>
 
       {/* Pencil icon at the top right corner */}
-     
-     <div>
 
-        
-     </div>
-     {/* <div className="top-0 absolute p-2">
+      <div></div>
+      {/* <div className="top-0 absolute p-2">
 
      <label class="relative inline-flex items-center cursor-pointer">
   <input type="checkbox" value="" class="sr-only peer"/>
@@ -37,16 +34,13 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
   <span class="ms-3 text-sm font-medium text-gray-900 "></span>
 </label>
      </div> */}
-     
+
       <div
         onClick={() => {
           callback(data);
         }}
         className=" top-0 right-0 p-4 absolute"
       >
-        
-
-
         <svg
           class="cursor-pointer feather feather-edit"
           fill="none"
