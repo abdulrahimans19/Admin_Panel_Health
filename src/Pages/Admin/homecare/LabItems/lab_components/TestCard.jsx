@@ -12,8 +12,15 @@ function TestCard() {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: -100 },
   };
+  const [iconPosition, setIconPosition] = React.useState({ x: 0, y: 0 });
   const controls = useAnimationControls();
   const toggleMenu = () => {
+    // const rect = event.currentTarget.getBoundingClientRect();
+    // setIconPosition({
+    //   x: rect.left + window.scrollX,
+    //   y: rect.top + window.scrollY,
+    // });
+
     setOpenMenu(!openMenu);
     controls.start(openMenu ? "hidden" : "visible");
   };
@@ -31,7 +38,9 @@ function TestCard() {
                   Comprehensive full body check up with vitamin
                 </p>
               </div>
-              <div style={{ width: '30px', height: '30px' }}>
+              <div 
+              onClick={toggleMenu}
+              style={{ width: '30px', height: '30px', cursor: "pointer" }}>
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -80,6 +89,7 @@ function TestCard() {
                     initial="hidden"
                     animate="visible"
                     variants={list}
+                    
                     class="z-50 fixed my-4 right-7 top-6 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                     id="dropdown-user"
                   >
