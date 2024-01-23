@@ -17,16 +17,14 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
       {/* Image in the center */}
       <div className="flex items-center justify-center h-full">
         <img
-          className={`object-fill object-center w-full  ${
-            isHomecareCategory ? "object-center w-20 h-24" : "h-40"
-          }`}
+          className={"object-contain object-center"}
           src={data?.image}
           alt="Your Image"
         />
       </div>
 
       {/* Name below the image */}
-      <div className={`${isHomecareCategory ? "" : "p-4"}`}>
+      <div className={`"p-4"}`}>
         <p className="text-lg font-semibold text-gray-800">{data?.name}</p>
       </div>
 

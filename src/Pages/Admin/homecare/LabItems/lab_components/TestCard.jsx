@@ -2,29 +2,10 @@ import React, { useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 
 function TestCard() {
-  const [openMenu, setOpenMenu] = React.useState(false);
-  const list = {
-    visible: { opacity: 1, scale: 1 },
-    hidden: { opacity: 0, scale: 0 },
-  };
-
-  const item = {
-    visible: { opacity: 1, x: 0 },
-    hidden: { opacity: 0, x: -100 },
-  };
-  const [iconPosition, setIconPosition] = React.useState({ x: 0, y: 0 });
-  const controls = useAnimationControls();
-  const toggleMenu = () => {
-    // const rect = event.currentTarget.getBoundingClientRect();
-    // setIconPosition({
-    //   x: rect.left + window.scrollX,
-    //   y: rect.top + window.scrollY,
-    // });
-
-    setOpenMenu(!openMenu);
-    controls.start(openMenu ? "hidden" : "visible");
-  };
-
+  const [showList, setShowList] = React.useState(false);
+  function onclickss() {
+    setShowList(!showList);
+  }
   return (
     <div>
       <div class="">
@@ -38,122 +19,60 @@ function TestCard() {
                   Comprehensive full body check up with vitamin
                 </p>
               </div>
-              <div 
-              onClick={toggleMenu}
-              style={{ width: '30px', height: '30px', cursor: "pointer" }}>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <div
+                // onClick={(event) => toggleMenu(event)}
+                style={{ width: "30px", height: "30px", cursor: "pointer" }}
+              >
+                <button
+                  onClick={() => onclickss()}
+                  id="dropdownButton"
+                  data-dropdown-toggle="dropdown"
+                  class="inline-block dark:focus:ring-gray-700 rounded-lg text-sm p-0.5"
+                  type="button"
                 >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <rect width="10" height="10" fill="white"></rect>{" "}
-                    <circle
-                      cx="12"
-                      cy="7"
-                      r="0.5"
-                      transform="rotate(90 12 7)"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="0.5"
-                      transform="rotate(90 12 12)"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                    <circle
-                      cx="12"
-                      cy="17"
-                      r="0.5"
-                      transform="rotate(90 12 17)" 
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                  </g>
-                </svg>
-                {openMenu && (
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={list}
-                    
-                    class="z-50 fixed my-4 right-7 top-6 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-                    id="dropdown-user"
+                  <svg
+                    class="w-4 h-5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 16 3"
                   >
-                    <div class="px-4 py-3" role="none">
-                      <p
-                        class="text-sm text-gray-900 dark:text-white"
-                        role="none"
-                      >
-                        Neil Sims
-                      </p>
-                      <p
-                        class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                        role="none"
-                      >
-                        neil.sims@flowbite.com
-                      </p>
-                    </div>
-                    <motion.ul
-                      initial="hidden"
-                      animate="visible"
-                      variants={list}
-                      class="py-1"
-                      role="none"
-                    >
-                      <motion.li variants={item}>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Dashboard
-                        </a>
-                      </motion.li>
-                      <motion.li variants={item}>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Settings
-                        </a>
-                      </motion.li>
+                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                  </svg>
+                </button>
+                {showList ? (
+                  <div
+                    id="dropdown"
+                    class="z-10 absolute right-16 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+                  >
+                    <ul class="py-2" aria-labelledby="dropdownButton">
                       <li>
                         <a
                           href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
+                          class="block px-4 py-2 text-sm text-neutral-950 hover:bg-gray-100 dark:text-black dark:hover:text-black"
                         >
-                          Earnings
+                          Edit
                         </a>
                       </li>
                       <li>
                         <a
-                          onClick={() => {}}
                           href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
+                          class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:text-red-600"
                         >
-                          Sign out
+                          Disabled
                         </a>
                       </li>
-                    </motion.ul>
-                  </motion.div>
-                )}
+                      <li>
+                        <a
+                          href="#"
+                          class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100  dark:text-black dark:hover:text-black"
+                        >
+                          Add to Recommended
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                ) : null }
               </div>
             </div>
             <div class="justify-start items-start gap-2.5 inline-flex">
