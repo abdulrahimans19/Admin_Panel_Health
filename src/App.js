@@ -41,9 +41,12 @@ function App() {
           {/* <Route element={<Homecare />} path="/homecare" /> */}
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
-          <Route element={<HomecareLabItems/>} path="homecare/lab-items" />
-          <Route element={<HomecareLabItems/>} path="homecare/appoinment-details" />
-          <Route element={<Homecare />} path="/homecare/categories"/>
+          <Route element={<HomecareLabItems />} path="homecare/lab-items" />
+          <Route
+            element={<HomecareLabItems />}
+            path="homecare/appoinment-details"
+          />
+          <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 
           <Route element={<PharmaCategory />} path="/pharmacy/category" />
@@ -51,15 +54,10 @@ function App() {
           <Route element={<PharmaOrder />} path="/pharmacy/order" />
           <Route element={<PharmaReview />} path="/pharmacy/review" />
 
-
-
           <Route element={<FoodCategory />} path="/food/categories" />
           <Route element={<FoodProduct />} path="/food/product" />
           <Route element={<FoodOrder />} path="/food/order" />
           <Route element={<FoodReview />} path="/food/review" />
-
-
-
 
           <Route element={<Homecare />} path="/homecare" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
