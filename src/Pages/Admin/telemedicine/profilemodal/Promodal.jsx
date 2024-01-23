@@ -1,15 +1,25 @@
+import { useState } from "react";
 import proImg from "../../../../assets/images/boy.png";
 import pdffileImg from "../../../../assets/images/bxs_file-pdf.png";
 import download from "../../../../assets/images/downloadimg.png";
+import { AprovetDoctor } from "../../../../API/ApiCall";
 
 export default function ({
   status,
   showModal,
   toggleModal,
   callback,
+  data,
+  user,
   btImg,
   btText,
 }) {
+  const [showMoreText, setShowMoreText] = useState(false);
+  // let lines = user?.description.split("\n");
+
+  // const displayText = showMoreText
+  //   ? data?.description
+  //   : lines?.slice(0, 2).join("\n");
   return (
     <div>
       {showModal ? (
@@ -19,7 +29,10 @@ export default function ({
               {/*content*/}
 
               <div className=" rounded-[15px] shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                <button className="absolute top-4 right-4 h-5 w-5 rounded-full bg-gray-200 flex items-center justify-center">
+                <button
+                  className="absolute top-4 right-4 h-5 w-5 rounded-full bg-gray-200 flex items-center justify-center"
+                  onClick={() => toggleModal()}
+                >
                   <span className="text-black text-xs">X</span>
                 </button>
 
@@ -47,30 +60,30 @@ export default function ({
                       <table>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">Name :</td>
-                          <td className="text-xs "> joel</td>
+                          <td className="text-xs "> {user?.name}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
                             Gender :
                           </td>
-                          <td className="text-xs "> Maile</td>
+                          <td className="text-xs "> {user?.gender}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">Mail :</td>
-                          <td className="text-xs "> joel@gmail.com</td>
+                          <td className="text-xs "> {user?.mail}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
                             Category :
                           </td>
-                          <td className="text-xs "> Hepatology</td>
+                          <td className="text-xs "> {user?.category_id}</td>
                         </tr>
 
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
                             Experience :
                           </td>
-                          <td className="text-xs "> 10 years</td>
+                          <td className="text-xs ">{user?.experience}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
@@ -79,10 +92,12 @@ export default function ({
                         </tr>
                       </table>
                       <p className="text-xs mt-1 mb-3">
-                        Lorem ipsum dolor sit amet consectetur. Odio sit quis
-                        vulputate sagittis sit eu mattis vitae rhoncus...
-                        <a href="#" className="underline text-blue-500">
-                          More
+                        {user.description}...
+                        <a
+                          onClick={() => setShowMoreText(!showMoreText)}
+                          className="underline text-blue-500 cursor-pointer"
+                        >
+                          {showMoreText ? " Hide" : "More"}
                         </a>
                       </p>
                       <h6 className="text-xs">Certificate</h6>
@@ -118,7 +133,12 @@ export default function ({
                             }}
                             className="text-xs p-1 pl-5 pr-5 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
                             type="button"
-                            onClick={() => {
+                            onClick={async () => {
+                              console.log(user?._id + "     ###############");
+                              const aprove = await AprovetDoctor(user?._id);
+                              console.log("@@@@@@@@@@");
+                              console.log(aprove);
+                              console.log("@@@@@@@@@@@@@ aprove");
                               toggleModal();
                             }}
                           >
