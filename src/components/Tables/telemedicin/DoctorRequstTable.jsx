@@ -13,7 +13,7 @@ export default function DoctorRequstTable({
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  console.log(status + "@@@@@@@ table");
+
   return (
     <div className="">
       <Promodal

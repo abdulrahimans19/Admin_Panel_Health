@@ -46,12 +46,11 @@ export default function Doctor() {
     }
   };
   return (
-    <div className="container">
+    <div className="container mt-20">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-        <ul className="flex flex-wrap -mb-px">
+        <ul className="flex flex-wrap -mb-px ">
           <li className="me-2">
             <a
-              href=""
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
                 activeTab === 1
                   ? "text-black border-b-2 border-b-black"
@@ -64,7 +63,6 @@ export default function Doctor() {
           </li>
           <li className="me-2">
             <a
-              href="#"
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
                 activeTab === 2
                   ? "text-black border-b-2 border-b-black"
@@ -77,7 +75,6 @@ export default function Doctor() {
           </li>
           <li className="me-2">
             <a
-              href="#"
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
                 activeTab === 3
                   ? "text-black border-b-2 border-b-black"
@@ -90,7 +87,6 @@ export default function Doctor() {
           </li>
           <li className="me-2">
             <a
-              href="#"
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg ${
                 activeTab === 4
                   ? "text-black border-b-2 border-b-black"

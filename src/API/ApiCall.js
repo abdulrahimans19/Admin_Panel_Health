@@ -10,4 +10,6 @@ export const LoginUserdata = async (data) => {
   return await Instance.post("/auth/sign-in", data);
 };
 
-
+export const MainDoctorCategories = async (data) => {
+  return await Instance.get("/main-categories/doctor", data);
+};
