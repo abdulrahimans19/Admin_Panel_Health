@@ -9,6 +9,7 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
+import { getPharmaCategory } from "../../../API/ApiCall";
 
 
 export default function PharmaCategory() {
@@ -34,6 +35,10 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
 
   useEffect(() => {
     dispatch(pharmacyNav());
+    getPharmaCategory().then((data)=>
+    {
+      console.log(data);
+    })
   }, []);
 
   return (
