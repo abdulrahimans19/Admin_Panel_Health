@@ -1,63 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
+import AddLabItemsButton from "../../AddLabItemsButton";
+import LabModal from "./LabModal";
 
 function TestCard() {
+  const [showList, setShowList] = useState(false);
+  const [showModal, setShowModal] = React.useState(false);
+  // const [showModal1, setShowModal1] = React.useState(false);
+
+
+  const toggleMenu =() => {
+    console.log("GFHBN");
+    setShowList(!showList);
+  };
+
+  const toggleModal=()=>{
+    setShowModal(!showModal)
+  }
+
   return (
     <div>
-      <div class="">
+        <LabModal showModal={showModal} callback={toggleModal}/>
+      <div class="relative">
         {/* <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->  */}
 
         <div class="px-5 py-2.5 rounded-lg border border-zinc-300 flex-col">
           <div class="flex-col justify-start items-start flex">
             <div className="flex gap-2">
               <div className="">
-                <p class=" text-lg font-semibold">
+                <p class="text-lg font-semibold">
                   Comprehensive full body check up with vitamin
                 </p>
               </div>
-              <div style={{ width: '30px', height: '30px' }}>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <div
+                // onClick={(event) => toggleMenu(event)}
+                style={{ width: "30px", height: "30px", cursor: "pointer" }}
+              >
+                <button
+                  onClick={toggleMenu}
+                  id="dropdownButton"
+                  data-dropdown-toggle="dropdown"
+                  class="inline-block dark:focus:ring-gray-700 rounded-lg text-sm p-0.5"
+                  type="button"
                 >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <rect width="10" height="10" fill="white"></rect>{" "}
-                    <circle
-                      cx="12"
-                      cy="7"
-                      r="0.5"
-                      transform="rotate(90 12 7)"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="0.5"
-                      transform="rotate(90 12 12)"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                    <circle
-                      cx="12"
-                      cy="17"
-                      r="0.5"
-                      transform="rotate(90 12 17)"
-                      stroke="#000000"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></circle>{" "}
-                  </g>
-                </svg>
+                  <svg
+                    class="w-4 h-5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 16 3"
+                  >
+                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                  </svg>
+                </button>
+                {showList && (
+                  <div
+                    id="dropdown"
+                    class=" absolute right-16 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+                  >
+                    <ul class="py-2" aria-labelledby="dropdownButton">
+                      <li>
+                        <a
+                        onClick={toggleModal}
+                          href="#"
+                          class="block px-4 py-2 text-sm text-neutral-950 hover:bg-gray-100 dark:text-black dark:hover:text-black"
+                        >
+                          Edit
+                        </a>
+                        
+                      </li>
+                      <li>
+                        <a
+                        onClick={toggleMenu}
+                          href="#"
+                          class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:text-red-600"
+                        >
+                          Disabled
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                        onClick={toggleMenu}
+
+                          href="#"
+                          class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100  dark:text-black dark:hover:text-black"
+                        >
+                          Add to Recommended
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                ) }
               </div>
             </div>
             <div class="justify-start items-start gap-2.5 inline-flex">
