@@ -11,15 +11,13 @@ import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
 import { getPharmaCategory } from "../../../API/ApiCall";
 
-
 export default function PharmaCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
-const [AddCategoryModal, setAddCategoryModal] = useState(false)
-const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
+  const [AddCategoryModal, setAddCategoryModal] = useState(false);
+  const [addSubCategoryModal, setAddSubCategoryModal] = useState(false);
   const dispatch = useDispatch();
 
-
-const [categoryData, setCategoryData] = useState([])
+  const [categoryData, setCategoryData] = useState([]);
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
   const editCat = (data) => {
@@ -30,18 +28,16 @@ const [categoryData, setCategoryData] = useState([])
     console.log("add category modal");
   };
 
- 
-
   useEffect(() => {
     dispatch(pharmacyNav());
-    getPharmaCategory().then(({data})=>
-    {console.log(
-      data.data.mainCategories
-      );
-      setCategoryData(data.data.mainCategories)
+    getPharmaCategory().then((data) => {
+      console.log(data);
+    });
 
-    
-    })
+    getPharmaCategory().then(({ data }) => {
+      console.log(data.data.mainCategories);
+      setCategoryData(data.data.mainCategories);
+    });
   }, []);
 
   return (
@@ -68,47 +64,46 @@ const [categoryData, setCategoryData] = useState([])
           SubCategory
         </p> */}
       </div>
-
       <div className="flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">{categoryData.length} categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">
+            {categoryData.length} categories
+          </p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
         <div className="flex gap-3">
-
-        <div onClick={()=>
-        {
-          setAddCategoryModal(true)
-        }}>
-          <AddItemButton text={"Add new categories"} img={buttonImage} />
-          
+          <div
+            onClick={() => {
+              setAddCategoryModal(true);
+            }}
+          >
+            <AddItemButton text={"Add new categories"} img={buttonImage} />
+          </div>
+          <div
+            onClick={() => {
+              setAddSubCategoryModal(true);
+            }}
+          >
+            <AddItemButton text={"Add sub Categories"} img={buttonImage} />
+          </div>
         </div>
-        <div onClick={()=>
-        {
-          setAddSubCategoryModal(true)
-        }}>
-          <AddItemButton text={"Add sub Categories"} img={buttonImage} />
-          
-        </div>
-        </div>
-       
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          {categoryData[0]&&categoryData.map((data)=>
-          {
-            return <CatCard data={data} callback={editCat} />
-
-          })}
-       
+          {categoryData[0] &&
+            categoryData.map((data) => {
+              return <CatCard data={data} callback={editCat} />;
+            })}
         </div>
-      </div>\
-      {AddCategoryModal&& <AddCategory setShowModal={setAddCategoryModal} />}
-     {addSubCategoryModal&& <AddSubCategoryModal onClose={setAddSubCategoryModal}/>}
+      </div>
+      \{AddCategoryModal && <AddCategory setShowModal={setAddCategoryModal} />}
+      {addSubCategoryModal && (
+        <AddSubCategoryModal onClose={setAddSubCategoryModal} />
+      )}
     </div>
   );
 }
