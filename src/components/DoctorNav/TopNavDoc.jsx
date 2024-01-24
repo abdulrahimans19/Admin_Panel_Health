@@ -72,10 +72,7 @@ function DocNavBar() {
               </button>
 
               <div className="flex ms-2 sm:ms-16  md:me-24">
-                {/* <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> */}
-                {/* <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  SOPHWE
-                </span> */}
+            
                 <div className="max-w-44 ">
                   <img className="self-center w-28 " src={logo} alt="" />
                 </div>

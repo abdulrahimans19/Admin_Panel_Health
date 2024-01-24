@@ -30,6 +30,10 @@ import FoodCategory from "./Pages/Admin/Food/Categories";
 import FoodProduct from "./Pages/Admin/Food/Products";
 import FoodOrder from "./Pages/Admin/Food/Orders";
 import FoodReview from "./Pages/Admin/Food/Review";
+import OverView from "./Pages/Doctor/Dashboard/OverView";
+import DocTransaction from "./Pages/Doctor/transaction/Transaction";
+import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
+import Appointments from "./Pages/Doctor/Appointments/Appointments";
 
 function App() {
   return (
@@ -53,15 +57,10 @@ function App() {
           <Route element={<PharmaOrder />} path="/pharmacy/order" />
           <Route element={<PharmaReview />} path="/pharmacy/review" />
 
-
-
           <Route element={<FoodCategory />} path="/food/categories" />
           <Route element={<FoodProduct />} path="/food/product" />
           <Route element={<FoodOrder />} path="/food/order" />
           <Route element={<FoodReview />} path="/food/review" />
-
-
-
 
           <Route element={<Homecare />} path="/homecare" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
@@ -73,9 +72,10 @@ function App() {
       <Route element={<LoggedInDoctor />}>
 
       <Route element={<DoctorHome />} path="">
-
-
-      <Route element={<DoctorHome />} path="/doctor/home" />
+      <Route element={<OverView />} path="/doctor/overview" />
+      <Route element={<Appointments />} path="/doctor/appointments" />
+      <Route element={<AppointmentHistory />} path="/doctor/history" />
+      <Route element={<DocTransaction />} path="/doctor/transaction" />
 
       </Route>
 
