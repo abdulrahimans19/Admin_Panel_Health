@@ -19,7 +19,7 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
       {/* Name below the image */}
       <div className="p-4">
         <p className="text-lg  font-semibold text-gray-800">
-          {data?.name}teert
+          {data?.title} teert
         </p>
       </div>
 
