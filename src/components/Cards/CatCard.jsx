@@ -5,6 +5,7 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
   const [showModal, setShowModal] = React.useState(false);
 
   const cardHeight = isHomecareCategory ? 260 : 240;
+  console.log("data image is",data.image);
   return (
     <div className="w-44  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
       {/* Image in the center */}
@@ -19,7 +20,7 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
       {/* Name below the image */}
       <div className="p-4">
         <p className="text-lg  font-semibold text-gray-800">
-          {data?.title} teert
+          {data?.title}
         </p>
       </div>
 

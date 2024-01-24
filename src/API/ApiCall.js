@@ -23,3 +23,15 @@ export const AprovetDoctor = async (id) => {
   console.log(id);
   return await Instance.get(`/doctor/admin/accept-doctor?doctor_id=${id}`);
 };
+export const GetHomecareCategoriesApi = async () => {
+  return await Instance.get(`/main-categories/home-care`);
+};
+export const getAllLabTestsApi = async () => {
+  return await Instance.get(`/tests`);
+};
+export const getRecommendedTestApi = async () => {
+  return await Instance.get(`tests/all-tests?recommended=${true}`);
+};
+export const getDisbledTestApi = async () => {
+  return await Instance.get(`tests/all-tests?disabled=${true}`);
+};
