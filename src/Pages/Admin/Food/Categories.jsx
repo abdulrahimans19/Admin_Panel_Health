@@ -9,6 +9,7 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
+import { getFoodCategory } from "../../../API/ApiCall";
 
 
 export default function FoodCategory() {
@@ -34,6 +35,9 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
 
   useEffect(() => {
     dispatch(foodNavdata());
+    getFoodCategory().then(({data})=>{
+      setCategoryMenu(data.data.mainCategories)
+    })
   }, []);
 
   return (
@@ -91,11 +95,10 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          <CatCard data={ab} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
+        {categoryMenu[0] &&
+            categoryMenu.map((data) => {
+              return <CatCard data={data} callback={editCat} />;
+            })}
         </div>
       </div>\
       {AddCategoryModal&& <AddCategory setShowModal={setAddCategoryModal} />}

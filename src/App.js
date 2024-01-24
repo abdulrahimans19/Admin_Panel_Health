@@ -53,15 +53,10 @@ function App() {
           <Route element={<PharmaOrder />} path="/pharmacy/order" />
           <Route element={<PharmaReview />} path="/pharmacy/review" />
 
-
-
           <Route element={<FoodCategory />} path="/food/categories" />
           <Route element={<FoodProduct />} path="/food/product" />
           <Route element={<FoodOrder />} path="/food/order" />
           <Route element={<FoodReview />} path="/food/review" />
-
-
-
 
           <Route element={<Homecare />} path="/homecare" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
