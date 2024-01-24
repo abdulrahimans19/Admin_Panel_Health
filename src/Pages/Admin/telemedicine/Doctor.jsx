@@ -4,7 +4,11 @@ import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 import DoctorRequstTable from "../../../components/Tables/telemedicin/DoctorRequstTable";
 import blockimg from "../../../assets/images/Vector.png";
 import { useNavigate } from "react-router-dom";
-import { DoctorRequests } from "../../../API/ApiCall";
+import {
+  CanclationDoctor,
+  DoctorRequests,
+  GetAllDoctors,
+} from "../../../API/ApiCall";
 
 export default function Doctor() {
   const navigate = useNavigate();
@@ -17,12 +21,25 @@ export default function Doctor() {
 
   useEffect(() => {
     getDoctorRequests();
+    getAllDoctors();
+    const storedActiveTab = localStorage.getItem("STORAGE_KEY");
+
+    if (storedActiveTab) {
+      console.log(storedActiveTab, "  %%%%%%%%%%%%%%%");
+      setActiveTab(Number(storedActiveTab));
+    }
     dispatch(telemedicine());
   }, []);
-
+  console.log(activeTab, " : active tab in ");
   function getDoctorRequests() {
     DoctorRequests().then((data) => {
       setRequests(data?.data?.data?.doctors);
+    });
+  }
+
+  function getAllDoctors() {
+    GetAllDoctors().then((data) => {
+      setApproved(data?.data?.data?.doctors);
     });
   }
 
@@ -32,20 +49,26 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
+        console.log("hiiiiiiiiii  1");
         return (
           <DoctorRequstTable
             isRequsted={true}
             status={"requests"}
             data={requests}
+            availabe={"Requested"}
+            //callBack={CanclationDoctor}
           />
         );
 
       case 2:
+        localStorage.setItem("STORAGE_KEY", activeTab.toString());
         return (
           <DoctorRequstTable
             btImg={blockimg}
             btText={"Block"}
             status={"approved"}
+            data={approved}
+            availabe={"available"}
           />
         );
 
@@ -55,11 +78,10 @@ export default function Doctor() {
             btImg={blockimg}
             btText={"UnBlock"}
             status={"unBlock"}
+            availabe={"blocked"}
           />
         );
-
-      default:
-        return <DoctorRequstTable isRequsted={true} />; // Return null for cases not handled
+      // Return null for cases not handled
     }
   };
   return (

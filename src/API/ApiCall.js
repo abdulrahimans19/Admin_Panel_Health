@@ -126,3 +126,11 @@ export const monthlyEarningApi = async (data) => {
   console.log(`/order/monthly-earnings?type=/${data}`);
   return await Instance.get(`/order/monthly-earnings?type=${data}`);
 };
+export const GetAllDoctors = async (page = 1) => {
+  console.log("page number is == ", page);
+  return await Instance.get(`/doctor/admin/all?page=${page}`);
+};
+
+export const CanclationDoctor = async (id) => {
+  return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
+};
