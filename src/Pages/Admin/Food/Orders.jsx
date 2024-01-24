@@ -4,17 +4,21 @@ import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
 import { getFoodOrders } from "../../../API/ApiCall";
 
 export default function FoodOrder() {
-  const [orders, setOrders] = useState(true);
+  const [orders, setOrders] = useState([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(foodNavdata());
-    getFoodOrders().then(({ data }) => {
-      console.log(data.data.orders);
-      setOrders(data.data.orders, "food");
-    });
-  }, []);
+    getFoodOrders()
+      .then(({ data }) => {
+        console.log(data.data.orders);
+        setOrders(data.data.orders || []); // Ensure orders is initialized as an array
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error);
+      });
+  }, [dispatch]);
   return (
     <div>
       <div>
@@ -68,77 +72,47 @@ export default function FoodOrder() {
           </form>
         </div>
       </div>
-      <div className="p-5">
-        <div class="relative overflow-x-auto">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-400 uppercase bg-gray-50">
+
+         {/* Orders Table */}
+         <div className="p-5">
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs text-gray-400 uppercase bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Product name
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Color
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Category
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   Price
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  font-medium text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  font-medium text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
+              {orders.map((order) => (
+                <tr key={order._id} className="bg-white border-b">
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    {order.product_id.name}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {/* Add the relevant data */}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {/* Add the relevant data */}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.total_amount}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

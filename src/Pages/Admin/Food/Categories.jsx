@@ -11,11 +11,10 @@ import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
 import { getFoodCategory } from "../../../API/ApiCall";
 
-
 export default function FoodCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
-const [AddCategoryModal, setAddCategoryModal] = useState(false)
-const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
+  const [AddCategoryModal, setAddCategoryModal] = useState(false);
+  const [addSubCategoryModal, setAddSubCategoryModal] = useState(false);
   const dispatch = useDispatch();
 
   const changeCategory = () => {
@@ -31,13 +30,11 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
     console.log("add category modal");
   };
 
- 
-
   useEffect(() => {
     dispatch(foodNavdata());
-    getFoodCategory().then(({data})=>{
-      setCategoryMenu(data.data.mainCategories)
-    })
+    getFoodCategory().then(({ data }) => {
+      setCategoryMenu(data.data.mainCategories);
+    });
   }, []);
 
   return (
@@ -64,7 +61,6 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
           SubCategory
         </p> */}
       </div>
-
       <div className="flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
@@ -75,34 +71,34 @@ const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
         <div className="flex gap-3">
-
-        <div onClick={()=>
-        {
-          setAddCategoryModal(true)
-        }}>
-          <AddItemButton text={"Add new categories"} img={buttonImage} />
-          
+          <div
+            onClick={() => {
+              setAddCategoryModal(true);
+            }}
+          >
+            <AddItemButton text={"Add new categories"} img={buttonImage} />
+          </div>
+          <div
+            onClick={() => {
+              setAddSubCategoryModal(true);
+            }}
+          >
+            <AddItemButton text={"Add sub Categories"} img={buttonImage} />
+          </div>
         </div>
-        <div onClick={()=>
-        {
-          setAddSubCategoryModal(true)
-        }}>
-          <AddItemButton text={"Add sub Categories"} img={buttonImage} />
-          
-        </div>
-        </div>
-       
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-        {categoryMenu[0] &&
+          {categoryMenu[0] &&
             categoryMenu.map((data) => {
               return <CatCard data={data} callback={editCat} />;
             })}
         </div>
-      </div>\
-      {AddCategoryModal&& <AddCategory setShowModal={setAddCategoryModal} />}
-     {addSubCategoryModal&& <AddSubCategoryModal onClose={setAddSubCategoryModal}/>}
+      </div>
+      \{AddCategoryModal && <AddCategory setShowModal={setAddCategoryModal} />}
+      {addSubCategoryModal && (
+        <AddSubCategoryModal onClose={setAddSubCategoryModal} />
+      )}
     </div>
   );
 }
