@@ -13,6 +13,15 @@ export const LoginUserdata = async (data) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
+
+export const SignupUserdata = async(data) =>{
+  return await Instance.post("/auth/doctor/sign-up", data);
+};
+
+export const DoctorForgotdata = async(data) =>{
+  return await Instance.post("/auth/doctor/forgot-password", data);
+} ;
+
 export const MainDoctorCategories = async (data) => {
   return await Instance.get("/main-categories/doctor");
 };
