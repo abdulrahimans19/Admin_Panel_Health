@@ -69,7 +69,11 @@ export default function ({
                   >
                     <h1 className="mb-3">Profile</h1>
                     <div className="rounded-lg">
-                      <img src={proImg} alt="" className="w-20 h-30 mb-2 p-2" />
+                      <img
+                        src={user?.image}
+                        alt=""
+                        className="w-20 h-30 mb-2 p-2"
+                      />
                     </div>
                   </div>
                   {/* rightDiv */}
