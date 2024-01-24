@@ -1,6 +1,6 @@
 import React from 'react'
 
-function PriceDisplayCard3() {
+function PriceDisplayCard3({data}) {
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
    <svg  height="64px" width="30px" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">

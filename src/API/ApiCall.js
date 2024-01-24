@@ -14,13 +14,13 @@ export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
 
-export const SignupUserdata = async(data) =>{
+export const SignupUserdata = async (data) => {
   return await Instance.post("/auth/doctor/sign-up", data);
 };
 
-export const DoctorForgotdata = async(data) =>{
+export const DoctorForgotdata = async (data) => {
   return await Instance.post("/auth/doctor/forgot-password", data);
-} ;
+};
 
 export const MainDoctorCategories = async (data) => {
   return await Instance.get("/main-categories/doctor");
@@ -57,13 +57,20 @@ export const uploadToAws = async (presignedUrl, uploadImage) => {
   }
 };
 
-export const addCategory=async (data)=>
-{
-
-  return await Instance.post(`/main-categories/pharma/create`,data);
-}
-export const UpadateCate =async (data)=>
-{
-  return await Instance.put(`/main-categories/pharma/update`,data);
-
-}
+export const addCategory = async (data) => {
+  return await Instance.post(`/main-categories/pharma/create`, data);
+};
+export const UpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/pharma/update`, data);
+};
+export const createSubCategory = async (data) => {
+  return await Instance.post(`/sub-categories/create`, data);
+};
+export const getSubCatData = async (data) => {
+  return await Instance.get(`sub-categories/${data}`);
+};
+export const monthlyEarningApi = async (data) => {
+  console.log(data);
+  console.log(`/order/monthly-earnings?type=/${data}`);
+  return await Instance.get(`/order/monthly-earnings?type=${data}`);
+};

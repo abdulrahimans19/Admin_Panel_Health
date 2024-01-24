@@ -74,28 +74,7 @@ const MyChart = () => {
           type="line"
           height={350}
         />
-        <div className="flex gap-3 p-3">
-          <p
-            onClick={() => {
-              lineChartDataChange();
-            }}
-            className={`${
-              foodChart && "font-bold underline"
-            }  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
-          >
-            food
-          </p>
-          <p
-            onClick={() => {
-              lineChartDataChange();
-            }}
-            className={`${
-              !foodChart && "font-bold underline"
-            }   cursor-pointer text-xl underline-offset-8 decoration-4`}
-          >
-            pharmacy
-          </p>
-        </div>
+       
       </div>
     </div>
   );

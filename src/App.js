@@ -71,7 +71,17 @@ function App() {
       </Route>
 
       <Route element={<LoggedInDoctor />}>
-        <Route element={<DoctorHome />} path="/doctor/home" />
+
+      <Route element={<DoctorHome />} path="">
+
+
+      <Route element={<DoctorHome />} path="/doctor/home" />
+
+      </Route>
+
+
+
+
       </Route>
 
       <Route element={<LoggedInUser />}>
