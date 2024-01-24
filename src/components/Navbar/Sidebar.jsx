@@ -153,19 +153,19 @@ function SideBar() {
           <li>
             <a
               onClick={() => {
-                setCurrentRoute("/homecare");
-                navigate("/homecare");
+                setCurrentRoute("/homecare/categories");
+                navigate("/homecare/categories");
               }}
               href="#"
               className={`flex items-center p-2 pl-12 rounded-lg group ${
-                currentRoute === "/homecare"
+                currentRoute === "/homecare/categories"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  currentRoute === "/homecare"
+                  currentRoute === "/homecare/categories"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
