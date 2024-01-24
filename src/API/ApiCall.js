@@ -23,3 +23,12 @@ export const AprovetDoctor = async (id) => {
   console.log(id);
   return await Instance.get(`/doctor/admin/accept-doctor?doctor_id=${id}`);
 };
+
+export const GetAllDoctors = async (page = 1) => {
+  console.log("page number is == ", page);
+  return await Instance.get(`/doctor/admin/all?page=${page}`);
+};
+
+export const CanclationDoctor = async (id) => {
+  return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
+};

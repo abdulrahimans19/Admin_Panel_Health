@@ -1,12 +1,21 @@
 import React from "react";
 import AddImage from "../../assets/images/addImage.png";
+import AddCategoryModal from "../Modal/AddCategoryModal";
 
 export default function CatCard({ data, callback, isHomecareCategory }) {
   const [showModal, setShowModal] = React.useState(false);
+  function isShowModal() {
+    setShowModal(!showModal);
+  }
 
   const cardHeight = isHomecareCategory ? 260 : 240;
   return (
     <div className="w-44  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
+      <AddCategoryModal
+        showModal={showModal}
+        isShowModal={isShowModal}
+        callback={callback}
+      />
       {/* Image in the center */}
       <div className="flex  justify-center">
         <img
@@ -37,7 +46,8 @@ export default function CatCard({ data, callback, isHomecareCategory }) {
 
       <div
         onClick={() => {
-          callback(data);
+          isShowModal();
+          // callback(data);
         }}
         className=" top-0 right-0 p-4 absolute"
       >
