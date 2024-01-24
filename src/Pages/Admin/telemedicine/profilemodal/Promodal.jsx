@@ -15,11 +15,34 @@ export default function ({
   btText,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
-  // let lines = user?.description.split("\n");
 
-  // const displayText = showMoreText
-  //   ? data?.description
-  //   : lines?.slice(0, 2).join("\n");
+  const downloadImage = (imageUrl, fileName) => {
+    // Create a link element
+    const link = document.createElement("a");
+
+    // Set the href attribute to the image URL
+    link.href = imageUrl;
+
+    // Set the download attribute to specify the file name
+    link.download = fileName;
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click event on the link to initiate the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
+
+  let hrtext = "i am so happy now you so happy the if you set";
+
+  // Find the position of "i"
+
+  // Extract text until the position of "i"
+  const extractedText = user?.description.substring(0, 50);
+
   return (
     <div>
       {showModal ? (
@@ -70,7 +93,7 @@ export default function ({
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">Mail :</td>
-                          <td className="text-xs "> {user?.mail}</td>
+                          <td className="text-xs "> {user?.email}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
@@ -92,7 +115,7 @@ export default function ({
                         </tr>
                       </table>
                       <p className="text-xs mt-1 mb-3">
-                        {user.description}...
+                        {setShowMoreText ? user.description : extractedText}...
                         <a
                           onClick={() => setShowMoreText(!showMoreText)}
                           className="underline text-blue-500 cursor-pointer"
@@ -103,11 +126,21 @@ export default function ({
                       <h6 className="text-xs">Certificate</h6>
                       <div className="flex justify-between border border-gray-300 w-200 rounded-lg p-1 pr-4 pl-4 mt-2">
                         <div className="flex items-center">
-                          <img src={pdffileImg} alt="" className="w-6 h-6" />
-                          <p className="text-xs">image.jpg</p>
+                          <img
+                            src={user.certificate}
+                            alt=""
+                            className="w-6 h-6"
+                          />
+                          <p className="text-xs">certificate</p>
                         </div>
                         <div className="flex items-center">
-                          <img src={download} alt="" className="w-3 h-4" />
+                          <button
+                            onClick={() =>
+                              downloadImage(user.certificate, "certificate.png")
+                            }
+                          >
+                            <img src={download} alt="" className="w-3 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>

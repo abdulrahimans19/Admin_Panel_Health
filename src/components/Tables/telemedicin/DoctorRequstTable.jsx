@@ -29,7 +29,7 @@ export default function DoctorRequstTable({
         btText={btText}
       />
       <h1 className="font-bold mt-3 text-lg">Doctor</h1>
-      <p className="text-gray-500 text-xs">2 doctors Requested</p>
+      <p className="text-gray-500 text-xs">{data?.length} doctors Requested</p>
 
       <table class="table-auto w-full mt-5 rounded ">
         {/* //tracking-wider */}
