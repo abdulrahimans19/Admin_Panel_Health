@@ -16,11 +16,11 @@ const DateInput = ({ label, selectedDate, onChange }) => (
     <div className="text-slate-400 text-base font-normal leading-tight tracking-tight mt-3 relative">
       <DatePicker
         selected={selectedDate}
-        className="border text-gray-900 w-[118px] h-12 px-4 py-2.5 justify-start items-center gap-2 flex rounded-lg"
+        className="border text-gray-900 w-[118px] h-12 px-3 py-2.5 justify-start items-center gap-2 flex rounded-lg"
         onChange={onChange}
       />
       <svg
-        className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute right-3 top-3"
+        className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute right-1 top-4"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
@@ -34,22 +34,23 @@ const DateInput = ({ label, selectedDate, onChange }) => (
 
 // Component for category filter
 const CategoryFilter = ({ selectedCategory, onSelect }) => (
-  <div className="left-0 top-0 absolute justify-start items-center gap-6 inline-flex">
+  <div className="flex justify-center items-center space-x-6">
     {["Homecare", "Pharmacy", "Food"].map((category) => (
       <div
         key={category}
         onClick={() => onSelect(category)}
         className={`${
           selectedCategory === category
-            ? "border-b-2 border-black text-zinc-800 text-xl"
+            ? "border-b-2 border-black text-zinc-800 text-xl font-medium"
             : "text-gray-400"
-        } cursor-pointer font-medium font-['Roboto Flex']`}
+        } cursor-pointer`}
       >
         {category}
       </div>
     ))}
   </div>
 );
+
 
 // Component for transactions
 const Transactions = () => {
@@ -62,11 +63,13 @@ const Transactions = () => {
 
   const dispatch = useDispatch();
 
+  // useEffect for fetching transactions
   useEffect(() => {
     dispatch(cleartopNav());
     fetchTransactions();
   }, [dispatch, startDate, endDate, selectedCategory]);
 
+  // Function to fetch transactions based on selected category and date range
   const fetchTransactions = () => {
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
@@ -92,74 +95,86 @@ const Transactions = () => {
     });
   };
 
-  const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    return date.toLocaleDateString("en-US", options);
   };
 
+  // Event handler for start date change
   const handleStartDateChange = (date) => {
     setStartDate(date);
   };
 
+  // Event handler for end date change
   const handleEndDateChange = (date) => {
     setEndDate(date);
   };
 
+  // Event handler for category selection
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     fetchTransactions();
-  };
-
+  }; 
+  
+  
+  
   return (
-    <div>
-      <div className="right-[200px] top-[120px] absolute flex-row justify-start items-start gap-[20px] inline-flex">
-        <DateInput
-          label="Starting Date"
-          selectedDate={startDate}
-          onChange={handleStartDateChange}
-        />
-        <DateInput
-          label="Ending Date"
-          selectedDate={endDate}
-          onChange={handleEndDateChange}
-        />
+    <div className="mx-auto mt-30 sm:mt-5 w-full sm:w-[1104px] overflow-x-auto rounded-xl border shadow">
+      <div className="flex justify-between items-start gap-6 mb-4">
+
+
+        <div className="flex flex-col items-start gap-6">
+          <CategoryFilter
+            selectedCategory={selectedCategory}
+            onSelect={handleCategorySelect}
+          />
+        </div>
+        <div className="flex flex-row items-end gap-6">
+          <DateInput
+            label="Starting Date"
+            selectedDate={startDate}
+            onChange={handleStartDateChange}
+          />
+          <DateInput
+            label="Ending Date"
+            selectedDate={endDate}
+            onChange={handleEndDateChange}
+          />
+        </div>
       </div>
 
-      <div className="left-[283px] top-[200px] absolute flex-col justify-start items-start gap-6 inline-flex">
-        <CategoryFilter
-          selectedCategory={selectedCategory}
-          onSelect={handleCategorySelect}
-        />
-      </div>
 
-      {/* New table section */}
-      <table className="left-[283px] top-[280px] absolute w-[1104px] border-collapse">
-        <thead>
+ 
+
+
+      {/* Table Section */}
+      <table className="mx-auto min-w-full sm:border-separate sm:border-spacing-y-2 sm:border-spacing-x-2">
+        <thead className="bg-gray-50 border-b">
           <tr>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Order ID
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Customer
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Payment Type
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Transaction ID
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Date
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Amount
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Status
             </th>
-            <th className="text-gray-400 text-sm font-semibold font-['Roboto Flex'] leading-tight">
+            <th className="whitespace-normal py-2 sm:py-4 text-xs sm:text-sm font-semibold text-gray-500 px-2 sm:px-4">
               Invoice
             </th>
           </tr>
@@ -167,43 +182,42 @@ const Transactions = () => {
         <tbody>
           {transactions.map((item, index) => (
             <tr
-              key={item}
-              className={`border ${
+              key={index}
+              className={`${
                 index % 2 === 0 ? "bg-gray-100" : "bg-white"
-              }`}
+              } border-b`}
             >
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.transaction}
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                {item._id}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.profile_id.first_name} {item.profile_id.last_name}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.paymentType}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.payment_id}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
-                {item.date}
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                {formatDate(item.created_at)}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.discount_price}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.order_status}
               </td>
-              <td className="text-gray-900 text-sm font-['Roboto Flex'] leading-tight px-4 py-2">
+              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.invoice}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* Total Amount Section for Selected Category at the bottom right */}
-      <div className="absolute bottom-0 right-0 flex flex-col items-end gap-6 mr-6 mb-6">
-        <div className="text-xl font-medium">Total amount</div>
-        <div className="text-[28px] font-bold">
+      <div className="bottom-0 right-0 sm:flex sm:flex-col items-end gap-6 mr-6 mb-6">
+        <div className="text-base sm:text-xl font-medium">Total amount</div>
+        <div className="text-xs sm:text-[28px] font-bold">
           ${totalAmountForSelectedCategory}
         </div>
       </div>
