@@ -11,7 +11,6 @@ function AllTests() {
         <TestCard />
         <TestCard />
         <TestCard />
-        
       </div>
     </div>
   );
