@@ -12,7 +12,7 @@ import ProductModal from "../../../components/Modal/AddProductModal";
 import { getFoodProducts } from "../../../API/ApiCall";
 
 export default function FoodProduct() {
-  const [categoryMenu, setCategoryMenu] = useState(true);
+  const [categoryMenu, setCategoryMenu] = useState([]);
   const [AddProductModal, setAddProductModal] = useState(false);
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
@@ -30,12 +30,11 @@ export default function FoodProduct() {
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
 
-
   useEffect(() => {
     dispatch(foodNavdata());
     getFoodProducts().then(({ data }) => {
-      console.log(data.data.products)
-      setCategoryMenu(data.data.products)
+      console.log(data.data.products);
+      setCategoryMenu(data.data.products);
     });
   }, [dispatch]);
   return (
@@ -68,7 +67,9 @@ export default function FoodProduct() {
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">5 categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">
+            {categoryMenu.total_document}
+          </p>
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
@@ -97,12 +98,10 @@ export default function FoodProduct() {
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          <CatCard data={ab} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <ProductCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
+          {categoryMenu[0] &&
+            categoryMenu.map((data) => {
+              return <CatCard data={data} callback={editCat} />;
+            })}
         </div>
       </div>
       {AddProductModal && (
