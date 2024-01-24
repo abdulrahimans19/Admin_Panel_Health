@@ -12,7 +12,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const [foodChart, setFoodChart] = useState(true);
   const [monthlyEarning, setMonthlyEarning] = useState(0);
-
+  const [chartData, setChartData] = useState();
   const monthlErnings = () => {
     if (foodChart) {
       monthlyEarningApi("FOOD").then(({ data }) => {
@@ -22,15 +22,15 @@ export default function Dashboard() {
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
         });
+        setChartData(data.data);
 
-        console.log(data.data[currentMonth]);
         setMonthlyEarning(data.data[currentMonth]);
       });
     } else {
       console.log("else worog");
       monthlyEarningApi("PHARMA").then(({ data }) => {
         console.log(data.data);
-
+        setChartData(data.data);
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
@@ -58,7 +58,7 @@ export default function Dashboard() {
           <PriceDisplayCard3 />
 
           <div className=" md:col-span-3">
-            <LineChart />
+           { chartData&&<LineChart data={chartData} />}
             <div className="flex gap-3 p-3">
               <p
                 onClick={() => {

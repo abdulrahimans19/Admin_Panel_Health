@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const MyChart = () => {
+const MyChart = ({data}) => {
   const [foodChart, setFoodChart] = useState(true);
 
   const series = [
     {
       name: "Series 1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91, 100, 105, 110, 133],
+      data: Object.values(data).map(value => parseFloat(value.toFixed(2))),
     },
   ];
 
@@ -17,20 +17,7 @@ const MyChart = () => {
       width: "100%", // Set the chart width to 100% of its container
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ], // All months
+      categories: Object.keys(data), // All months
     },
     // Additional chart options
     colors: ["#4caf50"], // Line color for light background
