@@ -9,35 +9,45 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
-import { getPharmaCategory } from "../../../API/ApiCall";
+import { UpadateCate, addCategory, getPharmaCategory } from "../../../API/ApiCall";
 
 export default function PharmaCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddCategoryModal, setAddCategoryModal] = useState(false);
   const [addSubCategoryModal, setAddSubCategoryModal] = useState(false);
+  const [editCatModal, setEditCatModal] = useState(false)
+  const [EditData, setEditData] = useState(null)
   const dispatch = useDispatch();
 
   const [categoryData, setCategoryData] = useState([]);
-  const abc = { name: "Pulmonology", image: lungsimg };
-  const ab = { name: "Hepatology", image: heartimg };
+
   const editCat = (data) => {
-    console.log(data);
+  
+
+setEditCatModal(true)
+setEditData(data)
   };
 
   const addcategory = () => {
     console.log("add category modal");
   };
 
+
+
+const GetPharmacyCat=()=>
+{
+
+  getPharmaCategory().then(({ data }) => {
+    console.log(data.data.mainCategories);
+    setCategoryData(data.data.mainCategories);
+  });
+}
+
   useEffect(() => {
     dispatch(pharmacyNav());
-    getPharmaCategory().then((data) => {
-      console.log(data);
-    });
+    GetPharmacyCat()
 
-    getPharmaCategory().then(({ data }) => {
-      console.log(data.data.mainCategories);
-      setCategoryData(data.data.mainCategories);
-    });
+
   }, []);
 
   return (
@@ -100,7 +110,9 @@ export default function PharmaCategory() {
             })}
         </div>
       </div>
-      \{AddCategoryModal && <AddCategory setShowModal={setAddCategoryModal} />}
+      {AddCategoryModal && <AddCategory catFunction={addCategory}  setShowModal={setAddCategoryModal}  GetPharmacyCat={GetPharmacyCat} />}
+      {editCatModal && <AddCategory catFunction={UpadateCate} incomingType={"edit"} dataToUpload={EditData} setShowModal={setEditCatModal}  GetPharmacyCat={GetPharmacyCat} />}
+
       {addSubCategoryModal && (
         <AddSubCategoryModal onClose={setAddSubCategoryModal} />
       )}
