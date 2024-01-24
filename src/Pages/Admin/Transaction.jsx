@@ -51,7 +51,6 @@ const CategoryFilter = ({ selectedCategory, onSelect }) => (
   </div>
 );
 
-
 // Component for transactions
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -105,33 +104,34 @@ const Transactions = () => {
   // Event handler for start date change
   const handleStartDateChange = (date) => {
     setStartDate(date);
+    if (endDate < date) {
+      setEndDate(date);
+    }
   };
 
   // Event handler for end date change
   const handleEndDateChange = (date) => {
-    setEndDate(date);
+    if (date >= startDate) {
+      setEndDate(date);
+    }
   };
 
   // Event handler for category selection
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     fetchTransactions();
-  }; 
-  
-  
-  
+  };
+
   return (
-    <div className="mx-auto mt-30 sm:mt-5 w-full sm:w-[1104px] overflow-x-auto rounded-xl border shadow">
+    <div className="mx-auto mt-40 sm:mt-5 w-full sm:w-[1104px] overflow-x-auto rounded-xl border shadow">
       <div className="flex justify-between items-start gap-6 mb-4">
-
-
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-4 mt-20 ml-5">
           <CategoryFilter
             selectedCategory={selectedCategory}
             onSelect={handleCategorySelect}
           />
         </div>
-        <div className="flex flex-row items-end gap-6">
+        <div className="flex flex-row items-end gap-6 mt-5 mr-5">
           <DateInput
             label="Starting Date"
             selectedDate={startDate}
@@ -144,10 +144,6 @@ const Transactions = () => {
           />
         </div>
       </div>
-
-
- 
-
 
       {/* Table Section */}
       <table className="mx-auto min-w-full sm:border-separate sm:border-spacing-y-2 sm:border-spacing-x-2">
