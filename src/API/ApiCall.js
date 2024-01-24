@@ -13,7 +13,44 @@ export const LoginUserdata = async (data) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
+export const getTransactionForHomeCare = async (startDate, endDate) => {
+  return await Instance.get("/admin/transaction/home-care", {
+    params: {
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
+};
+export const getTransactionForPharmacy = async (startDate, endDate) => {
+  return await Instance.get("/admin/transaction/pharma", {
+    params: {
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
+};
 
+export const getTransactionForFood = async (startDate, endDate) => {
+  return await Instance.get("/admin/transaction/food", {
+    params: {
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
+};
+
+export const getFoodCategory = async () => {
+  return await Instance.get("/main-categories/Food");
+};
+export const getFoodProducts = async () => {
+  return await Instance.get("/products/Food");
+};
+export const getFoodOrders = async () => {
+  return await Instance.get("/order/food/all-orders");
+};
+export const getFoodReview = async () => {
+  return await Instance.get("/order/food/all-orders");
+}
 export const SignupUserdata = async(data) =>{
   return await Instance.post("/auth/doctor/sign-up", data);
 };
