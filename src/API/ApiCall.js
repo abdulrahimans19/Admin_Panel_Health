@@ -134,3 +134,15 @@ export const GetAllDoctors = async (page = 1) => {
 export const CanclationDoctor = async (id) => {
   return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
 };
+export const getPharmaProductApi = async (pageNumber) => {
+  return await Instance.get(`/product/pharma?page=${pageNumber}`);
+};
+export const totalDoctorApi = async (pageNumber) => {
+  return await Instance.get(`/admin/total-doctor`);
+};
+export const TotalAppointmentApi = async (pageNumber) => {
+  return await Instance.get(`/admin/new-appoinments`);
+};
+export const getProductApi = async (data) => {
+  return await Instance.get(`/review/get-review${data}`);
+};

@@ -7,11 +7,14 @@ import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
 import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
-import buttonImage from "../../../assets/images/element-plus.png"
+import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
+import { getPharmaProductApi } from "../../../API/ApiCall";
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
-const [AddProductModal, setAddProductModal] = useState(false)
+  const [AddProductModal, setAddProductModal] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [PharmaProductsData, setPharmaProductsData] = useState([]);
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
@@ -20,14 +23,20 @@ const [AddProductModal, setAddProductModal] = useState(false)
   const editCat = (data) => {
     console.log(data);
   };
-  const addcategory = () => {
-    console.log("add category modal");
+
+  const PharmaProduct = () => {
+    getPharmaProductApi(setPageNumber).then(({ data }) => {
+      console.log(data.data.products);
+
+      setPharmaProductsData(data.data.products);
+    });
   };
 
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
   useEffect(() => {
     dispatch(pharmacyNav());
+    PharmaProduct();
   }, []);
   return (
     <div>
@@ -59,16 +68,17 @@ const [AddProductModal, setAddProductModal] = useState(false)
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">5 categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">{PharmaProductsData.length} categories</p>
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
-          <div className="" onClick={()=>
-          {
-            setAddProductModal(true)
-          }}>
-          <AddItemButton text={"Add Products"} img={buttonImage} />
-
+          <div
+            className=""
+            onClick={() => {
+              setAddProductModal(true);
+            }}
+          >
+            <AddItemButton text={"Add Products"} img={buttonImage} />
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
@@ -87,15 +97,14 @@ const [AddProductModal, setAddProductModal] = useState(false)
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          <CatCard data={ab} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
-          <ProductCard data={abc} callback={editCat} />
-          <CatCard data={abc} callback={editCat} />
+          {PharmaProductsData.map((data) => {
+            return <ProductCard data={data} callback={editCat} />;
+          })}
         </div>
       </div>
-     { AddProductModal&&<ProductModal setAddProductModal={setAddProductModal}/>}
+      {AddProductModal && (
+        <ProductModal setAddProductModal={setAddProductModal} />
+      )}
     </div>
   );
 }
