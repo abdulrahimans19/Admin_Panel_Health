@@ -33,7 +33,7 @@ export default function ({
 
   // Extract text until the position of "i"
   const extractedText = user?.description?.substring(0, 50);
-  console.log(user);
+
   return (
     <div>
       {showModal ? (
@@ -94,7 +94,10 @@ export default function ({
                           <td className="text-xs text-gray-400 w-20">
                             Category :
                           </td>
-                          <td className="text-xs "> {user?.category_id}</td>
+                          <td className="text-xs ">
+                            {" "}
+                            {user?.category_id?.title}
+                          </td>
                         </tr>
 
                         <tr>
@@ -189,7 +192,9 @@ export default function ({
                             }}
                             className="text-xs background-transparent p-1 pl-3 pr-3 mt-1 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
-                            onClick={() => {
+                            onClick={async () => {
+                              await callback(user?._id);
+                              window.location.reload();
                               toggleModal();
                             }}
                           >

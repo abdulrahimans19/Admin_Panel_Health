@@ -11,11 +11,12 @@ export default function DoctorRequstTable({
   availabe,
   btImg,
   status,
+  document,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
   const [datas, setData] = useState([]);
-  const [pagenum, setPagenum] = useState();
+  const [pagenum, setPagenum] = useState(1);
 
   const getPageDatas = () => {
     if (status === "approved") {
@@ -27,9 +28,12 @@ export default function DoctorRequstTable({
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  const page = 5;
+
+  let page = document / 10;
+  console.log(page, "       page num");
+
   return (
-    <div className="">
+    <div className="container">
       <Promodal
         showModal={showModal}
         toggleModal={toggleModal}
@@ -41,7 +45,7 @@ export default function DoctorRequstTable({
       />
       <h1 className="font-bold mt-3 text-lg">Doctor</h1>
       <p className="text-gray-500 text-xs">
-        {data?.length} doctors {availabe}
+        {document} doctors {availabe}
       </p>
 
       <table class="table-auto w-full mt-5 rounded ">
@@ -59,7 +63,7 @@ export default function DoctorRequstTable({
           </tr>
         </thead>
         <tbody class="text-xs text-center">
-          {datas[0]
+          {datas && datas[0]
             ? datas.map((data) => {
                 return (
                   <tr class="bg-card rounded text-black text-xs text-center ">
@@ -68,7 +72,7 @@ export default function DoctorRequstTable({
                       <img src={data.image} alt="" className="w-10 h-10" />
                     </td>
                     <td class="p-1">{data.name}</td>
-                    <td class="p-1">{data.category_id}</td>
+                    <td class="p-1">{data.category_id.title}</td>
                     <td class="p-1">{data.email}</td>
                     <td class="p-1">{data.experience}</td>
                     <td class="p-1">{data.created_at}</td>
@@ -117,7 +121,7 @@ export default function DoctorRequstTable({
                             setShowModal(true);
                           }}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center pr-1">
                             {btImg ? (
                               <img
                                 src={btImg}
@@ -135,18 +139,20 @@ export default function DoctorRequstTable({
                   </tr>
                 );
               })
-            : data.map((data) => {
+            : data &&
+              data[0] &&
+              data.map((data) => {
                 return (
                   <tr class="bg-card rounded text-black text-xs text-center ">
-                    <td class="p-1">{data._id}</td>
+                    <td class="p-1">{data?._id}</td>
                     <td class="p-1 flex justify-center items-center">
-                      <img src={data.image} alt="" className="w-10 h-10" />
+                      <img src={data?.image} alt="" className="w-10 h-10" />
                     </td>
-                    <td class="p-1">{data.name}</td>
-                    <td class="p-1">{data.category_id}</td>
-                    <td class="p-1">{data.email}</td>
-                    <td class="p-1">{data.experience}</td>
-                    <td class="p-1">{data.created_at}</td>
+                    <td class="p-1">{data?.name}</td>
+                    <td class="p-1">{data.category_id.title}</td>
+                    <td class="p-1">{data?.email}</td>
+                    <td class="p-1">{data?.experience}</td>
+                    <td class="p-1">{data?.created_at}</td>
                     {isRequsted ? (
                       <td class="p-1">
                         <button
@@ -188,11 +194,11 @@ export default function DoctorRequstTable({
                           className="text-xs background-transparent p-1 pl-3 pr-3 mt-1 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                           type="button"
                           onClick={() => {
-                            setUser(data._id);
+                            setUser(data);
                             setShowModal(true);
                           }}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center pr-1">
                             {btImg ? (
                               <img
                                 src={btImg}
@@ -217,7 +223,16 @@ export default function DoctorRequstTable({
           <nav aria-label="flex justify-center">
             <ul className="list-style-none flex justify-center">
               <li>
-                <a className="pointer-events-none relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-500 transition-all duration-300 dark:text-neutral-400">
+                <a
+                  className="relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+                  href="#!"
+                  onClick={() => {
+                    if (pagenum > 1) {
+                      setPagenum(pagenum - 1);
+                      getPageDatas();
+                    }
+                  }}
+                >
                   Previous
                 </a>
               </li>
@@ -225,7 +240,7 @@ export default function DoctorRequstTable({
                 <li key={index}>
                   <a
                     className={`relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 ${
-                      index + 1 == pagenum ? "bg-neutral-200" : ""
+                      index + 1 == pagenum ? "bg-neutral-500" : ""
                     }   dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
                     href="#!"
                     onClick={() => {
@@ -243,6 +258,12 @@ export default function DoctorRequstTable({
                 <a
                   className="relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                   href="#!"
+                  onClick={() => {
+                    if (pagenum < page) {
+                      setPagenum(pagenum + 1);
+                      getPageDatas();
+                    }
+                  }}
                 >
                   Next
                 </a>
