@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { UpadateCate, UploadImageUrl, addCategory, uploadToAws } from "../../API/ApiCall";
+import {
+  UpadateCate,
+  UploadImageUrl,
+  addCategory,
+  uploadToAws,
+} from "../../API/ApiCall";
 export default function AddCategory({
   setShowModal,
   dataToUpload,
   incomingType,
   GetPharmacyCat,
-  catFunction
+  catFunction,
 }) {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
@@ -35,17 +40,17 @@ export default function AddCategory({
   });
 
   const SubmitCat = (e) => {
-    console.log(dataToUpload,'testig');
+    console.log(dataToUpload, "testig");
     // console.log(Image);
     e.preventDefault();
     let imageUrl;
 
     if (editImage) {
       imageUrl = dataToUpload.image;
-console.log("updateimage working ");
-console.log(dataToUpload);
+      console.log("updateimage working ");
+      console.log(dataToUpload);
       const WholeData = {
-        category_id:dataToUpload._id,
+        category_id: dataToUpload._id,
         title: categoryName,
         description: description,
         image: imageUrl,
@@ -63,11 +68,6 @@ console.log(dataToUpload);
         });
     } else {
       if (Image) {
-
-
-
-
-
         console.log("this working wretryyhj");
         UploadImageUrl().then((data) => {
           console.log(data.data);
@@ -76,25 +76,23 @@ console.log(dataToUpload);
             console.log(data, "uploaded");
           });
           imageUrl = data.data.publicUrl;
-          let WholeData
+          let WholeData;
           console.log(data);
-if(dataToUpload){
-  WholeData = {
-    category_id:dataToUpload._id,
-    title: categoryName,
-    description: description,
-    image: imageUrl,
-  };
-}
-else{
-  WholeData = {
-    title: categoryName,
-    description: description,
-    image: imageUrl,
-  }; 
-}
+          if (dataToUpload) {
+            WholeData = {
+              category_id: dataToUpload._id,
+              title: categoryName,
+              description: description,
+              image: imageUrl,
+            };
+          } else {
+            WholeData = {
+              title: categoryName,
+              description: description,
+              image: imageUrl,
+            };
+          }
 
-      
           console.log(WholeData);
 
           catFunction(WholeData)
