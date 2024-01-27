@@ -43,19 +43,15 @@ export default function PharmaReview() {
     dispatch(pharmacyNav());
   }, []);
 
-
   const formatDate = (originalDateString) => {
     const originalDate = new Date(originalDateString);
     const day = originalDate.getDate();
     const month = originalDate.getMonth() + 1; // Months are zero-indexed
     const year = originalDate.getFullYear();
-    return `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+    return `${day < 10 ? "0" : ""}${day}-${
+      month < 10 ? "0" : ""
+    }${month}-${year}`;
   };
-
-
-
-
-
 
   return (
     <>
@@ -90,7 +86,7 @@ export default function PharmaReview() {
                 {/* Image on the left */}
                 <div className="w-1/5">
                   <img
-                  src={reviewdata.image}
+                    src={reviewdata.image}
                     alt="Image"
                     className="w-full h-auto"
                   />
@@ -104,7 +100,9 @@ export default function PharmaReview() {
                       <span className="text-yellow-500 text-3xl ">
                         {"\u2605".repeat(1)}
                       </span>
-                      <span className="text-xl">{reviewdata.averageRating}</span>
+                      <span className="text-xl">
+                        {reviewdata.averageRating}
+                      </span>
                     </div>
                     <p className="text-xl text-gray-400 font-semibold">
                       {reviews.length} people reviewed thisproduct
@@ -114,47 +112,43 @@ export default function PharmaReview() {
                   <div className="mt-7 mb-4" key="dthd">
                     {/* Your review content */}
 
+                    {reviews?.map((data) => {
+                      return (
+                        <div className="w-4/5 ml-4">
+                          <div className="flex justify-between">
+                            <div className="flex gap-1">
+                              <div className="">
+                                <img
+                                  src="https://cdn.britannica.com/50/123550-050-885369B3/Prozac-pills.jpg"
+                                  alt="User"
+                                  className="rounded-full w-12 h-12"
+                                />
+                              </div>
+                              <div>
+                                <h4 className="font-bold">
+                                  {data.profile_id.first_name}
+                                </h4>
+                              </div>
+                            </div>
 
-{reviews?.map((data)=>
-{
-  return(<div className="w-4/5 ml-4">
-  <div className="flex justify-between">
-    <div className="flex gap-1">
-      <div className="">
-        <img
-          src="https://cdn.britannica.com/50/123550-050-885369B3/Prozac-pills.jpg"
-          alt="User"
-          className="rounded-full w-12 h-12"
-        />
-      </div>
-      <div>
-        <h4 className="font-bold">{data.profile_id.first_name}</h4>
-    
-      </div>
-    </div>
+                            <div>
+                              <span className="text-yellow-500 text-3xl">
+                                {"\u2605".repeat(data?.rating)}
+                              </span>
+                              <p className="text-gray-400 font-semibold">
+                                {formatDate(data.created_at)}
+                                {/* Assuming `created_at` is the date property */}
+                              </p>
+                            </div>
+                          </div>
 
-    <div>
-      <span className="text-yellow-500 text-3xl">
-        {"\u2605".repeat(data?.rating)}
-      </span>
-      <p className="text-gray-400 font-semibold">
-
-        
-      {formatDate(data.created_at)}
-        {/* Assuming `created_at` is the date property */}
-      </p>
-    </div>
-  </div>
-
-  <div className="p-4">
-    <p>{data?.comment}</p>
-  </div>
-  <div className="flex items-center mt-2"></div>
-</div>) 
-})}
-                  
-
-                   
+                          <div className="p-4">
+                            <p>{data?.comment}</p>
+                          </div>
+                          <div className="flex items-center mt-2"></div>
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* Add more details as needed */}

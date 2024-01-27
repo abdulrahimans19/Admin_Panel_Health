@@ -68,7 +68,9 @@ export default function PharmaProduct() {
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">{PharmaProductsData.length} categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">
+            {PharmaProductsData.length} categories
+          </p>
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}

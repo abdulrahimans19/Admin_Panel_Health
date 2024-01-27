@@ -2,20 +2,22 @@ import React from "react";
 import AddImage from "../../assets/images/addImage.png";
 import AddCategoryModal from "../Modal/AddCategoryModal";
 
-export default function CatCard({ data, callback, isHomecareCategory,viewCatInfo }) {
-
-
-
+export default function CatCard({
+  data,
+  callback,
+  isHomecareCategory,
+  viewCatInfo,
+}) {
   const cardHeight = isHomecareCategory ? 260 : 240;
+  console.log("data image is",data.image);
   return (
     <div className="w-44  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
-
-      <div 
-      onClick={()=>
-      {
-        viewCatInfo(data)
-      }}
-      className="flex  justify-center">
+      <div
+        onClick={() => {
+          viewCatInfo(data);
+        }}
+        className="flex  justify-center"
+      >
         <img
           className="object-cover object-center p-4  max-h-40 "
           src={data?.image}
@@ -25,9 +27,7 @@ export default function CatCard({ data, callback, isHomecareCategory,viewCatInfo
 
       {/* Name below the image */}
       <div className="p-4">
-        <p className="text-lg  font-semibold text-gray-800">
-          {data?.title} 
-        </p>
+        <p className="text-lg  font-semibold text-gray-800">{data?.title}</p>
       </div>
 
       {/* Pencil icon at the top right corner */}

@@ -7,7 +7,7 @@ const MyChart = ({data,earnings}) => {
   const series = [
     {
       name: "Series 1",
-      data: Object.values(data).map(value => parseFloat(value.toFixed(2))),
+      data: Object.values(data).map((value) => parseFloat(value.toFixed(2))),
     },
   ];
 
@@ -61,7 +61,6 @@ const MyChart = ({data,earnings}) => {
           type="line"
           height={350}
         />
-       
       </div>
     </div>
   );

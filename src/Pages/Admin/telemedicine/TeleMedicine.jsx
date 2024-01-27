@@ -7,15 +7,24 @@ import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
 import { MainDoctorCategories } from "../../../API/ApiCall";
+import CatInfoModal from "../../../components/Modal/ViewCatInfo";
+import AddCategory from "../../../components/Modal/AddCategory";
 
 export default function TeleMedicine() {
   const [categories, setCategories] = useState([]);
+  const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [editData, setEditData] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(telemedicine());
     getCategory();
   }, []);
+  const viewCatInfo = (data) => {
+    setEditData(data);
 
+    setViewCatInfoModal(true);
+  };
   async function getCategory() {
     try {
       const response = await MainDoctorCategories();
@@ -25,14 +34,14 @@ export default function TeleMedicine() {
     }
   }
 
-  const [showModal, setShowModal] = useState(false);
-
-  function editCat() {
-    setShowModal(true);
-  }
   function addCategory() {
     console.log("Add category in telimedicin");
   }
+  const editCat = (data) => {
+    setShowModal(true);
+
+    setEditData(data);
+  };
 
   return (
     <div className="container mt-5">
@@ -50,9 +59,22 @@ export default function TeleMedicine() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
         {categories[0] &&
           categories.map((data) => {
-            return <CatCard data={data} callback={editCat} />;
+            return (
+              <CatCard
+                viewCatInfo={viewCatInfo}
+                data={data}
+                callback={editCat}
+              />
+            );
           })}
       </div>
+
+      {viewCatInfoModal && (
+        <CatInfoModal
+          catInfo={editData}
+          setViewCatInfoModal={setViewCatInfoModal}
+        />
+      )}
     </div>
   );
 }

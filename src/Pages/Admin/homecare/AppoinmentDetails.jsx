@@ -3,16 +3,42 @@ import FilterDropDown from "./FilterDropDown";
 import ResultModal from "./LabItems/lab_components/ResultModal";
 import KeyValuePairResultModal from "./LabItems/lab_components/KeyValuePairResultModal";
 import AddImage from "../../../assets/images/addImage.png";
+import DatePicker from "react-datepicker";
+import DateInput from "./appoinments/DateInput";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
-
+  const handleDateChange=()=>{
+    console.log("edit date");
+  }
   return (
     <div>
       <div className="flex justify-between">
         <div></div>
         <div>
-          <FilterDropDown text={"Filter By date"} isappoinment={true} />
+          <div>
+            <div class="relative max-w-sm">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg
+                  class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                </svg>
+              </div>
+            <DateInput
+            label="filter by date"
+            className="border text-gray-900 w-[118px] h-12 px-3 py-2.5 justify-start items-center gap-2 flex rounded-lg"
+            onChange={handleDateChange}
+            />
+            
+            </div>
+
+            {/* <!-- Dropdown menu --> */}
+          </div>
         </div>
       </div>
       <div>

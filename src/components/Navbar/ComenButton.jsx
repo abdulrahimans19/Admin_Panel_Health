@@ -19,18 +19,11 @@ export default function ComunButton({ text, callback }) {
         <div className="sm:block">{text}</div>
       </button>
 
-      {showModal && (
+      <AddCategoryModal isShowModal={isShowModal} showModal={showModal} />
+      {/* {showModal && (
         <AddCategory catFunction={callback} setShowModal={setShowModal} />
       )}
-      {/* {editCatModal && (
-        <AddCategory
-          catFunction={UpadateCate}
-          incomingType={"edit"}
-          dataToUpload={EditData}
-          setShowModal={setEditCatModal}
-          GetPharmacyCat={GetPharmacyCat}
-        />
-      )} */}
+      {/* {editCatModal && ( */}
     </div>
   );
 }

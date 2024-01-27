@@ -38,7 +38,9 @@ export const getTransactionForFood = async (startDate, endDate) => {
     },
   });
 };
-
+export const addFoodCategory=async(data)=>{
+  return await Instance.post("/main-categories/food/create", data)
+}
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -54,7 +56,7 @@ export const getFoodReview = async (foodId, page) => {
       params: {
         page: page,
       },
-    });
+    })
 
     // Handle the response
     console.log(response.data);
@@ -82,6 +84,18 @@ export const DoctorRequests = async () => {
 };
 export const AprovetDoctor = async (id) => {
   return await Instance.get(`/doctor/admin/accept-doctor?doctor_id=${id}`);
+};
+export const GetHomecareCategoriesApi = async () => {
+  return await Instance.get(`/main-categories/home-care`);
+};
+export const getAllLabTestsApi = async () => {
+  return await Instance.get(`/tests`);
+};
+export const getRecommendedTestApi = async () => {
+  return await Instance.get(`tests/all-tests?recommended=${true}`);
+};
+export const getDisbledTestApi = async () => {
+  return await Instance.get(`tests/all-tests?disabled=${true}`);
 };
 
 export const UploadImageUrl = async (token) => {
@@ -159,4 +173,8 @@ export const GetAllBlockd = async () => {
 
 export const GetDoctorWithdrawalRequsts = async (page) => {
   return await Instance.get("/withdrawal/withdrawal-requests?page=1");
+};
+
+export const AprovingwithdrawalRequest = async (id) => {
+  return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
 };

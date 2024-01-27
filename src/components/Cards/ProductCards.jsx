@@ -14,9 +14,7 @@ export default function ProductCard({ data, callback }) {
 
       {/* Name below the image */}
       <div className="p-4">
-        <p className="text-lg  font-semibold text-gray-800">
-          {data?.name}
-        </p>
+        <p className="text-lg  font-semibold text-gray-800">{data?.name}</p>
       </div>
 
       {/* Pencil icon at the top right corner */}
