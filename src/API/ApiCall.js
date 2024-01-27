@@ -13,9 +13,6 @@ export const LoginUserdata = async (data) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
-export const getPharmaOrders = async () => {
-  return await Instance.get("/order/pharma/all-orders");
-};
 export const getTransactionForHomeCare = async (startDate, endDate) => {
   return await Instance.get("/admin/transaction/home-care", {
     params: {
@@ -42,16 +39,7 @@ export const getTransactionForFood = async (startDate, endDate) => {
   });
 };
 export const addFoodCategory = async (data) => {
-  return await Instance.post(`/main-categories/food/create`, data);
-};
-export const UpadateFoodCategory = async (data) => {
-  return await Instance.put(`/main-categories/food/update`, data);
-};
-export const createFoodSubCategory = async (data) => {
-  return await Instance.post(`/sub-categories/create`, data);
-};
-export const getFoodSubCategory = async (data) => {
-  return await Instance.get(`sub-categories/${data}`);
+  return await Instance.post("/main-categories/food/create", data);
 };
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
@@ -140,6 +128,14 @@ export const addCategory = async (data) => {
 export const UpadateCate = async (data) => {
   return await Instance.put(`/main-categories/pharma/update`, data);
 };
+
+export const teliaddCategory = async (data) => {
+  return await Instance.post(`/main-categories/doctor/create`, data);
+};
+export const teliUpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/doctor/update`, data);
+};
+
 export const createSubCategory = async (data) => {
   return await Instance.post(`/sub-categories/create`, data);
 };
@@ -183,35 +179,42 @@ export const GetAllBlockd = async () => {
   return await Instance.get("/doctor/admin/blocked-doctor");
 };
 
-export const GetDoctorWithdrawalRequsts = async (page) => {
-  return await Instance.get("/withdrawal/withdrawal-requests?page=1");
+export const GetDoctorWithdrawalRequsts = async (page = 1) => {
+  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
 };
 
 export const AprovingwithdrawalRequest = async (id) => {
   return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
 };
-export const addProductApi = async (data) => {
-  return await Instance.post(`/product/pharma/create`,data);
+export const GetDrAprovedWithdrawalRequsts = async (page) => {
+  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
 };
-
-export const countryCodesApi = async (data) => {
-  const apiUrl = 'https://restcountries.com/v3.1/all';
-
-return await fetch(apiUrl)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    const countriesArray = data.map(country => ({
-      name: country.name.common,
-      code: country.cca2,
-    }));
-return countriesArray
-    // Now 'countriesArray' contains information about all countries
-    console.log(countriesArray);
-  })
-  .catch(error => console.error('Error fetching country data:', error));
-};
-
-export const getAppoinmentsApi = async (year,month,date) => {
+export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
+};
+export const getFoodSubCategory = async (data) => {
+  return await Instance.get(`sub-categories/${data}`);
+};
+export const UpadateFoodCategory = async (data) => {
+  return await Instance.put(`/main-categories/food/update`, data);
+};
+export const getPharmaOrders = async () => {
+  return await Instance.get("/order/pharma/all-orders");
+};
+export const countryCodesApi = async (data) => {
+  const apiUrl = "https://restcountries.com/v3.1/all";
+
+  return await fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      const countriesArray = data.map((country) => ({
+        name: country.name.common,
+        code: country.cca2,
+      }));
+      return countriesArray;
+      // Now 'countriesArray' contains information about all countries
+      console.log(countriesArray);
+    })
+    .catch((error) => console.error("Error fetching country data:", error));
 };
