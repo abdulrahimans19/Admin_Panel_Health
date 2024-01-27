@@ -30,6 +30,7 @@ import FoodCategory from "./Pages/Admin/Food/Categories";
 import FoodProduct from "./Pages/Admin/Food/Products";
 import FoodOrder from "./Pages/Admin/Food/Orders";
 import FoodReview from "./Pages/Admin/Food/Review";
+import OrdeeDetails from "./components/OrderDetails";
 import OverView from "./Pages/Doctor/Dashboard/OverView";
 import DocTransaction from "./Pages/Doctor/transaction/Transaction";
 import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
@@ -42,6 +43,7 @@ function App() {
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
+          <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
           <Route

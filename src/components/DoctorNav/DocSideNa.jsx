@@ -104,7 +104,7 @@ function DocSideBar() {
             currentRoute={currentRoute}
           /> */}
 
-<li>
+          <li>
             <a
               onClick={() => {
                 setCurrentRoute("/doctor/appointments");
@@ -124,7 +124,9 @@ function DocSideBar() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  currentRoute === "/doctor/appointments" ? "svg-icon-active" : ""
+                  currentRoute === "/doctor/appointments"
+                    ? "svg-icon-active"
+                    : ""
                 }`}
               >
                 <path
@@ -208,7 +210,9 @@ function DocSideBar() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  currentRoute === "/doctor/transaction" ? "svg-icon-active" : ""
+                  currentRoute === "/doctor/transaction"
+                    ? "svg-icon-active"
+                    : ""
                 }`}
               >
                 <path

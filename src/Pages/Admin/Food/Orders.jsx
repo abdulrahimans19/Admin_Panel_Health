@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
 import { getFoodOrders } from "../../../API/ApiCall";
+import { Link } from "react-router-dom";
 
 export default function FoodOrder() {
   const [orders, setOrders] = useState([]);
@@ -13,12 +14,22 @@ export default function FoodOrder() {
     getFoodOrders()
       .then(({ data }) => {
         console.log(data.data.orders);
-        setOrders(data.data.orders || []); // Ensure orders is initialized as an array
+        setOrders(data.data.orders || []);
       })
       .catch((error) => {
         console.error("Error fetching orders:", error);
       });
   }, [dispatch]);
+
+  function formatDate(dateTimeString) {
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const formattedDate = new Date(dateTimeString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  }
+
   return (
     <div>
       <div>
@@ -73,23 +84,35 @@ export default function FoodOrder() {
         </div>
       </div>
 
-         {/* Orders Table */}
-         <div className="p-5">
+      {/* Orders Table */}
+      <div className="p-5">
         <div className="relative overflow-x-auto">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="text-xs text-gray-400 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Product name
+                  Order Id
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Color
+                  Customer
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Category
+                  Products
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Price
+                  Qty
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Amount
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Invoice
                 </th>
               </tr>
             </thead>
@@ -100,16 +123,28 @@ export default function FoodOrder() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
+                    <Link to={`/order/${order._id}/details`}>{order._id}</Link>
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.address_id.full_name}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {order.product_id.name}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {/* Add the relevant data */}
+                    {order.product_id.quantity}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {/* Add the relevant data */}
+                    {formatDate(order.product_id.created_at)}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.total_amount}
+                    {order.product_id.price}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.order_status}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.invoice}
                   </td>
                 </tr>
               ))}

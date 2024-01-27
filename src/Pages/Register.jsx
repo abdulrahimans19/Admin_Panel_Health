@@ -91,10 +91,9 @@
 // export default Register;
 
 import React, { useState } from "react";
-import {SignupUserdata } from "../API/ApiCall";
+import { SignupUserdata } from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
-
 
 const Register = () => {
   const [selectedOption, setSelectedOption] = useState("Doctor");
@@ -102,12 +101,11 @@ const Register = () => {
   const [errmsg, setErrmsg] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [email, setEmail] = useState("");
-  const [passerror, setError] = useState('');
+  const [passerror, setError] = useState("");
 
-
-// password comparison
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // password comparison
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleToggle = (option) => {
     // Only keep logic for "Doctor"
@@ -126,45 +124,44 @@ const Register = () => {
 
     if (selectedOption === "Doctor") {
       if (password !== confirmPassword) {
-       setError('Passwords do not match');
-
-      }else{
-
+        setError("Passwords do not match");
+      } else {
         SignupUserdata(UserData)
-        .then((data) => {
-          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-          navigate("/otp");
-        })
-        .catch((err) => {
-          setErrmsg("email alredy exist");
-        });
+          .then((data) => {
+            localStorage.setItem(
+              "sophwe_token",
+              JSON.stringify(data.data.data)
+            );
+            navigate("/otp");
+          })
+          .catch((err) => {
+            setErrmsg("email alredy exist");
+          });
       }
-     
     } else {
       console.log("Invalid login option");
     }
 
-  //   if(selectedOption === "Doctor"){
-  //     if (password !== confirmPassword) {
-  //       setError('Passwords do not match');
-  //     }
-  //   }else{
-  //     SignupUserdata(UserD
-  // ata)
-  //     .then((data) => {
-        
-  //             localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-  //             navigate("/login");
+    //   if(selectedOption === "Doctor"){
+    //     if (password !== confirmPassword) {
+    //       setError('Passwords do not match');
+    //     }
+    //   }else{
+    //     SignupUserdata(UserD
+    // ata)
+    //     .then((data) => {
 
-  //           })
-  //           .catch((err) => {
-  //             setErrmsg("user alredy exist");
-  //             alert('user alredy exist')
-      
-  //           });
-  //   }
+    //             localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+    //             navigate("/login");
+
+    //           })
+    //           .catch((err) => {
+    //             setErrmsg("user alredy exist");
+    //             alert('user alredy exist')
+
+    //           });
+    //   }
   };
-
 
   const handleEmailChange = (event) => {
     const newEmail = event.target.value;
@@ -235,7 +232,7 @@ const Register = () => {
                 className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
                 placeholder="Email Address"
               />
-              
+
               {!isValidEmail && (
                 <p style={{ color: "red" }}>Invalid email address</p>
               )}
@@ -258,8 +255,7 @@ const Register = () => {
                 placeholder="Confirm Password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-             {passerror && <p style={{ color: "red" }}>{passerror}</p>}
-
+              {passerror && <p style={{ color: "red" }}>{passerror}</p>}
             </div>
             <div>
               <button

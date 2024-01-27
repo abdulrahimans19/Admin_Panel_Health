@@ -58,7 +58,7 @@ export default function Dashboard() {
           <PriceDisplayCard3 />
 
           <div className=" md:col-span-3">
-           { chartData&&<LineChart data={chartData} />}
+            {chartData && <LineChart data={chartData} />}
             <div className="flex gap-3 p-3">
               <p
                 onClick={() => {
