@@ -32,7 +32,7 @@ export default function PharmaCategory() {
 
   const editCat = (data) => {
     setEditCatModal(true);
-    
+
     setEditData(data);
   };
 

@@ -190,7 +190,7 @@ const Transactions = () => {
                 {item.profile_id.first_name} {item.profile_id.last_name}
               </td>
               <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.paymentType}
+                {item.payment_type}
               </td>
               <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.payment_id}
@@ -199,7 +199,7 @@ const Transactions = () => {
                 {formatDate(item.created_at)}
               </td>
               <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.discount_price}
+                {item.payable_amount}
               </td>
               <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                 {item.order_status}

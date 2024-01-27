@@ -14,7 +14,6 @@ function Recommended() {
         <TestCard />
         <TestCard />
         <TestCard />
-      
       </div>
     </div>
   );
