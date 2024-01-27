@@ -38,9 +38,9 @@ export const getTransactionForFood = async (startDate, endDate) => {
     },
   });
 };
-export const addFoodCategory=async(data)=>{
-  return await Instance.post("/main-categories/food/create", data)
-}
+export const addFoodCategory = async (data) => {
+  return await Instance.post("/main-categories/food/create", data);
+};
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -56,7 +56,7 @@ export const getFoodReview = async (foodId, page) => {
       params: {
         page: page,
       },
-    })
+    });
 
     // Handle the response
     console.log(response.data);
@@ -128,6 +128,14 @@ export const addCategory = async (data) => {
 export const UpadateCate = async (data) => {
   return await Instance.put(`/main-categories/pharma/update`, data);
 };
+
+export const teliaddCategory = async (data) => {
+  return await Instance.post(`/main-categories/doctor/create`, data);
+};
+export const teliUpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/doctor/update`, data);
+};
+
 export const createSubCategory = async (data) => {
   return await Instance.post(`/sub-categories/create`, data);
 };

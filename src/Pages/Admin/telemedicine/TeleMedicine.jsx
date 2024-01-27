@@ -6,7 +6,7 @@ import lungsimg from "../../../assets/images/3d-fluency-lungs.png";
 import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
-import { MainDoctorCategories } from "../../../API/ApiCall";
+import { MainDoctorCategories, teliaddCategory } from "../../../API/ApiCall";
 import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 import AddCategory from "../../../components/Modal/AddCategory";
 
@@ -15,6 +15,16 @@ export default function TeleMedicine() {
   const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState();
+
+  const getCategory = () => {
+    MainDoctorCategories().then((data) => {
+      setCategories(data?.data?.data?.mainCategories);
+    });
+  };
+
+  function isShowModal() {
+    setShowModal(!showModal);
+  }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(telemedicine());
@@ -25,14 +35,6 @@ export default function TeleMedicine() {
 
     setViewCatInfoModal(true);
   };
-  async function getCategory() {
-    try {
-      const response = await MainDoctorCategories();
-      setCategories(response?.data?.data?.mainCategories);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  }
 
   function addCategory() {
     console.log("Add category in telimedicin");
@@ -54,7 +56,7 @@ export default function TeleMedicine() {
             {categories.length} available categories
           </p>
         </div>
-        <ComunButton text={"Add new categories"} callback={addCategory} />
+        <ComunButton text={"Add new categories"} callback={isShowModal} />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
         {categories[0] &&
@@ -63,11 +65,17 @@ export default function TeleMedicine() {
               <CatCard
                 viewCatInfo={viewCatInfo}
                 data={data}
-                callback={editCat}
+                callback={isShowModal}
               />
             );
           })}
       </div>
+      {showModal && (
+        <AddCategory
+          catFunction={teliaddCategory}
+          setShowModal={setShowModal}
+        />
+      )}
 
       {viewCatInfoModal && (
         <CatInfoModal

@@ -4,12 +4,15 @@ import {
   AprovingwithdrawalRequest,
   GetDoctorWithdrawalRequsts,
 } from "../../../API/ApiCall";
+import { useDispatch } from "react-redux";
+import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 
 function WithdrawalPannel() {
   const [data, SetData] = useState([]);
   const [document, SetDocument] = useState(0);
-
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(telemedicine());
     getWithdrawalRequsts();
   }, []);
 
