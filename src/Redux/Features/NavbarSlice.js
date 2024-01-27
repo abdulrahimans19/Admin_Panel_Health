@@ -192,7 +192,7 @@ const NavBarSlice = createSlice({
           ),
         },
         {
-          name: "Lab Items",
+          name: "Lab",
           link: "/homecare/lab-items",
           logo: (
             <svg
@@ -212,7 +212,7 @@ const NavBarSlice = createSlice({
           ),
         },
         {
-          name: "Appoinment Details",
+          name: "Appoinments",
           link: "/homecare/appoinment-details",
           logo: (
             <svg

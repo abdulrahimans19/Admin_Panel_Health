@@ -16,7 +16,6 @@ export function HomecareLabItems() {
   const [showModal, setShowModal] = useState(false);
 
   const toggleMenu=()=> {
-    console.log("GFHBN");
     setShowModal(!showModal)
   };
   
@@ -55,15 +54,15 @@ export function HomecareLabItems() {
         
       <div className="flex justify-between">
         <div>
-          <h2 className="font-bold text-lg">Categories</h2>
-          <p>2 available categories</p>
+          <h2 className="font-bold text-lg">Lab Items</h2>
+          {/* <p>2 available items</p> */}
         </div>
         <AddLabItemsButton showModel={showModal}  text={"Add lab items "} callback={toggleMenu} />
         
       </div>
       <div className="flex justify-between">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-        <ul className="flex flex-wrap -mb-px">
+        <ul className="flex -mb-px">
           <li className="me-2">
             <a
               href="#"

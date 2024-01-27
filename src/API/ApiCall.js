@@ -85,6 +85,18 @@ export const DoctorRequests = async () => {
 export const AprovetDoctor = async (id) => {
   return await Instance.get(`/doctor/admin/accept-doctor?doctor_id=${id}`);
 };
+export const GetHomecareCategoriesApi = async () => {
+  return await Instance.get(`/main-categories/home-care`);
+};
+export const getAllLabTestsApi = async () => {
+  return await Instance.get(`/tests`);
+};
+export const getRecommendedTestApi = async () => {
+  return await Instance.get(`tests/all-tests?recommended=${true}`);
+};
+export const getDisbledTestApi = async () => {
+  return await Instance.get(`tests/all-tests?disabled=${true}`);
+};
 
 export const UploadImageUrl = async (token) => {
   return await Instance.get("/aws/generate-presigned-url").then(
