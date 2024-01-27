@@ -12,6 +12,7 @@ import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
 import {
   UpadateCate,
   addCategory,
+  countryCodesApi,
   getPharmaCategory,
   getSubCatData,
 } from "../../../API/ApiCall";
@@ -25,7 +26,6 @@ export default function PharmaCategory() {
   const [EditData, setEditData] = useState(null);
   const [subCatData, setSubCatData] = useState([]);
   const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
-
   const dispatch = useDispatch();
 
   const [categoryData, setCategoryData] = useState([]);
@@ -50,6 +50,7 @@ export default function PharmaCategory() {
   useEffect(() => {
     dispatch(pharmacyNav());
     GetPharmacyCat();
+
   }, []);
 
   const viewCatInfo = (data) => {
