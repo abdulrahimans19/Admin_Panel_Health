@@ -60,7 +60,7 @@ export function HomecareLabItems() {
         <AddLabItemsButton showModel={showModal}  text={"Add lab items "} callback={toggleMenu} />
         
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-2">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
         <ul className="flex -mb-px">
           <li className="me-2">
