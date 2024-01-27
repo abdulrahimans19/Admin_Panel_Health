@@ -10,11 +10,14 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
 import { getPharmaProductApi } from "../../../API/ApiCall";
+import ReactPaginate from 'react-paginate';
+import "../../../assets/pagination.css"
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddProductModal, setAddProductModal] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [PharmaProductsData, setPharmaProductsData] = useState([]);
+  const [totalPagecount, setTotalPagecount] = useState(0)
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
@@ -26,6 +29,8 @@ export default function PharmaProduct() {
 
   const PharmaProduct = () => {
     getPharmaProductApi(setPageNumber).then(({ data }) => {
+      const totalPages = Math.ceil(data.data.total_document / 10);
+      setTotalPagecount(totalPages)
       console.log(data.data.products);
 
       setPharmaProductsData(data.data.products);
@@ -38,6 +43,25 @@ export default function PharmaProduct() {
     dispatch(pharmacyNav());
     PharmaProduct();
   }, []);
+
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageChange = (selectedPage) => {
+    // Handle page change logic here, e.g., fetching data for the new page
+    setCurrentPage(selectedPage.selected);
+
+console.log(selectedPage.selected);
+    getPharmaProductApi(selectedPage.selected+1).then(({ data }) => {
+      console.log(data.data.products);
+
+      setPharmaProductsData(data.data.products);
+    });
+
+  };
+
+
+
   return (
     <div>
       <div className="flex gap-3 p-3">
@@ -68,9 +92,7 @@ export default function PharmaProduct() {
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">
-            {PharmaProductsData.length} categories
-          </p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">{PharmaProductsData.length} categories</p>
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
@@ -107,6 +129,16 @@ export default function PharmaProduct() {
       {AddProductModal && (
         <ProductModal setAddProductModal={setAddProductModal} />
       )}
+
+
+<ReactPaginate
+        pageCount={totalPagecount}  // Replace with the total number of pages
+        pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1}  // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 }
