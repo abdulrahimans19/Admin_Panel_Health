@@ -5,11 +5,12 @@ function DateInput({label,selectedDate,onChange}) {
   return (
     <div>
       <div className="text-gray-500 text-base font-normal leading-tight tracking-tight relative">
-    {label}
+    
     <div className="text-slate-400 text-base font-normal leading-tight tracking-tight mt-3 relative">
       <DatePicker
+      placeholderText={label}
         selected={selectedDate}
-        className="border text-gray-900 w-[118px] h-12 px-3 py-2.5 justify-start items-center gap-2 flex rounded-lg"
+        className="border text-gray-900 w-[118px] h-12 px-1 py-2.5 justify-start items-center gap-2 flex rounded-lg"
         onChange={onChange}
       />
       <svg
