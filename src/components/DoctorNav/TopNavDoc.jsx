@@ -72,7 +72,6 @@ function DocNavBar() {
               </button>
 
               <div className="flex ms-2 sm:ms-16  md:me-24">
-            
                 <div className="max-w-44 ">
                   <img className="self-center w-28 " src={logo} alt="" />
                 </div>
@@ -100,7 +99,7 @@ function DocNavBar() {
                             : ""
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}
                       >
-                    {data.logo}
+                        {data.logo}
                         <span class="text-white">{data.name}</span>
                       </div>
                     );

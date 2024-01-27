@@ -70,7 +70,6 @@ const SetNewPass = () => {
                 </div>
               </div>
 
-
               <div className="flex-col justify-center items-center gap-[20px] flex">
                 <div className="flex flex-col items-center justify-center space-y-4 ">
                   <input
@@ -100,7 +99,6 @@ const SetNewPass = () => {
                     </p>
                   </div>
                 </div>
-
 
                 <div className="flex-col justify-start items-start  flex">
                   <button className="h-[58px] px-[105px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">

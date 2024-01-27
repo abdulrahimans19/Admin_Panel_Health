@@ -38,7 +38,9 @@ export const getTransactionForFood = async (startDate, endDate) => {
     },
   });
 };
-
+export const addFoodCategory=async(data)=>{
+  return await Instance.post("/main-categories/food/create", data)
+}
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -54,7 +56,7 @@ export const getFoodReview = async (foodId, page) => {
       params: {
         page: page,
       },
-    });
+    })
 
     // Handle the response
     console.log(response.data);

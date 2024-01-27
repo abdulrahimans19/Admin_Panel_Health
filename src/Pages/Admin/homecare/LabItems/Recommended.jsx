@@ -23,6 +23,7 @@ function Recommended() {
       </div>
 
       <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
+<<<<<<< HEAD
         {recommendedTest[0] && 
         recommendedTest.map((data)=>{
           return(
@@ -30,6 +31,11 @@ function Recommended() {
           )
         })
         }
+=======
+        <TestCard />
+        <TestCard />
+        <TestCard />
+>>>>>>> 3e2a98906301f4606bad59b80a2500e6c17ca225
       </div>
     </div>
   );

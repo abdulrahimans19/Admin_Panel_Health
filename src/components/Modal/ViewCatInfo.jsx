@@ -60,15 +60,19 @@ const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
 
                         <p className="text-xs mb-1 mt-4 ">sub categories</p>
 
-                        {!subCatData[0]? <p className="p-3 border border-1 rounded-md mb-4">
-                             No subcategory available 
-                            </p>:subCatData?.map((data) => {
-                          return (
-                            <p className="p-3 border border-1 rounded-md mb-4">
-                              {data?.title}
-                            </p>
-                          );
-                        })}
+                        {!subCatData[0] ? (
+                          <p className="p-3 border border-1 rounded-md mb-4">
+                            No subcategory available
+                          </p>
+                        ) : (
+                          subCatData?.map((data) => {
+                            return (
+                              <p className="p-3 border border-1 rounded-md mb-4">
+                                {data?.title}
+                              </p>
+                            );
+                          })
+                        )}
                       </div>
                       {/*footer*/}
                       <div className=" flex items-center justify-end pt-4 pb-6 pr-5  rounded-b ">

@@ -334,189 +334,189 @@ function SideBar() {
                   : "text-white"
               } `}
             >
-             { currentRoute === "/transaction"?
-             <svg
-             fill="#"
-             width="30"
-             height="25"
-             viewBox="0 0 24 24"
-             id="exchange-dollar"
-             data-name="Flat Line"
-             xmlns="http://www.w3.org/2000/svg"
-             className="icon flat-line"
-           >
-             <g id="SVGRepo_bgCarrier" strokeWidth={0} />
-             <g
-               id="SVGRepo_tracerCarrier"
-               strokeLinecap="round"
-               strokeLinejoin="round"
-             />
-             <g id="SVGRepo_iconCarrier">
-               <path
-                 id="primary"
-                 d="M20,12a7.91,7.91,0,0,0-.35-2.35,8,8,0,0,0-14.35-2"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-               <path
-                 id="primary-2"
-                 data-name="primary"
-                 d="M4,12a7.91,7.91,0,0,0,.35,2.35,8,8,0,0,0,14.35,2"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-               <polyline
-                 id="primary-3"
-                 data-name="primary"
-                 points="19 11 20 12 21 11"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-               <polyline
-                 id="primary-4"
-                 data-name="primary"
-                 points="5 13 4 12 3 13"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-               <path
-                 id="primary-5"
-                 data-name="primary"
-                 d="M10,15h2.5A1.5,1.5,0,0,0,14,13.5h0A1.5,1.5,0,0,0,12.5,12h-1A1.5,1.5,0,0,1,10,10.5h0A1.5,1.5,0,0,1,11.5,9H14"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-               <path
-                 id="primary-6"
-                 data-name="primary"
-                 d="M12,9V8m0,8V15"
-                 style={{
-                   fill: "none",
-                   stroke: "black",  // Changed to black
-                   strokeLinecap: "round",
-                   strokeLinejoin: "round",
-                   strokeWidth: 2,
-                 }}
-               />
-             </g>
-           </svg>
-           
-             
-             :<svg
-                fill="#"
-                width="30"
-                height="25"
-                viewBox="0 0 24 24"
-                id="exchange-dollar"
-                data-name="Flat Line"
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon flat-line"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth={0} />
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    id="primary"
-                    d="M20,12a7.91,7.91,0,0,0-.35-2.35,8,8,0,0,0-14.35-2"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
+              {currentRoute === "/transaction" ? (
+                <svg
+                  fill="#"
+                  width="30"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  id="exchange-dollar"
+                  data-name="Flat Line"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon flat-line"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth={0} />
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                  <path
-                    id="primary-2"
-                    data-name="primary"
-                    d="M4,12a7.91,7.91,0,0,0,.35,2.35,8,8,0,0,0,14.35,2"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      id="primary"
+                      d="M20,12a7.91,7.91,0,0,0-.35-2.35,8,8,0,0,0-14.35-2"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-2"
+                      data-name="primary"
+                      d="M4,12a7.91,7.91,0,0,0,.35,2.35,8,8,0,0,0,14.35,2"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <polyline
+                      id="primary-3"
+                      data-name="primary"
+                      points="19 11 20 12 21 11"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <polyline
+                      id="primary-4"
+                      data-name="primary"
+                      points="5 13 4 12 3 13"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-5"
+                      data-name="primary"
+                      d="M10,15h2.5A1.5,1.5,0,0,0,14,13.5h0A1.5,1.5,0,0,0,12.5,12h-1A1.5,1.5,0,0,1,10,10.5h0A1.5,1.5,0,0,1,11.5,9H14"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-6"
+                      data-name="primary"
+                      d="M12,9V8m0,8V15"
+                      style={{
+                        fill: "none",
+                        stroke: "black", // Changed to black
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                  </g>
+                </svg>
+              ) : (
+                <svg
+                  fill="#"
+                  width="30"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  id="exchange-dollar"
+                  data-name="Flat Line"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon flat-line"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth={0} />
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                  <polyline
-                    id="primary-3"
-                    data-name="primary"
-                    points="19 11 20 12 21 11"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
-                  />
-                  <polyline
-                    id="primary-4"
-                    data-name="primary"
-                    points="5 13 4 12 3 13"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
-                  />
-                  <path
-                    id="primary-5"
-                    data-name="primary"
-                    d="M10,15h2.5A1.5,1.5,0,0,0,14,13.5h0A1.5,1.5,0,0,0,12.5,12h-1A1.5,1.5,0,0,1,10,10.5h0A1.5,1.5,0,0,1,11.5,9H14"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
-                  />
-                  <path
-                    id="primary-6"
-                    data-name="primary"
-                    d="M12,9V8m0,8V15"
-                    style={{
-                      fill: "none",
-                      stroke: "#ede8e8",
-                      strokeLinecap: "round",
-                      strokeLinejoin: "round",
-                      strokeWidth: 2,
-                    }}
-                  />
-                </g>
-              </svg>} 
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      id="primary"
+                      d="M20,12a7.91,7.91,0,0,0-.35-2.35,8,8,0,0,0-14.35-2"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-2"
+                      data-name="primary"
+                      d="M4,12a7.91,7.91,0,0,0,.35,2.35,8,8,0,0,0,14.35,2"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <polyline
+                      id="primary-3"
+                      data-name="primary"
+                      points="19 11 20 12 21 11"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <polyline
+                      id="primary-4"
+                      data-name="primary"
+                      points="5 13 4 12 3 13"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-5"
+                      data-name="primary"
+                      d="M10,15h2.5A1.5,1.5,0,0,0,14,13.5h0A1.5,1.5,0,0,0,12.5,12h-1A1.5,1.5,0,0,1,10,10.5h0A1.5,1.5,0,0,1,11.5,9H14"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                    <path
+                      id="primary-6"
+                      data-name="primary"
+                      d="M12,9V8m0,8V15"
+                      style={{
+                        fill: "none",
+                        stroke: "#ede8e8",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        strokeWidth: 2,
+                      }}
+                    />
+                  </g>
+                </svg>
+              )}
 
               <span class="ms-1">Transaction</span>
             </a>

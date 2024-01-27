@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const MyChart = ({data}) => {
+const MyChart = ({ data }) => {
   const [foodChart, setFoodChart] = useState(true);
 
   const series = [
     {
       name: "Series 1",
-      data: Object.values(data).map(value => parseFloat(value.toFixed(2))),
+      data: Object.values(data).map((value) => parseFloat(value.toFixed(2))),
     },
   ];
 
@@ -61,7 +61,6 @@ const MyChart = ({data}) => {
           type="line"
           height={350}
         />
-       
       </div>
     </div>
   );

@@ -255,17 +255,15 @@ const Login = () => {
           setErrmsg("Email or password is incorrect");
         });
     } else {
-      
-      DoctorLogInApi(UserData).then((data) => {
-        localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-        navigate("/doctor/overview");
-      })
-      .catch((err) => {
-        setErrmsg("Email or password is incorrect");
-      });
-console.log("doc log");
-
-
+      DoctorLogInApi(UserData)
+        .then((data) => {
+          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+          navigate("/doctor/overview");
+        })
+        .catch((err) => {
+          setErrmsg("Email or password is incorrect");
+        });
+      console.log("doc log");
     }
   };
 
