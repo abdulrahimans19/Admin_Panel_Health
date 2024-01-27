@@ -30,6 +30,11 @@ import FoodCategory from "./Pages/Admin/Food/Categories";
 import FoodProduct from "./Pages/Admin/Food/Products";
 import FoodOrder from "./Pages/Admin/Food/Orders";
 import FoodReview from "./Pages/Admin/Food/Review";
+import OverView from "./Pages/Doctor/Dashboard/OverView";
+import DocTransaction from "./Pages/Doctor/transaction/Transaction";
+import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
+import Appointments from "./Pages/Doctor/Appointments/Appointments";
+import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
 
 function App() {
   return (
@@ -39,13 +44,20 @@ function App() {
         <Route element={<Home />} path="">
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
+          <Route
+            element={<WithdrawalPannel />}
+            path="/telemedicine/Withdrawalpannal"
+          />
           {/* <Route element={<Homecare />} path="/homecare" /> */}
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
-          <Route element={<HomecareLabItems/>} path="homecare/lab-items" />
-          <Route element={<AppoinmentDetails/>} path="homecare/appoinment-details" />
-          
-          <Route element={<Homecare />} path="/homecare/categories"/>
+          <Route element={<HomecareLabItems />} path="homecare/lab-items" />
+          <Route
+            element={<AppoinmentDetails />}
+            path="homecare/appoinment-details"
+          />
+
+          <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 
           <Route element={<PharmaCategory />} path="/pharmacy/category" />
@@ -66,7 +78,12 @@ function App() {
       </Route>
 
       <Route element={<LoggedInDoctor />}>
-        <Route element={<DoctorHome />} path="/doctor/home" />
+        <Route element={<DoctorHome />} path="">
+          <Route element={<OverView />} path="/doctor/overview" />
+          <Route element={<Appointments />} path="/doctor/appointments" />
+          <Route element={<AppointmentHistory />} path="/doctor/history" />
+          <Route element={<DocTransaction />} path="/doctor/transaction" />
+        </Route>
       </Route>
 
       <Route element={<LoggedInUser />}>

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PriceDisplayCard() {
+export default function PriceDisplayCard({data}) {
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
      <svg  height="64px" width="30px" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@ export default function PriceDisplayCard() {
         </h5>
       </a>
       <div className="flex items-center space-x-4">
-        <span className="font-semibold text-3xl">$25555</span>
+        <span className="font-semibold text-3xl">${data?.toFixed(2)}</span>
         <span className="font-semibold text-green-500">+222</span>
       </div>
     </div>
