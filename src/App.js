@@ -30,6 +30,7 @@ import FoodCategory from "./Pages/Admin/Food/Categories";
 import FoodProduct from "./Pages/Admin/Food/Products";
 import FoodOrder from "./Pages/Admin/Food/Orders";
 import FoodReview from "./Pages/Admin/Food/Review";
+import OrdeeDetails from "./components/OrderDetails";
 
 function App() {
   return (
@@ -37,15 +38,19 @@ function App() {
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
+          <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
           {/* <Route element={<Homecare />} path="/homecare" /> */}
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
-          <Route element={<HomecareLabItems/>} path="homecare/lab-items" />
-          <Route element={<AppoinmentDetails/>} path="homecare/appoinment-details" />
-          
-          <Route element={<Homecare />} path="/homecare/categories"/>
+          <Route element={<HomecareLabItems />} path="homecare/lab-items" />
+          <Route
+            element={<AppoinmentDetails />}
+            path="homecare/appoinment-details"
+          />
+
+          <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 
           <Route element={<PharmaCategory />} path="/pharmacy/category" />

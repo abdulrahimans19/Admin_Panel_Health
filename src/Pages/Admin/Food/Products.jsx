@@ -61,14 +61,13 @@ export default function FoodProduct() {
           Disabled
         </p>
       </div>
-
       <div className="flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
-            {categoryMenu.total_document}
+            {categoryMenu.length}
           </p>
         </div>
         <div>
@@ -107,6 +106,7 @@ export default function FoodProduct() {
       {AddProductModal && (
         <ProductModal setAddProductModal={setAddProductModal} />
       )}
+      \
     </div>
   );
 }

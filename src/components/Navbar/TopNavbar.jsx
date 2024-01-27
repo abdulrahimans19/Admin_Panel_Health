@@ -103,7 +103,7 @@ function NavBar() {
                             : ""
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}
                       >
-                    {data.logo}
+                        {data.logo}
                         <span class="text-white">{data.name}</span>
                       </div>
                     );

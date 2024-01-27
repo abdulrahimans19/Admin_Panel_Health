@@ -9,7 +9,7 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
-import { getFoodCategory } from "../../../API/ApiCall";
+import { getFoodCategory,addFoodCategory } from "../../../API/ApiCall";
 
 export default function FoodCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
@@ -26,7 +26,8 @@ export default function FoodCategory() {
     console.log(data);
   };
 
-  const addcategory = () => {
+  const addcategory = async () => {
+    
     console.log("add category modal");
   };
 
@@ -66,7 +67,10 @@ export default function FoodCategory() {
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">5 categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">
+            {" "}
+            {categoryMenu.length}
+          </p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
