@@ -1,16 +1,10 @@
 import React, { useState } from "react";
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
 
-function WithdrawalTable({
-  status,
-  data,
-  document,
-  availabe,
-  callBack,
-  btText,
-}) {
+function WithdrawalTable({ data, document, availabe, callBack, btText }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
+  const [withdrawID, setWithdrawID] = useState();
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -22,6 +16,8 @@ function WithdrawalTable({
         toggleModal={toggleModal}
         user={user}
         callback={callBack}
+        status={"aprove"}
+        id={withdrawID}
       />
       <h1 className="font-bold mt-3 text-lg">Doctor</h1>
       <p className="text-gray-500 text-xs">
@@ -60,7 +56,11 @@ function WithdrawalTable({
                     </td>
                   }
                   <td class="p-1 flex justify-center items-center">
-                    <img src={data.image} alt="" className="w-10 h-10" />
+                    <img
+                      src={data?.doctor_id?.image}
+                      alt=""
+                      className="w-10 h-10"
+                    />
                   </td>
                   <td class="p-1">{data.name}</td>
                   <td class="p-1">{data.country}</td>
@@ -79,7 +79,8 @@ function WithdrawalTable({
                       className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
                       type="button"
                       onClick={() => {
-                        setUser(data);
+                        setUser(data?.doctor_id);
+                        setWithdrawID(data?._id);
                         setShowModal(true);
                       }}
                     >

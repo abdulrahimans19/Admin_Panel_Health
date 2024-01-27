@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import WithdrawalTable from "../../../components/Tables/telemedicin/WithdrawalTable";
-import { GetDoctorWithdrawalRequsts } from "../../../API/ApiCall";
+import {
+  AprovingwithdrawalRequest,
+  GetDoctorWithdrawalRequsts,
+} from "../../../API/ApiCall";
 
 function WithdrawalPannel() {
   const [data, SetData] = useState([]);
+  const [document, SetDocument] = useState(0);
 
   useEffect(() => {
     getWithdrawalRequsts();
   }, []);
+
   function getWithdrawalRequsts() {
     GetDoctorWithdrawalRequsts().then((data) => {
       SetData(data.data.data.withdrawals);
-      console.log(data.data.data.withdrawals[0]?.doctor_id);
+      SetDocument(data.data.data?.total_document);
     });
   }
   const [activeTab, setActiveTab] = useState(1);
@@ -24,15 +29,22 @@ function WithdrawalPannel() {
       case 1:
         return (
           <WithdrawalTable
-            status={true}
             availabe={"Requested"}
             btText={"Accept "}
             data={data}
+            callBack={AprovingwithdrawalRequest}
+            document={document}
           />
         );
       case 2:
         return (
-          <WithdrawalTable availabe={"Request Approved"} btText={"Approved"} />
+          <WithdrawalTable
+            callBack={""}
+            data={""}
+            availabe={"Request Approved"}
+            btText={"Approved"}
+            document={"1"}
+          />
         );
     }
   };

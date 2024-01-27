@@ -148,3 +148,7 @@ export const GetAllBlockd = async () => {
 export const GetDoctorWithdrawalRequsts = async (page) => {
   return await Instance.get("/withdrawal/withdrawal-requests?page=1");
 };
+
+export const AprovingwithdrawalRequest = async (id) => {
+  return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
+};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
-import { GetAllDoctors } from "../../../API/ApiCall";
+import { AprovetDoctor, GetAllDoctors } from "../../../API/ApiCall";
 
 export default function DoctorRequstTable({
   isRequsted,
@@ -22,6 +22,7 @@ export default function DoctorRequstTable({
     if (status === "approved") {
       GetAllDoctors(pagenum).then((data) => {
         setData(data?.data?.data?.doctors);
+        console.log(data?.data?.data?.doctors);
       });
     }
   };
@@ -29,7 +30,9 @@ export default function DoctorRequstTable({
     setShowModal(!showModal);
   };
 
-  let page = document / 10;
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
   console.log(page, "       page num");
 
   return (
@@ -41,7 +44,7 @@ export default function DoctorRequstTable({
         status={status}
         btImg={btImg}
         btText={btText}
-        callback={callBack}
+        callback={AprovetDoctor}
       />
       <h1 className="font-bold mt-3 text-lg">Doctor</h1>
       <p className="text-gray-500 text-xs">
