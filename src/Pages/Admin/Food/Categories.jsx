@@ -131,9 +131,9 @@ export default function FoodCategory() {
       </div>
       {AddCategoryModal && (
         <AddCategory
-          catFunction={addFoodCategory}
+        catFunction={addFoodCategory}
           setShowModal={setAddCategoryModal}
-          getFoodCategory={getFoodCategory}
+          GetPharmacyCat={getFoodCategory}
         />
       )}
       {editCatModal && (
@@ -142,7 +142,7 @@ export default function FoodCategory() {
           incomingType={"edit"}
           dataToUpload={EditData}
           setShowModal={setEditCatModal}
-          getFoodCategory={getFoodCategory}
+          GetPharmacyCat={getFoodCategory}
         />
       )}
 
