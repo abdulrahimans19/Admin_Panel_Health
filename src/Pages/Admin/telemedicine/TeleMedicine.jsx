@@ -68,15 +68,7 @@ export default function TeleMedicine() {
             );
           })}
       </div>
-      {showModal && (
-        <AddCategory
-          catFunction={UpadateCate}
-          incomingType={"edit"}
-          dataToUpload={editData}
-          setShowModal={setEditCatModal}
-          GetPharmacyCat={GetPharmacyCat}
-        />
-      )}
+
       {viewCatInfoModal && (
         <CatInfoModal
           catInfo={editData}
