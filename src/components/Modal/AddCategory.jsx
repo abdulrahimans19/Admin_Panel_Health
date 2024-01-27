@@ -12,7 +12,6 @@ export default function AddCategory({
   incomingType,
   GetPharmacyCat,
   catFunction,
-  callback,
 }) {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
@@ -99,7 +98,7 @@ export default function AddCategory({
 
           catFunction(WholeData)
             .then((data) => {
-              callback();
+              GetPharmacyCat();
 
               setShowModal(false);
             })

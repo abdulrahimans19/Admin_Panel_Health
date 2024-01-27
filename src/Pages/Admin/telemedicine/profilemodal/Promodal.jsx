@@ -1,7 +1,5 @@
 import { useState } from "react";
 import download from "../../../../assets/images/downloadimg.png";
-import { AprovetDoctor, CanclationDoctor } from "../../../../API/ApiCall";
-
 export default function ({
   status,
   showModal,
@@ -157,11 +155,6 @@ export default function ({
                             className="text-xs background-transparent p-1 pl-5 pr-5 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
                             onClick={async () => {
-                              if (id) {
-                                await CanclationDoctor(user?._id);
-
-                                toggleModal();
-                              }
                               toggleModal();
                             }}
                           >

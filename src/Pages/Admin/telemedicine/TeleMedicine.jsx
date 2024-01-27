@@ -6,7 +6,11 @@ import lungsimg from "../../../assets/images/3d-fluency-lungs.png";
 import heartimg from "../../../assets/images/heart.png";
 import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
-import { MainDoctorCategories, teliaddCategory } from "../../../API/ApiCall";
+import {
+  MainDoctorCategories,
+  teliUpadateCate,
+  teliaddCategory,
+} from "../../../API/ApiCall";
 import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 import AddCategory from "../../../components/Modal/AddCategory";
 
@@ -14,6 +18,7 @@ export default function TeleMedicine() {
   const [categories, setCategories] = useState([]);
   const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [editShowModal, setEditShowModal] = useState(false);
   const [editData, setEditData] = useState();
 
   const getCategory = () => {
@@ -21,10 +26,14 @@ export default function TeleMedicine() {
       setCategories(data?.data?.data?.mainCategories);
     });
   };
-
-  function isShowModal() {
+  const isShowModal = () => {
     setShowModal(!showModal);
-  }
+  };
+  const editCat = (data) => {
+    setEditShowModal(true);
+
+    setEditData(data);
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(telemedicine());
@@ -39,11 +48,6 @@ export default function TeleMedicine() {
   function addCategory() {
     console.log("Add category in telimedicin");
   }
-  const editCat = (data) => {
-    setShowModal(true);
-
-    setEditData(data);
-  };
 
   return (
     <div className="container mt-5">
@@ -65,18 +69,28 @@ export default function TeleMedicine() {
               <CatCard
                 viewCatInfo={viewCatInfo}
                 data={data}
-                callback={isShowModal}
+                callback={editCat}
               />
             );
           })}
       </div>
+
       {showModal && (
         <AddCategory
           catFunction={teliaddCategory}
           setShowModal={setShowModal}
+          GetPharmacyCat={getCategory}
         />
       )}
-
+      {editShowModal && (
+        <AddCategory
+          catFunction={teliUpadateCate}
+          incomingType={"edit"}
+          dataToUpload={editData}
+          setShowModal={setEditShowModal}
+          GetPharmacyCat={getCategory}
+        />
+      )}
       {viewCatInfoModal && (
         <CatInfoModal
           catInfo={editData}

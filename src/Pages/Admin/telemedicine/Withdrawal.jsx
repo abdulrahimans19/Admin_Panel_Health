@@ -3,23 +3,33 @@ import WithdrawalTable from "../../../components/Tables/telemedicin/WithdrawalTa
 import {
   AprovingwithdrawalRequest,
   GetDoctorWithdrawalRequsts,
+  GetDrAprovedWithdrawalRequsts,
 } from "../../../API/ApiCall";
 import { useDispatch } from "react-redux";
 import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 
 function WithdrawalPannel() {
   const [data, SetData] = useState([]);
+  const [aproveddata, SetAprovedData] = useState([]);
   const [document, SetDocument] = useState(0);
+  const [document1, SetDocument1] = useState(0);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(telemedicine());
     getWithdrawalRequsts();
+    GetAprovedWithdrawalRequsts();
   }, []);
 
   function getWithdrawalRequsts() {
     GetDoctorWithdrawalRequsts().then((data) => {
       SetData(data.data.data.withdrawals);
       SetDocument(data.data.data?.total_document);
+    });
+  }
+  function GetAprovedWithdrawalRequsts() {
+    GetDrAprovedWithdrawalRequsts().then((data) => {
+      SetAprovedData(data.data.data.withdrawals);
+      SetDocument1(data.data.data?.total_document);
     });
   }
   const [activeTab, setActiveTab] = useState(1);
@@ -37,16 +47,18 @@ function WithdrawalPannel() {
             data={data}
             callBack={AprovingwithdrawalRequest}
             document={document}
+            setData={SetData}
           />
         );
       case 2:
         return (
           <WithdrawalTable
             callBack={""}
-            data={""}
+            data={aproveddata}
             availabe={"Request Approved"}
             btText={"Approved"}
-            document={"1"}
+            document={document1}
+            setData={SetAprovedData}
           />
         );
     }

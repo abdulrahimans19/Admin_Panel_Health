@@ -179,14 +179,16 @@ export const GetAllBlockd = async () => {
   return await Instance.get("/doctor/admin/blocked-doctor");
 };
 
-export const GetDoctorWithdrawalRequsts = async (page) => {
-  return await Instance.get("/withdrawal/withdrawal-requests?page=1");
+export const GetDoctorWithdrawalRequsts = async (page = 1) => {
+  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
 };
 
 export const AprovingwithdrawalRequest = async (id) => {
   return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
 };
-
-export const getAppoinmentsApi = async (year,month,date) => {
+export const GetDrAprovedWithdrawalRequsts = async (page) => {
+  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
+};
+export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
