@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
-import { AprovetDoctor, GetAllDoctors } from "../../../API/ApiCall";
+import {
+  AprovetDoctor,
+  CanclationDoctor,
+  DoctorRequests,
+  GetAllBlockd,
+  GetAllDoctors,
+} from "../../../API/ApiCall";
+import ReactPaginate from "react-paginate";
 
 export default function DoctorRequstTable({
   isRequsted,
@@ -16,14 +23,24 @@ export default function DoctorRequstTable({
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
   const [datas, setData] = useState([]);
-  const [pagenum, setPagenum] = useState(1);
 
-  const getPageDatas = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageChange = (selectedPage) => {
     if (status === "approved") {
-      GetAllDoctors(pagenum).then((data) => {
+      GetAllDoctors(selectedPage.selected + 1).then((data) => {
         setData(data?.data?.data?.doctors);
-        console.log(data?.data?.data?.doctors);
       });
+      if (status === "requests") {
+        DoctorRequests(selectedPage.selected + 1).then((data) => {
+          setData(data?.data?.data?.doctors);
+        });
+      }
+      if (status === "unBlock") {
+        GetAllBlockd(selectedPage.selected + 1).then((data) => {
+          setData(data?.data?.data?.doctors);
+        });
+      }
     }
   };
   const toggleModal = () => {
@@ -84,6 +101,7 @@ export default function DoctorRequstTable({
                         <button
                           onClick={() => {
                             setUser(data);
+                            callBack = CanclationDoctor;
                             setShowModal(true);
                           }}
                           style={{
@@ -221,61 +239,15 @@ export default function DoctorRequstTable({
               })}
         </tbody>
       </table>
-      {page > 1 ? (
-        <div className="mt-5">
-          <nav aria-label="flex justify-center">
-            <ul className="list-style-none flex justify-center">
-              <li>
-                <a
-                  className="relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                  href="#!"
-                  onClick={() => {
-                    if (pagenum > 1) {
-                      setPagenum(pagenum - 1);
-                      getPageDatas();
-                    }
-                  }}
-                >
-                  Previous
-                </a>
-              </li>
-              {Array.from({ length: page }, (_, index) => (
-                <li key={index}>
-                  <a
-                    className={`relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 ${
-                      index + 1 == pagenum ? "bg-neutral-500" : ""
-                    }   dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
-                    href="#!"
-                    onClick={() => {
-                      setPagenum(index + 1);
-
-                      getPageDatas();
-                    }}
-                  >
-                    {index + 1}
-                  </a>
-                </li>
-              ))}
-
-              <li>
-                <a
-                  className="relative block rounded bg-transparent px-5 py-3 text-lg text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                  href="#!"
-                  onClick={() => {
-                    if (pagenum < page) {
-                      setPagenum(pagenum + 1);
-                      getPageDatas();
-                    }
-                  }}
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      ) : (
-        ""
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
       )}
     </div>
   );

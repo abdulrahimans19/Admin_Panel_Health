@@ -58,21 +58,11 @@ const ProductModal = ({
     console.log(UserData);
     console.log(fileToUpload);
     let publicUrl;
-    console.log(editProductData.image, "iushgfw");
+  
     if (editImage) {
       publicUrl = editProductData.image;
-    } else {
-      UploadImageUrl().then((data) => {
-        uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-          console.log(data, "uploaded");
-        });
 
-        publicUrl = data.data.publicUrl;
-      });
-    }
-    let wholeData;
-    if (incomingType == "edit") {
-      wholeData = {
+      const   wholeData = {
         product_id: editProductData._id,
         name: UserData.name,
         description: UserData.description,
@@ -83,21 +73,8 @@ const ProductModal = ({
         sub_category_id: UserData.dropdown2,
         country_codes: selectedCountries,
       };
-    } else {
-      wholeData = {
-        name: UserData.name,
-        description: UserData.description,
-        brand: UserData.brand,
-        image: publicUrl,
-        quantity: parseInt(UserData.quantity),
-        price: parseInt(UserData.price),
-        sub_category_id: UserData.dropdown2,
-        country_codes: selectedCountries,
-      };
-    }
 
-    console.log(wholeData);
-    apiCall(wholeData)
+      apiCall(wholeData)
       .then((data) => {
         setAddProductModal(false);
         getProducts()
@@ -106,6 +83,68 @@ const ProductModal = ({
         setAddProductModal(false);
         getProducts()
       });
+
+
+
+    } else {
+     
+      UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+          console.log(data, "uploaded");
+        });
+console.log(data.data.publicUrl,"uploadedssssss");
+        publicUrl = data.data.publicUrl;
+        console.log(publicUrl);
+        
+
+        let wholeData;
+        if (incomingType == "edit") {
+           wholeData = {
+            product_id: editProductData._id,
+            name: UserData.name,
+            description: UserData.description,
+            brand: UserData.brand,
+            image: publicUrl,
+            quantity: parseInt(UserData.quantity),
+            price: parseInt(UserData.price),
+            sub_category_id: UserData.dropdown2,
+            country_codes: selectedCountries,
+          };
+        } else {
+          wholeData = {
+            name: UserData.name,
+            description: UserData.description,
+            brand: UserData.brand,
+            image: publicUrl,
+            quantity: parseInt(UserData.quantity),
+            price: parseInt(UserData.price),
+            sub_category_id: UserData.dropdown2,
+            country_codes: selectedCountries,
+          };
+        }
+    
+
+        apiCall(wholeData)
+        .then((data) => {
+          setAddProductModal(false);
+          getProducts()
+        })
+        .catch((err) => {
+          setAddProductModal(false);
+          getProducts()
+        });
+
+
+
+      });
+
+
+
+
+
+    }
+   
+    
   };
 
   const mainCategory = () => {

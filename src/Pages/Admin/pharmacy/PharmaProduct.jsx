@@ -49,7 +49,7 @@ export default function PharmaProduct() {
 
   const PharmaProduct = () => {
     if (filterId) {
-      setCurrentPage(0)
+      setCurrentPage(0);
       filterPharmaAPi(filterId, 1).then(({ data }) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
@@ -80,12 +80,12 @@ export default function PharmaProduct() {
     getFarmaCategories();
   }, []);
   const handlePageChange = (selectedPage) => {
-    setCurrentPage(selectedPage.selected)
-    
+    setCurrentPage(selectedPage.selected);
+
     if (filterId) {
       filterPharmaAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
         setPageNumber(selectedPage.selected + 1);
-        
+
         setPharmaProductsData(data.data.products);
       });
     } else {

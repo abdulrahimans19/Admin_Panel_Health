@@ -59,6 +59,7 @@ export default function AddCategory({
 
       catFunction(WholeData)
         .then((data) => {
+          console.log("this is one ofe check");
           GetPharmacyCat();
 
           setShowModal(false);
@@ -146,12 +147,10 @@ export default function AddCategory({
 
                             {!showImage ? (
                               <div>
-                         
-                                  <p>
-                                    Drag 'n' drop some files here, or click to
-                                    select files
-                                  </p>
-                               
+                                <p>
+                                  Drag 'n' drop some files here, or click to
+                                  select files
+                                </p>
                               </div>
                             ) : (
                               <div
