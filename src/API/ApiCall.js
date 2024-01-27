@@ -81,7 +81,6 @@ export const DoctorRequests = async () => {
   return await Instance.get("/doctor/admin/pending-doctor");
 };
 export const AprovetDoctor = async (id) => {
-  console.log(id);
   return await Instance.get(`/doctor/admin/accept-doctor?doctor_id=${id}`);
 };
 
@@ -127,7 +126,8 @@ export const monthlyEarningApi = async (data) => {
   return await Instance.get(`/order/monthly-earnings?type=${data}`);
 };
 export const GetAllDoctors = async (page = 1) => {
-  console.log("page number is == ", page);
+  console.log(page, " = = =page in api");
+
   return await Instance.get(`/doctor/admin/all?page=${page}`);
 };
 
@@ -145,4 +145,18 @@ export const TotalAppointmentApi = async (pageNumber) => {
 };
 export const getProductApi = async (data) => {
   return await Instance.get(`/review/get-review${data}`);
+};
+export const BlockOrUnBlockDoctor = async (id) => {
+  console.log("Block or un block doctur ");
+  return await Instance.get(
+    `/doctor/admin/change-block-status?doctor_id=${id}`
+  );
+};
+
+export const GetAllBlockd = async () => {
+  return await Instance.get("/doctor/admin/blocked-doctor");
+};
+
+export const GetDoctorWithdrawalRequsts = async (page) => {
+  return await Instance.get("/withdrawal/withdrawal-requests?page=1");
 };
