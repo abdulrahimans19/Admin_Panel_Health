@@ -57,9 +57,7 @@ const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
                         <h6 className="mb-4 text-xl font-bold">overview</h6>
                         <p className="text-xs mb-1">category Name</p>
                         <p className="text-xl font-bold">{catInfo.title}</p>
-
                         <p className="text-xs mb-1 mt-4 ">sub categories</p>
-
                         {!subCatData || !subCatData[0] ? (
                           <p className="p-3 border border-1 rounded-md mb-4">
                             No subcategory available

@@ -13,6 +13,9 @@ export const LoginUserdata = async (data) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
+export const getPharmaOrders = async () => {
+  return await Instance.get("/order/pharma/all-orders");
+};
 export const getTransactionForHomeCare = async (startDate, endDate) => {
   return await Instance.get("/admin/transaction/home-care", {
     params: {
@@ -38,9 +41,18 @@ export const getTransactionForFood = async (startDate, endDate) => {
     },
   });
 };
-export const addFoodCategory=async(data)=>{
-  return await Instance.post("/main-categories/food/create", data)
-}
+export const addFoodCategory = async (data) => {
+  return await Instance.post(`/main-categories/food/create`, data);
+};
+export const UpadateFoodCategory = async (data) => {
+  return await Instance.put(`/main-categories/food/update`, data);
+};
+export const createFoodSubCategory = async (data) => {
+  return await Instance.post(`/sub-categories/create`, data);
+};
+export const getFoodSubCategory = async (data) => {
+  return await Instance.get(`sub-categories/${data}`);
+};
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -56,7 +68,7 @@ export const getFoodReview = async (foodId, page) => {
       params: {
         page: page,
       },
-    })
+    });
 
     // Handle the response
     console.log(response.data);

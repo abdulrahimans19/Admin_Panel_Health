@@ -5,7 +5,9 @@ import cx from "../assets/images/Customer.png";
 import or from "../assets/images/orderInfo.png";
 import ad from "../assets/images/address.png";
 import { useParams } from "react-router-dom";
-import { getFoodOrders } from "../API/ApiCall";
+import { useNavigate } from "react-router-dom";
+
+import { getFoodOrders, getPharmaOrders } from "../API/ApiCall";
 
 export default function OrderDetails() {
   const [orders, setOrders] = useState([]);
@@ -13,20 +15,45 @@ export default function OrderDetails() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { orderId } = useParams();
 
   useEffect(() => {
-    dispatch(foodNavdata());
-    getFoodOrders()
-      .then(({ data }) => {
-        console.log(data.data.orders);
-        setOrders(data.data.orders || []);
-      })
-      .catch((error) => {
+    const fetchFunction = async () => {
+      try {
+        const foodResponse = await getFoodOrders();
+        const pharmaResponse = await getPharmaOrders();
+
+        const foodOrders = foodResponse.data.data.orders || [];
+        const pharmaOrders = pharmaResponse.data.data.orders || [];
+
+        // Check if orderId is in foodOrders or pharmaOrders
+        const matchedOrder =
+          foodOrders.find((order) => order._id === orderId) ||
+          pharmaOrders.find((order) => order._id === orderId);
+
+        if (!matchedOrder) {
+          console.log("No matching order found");
+          return;
+        }
+
+        // Check product type and dispatch corresponding action
+        const productType = matchedOrder.product_type;
+        if (productType === "PHARMA") {
+          dispatch(pharmacyNav());
+        } else if (productType === "FOOD") {
+          dispatch(foodNavdata());
+        }
+
+        setOrders([matchedOrder]); // Set the matched order to state
+      } catch (error) {
         console.error("Error fetching orders:", error);
-      });
-  }, [dispatch]);
+      }
+    };
+
+    fetchFunction();
+  }, [dispatch, orderId]);
 
   const handleChangeStatus = (newStatus) => {
     setStatus(newStatus);
@@ -38,7 +65,9 @@ export default function OrderDetails() {
   }
 
   const matchedOrder = orders.find((order) => order._id === orderId);
-
+  if (!matchedOrder) {
+    return <div>No matching order found</div>;
+  }
   return (
     <div style={{ margin: "30px" }}>
       <div
@@ -49,7 +78,7 @@ export default function OrderDetails() {
         }}
       >
         <div>
-          <div>Order Id: {orderId}</div>
+          <div><strong>Order Id:</strong> {orderId}</div>
           <div
             style={{
               marginRight: "10px",
@@ -112,7 +141,7 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-            <h2>Customer</h2>
+           <strong> <h2>Customer</h2></strong>
             {matchedOrder ? (
               <>
                 <p>Full Name: {matchedOrder.address_id.full_name}</p>
@@ -138,7 +167,7 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-            <h2>Order Info</h2>
+            <strong><h2>Order Info</h2></strong>
             {matchedOrder ? (
               <>
                 <p>Shipping: {matchedOrder.address_id.shipping}</p>
@@ -166,7 +195,7 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-            <h2>Address</h2>
+            <strong><h2>Address</h2></strong>
             {matchedOrder ? (
               <>
                 <p>Address: {matchedOrder.address_id.state}</p>
@@ -239,26 +268,93 @@ export default function OrderDetails() {
         }}
       >
         <div>
-          <strong>Subtotal:{matchedOrder.real_total_amount}</strong>
+          <strong>Subtotal:</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.real_total_amount}
+          </span>
         </div>
         <div>
-          <strong>Tax (10%):{matchedOrder.real_total_amount}</strong>
+          <strong>Tax (10%):</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.real_total_amount}
+          </span>
         </div>
         <div>
-          <strong>Discount:{matchedOrder.discounted_amount}</strong>
+          <strong>Discount:</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.discounted_amount}
+          </span>
         </div>
         <div>
-          <strong>Shipping:{matchedOrder.real_total_amount}</strong>
+          <strong>Shipping:</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.real_total_amount}
+          </span>
         </div>
         <div>
-          <strong>Total:{matchedOrder.total_amount}</strong>
+          <strong>Total:</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.total_amount}
+          </span>
         </div>
         <div>
-          <strong>Status:{matchedOrder.order_status}</strong> {""}
+          <strong>Status:</strong>
+          <span
+            style={{
+              display: "inline-block",
+              width: "140px",
+              textAlign: "left",
+            }}
+          >
+            {matchedOrder.order_status}
+          </span>
         </div>
-        <div className="buttons-section">
-          <button className="back-button">Back</button>
-          <button className="print-button">Print</button>
+
+        <div className=" mr-10">
+          <button
+            type="button"
+            class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            onClick={""}
+          >
+            Print
+          </button>
         </div>
       </div>
     </div>
