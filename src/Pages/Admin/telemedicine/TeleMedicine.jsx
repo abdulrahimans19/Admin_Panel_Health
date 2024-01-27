@@ -8,6 +8,7 @@ import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
 import { MainDoctorCategories } from "../../../API/ApiCall";
 import CatInfoModal from "../../../components/Modal/ViewCatInfo";
+import AddCategory from "../../../components/Modal/AddCategory";
 
 export default function TeleMedicine() {
   const [categories, setCategories] = useState([]);
@@ -67,6 +68,15 @@ export default function TeleMedicine() {
             );
           })}
       </div>
+      {showModal && (
+        <AddCategory
+          catFunction={UpadateCate}
+          incomingType={"edit"}
+          dataToUpload={editData}
+          setShowModal={setEditCatModal}
+          GetPharmacyCat={GetPharmacyCat}
+        />
+      )}
       {viewCatInfoModal && (
         <CatInfoModal
           catInfo={editData}
