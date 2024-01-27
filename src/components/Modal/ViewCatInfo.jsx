@@ -3,7 +3,7 @@ import React from "react";
 const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
   const modalClasses = "fixed inset-0 flex items-center  justify-center";
   const modalContentClasses = "bg-white p-4 rounded-lg flex";
-  console.log(subCatData, "lifnawiervf");
+  console.log(catInfo, "===== lifnawiervf");
   return (
     <div>
       <div className="container">
@@ -60,7 +60,7 @@ const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
 
                         <p className="text-xs mb-1 mt-4 ">sub categories</p>
 
-                        {!subCatData[0] ? (
+                        {!subCatData || !subCatData[0] ? (
                           <p className="p-3 border border-1 rounded-md mb-4">
                             No subcategory available
                           </p>
