@@ -146,12 +146,10 @@ export default function AddCategory({
 
                             {!showImage ? (
                               <div>
-                         
-                                  <p>
-                                    Drag 'n' drop some files here, or click to
-                                    select files
-                                  </p>
-                               
+                                <p>
+                                  Drag 'n' drop some files here, or click to
+                                  select files
+                                </p>
                               </div>
                             ) : (
                               <div

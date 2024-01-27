@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { getPharmaCategory, getSubCatData } from "../../API/ApiCall";
+
+import {
+  UploadImageUrl,
+  addProductApi,
+  countryCodesApi,
+  getPharmaCategory,
+  getSubCatData,
+  uploadToAws,
+} from "../../API/ApiCall";
+
 const ProductModal = ({ setAddProductModal }) => {
   // const [image, setImage] = useState(null);
   const [input1, setInput1] = useState("");
@@ -20,6 +29,9 @@ const ProductModal = ({ setAddProductModal }) => {
   const [editImage, seteditImage] = useState(true);
   const [mainCategoyData, setMainCategoyData] = useState([]);
   const [subcategoryData, setSubcategoryData] = useState([]);
+  const [countries, setCountrieCode] = useState([]);
+
+  const [selectedCountries, setSelectedCountries] = useState([]);
   const onDrop = useCallback((acceptedFiles) => {
     seteditImage(false);
     console.log(acceptedFiles[0]);
@@ -46,6 +58,29 @@ const ProductModal = ({ setAddProductModal }) => {
     const UserData = Object.fromEntries(form);
 
     console.log(UserData);
+    console.log(fileToUpload);
+
+   const Url= UploadImageUrl().then((data) => {
+    
+      // uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+      //   console.log(data, "uploaded");
+        
+      // });
+   
+      const wholeData = {
+        name:UserData.name,
+        description:UserData.description,
+        brand:UserData.brand,
+        image: data.data.publicUrl,
+        quantity:UserData.quantity,
+        price:UserData.price,
+        sub_category_id:UserData.dropdown2
+        ,
+        country_codes:selectedCountries
+      };
+      console.log(wholeData);
+      // addProductApi();
+    });
   };
 
   const mainCategory = () => {
@@ -56,27 +91,29 @@ const ProductModal = ({ setAddProductModal }) => {
 
   const getSubCategory = (data) => {
     getSubCatData(data).then(({ data }) => {
-      console.log(data.data.subCategories);
       setSubcategoryData(data.data.subCategories);
     });
   };
 
   useEffect(() => {
     mainCategory();
+    countryCodesApi().then((data) => {
+      setCountrieCode(data);
+    });
   }, []);
 
   return (
     <>
       (
-      <div className="fixed inset-0 w -full flex items-center justify-center p-4 bg-gray-800 bg-opacity-50">
+      <div className="fixed inset-0 z-50 w-full flex items-center justify-center p-4 bg-gray-800 bg-opacity-50">
         <form onSubmit={AddProduct} id="addProduct">
-          <div className="bg-white p-8 rounded-lg max-w-md">
+          <div className="bg-white p-8 rounded-lg ">
             <div className="text-xl p-4 font-semibold">Add Product</div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 p-5">
               {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> */}
-
-              <div class="flex w-2/5 items-center justify-center bg-grey-lighter">
+<div className="w-2/5">
+<div class="flex  items-center justify-center bg-grey-lighter">
                 <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
                   <div {...getRootProps()}>
                     {!showImage ? (
@@ -106,42 +143,7 @@ const ProductModal = ({ setAddProductModal }) => {
                 </label>
               </div>
 
-              <div>
-                <div>Product Name</div>
-                <input
-                  type="text"
-                  name="name"
-                  className="mt-1 p-2 border rounded-md w-full"
-                />
-
-                <div className="mt-4">Brand:</div>
-                <input
-                  name="brand"
-                  type="text"
-                  className="mt-1 p-2 border rounded-md w-full"
-                />
-<div>quantity</div>
-                <input
-                  type="number"
-                  name="quantity"
-                  className="mt-1 p-2 border rounded-md w-full"
-                />
-
-                <label
-                  for="message"
-                  class="block mt-4 text-sm font-medium text-gray-900"
-                >
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  id="message"
-                  rows="4"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write your thoughts here..."
-                ></textarea>
-
-                <div className="">
+<div className="">
                   <label
                     for="message"
                     class="block  mt-4 text-sm font-medium text-gray-900"
@@ -151,7 +153,6 @@ const ProductModal = ({ setAddProductModal }) => {
 
                   <select
                     onChange={(data) => {
-                    
                       getSubCategory(data.target.value);
                     }}
                     id="dropdown"
@@ -159,8 +160,11 @@ const ProductModal = ({ setAddProductModal }) => {
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
+                    <option selected value="">
+                      select Choice
+                    </option>
+
                     {mainCategoyData.map((data) => {
-                      console.log(data);
                       return <option value={data._id}>{data?.title}</option>;
                     })}
                   </select>
@@ -178,15 +182,102 @@ const ProductModal = ({ setAddProductModal }) => {
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option defaultChecked disabled value="">select Choice</option>
+                    <option selected value="">
+                      select Choice
+                    </option>
 
                     {subcategoryData?.map((data) => {
                       console.log(data);
-                      return (<option value={data._id}>{data.title}</option>)
+                      return <option value={data._id}>{data.title}</option>;
                     })}
-                  
+                  </select>
+
+                  <label
+                    for="message"
+                    class="block  mt-4 text-sm font-medium text-gray-900"
+                  >
+                    country
+                  </label>
+                  <label
+                    htmlFor="message"
+                    className="block mt-4 text-md font-bold text-gray-900"
+                  >
+                    {selectedCountries.join(" ")}
+                  </label>
+                  <select
+                    onChange={(data) => {
+                      console.log(data.target.value);
+                      setSelectedCountries((prevArray) => {
+                        const newValue = data.target.value;
+
+                        // Check if the value is already in the array
+                        if (!prevArray.includes(newValue)) {
+                          // If not, update the array
+                          return [...prevArray, newValue];
+                        }
+
+                        // If the value is already in the array, return the unchanged array
+                        return prevArray;
+                      });
+                    }}
+                    id="dropdown3"
+                    name="dropdown3"
+                    className="mt-1 p-2 border rounded-md w-full"
+                    // onChange={handleOptionChange}
+                  >
+                    <option selected value="">
+                      select Choice
+                    </option>
+                    {countries?.map((data) => {
+                      console.log(data);
+                      return <option value={data.code}>{data.name}</option>;
+                    })}
                   </select>
                 </div>
+</div>
+              
+
+              <div className="w-3/5">
+                <div>Product Name</div>
+                <input
+                  type="text"
+                  name="name"
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+
+                <div className="mt-4">Brand:</div>
+                <input
+                  name="brand"
+                  type="text"
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+                <div  className="mt-2">quantity</div>
+                <input
+                  type="number"
+                  name="quantity"
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+          <div className="mt-2">price</div>
+                <input
+                  type="number"
+                  name="price"
+                  className="mt-1 p-2 border rounded-md w-full"
+                />
+                <label
+                  for="message"
+                  class="block mt-4 text-sm font-medium text-gray-900"
+                >
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  id="message"
+                  rows="4"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write your thoughts here..."
+                ></textarea>
+
+               
               </div>
             </div>
             <div className="flex justify-end m-5">
