@@ -192,3 +192,29 @@ export const GetDrAprovedWithdrawalRequsts = async (page) => {
 export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+export const getFoodSubCategory = async (data) => {
+  return await Instance.get(`sub-categories/${data}`);
+};
+export const UpadateFoodCategory = async (data) => {
+  return await Instance.put(`/main-categories/food/update`, data);
+};
+export const getPharmaOrders = async () => {
+  return await Instance.get("/order/pharma/all-orders");
+};
+export const countryCodesApi = async (data) => {
+  const apiUrl = "https://restcountries.com/v3.1/all";
+
+  return await fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      const countriesArray = data.map((country) => ({
+        name: country.name.common,
+        code: country.cca2,
+      }));
+      return countriesArray;
+      // Now 'countriesArray' contains information about all countries
+      console.log(countriesArray);
+    })
+    .catch((error) => console.error("Error fetching country data:", error));
+};
