@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FilterDropDown from "./FilterDropDown";
 import ResultModal from "./LabItems/lab_components/ResultModal";
 import KeyValuePairResultModal from "./LabItems/lab_components/KeyValuePairResultModal";
 import AddImage from "../../../assets/images/addImage.png";
 import DatePicker from "react-datepicker";
 import DateInput from "./appoinments/DateInput";
+import { getAppoinmentsApi } from "../../../API/ApiCall";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
-  const handleDateChange=()=>{
-    console.log("edit date");
+ const [appoinments,setAppoinments]=React.useState([])
+  useEffect(()=>{
+
+  },[])
+  const handleDateChange=(data)=>{
+    console.log(data);
+    let year=data.getFullYear()
+    let month=data.getMonth()+1
+    let date=data.getDate()
+    console.log(`${year}-${month}-${date}`);
+    getAppoinmentsApi(year,month,date).then((data)=>{
+      setAppoinments(data.data.data.bookings);
+    })
+    
   }
   return (
     <div>
@@ -30,11 +43,11 @@ function AppoinmentDetails() {
                 </svg>
               </div>
             <DateInput
-            label="filter by date"
+            label="Filter by date"
             className="border text-gray-900 w-[118px] h-12 px-3 py-2.5 justify-start items-center gap-2 flex rounded-lg"
             onChange={handleDateChange}
             />
-            
+    
             </div>
 
             {/* <!-- Dropdown menu --> */}
@@ -75,45 +88,27 @@ function AppoinmentDetails() {
                 </tr>
               </thead>
               <tbody className="text-neutral-950">
-                <tr class="group bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-200 transition-colors">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 dark:text-black"
-                  >
-                    Apple MacBook Pro 17
-                  </th>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Laptop</td>
-                  <td class="px-6 py-4">$2999</td>
-                  <td class="px-6 py-4 text-right">
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(true)}
-                      class=" text-green-700 hover:text-black border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    >
-                      Accepted
-                    </button>
-                  </td>
-                </tr>
-                <tr class="bg-white border-bdark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-200">
+                {appoinments[0]&& appoinments.map((data)=>{
+                  return (
+                    <tr class="bg-white border-bdark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-200">
                   <th
                     scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
                   >
-                    Apple MacBook Pro 17"
+                    {data.profile_id.first_name}{data.profile_id.middle_name==null? data.profile_id.middle_name: " "} {data.profile_id.last_name}
+                     {/* {data.middle_name} { data.last_name} */}
                   </th>
                   <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Laptop</td>
-                  <td class="px-6 py-4">$2999</td>
+                  <td class="px-6 py-4">{data.profile_id.user_id}</td>
+                  <td class="px-6 py-4">{data.test_id.name}</td>
+                  <td class="px-6 py-4">{data.address_id.street_address} {data.address_id.state} {data.address_id.city} {data.address_id.zip_code} ph: {data.address_id.phone_number}</td>
+                  <td class="px-6 py-4">{data.created_at}</td>
+                  <td class="px-6 py-4">${data.test_id.price}</td>
                   <td class="px-6 py-4 text-right">
                     <button
                       type="button"
+                      onClick={() => setShowModal(true)}
+
                       class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
                     >
                       Accepted{" "}
@@ -194,6 +189,9 @@ function AppoinmentDetails() {
                     ) : null}
                   </td>
                 </tr>
+                  )
+                })}
+                
               </tbody>
             </table>
           </div>
