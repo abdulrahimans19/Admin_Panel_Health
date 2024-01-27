@@ -9,12 +9,24 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
-import { getFoodCategory, addFoodCategory } from "../../../API/ApiCall";
+import {
+  getFoodCategory,
+  addFoodCategory,
+  UpadateFoodCategory,
+  getFoodSubCategory,
+} from "../../../API/ApiCall";
+import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 
 export default function FoodCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddCategoryModal, setAddCategoryModal] = useState(false);
   const [addSubCategoryModal, setAddSubCategoryModal] = useState(false);
+  const [editCatModal, setEditCatModal] = useState(false);
+  const [EditData, setEditData] = useState(null);
+  const [subCatData, setSubCatData] = useState([]);
+  const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
+  const [categoryData, setCategoryData] = useState([]);
+
   const dispatch = useDispatch();
 
   const changeCategory = () => {
@@ -22,12 +34,14 @@ export default function FoodCategory() {
   };
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
-  const editCat = (data) => {
-    console.log(data);
-  };
 
   const addcategory = async () => {
     console.log("add category modal");
+  };
+  const editCat = (data) => {
+    setEditCatModal(true);
+
+    setEditData(data);
   };
 
   useEffect(() => {
@@ -36,6 +50,17 @@ export default function FoodCategory() {
       setCategoryMenu(data.data.mainCategories);
     });
   }, []);
+
+  const viewCatInfo = (data) => {
+    console.log(data);
+    setEditData(data);
+
+    getFoodSubCategory(data._id).then(({ data }) => {
+      console.log(data.data.subCategories);
+      setSubCatData(data.data.subCategories);
+    });
+    setViewCatInfoModal(true);
+  };
 
   return (
     <div>
@@ -68,7 +93,7 @@ export default function FoodCategory() {
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {" "}
-            {categoryMenu.length}
+            {categoryMenu.length} categories
           </p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
@@ -94,13 +119,46 @@ export default function FoodCategory() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
           {categoryMenu[0] &&
             categoryMenu.map((data) => {
-              return <CatCard data={data} callback={editCat} />;
+              return (
+                <CatCard
+                  data={data}
+                  callback={editCat}
+                  viewCatInfo={viewCatInfo}
+                />
+              );
             })}
         </div>
       </div>
-      \{AddCategoryModal && <AddCategory setShowModal={setAddCategoryModal} />}
+      {AddCategoryModal && (
+        <AddCategory
+          catFunction={addFoodCategory}
+          setShowModal={setAddCategoryModal}
+          getFoodCategory={getFoodCategory}
+        />
+      )}
+      {editCatModal && (
+        <AddCategory
+          catFunction={UpadateFoodCategory}
+          incomingType={"edit"}
+          dataToUpload={EditData}
+          setShowModal={setEditCatModal}
+          getFoodCategory={getFoodCategory}
+        />
+      )}
+
       {addSubCategoryModal && (
-        <AddSubCategoryModal onClose={setAddSubCategoryModal} />
+        <AddSubCategoryModal
+          displayData={categoryMenu}
+          onClose={setAddSubCategoryModal}
+        />
+      )}
+
+      {viewCatInfoModal && (
+        <CatInfoModal
+          catInfo={EditData}
+          subCatData={subCatData}
+          setViewCatInfoModal={setViewCatInfoModal}
+        />
       )}
     </div>
   );

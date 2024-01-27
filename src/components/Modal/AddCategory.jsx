@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   UpadateCate,
+  UpadateFoodCategory,
+  addFoodCategory,
   UploadImageUrl,
   addCategory,
   uploadToAws,
@@ -11,6 +13,7 @@ export default function AddCategory({
   dataToUpload,
   incomingType,
   GetPharmacyCat,
+  getFoodCategory,
   catFunction,
 }) {
   const [categoryName, setCategoryName] = useState("");
@@ -49,6 +52,9 @@ export default function AddCategory({
       imageUrl = dataToUpload.image;
       console.log("updateimage working ");
       console.log(dataToUpload);
+      const catFunctionToUse =
+        incomingType === "edit" ? UpadateFoodCategory : UpadateCate;
+
       const WholeData = {
         category_id: dataToUpload._id,
         title: categoryName,
@@ -57,10 +63,12 @@ export default function AddCategory({
       };
       console.log(WholeData);
 
-      catFunction(WholeData)
+      catFunctionToUse(WholeData)
         .then((data) => {
-          GetPharmacyCat();
-
+          // Check if it's a food category or pharmacy category
+          const getCategoriesFunction =
+            incomingType === "edit" ? getFoodCategory : GetPharmacyCat;
+          getCategoriesFunction();
           setShowModal(false);
         })
         .catch((err) => {
@@ -76,6 +84,9 @@ export default function AddCategory({
             console.log(data, "uploaded");
           });
           imageUrl = data.data.publicUrl;
+          const catFunctionToUse =
+            incomingType === "edit" ? UpadateFoodCategory : UpadateCate;
+
           let WholeData;
           console.log(data);
           if (dataToUpload) {
@@ -95,9 +106,12 @@ export default function AddCategory({
 
           console.log(WholeData);
 
-          catFunction(WholeData)
+          catFunctionToUse(WholeData)
             .then((data) => {
-              GetPharmacyCat();
+              const getCategoriesFunction =
+                incomingType === "edit" ? getFoodCategory : GetPharmacyCat;
+
+              getCategoriesFunction();
 
               setShowModal(false);
             })
@@ -146,12 +160,10 @@ export default function AddCategory({
 
                             {!showImage ? (
                               <div>
-                         
-                                  <p>
-                                    Drag 'n' drop some files here, or click to
-                                    select files
-                                  </p>
-                               
+                                <p>
+                                  Drag 'n' drop some files here, or click to
+                                  select files
+                                </p>
                               </div>
                             ) : (
                               <div

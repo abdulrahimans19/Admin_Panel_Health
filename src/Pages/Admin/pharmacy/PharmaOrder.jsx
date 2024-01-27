@@ -1,13 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import { getPharmaOrders } from "../../../API/ApiCall";
+import { Link } from "react-router-dom";
 
 export default function PharmaOrder() {
+  const [orders, setOrders] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(pharmacyNav());
-  }, []);
+    getPharmaOrders()
+      .then(({ data }) => {
+        console.log(data.data.orders);
+        setOrders(data.data.orders || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error);
+      });
+  }, [dispatch]);
+
+  function formatDate(dateTimeString) {
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const formattedDate = new Date(dateTimeString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  }
+
   return (
     <div>
       <div>
@@ -61,77 +83,71 @@ export default function PharmaOrder() {
           </form>
         </div>
       </div>
+
+      {/* Orders Table */}
       <div className="p-5">
-        <div class="relative overflow-x-auto">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-400 uppercase bg-gray-50">
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs text-gray-400 uppercase bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3">
-                  Product name
+                <th scope="col" className="px-6 py-3">
+                  Order Id
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Color
+                <th scope="col" className="px-6 py-3">
+                  Customer
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Category
+                <th scope="col" className="px-6 py-3">
+                  Products
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Price
+                <th scope="col" className="px-6 py-3">
+                  Qty
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Amount
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Invoice
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  font-medium text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
-              <tr class="bg-white border-b">
-                <th
-                  scope="row"
-                  class="px-6 py-4  font-medium text-gray-900 whitespace-nowrap"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Silver
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  Laptop
-                </td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  $2999
-                </td>
-              </tr>
+              {orders.map((order) => (
+                <tr key={order._id} className="bg-white border-b">
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                  >
+                    <Link to={`/order/${order._id}/details`}>{order._id}</Link>
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.address_id.full_name}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.product_id.name}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.product_id.quantity}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {formatDate(order.product_id.created_at)}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.product_id.price}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.order_status}
+                  </td>
+                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    {order.invoice}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
