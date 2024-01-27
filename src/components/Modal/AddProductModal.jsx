@@ -15,7 +15,7 @@ const ProductModal = ({
   apiCall,
   editProductData,
   incomingType,
-  getProducts
+  getProducts,
 }) => {
   // const [image, setImage] = useState(null);
 
@@ -58,11 +58,11 @@ const ProductModal = ({
     console.log(UserData);
     console.log(fileToUpload);
     let publicUrl;
-  
+
     if (editImage) {
       publicUrl = editProductData.image;
 
-      const   wholeData = {
+      const wholeData = {
         product_id: editProductData._id,
         name: UserData.name,
         description: UserData.description,
@@ -75,31 +75,26 @@ const ProductModal = ({
       };
 
       apiCall(wholeData)
-      .then((data) => {
-        setAddProductModal(false);
-        getProducts()
-      })
-      .catch((err) => {
-        setAddProductModal(false);
-        getProducts()
-      });
-
-
-
+        .then((data) => {
+          setAddProductModal(false);
+          getProducts();
+        })
+        .catch((err) => {
+          setAddProductModal(false);
+          getProducts();
+        });
     } else {
-     
       UploadImageUrl().then((data) => {
         uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
           console.log(data, "uploaded");
         });
-console.log(data.data.publicUrl,"uploadedssssss");
+        console.log(data.data.publicUrl, "uploadedssssss");
         publicUrl = data.data.publicUrl;
         console.log(publicUrl);
-        
 
         let wholeData;
         if (incomingType == "edit") {
-           wholeData = {
+          wholeData = {
             product_id: editProductData._id,
             name: UserData.name,
             description: UserData.description,
@@ -122,29 +117,18 @@ console.log(data.data.publicUrl,"uploadedssssss");
             country_codes: selectedCountries,
           };
         }
-    
 
         apiCall(wholeData)
-        .then((data) => {
-          setAddProductModal(false);
-          getProducts()
-        })
-        .catch((err) => {
-          setAddProductModal(false);
-          getProducts()
-        });
-
-
-
+          .then((data) => {
+            setAddProductModal(false);
+            getProducts();
+          })
+          .catch((err) => {
+            setAddProductModal(false);
+            getProducts();
+          });
       });
-
-
-
-
-
     }
-   
-    
   };
 
   const mainCategory = () => {
@@ -231,7 +215,9 @@ console.log(data.data.publicUrl,"uploadedssssss");
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option disabled selected>select Choice</option>
+                    <option disabled selected>
+                      select Choice
+                    </option>
 
                     {mainCategoyData.map((data) => {
                       return <option value={data._id}>{data?.title}</option>;
@@ -254,9 +240,10 @@ console.log(data.data.publicUrl,"uploadedssssss");
                     <option
                       selected
                       defaultValue={editProductData?.sub_category_id}
-                    
                     >
-                      {editProductData?.sub_category_id?editProductData?.sub_category_id:"select Choice"}
+                      {editProductData?.sub_category_id
+                        ? editProductData?.sub_category_id
+                        : "select Choice"}
                     </option>
 
                     {subcategoryData?.map((data) => {

@@ -1,9 +1,7 @@
 // ConfirmationModal.js
-import React from 'react';
+import React from "react";
 
-const ConfirmationModal = ({  onClose, onConfirm }) => {
-
-
+const ConfirmationModal = ({ onClose, onConfirm }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
@@ -12,18 +10,16 @@ const ConfirmationModal = ({  onClose, onConfirm }) => {
         <div className="flex justify-end">
           <button
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 mr-2 rounded"
-            onClick={()=>
-            {
-                onClose(false)
+            onClick={() => {
+              onClose(false);
             }}
           >
             Cancel
           </button>
           <button
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-            onClick={()=>
-            {
-                onConfirm()
+            onClick={() => {
+              onConfirm();
             }}
           >
             Confirm
