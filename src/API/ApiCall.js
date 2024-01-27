@@ -190,3 +190,7 @@ export const GetDoctorWithdrawalRequsts = async (page) => {
 export const AprovingwithdrawalRequest = async (id) => {
   return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
 };
+
+export const getAppoinmentsApi = async (year,month,date) => {
+  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
+};

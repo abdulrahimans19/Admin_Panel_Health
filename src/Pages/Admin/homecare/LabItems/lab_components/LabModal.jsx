@@ -93,7 +93,7 @@ function LabModal({showModal,callback}) {
                             setAddSubTestingModal(true);
                           }}
                           type="button"
-                          class="inline-flex items-center px-2 py-1 text-sm font-medium text-gray-500 hover:text-gray-700"
+                          class="flex inline-flex mt-1 justify-center rounded bg-gray-400 items-center px-2 py-1 text-sm text-white hover:text-gray-700"
                         >
                           Add sub test
                         </button>
