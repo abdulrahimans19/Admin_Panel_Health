@@ -10,17 +10,15 @@ import {
   uploadToAws,
 } from "../../API/ApiCall";
 
-const ProductModal = ({ setAddProductModal }) => {
+const ProductModal = ({
+  setAddProductModal,
+  apiCall,
+  editProductData,
+  incomingType,
+  getProducts
+}) => {
   // const [image, setImage] = useState(null);
-  const [input1, setInput1] = useState("");
-  const [input2, setInput2] = useState("");
-  const [input3, setInput3] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Handle form submission logic here
-  };
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
   const [showImage, setShowImage] = React.useState(false);
@@ -59,28 +57,55 @@ const ProductModal = ({ setAddProductModal }) => {
 
     console.log(UserData);
     console.log(fileToUpload);
+    let publicUrl;
+    console.log(editProductData.image, "iushgfw");
+    if (editImage) {
+      publicUrl = editProductData.image;
+    } else {
+      UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+          console.log(data, "uploaded");
+        });
 
-   const Url= UploadImageUrl().then((data) => {
-    
-      // uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-      //   console.log(data, "uploaded");
-        
-      // });
-   
-      const wholeData = {
-        name:UserData.name,
-        description:UserData.description,
-        brand:UserData.brand,
-        image: data.data.publicUrl,
-        quantity:UserData.quantity,
-        price:UserData.price,
-        sub_category_id:UserData.dropdown2
-        ,
-        country_codes:selectedCountries
+        publicUrl = data.data.publicUrl;
+      });
+    }
+    let wholeData;
+    if (incomingType == "edit") {
+      wholeData = {
+        product_id: editProductData._id,
+        name: UserData.name,
+        description: UserData.description,
+        brand: UserData.brand,
+        image: publicUrl,
+        quantity: parseInt(UserData.quantity),
+        price: parseInt(UserData.price),
+        sub_category_id: UserData.dropdown2,
+        country_codes: selectedCountries,
       };
-      console.log(wholeData);
-      // addProductApi();
-    });
+    } else {
+      wholeData = {
+        name: UserData.name,
+        description: UserData.description,
+        brand: UserData.brand,
+        image: publicUrl,
+        quantity: parseInt(UserData.quantity),
+        price: parseInt(UserData.price),
+        sub_category_id: UserData.dropdown2,
+        country_codes: selectedCountries,
+      };
+    }
+
+    console.log(wholeData);
+    apiCall(wholeData)
+      .then((data) => {
+        setAddProductModal(false);
+        getProducts()
+      })
+      .catch((err) => {
+        setAddProductModal(false);
+        getProducts()
+      });
   };
 
   const mainCategory = () => {
@@ -102,6 +127,13 @@ const ProductModal = ({ setAddProductModal }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (editProductData?.image) {
+      setShowImage(true);
+      setImage(editProductData?.image);
+      setSelectedCountries(editProductData?.country_codes);
+    }
+  }, []);
   return (
     <>
       (
@@ -112,38 +144,38 @@ const ProductModal = ({ setAddProductModal }) => {
 
             <div className="flex gap-3 p-5">
               {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> */}
-<div className="w-2/5">
-<div class="flex  items-center justify-center bg-grey-lighter">
-                <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
-                  <div {...getRootProps()}>
-                    {!showImage ? (
-                      <div>
-                        <p>
-                          Drag 'n' drop some files here, or click to select
-                          files
-                        </p>
-                      </div>
-                    ) : (
-                      <div
-                        sx={{
-                          overflow: "hidden",
-                          objectFit: "cover",
-                          marginTop: 2,
-                        }}
-                      >
-                        <img
-                          height={100}
-                          src={Image}
-                          alt="Your Image"
-                          sx={{ width: "100%" }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </label>
-              </div>
+              <div className="w-2/5">
+                <div class="flex  items-center justify-center bg-grey-lighter">
+                  <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+                    <div {...getRootProps()}>
+                      {!showImage ? (
+                        <div>
+                          <p>
+                            Drag 'n' drop some files here, or click to select
+                            files
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          sx={{
+                            overflow: "hidden",
+                            objectFit: "cover",
+                            marginTop: 2,
+                          }}
+                        >
+                          <img
+                            height={100}
+                            src={Image}
+                            alt="Your Image"
+                            sx={{ width: "100%" }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                </div>
 
-<div className="">
+                <div className="">
                   <label
                     for="message"
                     class="block  mt-4 text-sm font-medium text-gray-900"
@@ -160,9 +192,7 @@ const ProductModal = ({ setAddProductModal }) => {
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option selected value="">
-                      select Choice
-                    </option>
+                    <option disabled selected>select Choice</option>
 
                     {mainCategoyData.map((data) => {
                       return <option value={data._id}>{data?.title}</option>;
@@ -182,8 +212,12 @@ const ProductModal = ({ setAddProductModal }) => {
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option selected value="">
-                      select Choice
+                    <option
+                      selected
+                      defaultValue={editProductData?.sub_category_id}
+                    
+                    >
+                      {editProductData?.sub_category_id?editProductData?.sub_category_id:"select Choice"}
                     </option>
 
                     {subcategoryData?.map((data) => {
@@ -206,7 +240,6 @@ const ProductModal = ({ setAddProductModal }) => {
                   </label>
                   <select
                     onChange={(data) => {
-                      console.log(data.target.value);
                       setSelectedCountries((prevArray) => {
                         const newValue = data.target.value;
 
@@ -229,17 +262,16 @@ const ProductModal = ({ setAddProductModal }) => {
                       select Choice
                     </option>
                     {countries?.map((data) => {
-                      console.log(data);
                       return <option value={data.code}>{data.name}</option>;
                     })}
                   </select>
                 </div>
-</div>
-              
+              </div>
 
               <div className="w-3/5">
                 <div>Product Name</div>
                 <input
+                  defaultValue={editProductData?.name}
                   type="text"
                   name="name"
                   className="mt-1 p-2 border rounded-md w-full"
@@ -247,18 +279,21 @@ const ProductModal = ({ setAddProductModal }) => {
 
                 <div className="mt-4">Brand:</div>
                 <input
+                  defaultValue={editProductData?.brand}
                   name="brand"
                   type="text"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
-                <div  className="mt-2">quantity</div>
+                <div className="mt-2">quantity</div>
                 <input
+                  defaultValue={editProductData?.quantity}
                   type="number"
                   name="quantity"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
-          <div className="mt-2">price</div>
+                <div className="mt-2">price</div>
                 <input
+                  defaultValue={editProductData?.price}
                   type="number"
                   name="price"
                   className="mt-1 p-2 border rounded-md w-full"
@@ -270,14 +305,13 @@ const ProductModal = ({ setAddProductModal }) => {
                   Description
                 </label>
                 <textarea
+                  defaultValue={editProductData?.description}
                   name="description"
                   id="message"
                   rows="4"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Write your thoughts here..."
                 ></textarea>
-
-               
               </div>
             </div>
             <div className="flex justify-end m-5">

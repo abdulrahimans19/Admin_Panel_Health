@@ -9,65 +9,118 @@ import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
-import { getPharmaProductApi } from "../../../API/ApiCall";
-import ReactPaginate from 'react-paginate';
-import "../../../assets/pagination.css"
+import {
+  addProductApi,
+  disabledFarmaProductApi,
+  editPharmaProduct,
+  filterPharmaAPi,
+  getPharmaCategory,
+  getPharmaProductApi,
+} from "../../../API/ApiCall";
+import ReactPaginate from "react-paginate";
+import "../../../assets/pagination.css";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddProductModal, setAddProductModal] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [PharmaProductsData, setPharmaProductsData] = useState([]);
-  const [totalPagecount, setTotalPagecount] = useState(0)
-  const changeCategory = () => {
-    setCategoryMenu(!categoryMenu);
-  };
-
+  const [totalPagecount, setTotalPagecount] = useState(0);
+  const [editProductData, setEditProductData] = useState("");
+  const [editProduct, setEditProduct] = useState(false);
+  const [disableProducts, setDisableProducts] = useState(false);
+  const [Categories, setCategories] = useState([]);
+  const [filterId, setFilterId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const editCat = (data) => {
+    setEditProductData(data);
+    setEditProduct(true);
+
     console.log(data);
   };
 
-  const PharmaProduct = () => {
-    getPharmaProductApi(setPageNumber).then(({ data }) => {
-      const totalPages = Math.ceil(data.data.total_document / 10);
-      setTotalPagecount(totalPages)
-      console.log(data.data.products);
-
-      setPharmaProductsData(data.data.products);
+  const getFarmaCategories = () => {
+    getPharmaCategory().then(({ data }) => {
+      console.log(data, "maincat");
+      setCategories(data.data.mainCategories);
     });
   };
 
-  const abc = { name: "Pulmonology", image: lungsimg };
-  const ab = { name: "Hepatology", image: heartimg };
+  const PharmaProduct = () => {
+    if (filterId) {
+      setCurrentPage(0)
+      filterPharmaAPi(filterId, 1).then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        setPharmaProductsData(data.data.products);
+      });
+    } else if (categoryMenu) {
+      getPharmaProductApi(pageNumber).then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        console.log(data.data.products);
+
+        setPharmaProductsData(data.data.products);
+      });
+    } else {
+      disabledFarmaProductApi().then((data) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        setPharmaProductsData(data.data.products);
+      });
+    }
+  };
+
   useEffect(() => {
     dispatch(pharmacyNav());
     PharmaProduct();
+  }, [categoryMenu, filterId]);
+  useEffect(() => {
+    getFarmaCategories();
   }, []);
-
-
-  const [currentPage, setCurrentPage] = useState(0);
-
   const handlePageChange = (selectedPage) => {
-    // Handle page change logic here, e.g., fetching data for the new page
-    setCurrentPage(selectedPage.selected);
-
-console.log(selectedPage.selected);
-    getPharmaProductApi(selectedPage.selected+1).then(({ data }) => {
-      console.log(data.data.products);
-
-      setPharmaProductsData(data.data.products);
-    });
-
+    setCurrentPage(selectedPage.selected)
+    
+    if (filterId) {
+      filterPharmaAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
+        setPageNumber(selectedPage.selected + 1);
+        
+        setPharmaProductsData(data.data.products);
+      });
+    } else {
+      if (categoryMenu) {
+        getPharmaProductApi(selectedPage.selected + 1).then(({ data }) => {
+          console.log(data.data.products);
+          setPageNumber(selectedPage.selected + 1);
+          setPharmaProductsData(data.data.products);
+        });
+      } else {
+        disabledFarmaProductApi(selectedPage.selected + 1).then(({ data }) => {
+          console.log(data.data.products);
+          setPageNumber(selectedPage.selected + 1);
+          setPharmaProductsData(data.data.products);
+        });
+      }
+    }
   };
 
+  const CallBackDisable = (data) => {
+    setEditProductData(data);
+    setDisableProducts(true);
+    console.log(data, "disble working");
+  };
 
-
+  const disableProduct = () => {
+    console.log("confirm working");
+  };
   return (
     <div>
       <div className="flex gap-3 p-3">
         <p
           onClick={() => {
-            changeCategory();
+            setFilterId(null);
+            setCategoryMenu(true);
           }}
           className={`${
             categoryMenu && "font-bold underline"
@@ -77,7 +130,9 @@ console.log(selectedPage.selected);
         </p>
         <p
           onClick={() => {
-            changeCategory();
+            setFilterId(null);
+
+            setCategoryMenu(false);
           }}
           className={`${
             !categoryMenu && "font-bold underline"
@@ -92,7 +147,9 @@ console.log(selectedPage.selected);
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
-          <p className="p-2 pl-3 text-gray-600 font-semibold">{PharmaProductsData.length} categories</p>
+          <p className="p-2 pl-3 text-gray-600 font-semibold">
+            {/* {PharmaProductsData.length} categories */}
+          </p>
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
@@ -107,38 +164,66 @@ console.log(selectedPage.selected);
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
             <select
+              onChange={(data) => {
+                setFilterId(data.target.value);
+              }}
               id="countries"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
-              <option disabled value="">
+              <option selected disabled value="">
                 Filter By Category
               </option>
-              <option value="full">full body</option>
-              <option value="Fever">Fever</option>
+              {Categories?.map((data) => {
+                return <option value={data._id}>{data.title}</option>;
+              })}
             </select>
           </div>
         </div>
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          {PharmaProductsData.map((data) => {
-            return <ProductCard data={data} callback={editCat} />;
+          {PharmaProductsData?.map((data) => {
+            return (
+              <ProductCard
+                data={data}
+                callback={editCat}
+                disableCall={CallBackDisable}
+              />
+            );
           })}
         </div>
       </div>
       {AddProductModal && (
-        <ProductModal setAddProductModal={setAddProductModal} />
+        <ProductModal
+          setAddProductModal={setAddProductModal}
+          apiCall={addProductApi}
+          getProducts={PharmaProduct}
+        />
       )}
-
-
-<ReactPaginate
-        pageCount={totalPagecount}  // Replace with the total number of pages
-        pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
-        marginPagesDisplayed={1}  // Number of pages to display for margin pages
+      {editProduct && (
+        <ProductModal
+          setAddProductModal={setEditProduct}
+          editProductData={editProductData}
+          apiCall={editPharmaProduct}
+          incomingType={"edit"}
+          getProducts={PharmaProduct}
+        />
+      )}
+      <ReactPaginate
+        pageCount={totalPagecount} // Replace with the total number of pages
+        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1} // Number of pages to display for margin pages
         onPageChange={handlePageChange}
-        containerClassName={'pagination'}
-        activeClassName={'active'}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+        forcePage={currentPage}
       />
+      {disableProducts && (
+        <ConfirmationModal
+          onClose={setDisableProducts}
+          onConfirm={disableProduct}
+        />
+      )}
     </div>
   );
 }

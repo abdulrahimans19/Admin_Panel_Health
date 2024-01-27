@@ -137,6 +137,7 @@ export const uploadToAws = async (presignedUrl, uploadImage) => {
 export const addCategory = async (data) => {
   return await Instance.post(`/main-categories/pharma/create`, data);
 };
+
 export const UpadateCate = async (data) => {
   return await Instance.put(`/main-categories/pharma/update`, data);
 };
@@ -191,27 +192,35 @@ export const AprovingwithdrawalRequest = async (id) => {
   return await Instance.post(`/withdrawal/accept-withdrawal-request/${id}`);
 };
 export const addProductApi = async (data) => {
-  return await Instance.post(`/product/pharma/create`,data);
+  return await Instance.post(`/product/pharma/create`, data);
 };
 
 export const countryCodesApi = async (data) => {
-  const apiUrl = 'https://restcountries.com/v3.1/all';
+  const apiUrl = "https://restcountries.com/v3.1/all";
 
-return await fetch(apiUrl)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    const countriesArray = data.map(country => ({
-      name: country.name.common,
-      code: country.cca2,
-    }));
-return countriesArray
-    // Now 'countriesArray' contains information about all countries
-    console.log(countriesArray);
-  })
-  .catch(error => console.error('Error fetching country data:', error));
+  return await fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      const countriesArray = data.map((country) => ({
+        name: country.name.common,
+        code: country.cca2,
+      }));
+      return countriesArray;
+      // Now 'countriesArray' contains information about all countries
+      console.log(countriesArray);
+    })
+    .catch((error) => console.error("Error fetching country data:", error));
 };
 
-export const getAppoinmentsApi = async (year,month,date) => {
+export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
+};
+export const editPharmaProduct = async (data) => {
+  return await Instance.put(`/product/pharma/update`, data);
+};
+export const disabledFarmaProductApi = async (data) => {
+  return await Instance.get(`/product/admin/disabled?type=PHARMA?page=${data}`);
+};
+export const filterPharmaAPi = async (data,page) => {
+  return await Instance.get(`product/all-products/${data}?page=${page}`);
 };

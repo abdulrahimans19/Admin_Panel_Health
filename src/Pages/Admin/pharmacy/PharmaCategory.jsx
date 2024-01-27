@@ -64,6 +64,8 @@ export default function PharmaCategory() {
     setViewCatInfoModal(true);
   };
 
+
+
   return (
     <div>
       <div className="flex gap-3 p-3">
