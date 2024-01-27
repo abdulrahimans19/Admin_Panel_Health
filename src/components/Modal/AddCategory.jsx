@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import {
   UpadateCate,
   UpadateFoodCategory,
-  addFoodCategory,
   UploadImageUrl,
+  addFoodCategory,
   addCategory,
   uploadToAws,
 } from "../../API/ApiCall";
@@ -13,7 +13,7 @@ export default function AddCategory({
   dataToUpload,
   incomingType,
   GetPharmacyCat,
-  getFoodCategory,
+  getFoodCat,
   catFunction,
 }) {
   const [categoryName, setCategoryName] = useState("");
@@ -52,9 +52,6 @@ export default function AddCategory({
       imageUrl = dataToUpload.image;
       console.log("updateimage working ");
       console.log(dataToUpload);
-      const catFunctionToUse =
-        incomingType === "edit" ? UpadateFoodCategory : UpadateCate;
-
       const WholeData = {
         category_id: dataToUpload._id,
         title: categoryName,
@@ -63,12 +60,10 @@ export default function AddCategory({
       };
       console.log(WholeData);
 
-      catFunctionToUse(WholeData)
+      catFunction(WholeData)
         .then((data) => {
-          // Check if it's a food category or pharmacy category
-          const getCategoriesFunction =
-            incomingType === "edit" ? getFoodCategory : GetPharmacyCat;
-          getCategoriesFunction();
+          GetPharmacyCat();
+
           setShowModal(false);
         })
         .catch((err) => {
@@ -84,9 +79,6 @@ export default function AddCategory({
             console.log(data, "uploaded");
           });
           imageUrl = data.data.publicUrl;
-          const catFunctionToUse =
-            incomingType === "edit" ? UpadateFoodCategory : UpadateCate;
-
           let WholeData;
           console.log(data);
           if (dataToUpload) {
@@ -106,12 +98,9 @@ export default function AddCategory({
 
           console.log(WholeData);
 
-          catFunctionToUse(WholeData)
+          catFunction(WholeData)
             .then((data) => {
-              const getCategoriesFunction =
-                incomingType === "edit" ? getFoodCategory : GetPharmacyCat;
-
-              getCategoriesFunction();
+              GetPharmacyCat();
 
               setShowModal(false);
             })
