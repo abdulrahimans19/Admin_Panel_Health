@@ -7,10 +7,10 @@ export default function ({
   showModal,
   toggleModal,
   callback,
-  data,
   user,
   btImg,
   btText,
+  id,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
 
@@ -147,7 +147,7 @@ export default function ({
                     </div>
                     {/*footer*/}
                     <div className=" flex items-center justify-end pt-4 pb-6 pr-5  rounded-b ">
-                      {status === "requests" && (
+                      {(status === "requests" || status === "aprove") && (
                         <>
                           <button
                             style={{
@@ -157,8 +157,11 @@ export default function ({
                             className="text-xs background-transparent p-1 pl-5 pr-5 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
                             onClick={async () => {
-                              await CanclationDoctor(user?._id);
+                              if (id) {
+                                await CanclationDoctor(user?._id);
 
+                                toggleModal();
+                              }
                               toggleModal();
                             }}
                           >
@@ -172,12 +175,15 @@ export default function ({
                             className="text-xs p-1 pl-5 pr-5 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
                             type="button"
                             onClick={async () => {
-                              const aprove = await AprovetDoctor(user?._id);
-
+                              const aprove = await callback(
+                                id ? id : user?._id
+                              );
+                              // window.location.reload();
+                              console.log(aprove);
                               toggleModal();
                             }}
                           >
-                            Save
+                            {status === "aprove" ? "Accept" : "Save"}
                           </button>
                         </>
                       )}
