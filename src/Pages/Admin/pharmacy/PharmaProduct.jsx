@@ -11,7 +11,7 @@ import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
 import { getPharmaProductApi } from "../../../API/ApiCall";
 import ReactPaginate from 'react-paginate';
-import "./style.css"
+import "../../../assets/pagination.css"
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddProductModal, setAddProductModal] = useState(false);
