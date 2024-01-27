@@ -38,7 +38,7 @@ function SideBar() {
       opacity: 1,
     },
   };
-
+console.log(window.location.pathname,"path name");
   const [droping, setDroping] = useState(false);
 
   return (
@@ -150,6 +150,10 @@ function SideBar() {
             </a>
           </li>
 
+
+
+
+
           <li>
             <a
               onClick={() => {
@@ -199,14 +203,14 @@ function SideBar() {
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
-                currentRoute === "/pharmacy/category"
+                window.location.pathname  === "/pharmacy/category" ||  window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order" 
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  currentRoute === "/pharmacy/category"
+                  window.location.pathname  === "/pharmacy/category" || window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order" 
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -215,7 +219,7 @@ function SideBar() {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  currentRoute === "/pharmacy/category" ? "svg-icon-active" : ""
+                  window.location.pathname  === "/pharmacy/category" || window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order"  ? "svg-icon-active" : ""
                 }`}
               >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -241,7 +245,10 @@ function SideBar() {
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                currentRoute === "/food/categories"
+                window.location.pathname === "/food/categories" || 
+                window.location.pathname === "/food/product" || 
+                window.location.pathname === "/food/review" || 
+                window.location.pathname === "/food/order"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -268,7 +275,10 @@ function SideBar() {
                         __html: `.cls-1{fill:none;
             
               ${
-                currentRoute === "/food/categories"
+                window.location.pathname === "/food/categories" || 
+                window.location.pathname === "/food/product" || 
+                window.location.pathname === "/food/review" || 
+                window.location.pathname === "/food/order"
                   ? "stroke:#202124; "
                   : "  stroke:#ede8e8;"
               }

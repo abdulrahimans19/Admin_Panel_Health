@@ -22,12 +22,19 @@ function PriceDisplayCard3({ data }) {
 
       <a href="#">
         <h5 class="mb-2 text-xl font-semibold tracking-tight text-gray-900">
-          New Appoinments
+          New Appointments
         </h5>
       </a>
       <div className="flex items-center space-x-4">
-        <span className="font-semibold text-3xl">153</span>
-        <span className="font-semibold text-green-500">+201</span>
+        <span className="font-semibold text-3xl">
+          {data?.todaysAppointments}
+        </span>
+        <span className="font-semibold text-green-500">
+          +
+          {data?.yesterdaysAppointments - data?.todaysAppointments > 0
+            ? data?.yesterdaysAppointments - data?.todaysAppointments
+            : 0}
+        </span>
       </div>
     </div>
   );

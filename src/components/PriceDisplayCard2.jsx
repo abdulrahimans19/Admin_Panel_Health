@@ -1,6 +1,7 @@
 import React from "react";
 
-function PriceDisplayCard2() {
+function PriceDisplayCard2({data}) {
+  console.log(data,"fwef");
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
       <svg
@@ -24,8 +25,8 @@ function PriceDisplayCard2() {
         </h5>
       </a>
       <div className="flex items-center space-x-4">
-        <span className="font-semibold text-3xl">1,925</span>
-        <span className="font-semibold text-green-500">+201</span>
+        <span className="font-semibold text-3xl">{data?.doctor_count}</span>
+        <span className="font-semibold text-green-500">+{data?.currentMonthDoctorCount-data?.lastMonthDoctorCount>0?data?.currentMonthDoctorCount-data?.lastMonthDoctorCount:0}</span>
       </div>
     </div>
   );

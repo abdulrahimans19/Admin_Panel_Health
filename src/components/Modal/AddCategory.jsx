@@ -121,7 +121,7 @@ export default function AddCategory({
   }, []);
   return (
     <div>
-      <div className="container">
+      <div className="container z-50">
         <div className="pr-3 pl-3 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
           <div className="container">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
@@ -142,26 +142,16 @@ export default function AddCategory({
                       <div class="flex w-full items-center justify-center bg-grey-lighter">
                         <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
                           <div {...getRootProps()}>
-                            <input name="image" {...getInputProps()} />
+                            {/* <input {...getInputProps()} /> */}
 
                             {!showImage ? (
                               <div>
-                                <svg
-                                  class="w-8 h-8"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                </svg>
-                                {isDragActive ? (
-                                  <p>Drop the files here ...</p>
-                                ) : (
+                         
                                   <p>
                                     Drag 'n' drop some files here, or click to
                                     select files
                                   </p>
-                                )}
+                               
                               </div>
                             ) : (
                               <div

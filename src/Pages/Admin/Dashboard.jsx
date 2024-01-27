@@ -6,12 +6,14 @@ import PriceDisplayCard from "../../components/PriceDisplayCard";
 import AppoimentTable from "../../components/Tables/AppointmentTable";
 import PriceDisplayCard2 from "../../components/PriceDisplayCard2";
 import PriceDisplayCard3 from "../../components/PriceDisplayCard3";
-import { monthlyEarningApi } from "../../API/ApiCall";
+import { TotalAppointmentApi, monthlyEarningApi, totalDoctorApi } from "../../API/ApiCall";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [foodChart, setFoodChart] = useState(true);
   const [monthlyEarning, setMonthlyEarning] = useState(0);
+  const [totalDoctors, setTotalDoctors] = useState(0)
+  const [totalAppointment, setTotalAppointment] = useState(0)
   const [chartData, setChartData] = useState();
   const monthlErnings = () => {
     if (foodChart) {
@@ -41,8 +43,22 @@ export default function Dashboard() {
     }
   };
 
+
+
+
   useEffect(() => {
     dispatch(cleartopNav());
+
+totalDoctorApi().then(({data})=>{
+  console.log(data.data,"docy");
+  setTotalDoctors(data.data)
+})
+
+TotalAppointmentApi().then(({data})=>{
+  setTotalAppointment(data.data)
+console.log(data.data,"appoimt");
+})
+
   }, []);
 
   useEffect(() => {
@@ -54,11 +70,11 @@ export default function Dashboard() {
       <div class="grid grid-cols-1 md:grid-cols-1  lg:grid-cols-3 gap-4 mb-4">
         <div class="grid grid-cols-1 md:grid-cols-3   gap-4 mb-4 lg:col-span-2">
           <PriceDisplayCard data={monthlyEarning} />
-          <PriceDisplayCard2 />
-          <PriceDisplayCard3 />
+          <PriceDisplayCard2 data={totalDoctors} />
+          <PriceDisplayCard3 data={totalAppointment}/>
 
           <div className=" md:col-span-3">
-            {chartData && <LineChart data={chartData} />}
+            {chartData && <LineChart  earnings={monthlyEarning} data={chartData} />}
             <div className="flex gap-3 p-3">
               <p
                 onClick={() => {

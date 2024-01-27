@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const MyChart = ({ data }) => {
+const MyChart = ({data,earnings}) => {
   const [foodChart, setFoodChart] = useState(true);
 
   const series = [
@@ -37,14 +37,14 @@ const MyChart = ({ data }) => {
         <div className="flex justify-between">
           <div>
             <h5 className="leading-none text-3xl font-bold text-gray-900 pb-2">
-              32.4k
+              {earnings?.toFixed(2)}
             </h5>
             <p className="text-base font-normal text-gray-500">
-              Users this week
+          this month
             </p>
           </div>
           <div className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 text-center">
-            <select
+            {/* <select
               id="countries"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
@@ -52,7 +52,7 @@ const MyChart = ({ data }) => {
                 monthly
               </option>
               <option value="CA">yearly</option>
-            </select>
+            </select> */}
           </div>
         </div>
         <ReactApexChart
