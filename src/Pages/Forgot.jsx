@@ -4,37 +4,26 @@ import key from "../assets/images/key.png";
 import { DoctorForgotdata } from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const ForgotPassword = () => {
-
   const [errmsg, setErrmsg] = useState("");
-
 
   const navigate = useNavigate();
 
-  const resetPassword=(e)=>{
+  const resetPassword = (e) => {
     e.preventDefault();
 
-  const form = new FormData(e.target);
-  const UserData = Object.fromEntries(form);
-  
+    const form = new FormData(e.target);
+    const UserData = Object.fromEntries(form);
 
-   
-  DoctorForgotdata(UserData)
-  .then((data) => {
-    localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-    navigate("/otp");
-  })
-  .catch((err) => {
-    setErrmsg("email is not exist");
-  });
-
-}
-
-
-
+    DoctorForgotdata(UserData)
+      .then((data) => {
+        localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+        navigate("/otp");
+      })
+      .catch((err) => {
+        setErrmsg("email is not exist");
+      });
+  };
 
   const containerStyle = {
     display: "flex",
@@ -87,31 +76,31 @@ const ForgotPassword = () => {
                 Don’t worry, we’ll send you the reset instructions
               </div>
             </div>
-            <form action="" onSubmit={resetPassword} >
-            <div className="flex-col justify-center items-center gap-[10px] flex">
-              <div className="flex flex-col items-center justify-center space-y-4 ">
-                
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-100 focus:ring-2 focus:ring-blue-300"
+            <form action="" onSubmit={resetPassword}>
+              <div className="flex-col justify-center items-center gap-[10px] flex">
+                <div className="flex flex-col items-center justify-center space-y-4 ">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-100 focus:ring-2 focus:ring-blue-300"
+                  />
+                  {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
 
-                />
-                             {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
+                  <div></div>
+                </div>
 
-                <div></div>
+                <div className="flex-col justify-start items-center  flex">
+                  <button
+                    type="submit"
+                    className="h-[58px] px-[105px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex"
+                  >
+                    <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
+                      Reset Password
+                    </div>
+                  </button>
+                </div>
               </div>
-
-              <div className="flex-col justify-start items-center  flex">
-                <button  type="submit" className="h-[58px] px-[105px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
-                  <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
-                    Reset Password
-                  </div>
-                </button>
-              </div>
-              
-            </div>
             </form>
           </div>
           <div className="justify-center items-center inline-flex">

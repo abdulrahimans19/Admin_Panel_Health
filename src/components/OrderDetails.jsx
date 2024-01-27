@@ -230,7 +230,14 @@ export default function OrderDetails() {
       </div>
 
       {/* billing */}
-      <div className="billing-details" style={{ marginTop: "20px" ,alignItems: "flex-end", textAlign: "right"}}>
+      <div
+        className="billing-details"
+        style={{
+          marginTop: "20px",
+          alignItems: "flex-end",
+          textAlign: "right",
+        }}
+      >
         <div>
           <strong>Subtotal:{matchedOrder.real_total_amount}</strong>
         </div>

@@ -9,7 +9,7 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import AddCategory from "../../../components/Modal/AddCategory";
 import AddSubCategoryModal from "../../../components/Modal/AddSubCategory";
-import { getFoodCategory,addFoodCategory } from "../../../API/ApiCall";
+import { getFoodCategory, addFoodCategory } from "../../../API/ApiCall";
 
 export default function FoodCategory() {
   const [categoryMenu, setCategoryMenu] = useState(true);
@@ -27,7 +27,6 @@ export default function FoodCategory() {
   };
 
   const addcategory = async () => {
-    
     console.log("add category modal");
   };
 

@@ -7,7 +7,7 @@ function LoggedInUser() {
   return user?.user_role == "Admin" ? (
     <Navigate to="/dashboard" />
   ) : user?.user_role == "DOCTOR" ? (
-    <Navigate to="/doctor/home" />
+    <Navigate to="/doctor/overview" />
   ) : (
     <Outlet />
   );

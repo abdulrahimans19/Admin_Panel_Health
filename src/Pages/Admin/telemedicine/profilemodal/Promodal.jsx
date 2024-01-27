@@ -1,8 +1,6 @@
 import { useState } from "react";
-import proImg from "../../../../assets/images/boy.png";
-import pdffileImg from "../../../../assets/images/bxs_file-pdf.png";
 import download from "../../../../assets/images/downloadimg.png";
-import { AprovetDoctor } from "../../../../API/ApiCall";
+import { AprovetDoctor, CanclationDoctor } from "../../../../API/ApiCall";
 
 export default function ({
   status,
@@ -15,11 +13,27 @@ export default function ({
   btText,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
-  // let lines = user?.description.split("\n");
 
-  // const displayText = showMoreText
-  //   ? data?.description
-  //   : lines?.slice(0, 2).join("\n");
+  function isURL(str) {
+    const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+    return urlPattern.test(str);
+  }
+
+  const downloadImage = (imageUrl, fileName) => {
+    const link = document.createElement("a");
+    const confirmUrl = isURL(imageUrl);
+    if (confirmUrl) {
+      link.href = imageUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  // Extract text until the position of "i"
+  const extractedText = user?.description?.substring(0, 50);
+
   return (
     <div>
       {showModal ? (
@@ -46,7 +60,11 @@ export default function ({
                   >
                     <h1 className="mb-3">Profile</h1>
                     <div className="rounded-lg">
-                      <img src={proImg} alt="" className="w-20 h-30 mb-2 p-2" />
+                      <img
+                        src={user?.image}
+                        alt=""
+                        className="w-40 h-50 mb-2 p-2"
+                      />
                     </div>
                   </div>
                   {/* rightDiv */}
@@ -70,13 +88,16 @@ export default function ({
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">Mail :</td>
-                          <td className="text-xs "> {user?.mail}</td>
+                          <td className="text-xs "> {user?.email}</td>
                         </tr>
                         <tr>
                           <td className="text-xs text-gray-400 w-20">
                             Category :
                           </td>
-                          <td className="text-xs "> {user?.category_id}</td>
+                          <td className="text-xs ">
+                            {" "}
+                            {user?.category_id?.title}
+                          </td>
                         </tr>
 
                         <tr>
@@ -92,7 +113,7 @@ export default function ({
                         </tr>
                       </table>
                       <p className="text-xs mt-1 mb-3">
-                        {user.description}...
+                        {setShowMoreText ? user.description : extractedText}...
                         <a
                           onClick={() => setShowMoreText(!showMoreText)}
                           className="underline text-blue-500 cursor-pointer"
@@ -103,11 +124,24 @@ export default function ({
                       <h6 className="text-xs">Certificate</h6>
                       <div className="flex justify-between border border-gray-300 w-200 rounded-lg p-1 pr-4 pl-4 mt-2">
                         <div className="flex items-center">
-                          <img src={pdffileImg} alt="" className="w-6 h-6" />
-                          <p className="text-xs">image.jpg</p>
+                          <img
+                            src={user.certificate}
+                            alt=""
+                            className="w-6 h-6"
+                          />
+                          <p className="text-xs">certificate</p>
                         </div>
                         <div className="flex items-center">
-                          <img src={download} alt="" className="w-3 h-4" />
+                          <button
+                            onClick={
+                              () => {
+                                downloadImage(user.certificate, "certificate");
+                              }
+                              //user?.certificate
+                            }
+                          >
+                            <img src={download} alt="" className="w-3 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -122,9 +156,13 @@ export default function ({
                             }}
                             className="text-xs background-transparent p-1 pl-5 pr-5 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
-                            onClick={() => toggleModal()}
+                            onClick={async () => {
+                              await CanclationDoctor(user?._id);
+
+                              toggleModal();
+                            }}
                           >
-                            Close
+                            Cancel
                           </button>
                           <button
                             style={{
@@ -134,11 +172,8 @@ export default function ({
                             className="text-xs p-1 pl-5 pr-5 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
                             type="button"
                             onClick={async () => {
-                              console.log(user?._id + "     ###############");
                               const aprove = await AprovetDoctor(user?._id);
-                              console.log("@@@@@@@@@@");
-                              console.log(aprove);
-                              console.log("@@@@@@@@@@@@@ aprove");
+
                               toggleModal();
                             }}
                           >
@@ -157,7 +192,11 @@ export default function ({
                             }}
                             className="text-xs background-transparent p-1 pl-3 pr-3 mt-1 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
-                            onClick={() => toggleModal()}
+                            onClick={async () => {
+                              await callback(user?._id);
+                              window.location.reload();
+                              toggleModal();
+                            }}
                           >
                             <div className="flex items-center">
                               {btImg ? (

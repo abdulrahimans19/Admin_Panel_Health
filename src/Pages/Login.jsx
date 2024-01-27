@@ -225,6 +225,7 @@ import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/adminLogin.png";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
+import { DoctorLogInApi } from "../API/DoctorApi";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("Admin");
@@ -244,7 +245,7 @@ const Login = () => {
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
 
-    if (selectedOption === "Admin" || selectedOption === "Doctor") {
+    if (selectedOption === "Admin") {
       LoginUserdata(UserData)
         .then((data) => {
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
@@ -254,7 +255,15 @@ const Login = () => {
           setErrmsg("Email or password is incorrect");
         });
     } else {
-      console.log("Invalid login option");
+      DoctorLogInApi(UserData)
+        .then((data) => {
+          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+          navigate("/doctor/overview");
+        })
+        .catch((err) => {
+          setErrmsg("Email or password is incorrect");
+        });
+      console.log("doc log");
     }
   };
 

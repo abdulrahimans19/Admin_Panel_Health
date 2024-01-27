@@ -1,37 +1,34 @@
 // src/Modal.js
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { createSubCategory } from "../../API/ApiCall";
 
-const AddSubCategoryModal = ({ onClose }) => {
-  const [subCategories, setSubCategories] = useState([{ selectedOption: '', inputValue: '' }]);
-
+const AddSubCategoryModal = ({ onClose, displayData }) => {
+  const [subCategories, setSubCategories] = useState();
+  const [subCatName, setSubCatName] = useState("");
   const handleOptionChange = (e) => {
     const selectedOption = e.target.value;
-    setSubCategories([{ selectedOption, inputValue: '' }]);
-  };
-
-  const handleInputChange = (index, e) => {
-    const updatedSubCategories = [...subCategories];
-    updatedSubCategories[index].inputValue = e.target.value;
-    setSubCategories(updatedSubCategories);
-  };
-
-  const handleAddField = () => {
-    setSubCategories([...subCategories, { selectedOption: '', inputValue: '' }]);
-  };
-
-  const handleRemoveField = (index) => {
-    const updatedSubCategories = [...subCategories];
-    updatedSubCategories.splice(index, 1);
-    setSubCategories(updatedSubCategories);
+    setSubCategories(selectedOption);
   };
 
   const handleSubmit = () => {
     // Handle the form submission logic here
-    console.log('SubCategories:', subCategories);
-
+    console.log(subCatName);
+    console.log("SubCategories:", subCategories);
+    console.log();
     // Close the modal
-    onClose();
+    const wholedata = {
+      title: subCatName,
+      main_category_id: subCategories,
+    };
+    createSubCategory(wholedata)
+      .then((data) => {
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        onClose();
+      });
   };
 
   return (
@@ -40,7 +37,10 @@ const AddSubCategoryModal = ({ onClose }) => {
       <div className="bg-white p-8 max-w-md w-full rounded-lg shadow-lg z-50">
         <h2 className="text-2xl font-bold mb-4">Add Subcategory</h2>
 
-        <label htmlFor="dropdown" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="dropdown"
+          className="block text-sm font-medium text-gray-700"
+        >
           Select category:
         </label>
         <select
@@ -49,14 +49,14 @@ const AddSubCategoryModal = ({ onClose }) => {
           className="mt-1 p-2 border rounded-md w-full"
           onChange={handleOptionChange}
         >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          {displayData.map((data) => {
+            return <option value={data._id}>{data.title}</option>;
+          })}
         </select>
-        <label  className="block text-sm font-medium text-gray-700 mt-2">
-              Sub category:
-            </label>
-        {subCategories.map((subCategory, index) => (
+        <label className="block text-sm font-medium text-gray-700 mt-2">
+          Sub category:
+        </label>
+        {/* {subCategories.map((subCategory, index) => (
           <div key={index} className="mb-4">
            
             <input
@@ -68,13 +68,18 @@ const AddSubCategoryModal = ({ onClose }) => {
             />
       
           </div>
-        ))}
+        ))} */}
+        <input
+          type="text"
+          name="subcat"
+          onChange={(e) => {
+            setSubCatName(e.target.value);
+          }}
+          className="mt-1 p-2 border rounded-md w-full"
+          // onChange={(e) => handleInputChange(index, e)}
+        />
 
-        <div className='text-gray-400 p-3 cursor-pointer' onClick={handleAddField}>
-          + add
-        </div>
-
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-3">
           <button
             className="bg-green-200 text-green-500 px-4 py-2 rounded-md hover:bg-green-300"
             onClick={handleSubmit}
@@ -83,7 +88,9 @@ const AddSubCategoryModal = ({ onClose }) => {
           </button>
           <button
             className="ml-2 text-red-500 bg-red-200  px-4 py-2 rounded-md"
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+            }}
           >
             Cancel
           </button>

@@ -14,7 +14,7 @@ export default function FoodOrder() {
     getFoodOrders()
       .then(({ data }) => {
         console.log(data.data.orders);
-        setOrders(data.data.orders || []); 
+        setOrders(data.data.orders || []);
       })
       .catch((error) => {
         console.error("Error fetching orders:", error);

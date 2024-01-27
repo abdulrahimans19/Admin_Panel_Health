@@ -7,11 +7,11 @@ import ComunButton from "../../../components/Navbar/ComenButton";
 import CatCard from "../../../components/Cards/CatCard";
 import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
-import buttonImage from "../../../assets/images/element-plus.png"
+import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
-const [AddProductModal, setAddProductModal] = useState(false)
+  const [AddProductModal, setAddProductModal] = useState(false);
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
@@ -63,12 +63,13 @@ const [AddProductModal, setAddProductModal] = useState(false)
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
-          <div className="" onClick={()=>
-          {
-            setAddProductModal(true)
-          }}>
-          <AddItemButton text={"Add Products"} img={buttonImage} />
-
+          <div
+            className=""
+            onClick={() => {
+              setAddProductModal(true);
+            }}
+          >
+            <AddItemButton text={"Add Products"} img={buttonImage} />
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
@@ -95,7 +96,9 @@ const [AddProductModal, setAddProductModal] = useState(false)
           <CatCard data={abc} callback={editCat} />
         </div>
       </div>
-     { AddProductModal&&<ProductModal setAddProductModal={setAddProductModal}/>}
+      {AddProductModal && (
+        <ProductModal setAddProductModal={setAddProductModal} />
+      )}
     </div>
   );
 }
