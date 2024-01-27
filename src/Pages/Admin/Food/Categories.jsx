@@ -25,7 +25,7 @@ export default function FoodCategory() {
   const [EditData, setEditData] = useState(null);
   const [subCatData, setSubCatData] = useState([]);
   const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
- 
+
   const dispatch = useDispatch();
 
   const changeCategory = () => {

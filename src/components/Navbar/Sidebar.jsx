@@ -38,7 +38,7 @@ function SideBar() {
       opacity: 1,
     },
   };
-console.log(window.location.pathname,"path name");
+  console.log(window.location.pathname, "path name");
   const [droping, setDroping] = useState(false);
 
   return (
@@ -113,14 +113,18 @@ console.log(window.location.pathname,"path name");
               }}
               href="#"
               className={`flex items-center p-2 pl-12 rounded-lg group ${
-                currentRoute === "/telemedicine/category"
+                window.location.pathname === "/telemedicine/category" ||
+                window.location.pathname === "/telemedicine/doctor" ||
+                window.location.pathname === "/telemedicine/Withdrawalpannal"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  currentRoute === "/telemedicine/category"
+                  window.location.pathname === "/telemedicine/category" ||
+                  window.location.pathname === "/telemedicine/doctor" ||
+                  window.location.pathname === "/telemedicine/Withdrawalpannal"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -129,7 +133,9 @@ console.log(window.location.pathname,"path name");
                 viewBox="-7.5 0 32 32"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  currentRoute === "/telemedicine/category"
+                  window.location.pathname === "/telemedicine/category" ||
+                  window.location.pathname === "/telemedicine/doctor" ||
+                  window.location.pathname === "/telemedicine/Withdrawalpannal"
                     ? "svg-icon-active"
                     : ""
                 }`}
@@ -149,10 +155,6 @@ console.log(window.location.pathname,"path name");
               <span className="ms-2">Telemedicine</span>
             </a>
           </li>
-
-
-
-
 
           <li>
             <a
@@ -203,14 +205,20 @@ console.log(window.location.pathname,"path name");
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
-                window.location.pathname  === "/pharmacy/category" ||  window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order" 
+                window.location.pathname === "/pharmacy/category" ||
+                window.location.pathname === "/pharmacy/product" ||
+                window.location.pathname === "/pharmacy/review" ||
+                window.location.pathname === "/pharmacy/order"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  window.location.pathname  === "/pharmacy/category" || window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order" 
+                  window.location.pathname === "/pharmacy/category" ||
+                  window.location.pathname === "/pharmacy/product" ||
+                  window.location.pathname === "/pharmacy/review" ||
+                  window.location.pathname === "/pharmacy/order"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -219,7 +227,12 @@ console.log(window.location.pathname,"path name");
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  window.location.pathname  === "/pharmacy/category" || window.location.pathname  === "/pharmacy/product" || window.location.pathname  === "/pharmacy/review" || window.location.pathname  === "/pharmacy/order"  ? "svg-icon-active" : ""
+                  window.location.pathname === "/pharmacy/category" ||
+                  window.location.pathname === "/pharmacy/product" ||
+                  window.location.pathname === "/pharmacy/review" ||
+                  window.location.pathname === "/pharmacy/order"
+                    ? "svg-icon-active"
+                    : ""
                 }`}
               >
                 <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -245,9 +258,9 @@ console.log(window.location.pathname,"path name");
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
-                window.location.pathname === "/food/categories" || 
-                window.location.pathname === "/food/product" || 
-                window.location.pathname === "/food/review" || 
+                window.location.pathname === "/food/categories" ||
+                window.location.pathname === "/food/product" ||
+                window.location.pathname === "/food/review" ||
                 window.location.pathname === "/food/order"
                   ? "bg-white text-black "
                   : "text-white"
@@ -275,9 +288,9 @@ console.log(window.location.pathname,"path name");
                         __html: `.cls-1{fill:none;
             
               ${
-                window.location.pathname === "/food/categories" || 
-                window.location.pathname === "/food/product" || 
-                window.location.pathname === "/food/review" || 
+                window.location.pathname === "/food/categories" ||
+                window.location.pathname === "/food/product" ||
+                window.location.pathname === "/food/review" ||
                 window.location.pathname === "/food/order"
                   ? "stroke:#202124; "
                   : "  stroke:#ede8e8;"
