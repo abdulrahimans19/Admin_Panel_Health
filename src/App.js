@@ -36,10 +36,12 @@ import DocTransaction from "./Pages/Doctor/transaction/Transaction";
 import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
 import Appointments from "./Pages/Doctor/Appointments/Appointments";
 import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
+import Notification from "./components/Navbar/Notification";
 
 function App() {
   return (
     <Routes>
+      <Route element={<Notification />} />
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
