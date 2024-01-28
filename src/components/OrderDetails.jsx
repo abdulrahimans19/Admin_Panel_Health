@@ -78,7 +78,9 @@ export default function OrderDetails() {
         }}
       >
         <div>
-          <div><strong>Order Id:</strong> {orderId}</div>
+          <div>
+            <strong>Order Id:</strong> {orderId}
+          </div>
           <div
             style={{
               marginRight: "10px",
@@ -141,7 +143,10 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-           <strong> <h2>Customer</h2></strong>
+            <strong>
+              {" "}
+              <h2>Customer</h2>
+            </strong>
             {matchedOrder ? (
               <>
                 <p>Full Name: {matchedOrder.address_id.full_name}</p>
@@ -167,7 +172,9 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-            <strong><h2>Order Info</h2></strong>
+            <strong>
+              <h2>Order Info</h2>
+            </strong>
             {matchedOrder ? (
               <>
                 <p>Shipping: {matchedOrder.address_id.shipping}</p>
@@ -195,7 +202,9 @@ export default function OrderDetails() {
             style={{ width: "50px", borderRadius: "50%", marginRight: "10px" }}
           />
           <div>
-            <strong><h2>Address</h2></strong>
+            <strong>
+              <h2>Address</h2>
+            </strong>
             {matchedOrder ? (
               <>
                 <p>Address: {matchedOrder.address_id.state}</p>

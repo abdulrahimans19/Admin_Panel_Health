@@ -20,7 +20,7 @@ export default function ReviewCard({data,callback,viewCatInfo}) {
     {/* Name below the image */}
     <div className="p-4">
       <p className="text-lg  font-semibold text-gray-800">
-        {data?.title} 
+        {data?.name} 
       </p>
     </div>
 

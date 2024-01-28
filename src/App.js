@@ -37,6 +37,8 @@ import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHis
 import Appointments from "./Pages/Doctor/Appointments/Appointments";
 import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
 import Notification from "./components/Navbar/Notification";
+import SignupProfile from "./Pages/SignupProfile";
+import Coupons from "./Pages/Admin/coupons/Coupons";
 
 function App() {
   return (
@@ -78,6 +80,8 @@ function App() {
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
+
+          <Route element={<Coupons />} path="/coupons" />
         </Route>
       </Route>
 
@@ -97,6 +101,7 @@ function App() {
         <Route element={<Success />} path="/Success" />
         <Route element={<Otp />} path="/otp" />
         <Route element={<SetNewPass />} path="/set-password" />
+        <Route element={<SignupProfile />} path="/set-profile" />
       </Route>
     </Routes>
   );

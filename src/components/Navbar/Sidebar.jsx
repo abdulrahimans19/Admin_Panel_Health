@@ -8,6 +8,7 @@ import {
   pharmacyNav,
   telemedicine,
   homecare,
+  cleartopNav,
 } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
@@ -544,8 +545,52 @@ function SideBar() {
               <span class="ms-1">Transaction</span>
             </a>
           </li>
+          <li>
+            <a
+              onClick={() => {
+                dispatch(cleartopNav());
+                setCurrentRoute("/coupons");
+                navigate("/coupons");
+              }}
+              href="#"
+              class={`flex items-center p-2 pl-12 rounded-lg group ${
+                window.location.pathname === "/coupons" 
+                  ? "bg-white text-black "
+                  : "text-white"
+              } `}
+            >
+              <svg
+                fill={
+                  window.location.pathname === "/coupons" 
+                    ? "#your-active-color"
+                    : "#ede8e8"
+                }
+                width="20"
+                height="25"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className={`svg-icon ${
+                  window.location.pathname === "/coupons" 
+            
+                    ? "svg-icon-active"
+                    : ""
+                }`}
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path d="M9.426,6.3,7.57,8.156l2.137,2.137a1,1,0,0,1-1.414,1.414L6.156,9.57,4.3,11.425a4.437,4.437,0,0,0,4.413,7.388,1,1,0,0,1,.574,1.916,6.437,6.437,0,0,1-6.4-10.718L8.012,4.885a6.442,6.442,0,0,1,9.8.829,1,1,0,1,1-1.63,1.159A4.44,4.44,0,0,0,9.426,6.3ZM23,15a6,6,0,1,1-6-6A6.008,6.008,0,0,1,23,15Zm-6-4a3.947,3.947,0,0,0-2.019.567l5.452,5.452A3.957,3.957,0,0,0,21,15,4,4,0,0,0,17,11Zm0,8a3.947,3.947,0,0,0,2.019-.567l-5.452-5.452A3.957,3.957,0,0,0,13,15,4,4,0,0,0,17,19Z"></path>
+                </g>
+              </svg>
 
-          <li className="pt-20">
+              <span class="ms-3">coupons</span>
+            </a>
+          </li>
+          <li className="pt-1">
             <a
               onClick={() => {
                 localStorage.removeItem("sophwe_token");
@@ -590,6 +635,7 @@ function SideBar() {
               <span class="ms-3 ">logout</span>
             </a>
           </li>
+          
         </ul>
       </div>
     </aside>

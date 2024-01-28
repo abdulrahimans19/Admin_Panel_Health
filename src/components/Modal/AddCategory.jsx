@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import {
   UpadateCate,
+  UpadateFoodCategory,
   UploadImageUrl,
+  addFoodCategory,
   addCategory,
   uploadToAws,
 } from "../../API/ApiCall";
@@ -11,6 +13,7 @@ export default function AddCategory({
   dataToUpload,
   incomingType,
   GetPharmacyCat,
+  getFoodCat,
   catFunction,
 }) {
   const [categoryName, setCategoryName] = useState("");
@@ -59,7 +62,6 @@ export default function AddCategory({
 
       catFunction(WholeData)
         .then((data) => {
-          console.log("this is one ofe check");
           GetPharmacyCat();
 
           setShowModal(false);
