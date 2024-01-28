@@ -207,7 +207,7 @@ export default function FoodProduct() {
               <ProductCard
                 data={data}
                 callback={editCat}
-                disableCall={CallBackDisable}
+                disableCall={CallBackDisable} 
               />
             );
           })}
