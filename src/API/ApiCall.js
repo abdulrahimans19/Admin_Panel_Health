@@ -228,6 +228,9 @@ export const GetDrAprovedWithdrawalRequsts = async (page) => {
 export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+export const getLabTestsbyCategoryApi = async (cat_id) => {
+  return await Instance.get(`/tests?category_id=${cat_id}`);
+}
 export const getFoodSubCategory = async (data) => {
   return await Instance.get(`sub-categories/${data}`);
 };
@@ -239,4 +242,16 @@ export const getPharmaOrders = async () => {
 };
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
+};
+export const addHomecareCategory = async (data) => {
+  return await Instance.post(`main-categories/home-care/create`, data);
+};
+export const getRecommendedTestsbyCategoryApi = async (cat_id) => {
+  return await Instance.get(`tests/all-tests?recommended=${true}&category_id=${cat_id}`);
+}
+export const getDisbledTestByCatApi = async (cat_id) => {
+  return await Instance.get(`tests/all-tests?disabled=${true}&category_id=${cat_id}`);
+};
+export const getCurrentAppoinmentsApi = async (year, month, date) => {
+  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };

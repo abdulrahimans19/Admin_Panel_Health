@@ -8,7 +8,7 @@ function AddNewCategoryButton({ text, callback }) {
     <div>
       <button
         className="rounded bg-black text-white p-3 items-center flex bg-no-repeat"
-        onClick={() => setShowModal(true)}
+        // onClick={() => setShowModal(true)}
       >
         <img src={buttonImage} className="w-5 h-5 mr-2 object-contain" alt="" />
         <div className="sm:block">{text}</div>
