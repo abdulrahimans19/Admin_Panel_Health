@@ -36,6 +36,7 @@ import DocTransaction from "./Pages/Doctor/transaction/Transaction";
 import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
 import Appointments from "./Pages/Doctor/Appointments/Appointments";
 import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
+import SignupProfile from "./Pages/SignupProfile";
 
 function App() {
   return (
@@ -95,6 +96,8 @@ function App() {
         <Route element={<Success />} path="/Success" />
         <Route element={<Otp />} path="/otp" />
         <Route element={<SetNewPass />} path="/set-password" />
+        <Route element={<SignupProfile />} path="/set-profile" />
+
       </Route>
     </Routes>
   );
