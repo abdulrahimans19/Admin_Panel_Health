@@ -33,6 +33,7 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -65,7 +66,7 @@ export default function PharmaProduct() {
         setPharmaProductsData(data.data.products);
       });
     } else {
-      disabledFarmaProductApi().then(({data}) => {
+      disabledFarmaProductApi().then(({ data }) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
         console.log(data.data);
@@ -81,6 +82,7 @@ export default function PharmaProduct() {
   useEffect(() => {
     getFarmaCategories();
   }, []);
+
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
 
@@ -115,11 +117,10 @@ export default function PharmaProduct() {
 
   const disableProduct = () => {
     console.log("confirm working");
-console.log(editProductData);
-disablePharmaProduct(editProductData._id).then((data)=>
-{
-  console.log(data);
-})
+    console.log(editProductData);
+    disablePharmaProduct(editProductData._id).then((data) => {
+      console.log(data);
+    });
   };
   return (
     <div>
@@ -170,22 +171,24 @@ disablePharmaProduct(editProductData._id).then((data)=>
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
-
-            {categoryMenu? <select
-              onChange={(data) => {
-                setFilterId(data.target.value);
-              }}
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected disabled value="">
-                Filter By Category
-              </option>
-              {Categories?.map((data) => {
-                return <option value={data._id}>{data.title}</option>;
-              })}
-            </select>:<></>}
-           
+            {categoryMenu ? (
+              <select
+                onChange={(data) => {
+                  setFilterId(data.target.value);
+                }}
+                id="countries"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option selected disabled value="">
+                  Filter By Category
+                </option>
+                {Categories?.map((data) => {
+                  return <option value={data._id}>{data.title}</option>;
+                })}
+              </select>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
