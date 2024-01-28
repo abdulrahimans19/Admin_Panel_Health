@@ -5,6 +5,7 @@ const initialState = {
   amount: 9,
   role: null,
   isLoading: true,
+  testFilter:null
 };
 // export const  getCartData=createAsyncThunk('cart/getcartDAta',async ()=>
 // {
@@ -20,7 +21,12 @@ const AdminSlice = createSlice({
       console.log(action);
       state.role = "admin";
     },
+    setFilter: (state, action) => {
+      console.log(action);
+      state.testFilter = action.payload;
+    },
   },
+  
   // extraReducers:(builder)=>
   // {
   //     builder.addCase(getCartData.pending,(state=>
@@ -38,4 +44,4 @@ const AdminSlice = createSlice({
   // }
 });
 export default AdminSlice.reducer;
-export const { test } = AdminSlice.actions;
+export const { test,setFilter } = AdminSlice.actions;

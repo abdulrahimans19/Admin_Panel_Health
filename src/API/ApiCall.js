@@ -182,3 +182,6 @@ export const AprovingwithdrawalRequest = async (id) => {
 export const getAppoinmentsApi = async (year,month,date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+export const getLabTestsbyCategoryApi = async (cat_id) => {
+  return await Instance.get(`/tests?category_id=${cat_id}`);
+};

@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from "react";
 import TestCard from "./lab_components/TestCard";
-import { getAllLabTestsApi } from "../../../../API/ApiCall";
+import { getAllLabTestsApi, getLabTestsbyCategoryApi } from "../../../../API/ApiCall";
 import { homecare } from "../../../../Redux/Features/NavbarSlice";
+import { useSelector } from "react-redux";
 
 function AllTests() {
   const [labTest, setLabtest] = useState([]);
-
+  const {testFilter}=useSelector((state)=>{
+    return state.admin
+  })
+  useEffect(()=>{
+    if(testFilter){
+    getLabTestsbyCategory(testFilter)
+    }
+  },[testFilter])
+  
   useEffect(() => {
-    getAllTestsCards();
+      getAllTests();
   }, []);
 
-  const getAllTestsCards = () => {
+  const getLabTestsbyCategory = (category) => {
+    getLabTestsbyCategoryApi(category).then((data) => {
+      setLabtest(data.data.data.tests);
+    });
+  };
+
+
+  const getAllTests = () => {
     getAllLabTestsApi().then((data) => {
       setLabtest(data.data.data.tests);
     });
