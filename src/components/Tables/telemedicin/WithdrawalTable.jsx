@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
+import ReactPaginate from "react-paginate";
+import {
+  GetDoctorWithdrawalRequsts,
+  GetDrAprovedWithdrawalRequsts,
+} from "../../../API/ApiCall";
 
-function WithdrawalTable({ data, document, availabe, callBack, btText }) {
+function WithdrawalTable({
+  data,
+  document,
+  availabe,
+  callBack,
+  btText,
+  setData,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
   const [withdrawID, setWithdrawID] = useState();
@@ -9,6 +21,21 @@ function WithdrawalTable({ data, document, availabe, callBack, btText }) {
     setShowModal(!showModal);
   };
 
+  const handlePageChange = (selectedPage) => {
+    if (btText === "Approved") {
+      GetDrAprovedWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
+        setData(data?.data?.data?.doctors);
+      });
+    } else {
+      GetDoctorWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
+        setData(data?.data?.data?.doctors);
+      });
+    }
+  };
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
+  console.log(page, "       page num");
   return (
     <div className="container">
       <Promodal
@@ -71,27 +98,49 @@ function WithdrawalTable({ data, document, availabe, callBack, btText }) {
                   <td class="p-1">{data.amount}</td>
 
                   <td class="p-1">
-                    <button
-                      style={{
-                        backgroundColor: "#AAFFCC",
-                        color: "#41945D",
-                      }}
-                      className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={() => {
-                        setUser(data?.doctor_id);
-                        setWithdrawID(data?._id);
-                        setShowModal(true);
-                      }}
-                    >
-                      {btText}
-                    </button>
+                    {btText === "Approved" ? (
+                      <p
+                        style={{
+                          backgroundColor: "#AAFFCC",
+                          color: "#41945D",
+                        }}
+                        className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded  outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                      >
+                        {btText}
+                      </p>
+                    ) : (
+                      <button
+                        style={{
+                          backgroundColor: "#AAFFCC",
+                          color: "#41945D",
+                        }}
+                        className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        onClick={() => {
+                          setUser(data?.doctor_id);
+                          setWithdrawID(data?._id);
+                          setShowModal(true);
+                        }}
+                      >
+                        {btText}
+                      </button>
+                    )}
                   </td>
                 </tr>
               );
             })}
         </tbody>
       </table>
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      )}
     </div>
   );
 }
