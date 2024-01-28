@@ -1,17 +1,45 @@
 import React, { useEffect, useState } from "react";
 import TestCard from "./lab_components/TestCard";
-import { getAllLabTestsApi } from "../../../../API/ApiCall";
+import { getAllLabTestsApi, getLabTestsbyCategoryApi } from "../../../../API/ApiCall";
 import { homecare } from "../../../../Redux/Features/NavbarSlice";
+import { useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
 
 function AllTests() {
   const [labTest, setLabtest] = useState([]);
+  const [totalPagecount, setTotalPagecount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0);
 
+  const handlePageChange = (selectedPage) => {
+    // Handle page change logic here, e.g., fetching data for the new page
+    setCurrentPage(selectedPage.selected);
+  }
+  const {testFilter}=useSelector((state)=>{
+    return state.admin
+  })
+  useEffect(()=>{
+    if(testFilter){
+    getLabTestsbyCategory(testFilter)
+    }
+  },[testFilter])
+  
   useEffect(() => {
-    getAllTestsCards();
+      getAllTests();
   }, []);
 
-  const getAllTestsCards = () => {
+  const getLabTestsbyCategory = (category) => {
+    getLabTestsbyCategoryApi(category).then((data) => {
+      const totalPages = Math.ceil(data.data.data.total_document / 10);
+      setTotalPagecount(totalPages)
+      setLabtest(data.data.data.tests);
+    });
+  };
+
+
+  const getAllTests = () => {
     getAllLabTestsApi().then((data) => {
+      const totalPages = Math.ceil(data.data.data.total_document / 10);
+      setTotalPagecount(totalPages)
       setLabtest(data.data.data.tests);
     });
   };
@@ -25,6 +53,15 @@ function AllTests() {
             return <TestCard data={data} />;
           })}
       </div>
+
+      <ReactPaginate
+        pageCount={totalPagecount}  // Replace with the total number of pages
+        pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1}  // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 }

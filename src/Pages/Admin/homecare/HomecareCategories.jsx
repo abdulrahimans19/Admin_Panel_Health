@@ -8,11 +8,22 @@ import Button from "../../../components/Button";
 import ComunButton from "../../../components/Navbar/ComenButton";
 import AddNewCategoryButton from "./AddNewCategoryButton";
 import CatCard from "../../../components/Cards/CatCard";
-import { GetHomecareCategories, GetHomecareCategoriesApi } from "../../../API/ApiCall";
+import { GetHomecareCategories, GetHomecareCategoriesApi, addHomecareCategory } from "../../../API/ApiCall";
+import AddCategoryModal from "../../../components/Modal/AddCategoryModal";
+import AddCategoryModalHomecare from "./modal/AddCategoryModalHomecare";
+import AddCategory from "../../../components/Modal/AddCategory";
 
 export default function Homecare() {
+  const [addcategoryModal,setAddCategoryModal]=useState(false)
   const dispatch = useDispatch();
   const [homeCareCategories, setHomeCareCategory] = useState([]);
+
+  // const getHomecareCat = () => {
+  //   getPharmaCategory().then(({ data }) => {
+  //     console.log(data.data.mainCategories);
+  //     setCategoryData(data.data.mainCategories);
+  //   });
+  // };
   useEffect(() => {
     getHomecareCategories();
     dispatch(homecare());
@@ -35,7 +46,12 @@ export default function Homecare() {
           <h2 className="font-bold text-lg">Categories</h2>
           <p>{homeCareCategories.length} available categories</p>
         </div>
-        <ComunButton text={"Add new categories"} callback={addCategory} />
+        <div 
+        onClick={()=>{setAddCategoryModal(true)}}
+        >
+        <AddNewCategoryButton text={"Add new categories"} callback={addCategory} />
+        </div>
+        
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6"></div>
 
@@ -52,6 +68,17 @@ export default function Homecare() {
             );
           })}
       </div>
+      {
+        addcategoryModal && (
+
+          <AddCategory 
+          catFunction={addHomecareCategory}
+          setShowModal={setAddCategoryModal}
+          GetPharmacyCat={getHomecareCategories}
+          />
+
+        )
+      }
     </div>
   );
 }
