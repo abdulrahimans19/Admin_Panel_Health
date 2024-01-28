@@ -94,6 +94,7 @@ import React, { useState } from "react";
 import { SignupUserdata } from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
+import SignupProfile from "./SignupProfile";
 
 const Register = () => {
   const [selectedOption, setSelectedOption] = useState("Doctor");
@@ -106,6 +107,7 @@ const Register = () => {
   // password comparison
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleToggle = (option) => {
     // Only keep logic for "Doctor"
@@ -169,6 +171,14 @@ const Register = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(newEmail));
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Handler for closing the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -263,7 +273,7 @@ const Register = () => {
                 type="submit"
               >
                 <div className="text-white text-1xl font-semibold font-['Roboto Flex']">
-                  Sign up
+                  Continue
                 </div>
               </button>
             </div>
@@ -271,11 +281,16 @@ const Register = () => {
             <div className="flex items-center ml-20 mt-6">
               <span>Already have an account? </span>
               <a
-                href="/login"
+                href="/set-profile"
                 className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] "
               >
                 Login
               </a>
+              <SignupProfile
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                // onLogin={handleLogin}
+              />
             </div>
           </form>
         </div>

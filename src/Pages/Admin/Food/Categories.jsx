@@ -25,7 +25,6 @@ export default function FoodCategory() {
   const [EditData, setEditData] = useState(null);
   const [subCatData, setSubCatData] = useState([]);
   const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
-  const [categoryData, setCategoryData] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -40,15 +39,19 @@ export default function FoodCategory() {
   };
   const editCat = (data) => {
     setEditCatModal(true);
-
     setEditData(data);
+  };
+
+  const GetFoodCat = () => {
+    getFoodCategory().then(({ data }) => {
+      console.log(data.data.mainCategories);
+      setCategoryMenu(data.data.mainCategories);
+    });
   };
 
   useEffect(() => {
     dispatch(foodNavdata());
-    getFoodCategory().then(({ data }) => {
-      setCategoryMenu(data.data.mainCategories);
-    });
+    GetFoodCat();
   }, []);
 
   const viewCatInfo = (data) => {
@@ -131,9 +134,9 @@ export default function FoodCategory() {
       </div>
       {AddCategoryModal && (
         <AddCategory
-        catFunction={addFoodCategory}
+          catFunction={addFoodCategory}
           setShowModal={setAddCategoryModal}
-          GetPharmacyCat={getFoodCategory}
+          GetPharmacyCat={GetFoodCat}
         />
       )}
       {editCatModal && (
@@ -142,7 +145,7 @@ export default function FoodCategory() {
           incomingType={"edit"}
           dataToUpload={EditData}
           setShowModal={setEditCatModal}
-          GetPharmacyCat={getFoodCategory}
+          GetPharmacyCat={GetFoodCat}
         />
       )}
 
