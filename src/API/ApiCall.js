@@ -221,3 +221,12 @@ export const countryCodesApi = async (data) => {
     })
     .catch((error) => console.error("Error fetching country data:", error));
 };
+export const addHomecareCategory = async (data) => {
+  return await Instance.post(`main-categories/home-care/create`, data);
+};
+export const getRecommendedTestsbyCategoryApi = async (cat_id) => {
+  return await Instance.get(`tests/all-tests?recommended=${true}&category_id=${cat_id}`);
+}
+export const getDisbledTestByCatApi = async (cat_id) => {
+  return await Instance.get(`tests/all-tests?disabled=${true}&category_id=${cat_id}`);
+};

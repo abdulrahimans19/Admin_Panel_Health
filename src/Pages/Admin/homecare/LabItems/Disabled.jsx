@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import TestCard from "./lab_components/TestCard";
-import { getDisbledTestApi } from "../../../../API/ApiCall";
+import { getDisbledTestApi, getDisbledTestByCatApi } from "../../../../API/ApiCall";
+import { useSelector } from "react-redux";
 
 function Disabled() {
   const [disbledTest, setDisabledTest] = useState([]);
+  const {testFilter}=useSelector((state)=>{
+    return state.admin
+  })
+  useEffect(()=>{
+    if(testFilter){
+      getDisabledTestByCat(testFilter)
+    }
+  },[testFilter])
 
   useEffect(() => {
     getDisabledTestCards();
@@ -15,6 +24,11 @@ function Disabled() {
       setDisabledTest(data.data.data.tests);
     });
   };
+  const getDisabledTestByCat=(category)=>{
+    getDisbledTestByCatApi(category).then((data)=>{
+      setDisabledTest(data.data.data.tests)
+    })
+  }
 
   return (
     <div>
