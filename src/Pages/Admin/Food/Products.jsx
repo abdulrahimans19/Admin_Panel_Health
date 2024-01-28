@@ -27,8 +27,6 @@ export default function FoodProduct() {
     console.log("add category modal");
   };
 
-  const abc = { name: "Pulmonology", image: lungsimg };
-  const ab = { name: "Hepatology", image: heartimg };
 
   useEffect(() => {
     dispatch(foodNavdata());

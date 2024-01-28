@@ -160,6 +160,10 @@ export const CanclationDoctor = async (id) => {
 export const getPharmaProductApi = async (pageNumber) => {
   return await Instance.get(`/product/pharma?page=${pageNumber}`);
 };
+export const getFoodProductApi = async (pageNumber) => {
+  return await Instance.get(`/product/food?page=${pageNumber}`);
+};
+
 export const totalDoctorApi = async (pageNumber) => {
   return await Instance.get(`/admin/total-doctor`);
 };
@@ -209,10 +213,11 @@ export const countryCodesApi = async (data) => {
 };
 
 export const editPharmaProduct = async (data) => {
+  console.log(data);
   return await Instance.put(`/product/pharma/update`, data);
 };
 export const disabledFarmaProductApi = async (data) => {
-  return await Instance.get(`/product/admin/disabled?type=PHARMA?page=${data}`);
+  return await Instance.get(`/product/admin/disabled?type=PHARMA&page=${data}`);
 };
 export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
@@ -231,4 +236,7 @@ export const UpadateFoodCategory = async (data) => {
 };
 export const getPharmaOrders = async () => {
   return await Instance.get("/order/pharma/all-orders");
+};
+export const disablePharmaProduct = async (data) => {
+  return await Instance.delete(`/product/${data}`);
 };
