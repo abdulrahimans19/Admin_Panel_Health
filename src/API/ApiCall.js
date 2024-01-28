@@ -252,3 +252,6 @@ export const getRecommendedTestsbyCategoryApi = async (cat_id) => {
 export const getDisbledTestByCatApi = async (cat_id) => {
   return await Instance.get(`tests/all-tests?disabled=${true}&category_id=${cat_id}`);
 };
+export const getCurrentAppoinmentsApi = async (year, month, date) => {
+  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
+};

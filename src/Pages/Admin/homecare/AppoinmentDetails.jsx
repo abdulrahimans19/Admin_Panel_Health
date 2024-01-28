@@ -5,14 +5,36 @@ import KeyValuePairResultModal from "./LabItems/lab_components/KeyValuePairResul
 import AddImage from "../../../assets/images/addImage.png";
 import DatePicker from "react-datepicker";
 import DateInput from "./appoinments/DateInput";
-import { getAppoinmentsApi } from "../../../API/ApiCall";
+import { getAppoinmentsApi, getCurrentAppoinmentsApi } from "../../../API/ApiCall";
+import ReactPaginate from "react-paginate";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
  const [appoinments,setAppoinments]=React.useState([])
   useEffect(()=>{
-
+    getTodayAppoinments();
   },[])
+  const [totalPagecount, setTotalPagecount] = React.useState(0)
+  const [currentPage, setCurrentPage] = React.useState(0);
+
+  const handlePageChange = (selectedPage) => {
+    // Handle page change logic here, e.g., fetching data for the new page
+    setCurrentPage(selectedPage.selected);
+  }
+  const getTodayAppoinments=()=>{
+    const today=new Date();
+    const year=today.getFullYear();
+    const month=today.getMonth()+1;
+    const day=today.getDate();
+    getCurrentAppoinmentsApi(year,month,day).then((data)=>{
+      console.log("apppoiii",data);
+      console.log(data.data.data.total_count);
+      const totalPages = Math.ceil(data.data.data.total_count / 10);
+      setTotalPagecount(totalPages)
+      setAppoinments(data.data.data.bookings)
+    })
+    
+  }
   const handleDateChange=(data)=>{
     console.log(data);
     let year=data.getFullYear()
@@ -20,6 +42,8 @@ function AppoinmentDetails() {
     let date=data.getDate()
     console.log(`${year}-${month}-${date}`);
     getAppoinmentsApi(year,month,date).then((data)=>{
+      const totalPages = Math.ceil(data.data.data.total_count / 10);
+      setTotalPagecount(totalPages)
       setAppoinments(data.data.data.bookings);
     })
     
@@ -197,6 +221,14 @@ function AppoinmentDetails() {
           </div>
         </div>
       </div>
+      <ReactPaginate
+        pageCount={totalPagecount}  // Replace with the total number of pages
+        pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1}  // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 }

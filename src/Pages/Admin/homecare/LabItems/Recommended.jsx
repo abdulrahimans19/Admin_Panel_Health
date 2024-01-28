@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import TestCard from "./lab_components/TestCard";
 import { getRecommendedTestApi, getRecommendedTestsbyCategoryApi } from "../../../../API/ApiCall";
 import { useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
 
 function Recommended() {
   const [recommendedTest,setRecommendedTest]= useState([])
+  const [totalPagecount, setTotalPagecount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageChange = (selectedPage) => {
+    // Handle page change logic here, e.g., fetching data for the new page
+    setCurrentPage(selectedPage.selected);
+  }
   const {testFilter}=useSelector((state)=>{
     return state.admin
   })
@@ -16,12 +24,16 @@ function Recommended() {
   const getRecomendedTestsByCat=(category)=>{
     getRecommendedTestsbyCategoryApi(category).then((data)=>{
       console.log("data is",data.data.data.tests);
+      const totalPages = Math.ceil(data.data.data.total_document / 10);
+      setTotalPagecount(totalPages)
       setRecommendedTest(data.data.data.tests)
     })
   }
   const getAllRecomendedTests=()=>{
     getRecommendedTestApi().then((data)=>{
       console.log("data is",data.data.data.tests);
+      const totalPages = Math.ceil(data.data.data.total_document / 10);
+      setTotalPagecount(totalPages)
       setRecommendedTest(data.data.data.tests)
     })
   }
@@ -46,6 +58,14 @@ function Recommended() {
         }
         
       </div>
+      <ReactPaginate
+        pageCount={totalPagecount}  // Replace with the total number of pages
+        pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1}  // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={'pagination'}
+        activeClassName={'active'}
+      />
     </div>
   );
 }

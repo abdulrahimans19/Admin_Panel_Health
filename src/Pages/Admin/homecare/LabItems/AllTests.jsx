@@ -30,7 +30,6 @@ function AllTests() {
   const getLabTestsbyCategory = (category) => {
     getLabTestsbyCategoryApi(category).then((data) => {
       const totalPages = Math.ceil(data.data.data.total_document / 10);
-      console.log("totsl pagesdssdg",totalPages);
       setTotalPagecount(totalPages)
       setLabtest(data.data.data.tests);
     });
