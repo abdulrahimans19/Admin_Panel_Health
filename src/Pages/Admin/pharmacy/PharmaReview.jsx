@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pharmacyNav } from "../../../Redux/Features/NavbarSlice";
+import ReactPaginate from "react-paginate";
+import "../../../assets/pagination.css";
 import {
   getFoodReview,
   getPharmaCategory,
@@ -10,16 +12,23 @@ import CatCard from "../../../components/Cards/CatCard";
 import ReviewCard from "../../../components/Cards/ReviewCard";
 
 export default function PharmaReview() {
+  const [totalPagecount, setTotalPagecount] = useState(0);
   const dispatch = useDispatch();
   const [categoryData, setCategoryData] = useState([]);
   const [viewReview, setViewReview] = useState(false);
   const [reviewdata, setReviewdata] = useState("");
   const [reviews, setReviews] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
   const GetPharmacyCat = () => {
-    getPharmaProductApi().then(({ data }) => {
+    getPharmaProductApi(currentPage).then(({ data }) => {
+      const totalPages = Math.ceil(data.data.total_document / 10);
+      setTotalPagecount(totalPages);
       setCategoryData(data.data.products);
     });
   };
+
+
+
 
   const editCat = () => {};
 
@@ -41,7 +50,7 @@ export default function PharmaReview() {
   useEffect(() => {
     GetPharmacyCat();
     dispatch(pharmacyNav());
-  }, []);
+  }, [currentPage]);
 
   const formatDate = (originalDateString) => {
     const originalDate = new Date(originalDateString);
@@ -52,7 +61,11 @@ export default function PharmaReview() {
       month < 10 ? "0" : ""
     }${month}-${year}`;
   };
-
+const handlePageChange=(selectedPage)=>
+{
+console.log(selectedPage);
+setCurrentPage(selectedPage.selected+1);
+}
   return (
     <>
       <div>
@@ -170,6 +183,16 @@ export default function PharmaReview() {
             </div>
           )}
         </div>
+        {!viewReview&&   <ReactPaginate
+        pageCount={totalPagecount} // Replace with the total number of pages
+        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1} // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+       
+      />}
+     
       </div>
     </>
   );

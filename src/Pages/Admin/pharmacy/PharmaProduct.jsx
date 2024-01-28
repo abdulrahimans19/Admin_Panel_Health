@@ -11,6 +11,7 @@ import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
 import {
   addProductApi,
+  disablePharmaProduct,
   disabledFarmaProductApi,
   editPharmaProduct,
   filterPharmaAPi,
@@ -64,9 +65,10 @@ export default function PharmaProduct() {
         setPharmaProductsData(data.data.products);
       });
     } else {
-      disabledFarmaProductApi().then((data) => {
+      disabledFarmaProductApi().then(({data}) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
+        console.log(data.data);
         setPharmaProductsData(data.data.products);
       });
     }
@@ -113,6 +115,11 @@ export default function PharmaProduct() {
 
   const disableProduct = () => {
     console.log("confirm working");
+console.log(editProductData);
+disablePharmaProduct(editProductData._id).then((data)=>
+{
+  console.log(data);
+})
   };
   return (
     <div>
@@ -163,7 +170,8 @@ export default function PharmaProduct() {
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
-            <select
+
+            {categoryMenu? <select
               onChange={(data) => {
                 setFilterId(data.target.value);
               }}
@@ -176,7 +184,8 @@ export default function PharmaProduct() {
               {Categories?.map((data) => {
                 return <option value={data._id}>{data.title}</option>;
               })}
-            </select>
+            </select>:<></>}
+           
           </div>
         </div>
       </div>
