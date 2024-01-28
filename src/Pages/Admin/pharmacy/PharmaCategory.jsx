@@ -50,7 +50,6 @@ export default function PharmaCategory() {
   useEffect(() => {
     dispatch(pharmacyNav());
     GetPharmacyCat();
-
   }, []);
 
   const viewCatInfo = (data) => {
