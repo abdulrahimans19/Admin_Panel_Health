@@ -33,8 +33,7 @@ export function HomecareLabItems() {
   };
   const handleEvent = (testValue) => {
     console.log(testValue);
-    dispatch(setFilter(testValue))
-    
+    dispatch(setFilter(testValue));
   };
   const renderTabContent = () => {
     switch (activeTab) {
@@ -118,21 +117,17 @@ export function HomecareLabItems() {
         <div className="relative">
           <div>
             <select
-            onChange={(e) => handleEvent(e.target.value)}
+              onChange={(e) => handleEvent(e.target.value)}
               id="category"
               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
             >
-              <option
-              disabled selected
-               value="Filter by category">Filter by category</option>
+              <option disabled selected value="Filter by category">
+                Filter by category
+              </option>
 
               {testCategories[0] &&
                 testCategories.map((data) => {
-                  return (
-                    <option value={data?._id}>
-                      {data.title}
-                    </option>
-                  );
+                  return <option value={data?._id}>{data.title}</option>;
                 })}
             </select>
 
