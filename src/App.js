@@ -92,7 +92,7 @@ function App() {
           <Route element={<AppointmentHistory />} path="/doctor/history" />
           <Route element={<DocTransaction />} path="/doctor/transaction" />
         </Route>
-      </Route>
+      </Route> 
 
       <Route element={<LoggedInUser />}>
         <Route element={<Login />} path="/login" />
