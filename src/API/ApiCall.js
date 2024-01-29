@@ -240,7 +240,9 @@ export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
 };
 export const GetDrAprovedWithdrawalRequsts = async (page) => {
-  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
+  return await Instance.get(
+    `/withdrawal/accepted-withdrawal-requests?page=${page}`
+  );
 };
 export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);

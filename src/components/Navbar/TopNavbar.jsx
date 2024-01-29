@@ -5,6 +5,18 @@ import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Typography,
+} from "@material-tailwind/react";
+import {
+  onMessageListener,
+  requestForToken,
+} from "../../firebase/Firebaseconfig";
+import Notification from "./Notification";
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -16,6 +28,7 @@ function NavBar() {
   const [currentRoute, setCurrentRoute] = useState(useLocation().pathname);
 
   const [openMenu, setOpenMenu] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
   const list = {
     visible: { opacity: 1, scale: 1 },
     hidden: { opacity: 0, scale: 0 },
@@ -36,6 +49,7 @@ function NavBar() {
   //   }
   useEffect(() => {
     console.log(window.location.pathname);
+
     // setCurrentRoute(useLocation().pathname)
   }, [useLocation().pathname]);
 
@@ -43,6 +57,7 @@ function NavBar() {
     <>
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
+          <Notification />
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
@@ -127,18 +142,128 @@ function NavBar() {
 
             <div className="flex items-center">
               {/* Notification and Profile */}
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+              <div class="flex items-center ms-3">
+                <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <button
+                    type="button"
+                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    onClick={async () => {
+                      setOpenNotification((e) => !e);
+                    }}
+                  >
+                    <BellIcon className="h-6 w-6" />
+                  </button>
+                  <div
+                    className="badge  p-2 absolute  rounded-full flex items-center justify-center right-5 top-4
+                  
+                   "
+                    style={{
+                      width: "15px",
+                      height: "15px",
+                      backgroundColor: "red",
+                    }}
+                  >
+                    <span className="text-white text-xs">15</span>
+                  </div>
+                </div>
+                {openNotification && (
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={list}
+                    className="z-50   my-4 right-5 fixed top-10 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 p-5 pb-0"
+                    id="dropdown-user"
+                  >
+                    <div className="header flex pb-3 border-b-2 border-solid border-gray-800">
+                      <div>
+                        <h1>Notifications</h1>
+                      </div>
+                      <div className="flex justify-center items-center"></div>
+                    </div>
+                    <div
+                      className="container  p-1 pb-0  h-100px overflow-y-scroll no-scrollbar "
+                      style={{
+                        maxHeight: "570px",
+                        minHeight: "400px",
+                        width: "400px",
+                      }}
+                    >
+                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
+                        <div className="flex pb-4 border-b-gray-300">
+                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
+                            <img
+                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
+                              alt=""
+                              className="h-10 w-10 rounded-full"
+                            />
+                          </div>
+                          <h1 className="text-center">Name</h1>
+                        </div>
+                        <div className="border-t border-gray-300 pt-3">
+                          <p className="text-center"></p>
+                          <p className="text-left text-xs pt-2">31/02/2024</p>
+                        </div>
+                      </Card>
+                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
+                        <div className="flex pb-4 border-b-gray-300">
+                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
+                            <img
+                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
+                              alt=""
+                              className="h-10 w-10 rounded-full"
+                            />
+                          </div>
+                          <h1 className="text-center">Name</h1>
+                        </div>
+                        <div className="border-t border-gray-300 pt-3">
+                          <p className="text-center">
+                            this is testing this is tes message{" "}
+                          </p>
+                          <p className="text-left text-xs pt-2">31/02/2024</p>
+                        </div>
+                      </Card>
+                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
+                        <div className="flex pb-4 border-b-gray-300">
+                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
+                            <img
+                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
+                              alt=""
+                              className="h-10 w-10 rounded-full"
+                            />
+                          </div>
+                          <h1 className="text-center">Name</h1>
+                        </div>
+                        <div className="border-t border-gray-300 pt-3">
+                          <p className="text-center">
+                            this is testing this is tes message{" "}
+                          </p>
+                          <p className="text-left text-xs pt-2">31/02/2024</p>
+                        </div>
+                      </Card>
+                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
+                        <div className="flex pb-4 border-b-gray-300">
+                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
+                            <img
+                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
+                              alt=""
+                              className="h-10 w-10 rounded-full"
+                            />
+                          </div>
+                          <h1 className="text-center">Name</h1>
+                        </div>
+                        <div className="border-t border-gray-300 pt-3">
+                          <p className="text-center">
+                            this is testing this is tes message{" "}
+                          </p>
+                          <p className="text-left text-xs pt-2">31/02/2024</p>
+                        </div>
+                      </Card>
+                    </div>
+                  </motion.div>
+                )}
               </div>
               <div class="flex items-center ms-3">
-                <div>
+                {/* <div>
                   <button
                     onClick={() => {
                       setOpenMenu((e) => !e);
@@ -155,7 +280,7 @@ function NavBar() {
                       alt="user photo"
                     />
                   </button>
-                </div>
+                </div> */}
                 {openMenu && (
                   <motion.div
                     initial="hidden"
