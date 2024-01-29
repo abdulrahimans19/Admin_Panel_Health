@@ -4,16 +4,20 @@ import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import MovieTicketCard from "../../../components/Cards/CouponCard";
 import CouponModal from "../../../components/Modal/CouponModal";
-import { addCouponApi, getAllCouponsApi, updateCouponApi } from "../../../API/ApiCall";
+import {
+  addCouponApi,
+  getAllCouponsApi,
+  updateCouponApi,
+} from "../../../API/ApiCall";
 export default function Coupons() {
   const [openCouponModal, setOpenCouponModal] = useState(false);
   const [editCouponModal, setEditCouponModal] = useState(false);
   const [couponData, setCouponData] = useState([]);
-  const [cardData, setCardData] = useState()
+  const [cardData, setCardData] = useState();
 
   const editCoupon = (data) => {
-    setCardData(data)
-    setEditCouponModal(true)
+    setCardData(data);
+    setEditCouponModal(true);
     console.log(data);
   };
 
@@ -40,17 +44,27 @@ export default function Coupons() {
 
       <div className="mt-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {couponData.map((data)=>
-        {
-         return(<MovieTicketCard data={data} callback={editCoupon} />) 
-
-        })}
+          {couponData.map((data) => {
+            return <MovieTicketCard data={data} callback={editCoupon} />;
+          })}
         </div>
-    
       </div>
 
-      {openCouponModal && <CouponModal getAllCoupons={getAllCoupons} onClose={setOpenCouponModal} apicall={addCouponApi} />}
-      {editCouponModal && <CouponModal  getAllCoupons={getAllCoupons} onClose={setEditCouponModal} displayData={cardData} apicall={updateCouponApi}/>}
+      {openCouponModal && (
+        <CouponModal
+          getAllCoupons={getAllCoupons}
+          onClose={setOpenCouponModal}
+          apicall={addCouponApi}
+        />
+      )}
+      {editCouponModal && (
+        <CouponModal
+          getAllCoupons={getAllCoupons}
+          onClose={setEditCouponModal}
+          displayData={cardData}
+          apicall={updateCouponApi}
+        />
+      )}
     </div>
   );
 }

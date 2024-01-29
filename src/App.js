@@ -36,12 +36,14 @@ import DocTransaction from "./Pages/Doctor/transaction/Transaction";
 import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
 import Appointments from "./Pages/Doctor/Appointments/Appointments";
 import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
+import Notification from "./components/Navbar/Notification";
 import SignupProfile from "./Pages/SignupProfile";
 import Coupons from "./Pages/Admin/coupons/Coupons";
 
 function App() {
   return (
     <Routes>
+      <Route element={<Notification />} />
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
@@ -79,10 +81,7 @@ function App() {
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
 
-
-
           <Route element={<Coupons />} path="/coupons" />
-
         </Route>
       </Route>
 
@@ -93,7 +92,7 @@ function App() {
           <Route element={<AppointmentHistory />} path="/doctor/history" />
           <Route element={<DocTransaction />} path="/doctor/transaction" />
         </Route>
-      </Route>
+      </Route> 
 
       <Route element={<LoggedInUser />}>
         <Route element={<Login />} path="/login" />
@@ -103,7 +102,6 @@ function App() {
         <Route element={<Otp />} path="/otp" />
         <Route element={<SetNewPass />} path="/set-password" />
         <Route element={<SignupProfile />} path="/set-profile" />
-
       </Route>
     </Routes>
   );

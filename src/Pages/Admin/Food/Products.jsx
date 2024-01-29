@@ -9,38 +9,135 @@ import ProductCard from "../../../components/Cards/ProductCards";
 import AddItemButton from "../../../components/Button/AddItemButton";
 import buttonImage from "../../../assets/images/element-plus.png";
 import ProductModal from "../../../components/Modal/AddProductModal";
-import { getFoodProducts } from "../../../API/ApiCall";
+import {
+  getFoodProducts,
+  addFoodProductApi,
+  disableFoodProduct,
+  disabledFoodProductApi,
+  editFoodProduct,
+  filterFoodAPi,
+  getFoodCategory,
+  getFoodProductApi,
+} from "../../../API/ApiCall";
+import ReactPaginate from "react-paginate";
+import "../../../assets/pagination.css";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 
 export default function FoodProduct() {
   const [categoryMenu, setCategoryMenu] = useState([]);
   const [AddProductModal, setAddProductModal] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [FoodProductsData, setFoodProductsData] = useState([]);
+  const [totalPagecount, setTotalPagecount] = useState(0);
+  const [editProductData, setEditProductData] = useState("");
+  const [editProduct, setEditProduct] = useState(false);
+  const [disableProducts, setDisableProducts] = useState(false);
+  const [Categories, setCategories] = useState([]);
+  const [filterId, setFilterId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
 
   const dispatch = useDispatch();
   const editCat = (data) => {
+    setEditProductData(data);
+    setEditProduct(true);
+
     console.log(data);
+  };
+
+  const getFoodCategories = () => {
+    getFoodCategory().then(({ data }) => {
+      console.log(data, "maincat");
+      setCategories(data.data.mainCategories);
+    });
+  };
+  const FoodProduct = () => {
+    if (filterId) {
+      setCurrentPage(0);
+      filterFoodAPi(filterId, 1).then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        setFoodProductsData(data.data.products);
+      });
+    } else if (categoryMenu) {
+      getFoodProductApi(pageNumber).then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        console.log(data.data.products);
+
+        setFoodProductsData(data.data.products);
+      });
+    } else {
+      disabledFoodProductApi().then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        console.log(data.data);
+        setFoodProductsData(data.data.products);
+      });
+    }
   };
 
   const addcategory = () => {
     console.log("add category modal");
   };
 
-
   useEffect(() => {
     dispatch(foodNavdata());
-    getFoodProducts().then(({ data }) => {
-      console.log(data.data.products);
-      setCategoryMenu(data.data.products);
+    FoodProduct();
+  }, [categoryMenu, filterId]);
+  useEffect(() => {
+    getFoodCategories();
+  }, []);
+
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage.selected);
+
+    if (filterId) {
+      filterFoodAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
+        setPageNumber(selectedPage.selected + 1);
+
+        setFoodProductsData(data.data.products);
+      });
+    } else {
+      if (categoryMenu) {
+        getFoodProductApi(selectedPage.selected + 1).then(({ data }) => {
+          console.log(data.data.products);
+          setPageNumber(selectedPage.selected + 1);
+          setFoodProductsData(data.data.products);
+        });
+      } else {
+        disabledFoodProductApi(selectedPage.selected + 1).then(({ data }) => {
+          console.log(data.data.products);
+          setPageNumber(selectedPage.selected + 1);
+          setFoodProductsData(data.data.products);
+        });
+      }
+    }
+  };
+
+  const CallBackDisable = (data) => {
+    setEditProductData(data);
+    setDisableProducts(true);
+    console.log(data, "disble working");
+  };
+
+  const disableProduct = () => {
+    console.log("confirm working");
+    console.log(editProductData);
+    disableFoodProduct(editProductData._id).then((data) => {
+      console.log(data);
     });
-  }, [dispatch]);
+  };
   return (
     <div>
       <div className="flex gap-3 p-3">
         <p
           onClick={() => {
-            changeCategory();
+            setFilterId(null);
+            setCategoryMenu(true);
           }}
           className={`${
             categoryMenu && "font-bold underline"
@@ -50,7 +147,9 @@ export default function FoodProduct() {
         </p>
         <p
           onClick={() => {
-            changeCategory();
+            setFilterId(null);
+
+            setCategoryMenu(false);
           }}
           className={`${
             !categoryMenu && "font-bold underline"
@@ -80,31 +179,71 @@ export default function FoodProduct() {
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option disabled value="">
-                Filter By Category
-              </option>
-              <option value="full">full body</option>
-              <option value="Fever">Fever</option>
-            </select>
+            {categoryMenu ? (
+              <select
+                onChange={(data) => {
+                  setFilterId(data.target.value);
+                }}
+                id="countries"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option selected disabled value="">
+                  Filter By Category
+                </option>
+                {Categories?.map((data) => {
+                  return <option value={data._id}>{data.title}</option>;
+                })}
+              </select>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          {categoryMenu[0] &&
-            categoryMenu.map((data) => {
-              return <CatCard data={data} callback={editCat} />;
-            })}
+          {FoodProductsData?.map((data) => {
+            return (
+              <ProductCard
+                data={data}
+                callback={editCat}
+                disableCall={CallBackDisable} 
+              />
+            );
+          })}
         </div>
       </div>
       {AddProductModal && (
-        <ProductModal setAddProductModal={setAddProductModal} />
+        <ProductModal
+          setAddProductModal={setAddProductModal}
+          apiCall={addFoodProductApi}
+          getProducts={FoodProduct}
+        />
       )}
-      \
+      {editProduct && (
+        <ProductModal
+          setAddProductModal={setEditProduct}
+          editProductData={editProductData}
+          apiCall={editFoodProduct}
+          incomingType={"edit"}
+          getProducts={FoodProduct}
+        />
+      )}
+      <ReactPaginate
+        pageCount={totalPagecount} // Replace with the total number of pages
+        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1} // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+        forcePage={currentPage}
+      />
+      {disableProducts && (
+        <ConfirmationModal
+          onClose={setDisableProducts}
+          onConfirm={disableProduct}
+        />
+      )}
     </div>
   );
 }
