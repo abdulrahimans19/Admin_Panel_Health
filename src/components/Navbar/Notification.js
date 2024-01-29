@@ -7,36 +7,45 @@ import {
 
 const Notification = () => {
   const [notification, setNotification] = useState({ title: "", body: "" });
-  const notify = () => toast(<ToastDisplay />);
-  function ToastDisplay() {
-    return (
-      <div>
-        <p>
-          <b>{notification?.title}</b>
-        </p>
-        <p>{notification?.body}</p>
-      </div>
-    );
-  }
 
   useEffect(() => {
-    if (notification?.title) {
-      notify();
-    }
-  }, [notification]);
+    requestForToken();
+    const fetchNotification = async () => {
+      try {
+        const payload = await onMessageListener();
+        setNotification({
+          title: payload?.notification?.title,
+          body: payload?.notification?.body,
+        });
 
-  requestForToken();
+        // Display toast notification when a new message is received
+        if (payload?.notification?.title && payload?.notification?.body) {
+          toast.success(
+            <>
+              <strong>{payload.notification.title}</strong>
+              <p>{payload.notification.body}</p>
+            </>,
+            {
+              duration: 5000, // Optional: Set the duration for which the toast will be visible
+            }
+          );
+        }
 
-  onMessageListener()
-    .then((payload) => {
-      setNotification({
-        title: payload?.notification?.title,
-        body: payload?.notification?.body,
-      });
-    })
-    .catch((err) => console.log("failed: ", err));
+        // You can perform additional actions based on the notification payload
+        // For example, you may want to update your application state or trigger specific behavior.
+      } catch (error) {
+        console.log("failed: ", error);
+      }
+    };
 
-  return <Toaster />;
+    fetchNotification();
+  }, []); // Run the effect only once on mount
+
+  return (
+    <>
+      <Toaster />
+    </>
+  );
 };
 
 export default Notification;

@@ -47,7 +47,11 @@ export const onMessageListener = () =>
   new Promise((resolve) => {
     console.log("in requst %%%%%%%%%%%");
     onMessage(messaging, (payload) => {
-      console.log("payload", payload);
-      resolve(payload);
+      const notificationData = {
+        title: payload.notification.title,
+        body: payload.notification.body,
+        sound: payload.notification.sound || "default", // Set the sound to "default" if not provided
+      };
+      resolve(notificationData);
     });
   });

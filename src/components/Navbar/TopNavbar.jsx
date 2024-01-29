@@ -148,15 +148,15 @@ function NavBar() {
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     onClick={async () => {
-                      // let notification = await requestForToken();
-                      // console.log(notification, " @@@@@@@@@@@@@@@@@");
                       setOpenNotification((e) => !e);
                     }}
                   >
                     <BellIcon className="h-6 w-6" />
                   </button>
                   <div
-                    className="badge p-2 absolute top-2 right-3.5 mt-1 rounded-full flex items-center justify-center"
+                    className="badge  p-2 absolute  rounded-full flex items-center justify-center right-5 top-4
+                  
+                   "
                     style={{
                       width: "15px",
                       height: "15px",
@@ -171,7 +171,7 @@ function NavBar() {
                     initial="hidden"
                     animate="visible"
                     variants={list}
-                    className="z-50   my-4 right-10 fixed top-10 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 p-5 pb-0"
+                    className="z-50   my-4 right-5 fixed top-10 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 p-5 pb-0"
                     id="dropdown-user"
                   >
                     <div className="header flex pb-3 border-b-2 border-solid border-gray-800">
@@ -262,8 +262,8 @@ function NavBar() {
                   </motion.div>
                 )}
               </div>
-              {/* <div class="flex items-center ms-3">
-                <div>
+              <div class="flex items-center ms-3">
+                {/* <div>
                   <button
                     onClick={() => {
                       setOpenMenu((e) => !e);
@@ -280,7 +280,7 @@ function NavBar() {
                       alt="user photo"
                     />
                   </button>
-                </div>
+                </div> */}
                 {openMenu && (
                   <motion.div
                     initial="hidden"
@@ -350,7 +350,7 @@ function NavBar() {
                     </motion.ul>
                   </motion.div>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
