@@ -240,3 +240,14 @@ export const getPharmaOrders = async () => {
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
 };
+export const getAllCouponsApi = async (data) => {
+  return await Instance.get(`/coupon/get-all?page=1&pageSize=${data}&pageSize=5`);
+};
+
+export const addCouponApi  = async (data) => {
+  return await Instance.post(`/coupon/create`,data);
+};
+
+export const updateCouponApi  = async (data) => {
+  return await Instance.put(`/coupon/update`,data);
+};
