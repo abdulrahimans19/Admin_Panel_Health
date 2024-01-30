@@ -291,3 +291,29 @@ export const getDisbledTestByCatApi = async (cat_id) => {
 export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+
+export const getDoctorProfileAndWallet = async () => {
+  return await Instance.get("/doctor/doctor-profile");
+};
+export const getApointments = async (
+  startDate = "01/25/2023",
+  endDate = "01/26/2024"
+) => {
+  return await Instance.get(
+    `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
+  );
+};
+export const addWithdrawRequest = async (data) => {
+  return await Instance.post("/withdrawal/add-withdrawal-request", data);
+};
+export const getAvailableSlot = async () => {
+  return await Instance.get("/slots/time-slots");
+};
+
+export const addAvailableSlot = async (data) => {
+  return await Instance.post("doctor/add-slots", data);
+};
+
+export const getTodayApointments = async () => {
+  return await Instance.get("/appointment/doctor-appointments?status=upcoming");
+};
