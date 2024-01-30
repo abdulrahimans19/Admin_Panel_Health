@@ -51,7 +51,7 @@ const Success = () => {
               <div class="flex-col justify-start items-center gap-[17px] flex">
                 <div class="text-zinc-800 text-5xl font-bold font-['Roboto Flex']">
                   Password reset
-                </div>
+                </div> 
                 <div class="text-center text-neutral-400 text-2xl font-normal font-['Roboto Flex']">
                   Your Password has been successfully reset
                   <br />

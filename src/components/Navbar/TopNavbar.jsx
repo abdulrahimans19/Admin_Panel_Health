@@ -17,12 +17,13 @@ import {
   requestForToken,
 } from "../../firebase/Firebaseconfig";
 import Notification from "./Notification";
+import NotificationBar from "./NotificationMenu";
 
 function NavBar() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { toggleSidebar, topnavData } = useSelector((state) => {
+  const { toggleSidebar, topnavData,notification } = useSelector((state) => {
     return state.navbar;
   });
   const [currentRoute, setCurrentRoute] = useState(useLocation().pathname);
@@ -167,99 +168,7 @@ function NavBar() {
                   </div>
                 </div>
                 {openNotification && (
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={list}
-                    className="z-50   my-4 right-5 fixed top-10 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 p-5 pb-0"
-                    id="dropdown-user"
-                  >
-                    <div className="header flex pb-3 border-b-2 border-solid border-gray-800">
-                      <div>
-                        <h1>Notifications</h1>
-                      </div>
-                      <div className="flex justify-center items-center"></div>
-                    </div>
-                    <div
-                      className="container  p-1 pb-0  h-100px overflow-y-scroll no-scrollbar "
-                      style={{
-                        maxHeight: "570px",
-                        minHeight: "400px",
-                        width: "400px",
-                      }}
-                    >
-                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
-                        <div className="flex pb-4 border-b-gray-300">
-                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
-                            <img
-                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
-                              alt=""
-                              className="h-10 w-10 rounded-full"
-                            />
-                          </div>
-                          <h1 className="text-center">Name</h1>
-                        </div>
-                        <div className="border-t border-gray-300 pt-3">
-                          <p className="text-center"></p>
-                          <p className="text-left text-xs pt-2">31/02/2024</p>
-                        </div>
-                      </Card>
-                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
-                        <div className="flex pb-4 border-b-gray-300">
-                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
-                            <img
-                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
-                              alt=""
-                              className="h-10 w-10 rounded-full"
-                            />
-                          </div>
-                          <h1 className="text-center">Name</h1>
-                        </div>
-                        <div className="border-t border-gray-300 pt-3">
-                          <p className="text-center">
-                            this is testing this is tes message{" "}
-                          </p>
-                          <p className="text-left text-xs pt-2">31/02/2024</p>
-                        </div>
-                      </Card>
-                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
-                        <div className="flex pb-4 border-b-gray-300">
-                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
-                            <img
-                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
-                              alt=""
-                              className="h-10 w-10 rounded-full"
-                            />
-                          </div>
-                          <h1 className="text-center">Name</h1>
-                        </div>
-                        <div className="border-t border-gray-300 pt-3">
-                          <p className="text-center">
-                            this is testing this is tes message{" "}
-                          </p>
-                          <p className="text-left text-xs pt-2">31/02/2024</p>
-                        </div>
-                      </Card>
-                      <Card className="mt-2 mb-2 text-black bg-gray-100 p-4">
-                        <div className="flex pb-4 border-b-gray-300">
-                          <div className="h-10 w-10 rounded-full mr-3 justify-center items-center">
-                            <img
-                              src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D"
-                              alt=""
-                              className="h-10 w-10 rounded-full"
-                            />
-                          </div>
-                          <h1 className="text-center">Name</h1>
-                        </div>
-                        <div className="border-t border-gray-300 pt-3">
-                          <p className="text-center">
-                            this is testing this is tes message{" "}
-                          </p>
-                          <p className="text-left text-xs pt-2">31/02/2024</p>
-                        </div>
-                      </Card>
-                    </div>
-                  </motion.div>
+                 <NotificationBar  notifications={notification} setOpenNotification={setOpenNotification}/>
                 )}
               </div>
               <div class="flex items-center ms-3">
