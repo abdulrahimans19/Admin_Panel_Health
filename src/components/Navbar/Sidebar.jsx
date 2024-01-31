@@ -60,7 +60,7 @@ function SideBar() {
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
-                currentRoute === "/dashboard"
+                window.location.pathname === "/dashboard"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -72,7 +72,7 @@ function SideBar() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  currentRoute === "/dashboard" ? "svg-icon-active" : ""
+                  window.location.pathname === "/dashboard" ? "svg-icon-active" : ""
                 }`}
               >
                 <path
@@ -591,6 +591,50 @@ function SideBar() {
               </svg>
 
               <span class="ms-3">coupons</span>
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                dispatch(cleartopNav());
+                setCurrentRoute("/push-notification");
+                navigate("/push-notification");
+              }}
+              href="#"
+              class={`flex items-center p-2 pl-12 rounded-lg group ${
+                window.location.pathname === "/push-notification"
+                  ? "bg-white text-black "
+                  : "text-white"
+              } `}
+            >
+              <svg
+                fill={
+                  window.location.pathname === "/push-notification"
+                    ? "#your-active-color"
+                    : "#ede8e8"
+                }
+                width="20"
+                height="25"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                className={`svg-icon ${
+                  window.location.pathname === "/push-notification"
+                    ? "svg-icon-active"
+                    : ""
+                }`}
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path d="M9.426,6.3,7.57,8.156l2.137,2.137a1,1,0,0,1-1.414,1.414L6.156,9.57,4.3,11.425a4.437,4.437,0,0,0,4.413,7.388,1,1,0,0,1,.574,1.916,6.437,6.437,0,0,1-6.4-10.718L8.012,4.885a6.442,6.442,0,0,1,9.8.829,1,1,0,1,1-1.63,1.159A4.44,4.44,0,0,0,9.426,6.3ZM23,15a6,6,0,1,1-6-6A6.008,6.008,0,0,1,23,15Zm-6-4a3.947,3.947,0,0,0-2.019.567l5.452,5.452A3.957,3.957,0,0,0,21,15,4,4,0,0,0,17,11Zm0,8a3.947,3.947,0,0,0,2.019-.567l-5.452-5.452A3.957,3.957,0,0,0,13,15,4,4,0,0,0,17,19Z"></path>
+                </g>
+              </svg>
+
+              <span class="ms-1">Push Notification</span>
             </a>
           </li>
           <li className="pt-1">
