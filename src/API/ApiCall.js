@@ -292,9 +292,18 @@ export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
 
-export const getNotificationApi = async () => {
+export const getNotificationApi = async (data) => {
+  console.log(data,"pagination");
   return await Instance.get(`/notification`);
 };
 export const readNotification = async (data) => {
   return await Instance.post(`/notification/mark-read?id=${data}`);
+};
+export const unreadNotification = async () => {
+
+  return await Instance.get(`/notification/read?read=false`);
+};
+
+export const updateFcmApi = async (data) => {
+  return await Instance.post(`/user/update-fcm-token`,data);
 };

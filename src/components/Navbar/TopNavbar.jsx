@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { openSidebar } from "../../Redux/Features/NavbarSlice";
+import { getCartItems, openSidebar } from "../../Redux/Features/NavbarSlice";
 import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Button,
   Card,
@@ -16,19 +17,23 @@ import {
   onMessageListener,
   requestForToken,
 } from "../../firebase/Firebaseconfig";
-import Notification from "./Notification";
+// import Notification from "./Notification";
 import NotificationBar from "./NotificationMenu";
 
 function NavBar() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { toggleSidebar, topnavData,notification } = useSelector((state) => {
+  const { toggleSidebar, topnavData,notification,notificationCount,notificationData } = useSelector((state) => {
     return state.navbar;
   });
+  
+
+  
   const [currentRoute, setCurrentRoute] = useState(useLocation().pathname);
 
   const [openMenu, setOpenMenu] = useState(false);
+  const [notificationnew, setNotificationnew] = useState()
   const [openNotification, setOpenNotification] = useState(false);
   const list = {
     visible: { opacity: 1, scale: 1 },
@@ -54,11 +59,35 @@ function NavBar() {
     // setCurrentRoute(useLocation().pathname)
   }, [useLocation().pathname]);
 
+
+useEffect(()=>
+{
+  onMessageListener().then((payload) => {
+    setNotificationnew(payload)
+    console.log(payload,"its coming here");
+    dispatch(getCartItems());
+    toast.success(
+      `${payload?.notification?.title}:${payload.notification?.body}`,
+      {
+        duration: 6000,
+        position: "top-right",
+      }
+    );
+    // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
+  })
+  .catch((err) => console.log("failed: ", err));
+
+
+
+},[notificationnew])
+
+
   return (
     <>
+    <Toaster/>
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
-          <Notification />
+          {/* <Notification /> */}
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
@@ -164,7 +193,7 @@ function NavBar() {
                       backgroundColor: "red",
                     }}
                   >
-                    <span className="text-white text-xs">15</span>
+                    <span className="text-white text-xs">{notificationCount}</span>
                   </div>
                 </div>
                 {openNotification && (

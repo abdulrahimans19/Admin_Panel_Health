@@ -44,7 +44,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { requestForToken, onMessageListener } from "./firebase/Firebaseconfig";
 import { getCartItems } from "./Redux/Features/NavbarSlice";
-
 function App() {
   const [notification, setNotification] = useState({ title: "", body: "" });
   // const notify = () =>  toast(<ToastDisplay/>);
@@ -56,31 +55,36 @@ function App() {
   //     </div>
   //   );
   // };
-const dispatch=useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
-if(user?.user_role == "Admin"){
-  dispatch(getCartItems())
-  requestForToken();
-}
-  
-  }, [notification]);
+    const SowphweeFcm = localStorage.getItem("sophwee_fcm");
+    console.log(SowphweeFcm, "token");
+console.log(user);
+    if (user) {
+      if (!SowphweeFcm) {
+        console.log("if working");
+        requestForToken();
+      }
+    }
 
-  
+    if (user?.user_role == "Admin") {
+      dispatch(getCartItems());
+    }
+  }, []);
 
-  onMessageListener()
-    .then((payload) => {
-      toast.success(
-        `${payload?.notification?.title}:${payload.notification?.body}`,
-        {
-          duration: 6000,
-          position: "top-right",
-        }
-      );
-      // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
-    })
-    .catch((err) => console.log("failed: ", err));
+  // onMessageListener()
+  //   .then((payload) => {
+  //     toast.success(
+  //       `${payload?.notification?.title}:${payload.notification?.body}`,
+  //       {
+  //         duration: 6000,
+  //         position: "top-right",
+  //       }
+  //     );
+  //     // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
+  //   })
+  //   .catch((err) => console.log("failed: ", err));
 
   return (
     <Routes>
@@ -117,7 +121,6 @@ if(user?.user_role == "Admin"){
             element={<AppoinmentDetails />}
             path="homecare/appoinment-details"
           />
-
           <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />

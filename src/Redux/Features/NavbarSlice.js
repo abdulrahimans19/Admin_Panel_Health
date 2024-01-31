@@ -7,39 +7,47 @@ const { category, testtube, book } = images;
 const initialState = {
   toggleSidebar: false,
   topnavData: [],
-  notificationCount:0,
-  notification:[]
+  notificationCount: 0,
+  notification: [],
+  notificationData: null,
+  pagecount: 1,
 };
 
 export const getCartItems = createAsyncThunk(
-  '/notification',
+  "/notification",
   async (name, thunkAPI) => {
     try {
+      const state = thunkAPI.getState();
+      
+      // state.navbar.pagecount=state.navbar.pagecount+1
+      console.log(state.navbar.pagecount, "this is state");
       // console.log(name);
       // console.log(thunkAPI);
       // console.log(thunkAPI.getState());
       // thunkAPI.dispatch(openModal());
       const resp = getNotificationApi();
-console.log(resp);
+      console.log(resp);
       return resp;
     } catch (error) {
-      return thunkAPI.rejectWithValue('something went wrong');
+      return thunkAPI.rejectWithValue("something went wrong");
     }
   }
 );
 export const fcmTokenUpdate = createAsyncThunk(
-  '/fcm_token',
+  "/fcm_token",
   async (name, thunkAPI) => {
+    console.log(name, "thunkdata");
+
     try {
       // console.log(name);
       // console.log(thunkAPI);
       // console.log(thunkAPI.getState());
       // thunkAPI.dispatch(openModal());
       const resp = getNotificationApi();
-console.log(resp);
+      console.log(resp);
       return resp;
     } catch (error) {
-      return thunkAPI.rejectWithValue('something went wrong');
+      return thunkAPI.rejectWithValue("something went wrong");
     }
   }
 );
@@ -630,33 +638,32 @@ const NavBarSlice = createSlice({
       state.topnavData = [];
     },
 
-    notificationCount:(state,payload)=>
-    {
-state.notificationCount=0
-    }
+    notificationCount: (state, payload) => {
+      state.notificationCount = 0;
+    },
+
+    newNotification: (state, payload) => {
+      console.log(payload);
+      state.notificationData = payload;
+    },
   },
-  extraReducers:(builder)=>
-  {
-      builder.addCase(getCartItems.pending,(state=>
-          {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        // console.log('thsi working ');
+        // state.isLoading=false
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        // console.log(state.pagecount);
+        // state.pagecount=state.pagecount+1
+        // console.log(action.payload.data.data.notifications, "notification paloaf");
+        state.notification = action.payload.data.data.notifications
+        state.notificationCount = action.payload.data.data.unread_notifications;
 
-              // console.log('thsi working ');
-              // state.isLoading=false
-          })).addCase(getCartItems.fulfilled,(state,action)=>
-          {
-            console.log(state);
-            console.log(action.payload.data.data.notifications ,"payload");
-            state.notification=action.payload.data.data.notifications 
-
-              // state.CartItem=action.payload
-          }).addCase(getCartItems.rejected,(state)=>
-          {
-           
-          })
-
-  }
-
-
+        // state.CartItem=action.payload
+      })
+      .addCase(getCartItems.rejected, (state) => {});
+  },
 });
 export default NavBarSlice.reducer;
 
@@ -667,5 +674,5 @@ export const {
   cleartopNav,
   pharmacyNav,
   homecare,
-  notification
+  notification,
 } = NavBarSlice.actions;
