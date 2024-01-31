@@ -255,6 +255,7 @@ const Login = () => {
           setErrmsg("Email or password is incorrect");
         });
     } else {
+      console.log("else is working");
       DoctorLogInApi(UserData)
         .then((data) => {
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
@@ -370,7 +371,7 @@ const Login = () => {
               )}
             </div>
 
-            <div className="relative">
+            <div className=" relative">
               <input
                 name="password"
                 type="password"

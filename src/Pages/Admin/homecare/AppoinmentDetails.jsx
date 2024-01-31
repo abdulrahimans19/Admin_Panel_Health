@@ -5,21 +5,24 @@ import KeyValuePairResultModal from "./LabItems/lab_components/KeyValuePairResul
 import AddImage from "../../../assets/images/addImage.png";
 import DatePicker from "react-datepicker";
 import DateInput from "./appoinments/DateInput";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAppoinmentsApi,
   getCurrentAppoinmentsApi,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
+import { homecare } from "../../../Redux/Features/NavbarSlice";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
   const [appoinments, setAppoinments] = React.useState([]);
   useEffect(() => {
+    dispatch(homecare());
     getTodayAppoinments();
   }, []);
   const [totalPagecount, setTotalPagecount] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
-
+  const dispatch = useDispatch();
   const handlePageChange = (selectedPage) => {
     // Handle page change logic here, e.g., fetching data for the new page
     setCurrentPage(selectedPage.selected);

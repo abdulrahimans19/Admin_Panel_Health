@@ -39,14 +39,56 @@ import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
 import Notification from "./components/Navbar/Notification";
 import SignupProfile from "./Pages/SignupProfile";
 import Coupons from "./Pages/Admin/coupons/Coupons";
+import { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { requestForToken, onMessageListener } from "./firebase/Firebaseconfig";
+import { getCartItems } from "./Redux/Features/NavbarSlice";
 
 function App() {
+  const [notification, setNotification] = useState({ title: "", body: "" });
+  // const notify = () =>  toast(<ToastDisplay/>);
+  // function ToastDisplay() {
+  //   return (
+  //     <div>
+  //       <p><b>{notification?.title}</b></p>
+  //       <p>{notification?.body}</p>
+  //     </div>
+  //   );
+  // };
+const dispatch=useDispatch()
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("sophwe_token"));
+if(user){
+  dispatch(getCartItems())
+
+}
+    if (notification?.title) {
+      //  notify()
+    }
+  }, [notification]);
+
+  requestForToken();
+
+  onMessageListener()
+    .then((payload) => {
+      toast.success(
+        `${payload?.notification?.title}:${payload.notification?.body}`,
+        {
+          duration: 6000,
+          position: "top-right",
+        }
+      );
+      // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
+    })
+    .catch((err) => console.log("failed: ", err));
+
   return (
     <Routes>
-      <Route element={<Notification />} />
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
+          <Route element={<Notification />} path="/notification" />
           <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
@@ -57,13 +99,7 @@ function App() {
           {/* <Route element={<Homecare />} path="/homecare" /> */}
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
-          <Route element={<HomecareLabItems />} path="homecare/lab-items" />
-          <Route
-            element={<AppoinmentDetails />}
-            path="homecare/appoinment-details"
-          />
 
-          <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 
           <Route element={<PharmaCategory />} path="/pharmacy/category" />
@@ -77,6 +113,13 @@ function App() {
           <Route element={<FoodReview />} path="/food/review" />
 
           <Route element={<Homecare />} path="/homecare" />
+          <Route element={<HomecareLabItems />} path="homecare/lab-items" />
+          <Route
+            element={<AppoinmentDetails />}
+            path="homecare/appoinment-details"
+          />
+
+          <Route element={<Homecare />} path="/homecare/categories" />
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
@@ -92,7 +135,7 @@ function App() {
           <Route element={<AppointmentHistory />} path="/doctor/history" />
           <Route element={<DocTransaction />} path="/doctor/transaction" />
         </Route>
-      </Route> 
+      </Route>
 
       <Route element={<LoggedInUser />}>
         <Route element={<Login />} path="/login" />

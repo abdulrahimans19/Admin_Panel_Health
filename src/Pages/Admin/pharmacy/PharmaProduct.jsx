@@ -33,7 +33,7 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-
+const [enableProduct, setEnableProduct] = useState(false)
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -114,14 +114,24 @@ export default function PharmaProduct() {
     setDisableProducts(true);
     console.log(data, "disble working");
   };
+  const CallBackEnable = (data) => {
+    setEditProductData(data);
+    setEnableProduct(true);
+    console.log(data, "disble working");
+  };
 
   const disableProduct = () => {
     console.log("confirm working");
     console.log(editProductData);
     disablePharmaProduct(editProductData._id).then((data) => {
       console.log(data);
+      PharmaProduct()
+      setDisableProducts(false);
     });
   };
+
+
+
   return (
     <div>
       <div className="flex gap-3 p-3">
@@ -195,13 +205,25 @@ export default function PharmaProduct() {
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
           {PharmaProductsData?.map((data) => {
-            return (
-              <ProductCard
-                data={data}
-                callback={editCat}
-                disableCall={CallBackDisable}
-              />
-            );
+            if (categoryMenu) {
+              return (
+                <ProductCard
+                  type="enable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            } else {
+              return (
+                <ProductCard
+                  type="disable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            }
           })}
         </div>
       </div>
@@ -232,6 +254,14 @@ export default function PharmaProduct() {
       />
       {disableProducts && (
         <ConfirmationModal
+        text={"are you sure you want to disable this product"}
+          onClose={setDisableProducts}
+          onConfirm={disableProduct}
+        />
+      )}
+           {enableProduct && (
+        <ConfirmationModal
+        text={"are you sure you want to enable this product"}
           onClose={setDisableProducts}
           onConfirm={disableProduct}
         />

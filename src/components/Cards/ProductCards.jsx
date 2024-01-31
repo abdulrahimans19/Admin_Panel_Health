@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ProductCard({ data, callback ,disableCall}) {
+export default function ProductCard({ data, callback ,disableCall,type}) {
   return (
     <div className="max-w-sm  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
       {/* Image in the center */}
@@ -26,7 +26,7 @@ export default function ProductCard({ data, callback ,disableCall}) {
     disableCall(data)
   }} class="relative inline-flex items-center cursor-pointer">
     <input type="checkbox" value="" class="sr-only peer" checked />
-    <div class="w-6 h-3 bg-green-500 disabled peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[0px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all  peer-checked:bg-green-600"></div>
+    <div class={`w-6 h-3 ${type=="enable" ?"bg-green-500 peer-checked:bg-green-600":"bg-red-500 peer-checked:bg-red-600"}  disabled peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0px] after:start-[0px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all  `}></div>
     <span class="ms-3 text-sm font-medium text-gray-900 "></span>
   </label>
 </div>
