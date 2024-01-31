@@ -27,7 +27,22 @@ console.log(resp);
     }
   }
 );
-
+export const fcmTokenUpdate = createAsyncThunk(
+  '/fcm_token',
+  async (name, thunkAPI) => {
+    try {
+      // console.log(name);
+      // console.log(thunkAPI);
+      // console.log(thunkAPI.getState());
+      // thunkAPI.dispatch(openModal());
+      const resp = getNotificationApi();
+console.log(resp);
+      return resp;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
 
 const NavBarSlice = createSlice({
   name: "navbar",

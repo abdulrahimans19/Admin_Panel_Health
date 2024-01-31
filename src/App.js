@@ -58,17 +58,16 @@ function App() {
   // };
 const dispatch=useDispatch()
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("sophwe_token"));
-if(user){
-  dispatch(getCartItems())
 
+    const user = JSON.parse(localStorage.getItem("sophwe_token"));
+if(user?.user_role == "Admin"){
+  dispatch(getCartItems())
+  requestForToken();
 }
-    if (notification?.title) {
-      //  notify()
-    }
+  
   }, [notification]);
 
-  requestForToken();
+  
 
   onMessageListener()
     .then((payload) => {
