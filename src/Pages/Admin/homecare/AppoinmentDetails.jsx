@@ -14,6 +14,8 @@ import {
   uploadToAws,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
+import { homecare } from "../../../Redux/Features/NavbarSlice";
+import { useDispatch } from "react-redux";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
@@ -29,7 +31,7 @@ function AppoinmentDetails() {
   }, []);
   const [totalPagecount, setTotalPagecount] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
-
+  const dispatch = useDispatch();
   const handlePageChange = (selectedPage) => {
     // Handle page change logic here, e.g., fetching data for the new page
     setCurrentPage(selectedPage.selected);
@@ -186,7 +188,7 @@ function AppoinmentDetails() {
                           {data.profile_id.first_name}
                           {data.profile_id.middle_name == null
                             ? data.profile_id.middle_name
-                            : ""}{" "}
+                            : " "}{" "}
                           {data.profile_id.last_name}
                           {/* {data.middle_name} { data.last_name} */}
                         </th>

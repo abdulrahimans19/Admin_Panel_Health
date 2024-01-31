@@ -45,7 +45,7 @@ function SideBar() {
   return (
     <aside
       id="logo-sidebar"
-      className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform  
+      className={`fixed top-0 left-0 z-30 w-64 h-screen pt-20 transition-transform  
       ${toggleSidebar ? "translate-x-0" : "-translate-x-full"} 
         border-r sm:translate-x-0 bg-black  border-gray-700`}
       aria-label="Sidebar"
@@ -165,14 +165,18 @@ function SideBar() {
               }}
               href="#"
               className={`flex items-center p-2 pl-12 rounded-lg group ${
-                currentRoute === "/homecare/categories"
+                window.location.pathname === "/homecare/categories" ||
+                window.location.pathname === "/homecare/lab-items" ||
+                window.location.pathname   === "/homecare/appoinment-details"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  currentRoute === "/homecare/categories"
+                  window.location.pathname === "/homecare/categories" ||
+                  window.location.pathname === "/homecare/lab-items" ||
+                  window.location.pathname   === "/homecare/appoinment-details"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -554,14 +558,14 @@ function SideBar() {
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
-                window.location.pathname === "/coupons" 
+                window.location.pathname === "/coupons"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
             >
               <svg
                 fill={
-                  window.location.pathname === "/coupons" 
+                  window.location.pathname === "/coupons"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -570,8 +574,7 @@ function SideBar() {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  window.location.pathname === "/coupons" 
-            
+                  window.location.pathname === "/coupons"
                     ? "svg-icon-active"
                     : ""
                 }`}
@@ -635,7 +638,6 @@ function SideBar() {
               <span class="ms-3 ">logout</span>
             </a>
           </li>
-          
         </ul>
       </div>
     </aside>

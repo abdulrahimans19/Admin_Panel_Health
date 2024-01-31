@@ -33,6 +33,7 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+const [enableProduct, setEnableProduct] = useState(false)
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -65,7 +66,7 @@ export default function PharmaProduct() {
         setPharmaProductsData(data.data.products);
       });
     } else {
-      disabledFarmaProductApi().then(({data}) => {
+      disabledFarmaProductApi().then(({ data }) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
         console.log(data.data);
@@ -81,6 +82,7 @@ export default function PharmaProduct() {
   useEffect(() => {
     getFarmaCategories();
   }, []);
+
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected);
 
@@ -112,15 +114,24 @@ export default function PharmaProduct() {
     setDisableProducts(true);
     console.log(data, "disble working");
   };
+  const CallBackEnable = (data) => {
+    setEditProductData(data);
+    setEnableProduct(true);
+    console.log(data, "disble working");
+  };
 
   const disableProduct = () => {
     console.log("confirm working");
-console.log(editProductData);
-disablePharmaProduct(editProductData._id).then((data)=>
-{
-  console.log(data);
-})
+    console.log(editProductData);
+    disablePharmaProduct(editProductData._id).then((data) => {
+      console.log(data);
+      PharmaProduct()
+      setDisableProducts(false);
+    });
   };
+
+
+
   return (
     <div>
       <div className="flex gap-3 p-3">
@@ -170,35 +181,49 @@ disablePharmaProduct(editProductData._id).then((data)=>
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
-
-            {categoryMenu? <select
-              onChange={(data) => {
-                setFilterId(data.target.value);
-              }}
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected disabled value="">
-                Filter By Category
-              </option>
-              {Categories?.map((data) => {
-                return <option value={data._id}>{data.title}</option>;
-              })}
-            </select>:<></>}
-           
+            {categoryMenu ? (
+              <select
+                onChange={(data) => {
+                  setFilterId(data.target.value);
+                }}
+                id="countries"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              >
+                <option selected disabled value="">
+                  Filter By Category
+                </option>
+                {Categories?.map((data) => {
+                  return <option value={data._id}>{data.title}</option>;
+                })}
+              </select>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
           {PharmaProductsData?.map((data) => {
-            return (
-              <ProductCard
-                data={data}
-                callback={editCat}
-                disableCall={CallBackDisable}
-              />
-            );
+            if (categoryMenu) {
+              return (
+                <ProductCard
+                  type="enable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            } else {
+              return (
+                <ProductCard
+                  type="disable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            }
           })}
         </div>
       </div>
@@ -229,6 +254,14 @@ disablePharmaProduct(editProductData._id).then((data)=>
       />
       {disableProducts && (
         <ConfirmationModal
+        text={"are you sure you want to disable this product"}
+          onClose={setDisableProducts}
+          onConfirm={disableProduct}
+        />
+      )}
+           {enableProduct && (
+        <ConfirmationModal
+        text={"are you sure you want to enable this product"}
           onClose={setDisableProducts}
           onConfirm={disableProduct}
         />

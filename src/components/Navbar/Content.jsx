@@ -3,8 +3,8 @@ import StaggeredDropDown from "./DropDown";
 import { Outlet, useLocation } from "react-router-dom";
 function Content() {
   return (
-    <div className="p-4 sm:ml-64 mt-16 ">
-      {/* <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-16"> */}
+    <div className="p-4 sm:ml-64  ">
+      <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-16">
       <Outlet />
 
       {/* <div class="grid grid-cols-3 gap-4 mb-4">
@@ -104,7 +104,7 @@ function Content() {
           </p>
        </div>
     </div> */}
-      {/* </div> */}
+      </div>
     </div>
   );
 }

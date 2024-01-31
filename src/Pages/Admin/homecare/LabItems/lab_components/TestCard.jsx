@@ -129,7 +129,7 @@ const toggleEditModal=()=>{
                       href="#"
                       class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:text-red-600"
                     >
-                      enable
+                      disable
                     </a>
                     
                   </li>
@@ -201,7 +201,7 @@ const toggleEditModal=()=>{
                       <a
                       onClick={disabled}
                       href="#"
-                      class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:text-red-600"
+                      class="block px-4 py-2 text-sm text-green-500 hover:bg-gray-100 dark:hover:text-green-800"
                     >
                       enable
                     </a>

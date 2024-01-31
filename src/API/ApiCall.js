@@ -50,6 +50,15 @@ export const getFoodProducts = async () => {
 export const getFoodOrders = async () => {
   return await Instance.get("/order/food/all-orders");
 };
+
+export const editFoodProduct = async (data) => {
+  console.log(data);
+  return await Instance.put(`/product/food/update`, data);
+};
+
+export const filterFoodAPi = async (data, page) => {
+  return await Instance.get(`product/all-products/${data}?page=${page}`);
+};
 export const getFoodReview = async (foodId, page) => {
   try {
     const response = await Instance.get(`/review/get-review/${foodId}`, {
@@ -163,7 +172,12 @@ export const getPharmaProductApi = async (pageNumber) => {
 export const getFoodProductApi = async (pageNumber) => {
   return await Instance.get(`/product/food?page=${pageNumber}`);
 };
-
+export const disableFoodProduct = async (data) => {
+  return await Instance.delete(`/food/${data}`);
+};
+export const disabledFoodProductApi = async (data) => {
+  return await Instance.get(`/product/admin/disabled?type=FOOD&page=${data}`);
+};
 export const totalDoctorApi = async (pageNumber) => {
   return await Instance.get(`/admin/total-doctor`);
 };
@@ -194,6 +208,9 @@ export const AprovingwithdrawalRequest = async (id) => {
 export const addProductApi = async (data) => {
   return await Instance.post(`/product/pharma/create`, data);
 };
+export const addFoodProductApi = async (data) => {
+  return await Instance.post(`/product/food/create`, data);
+};
 
 export const countryCodesApi = async (data) => {
   const apiUrl = "https://restcountries.com/v3.1/all";
@@ -223,14 +240,16 @@ export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
 };
 export const GetDrAprovedWithdrawalRequsts = async (page) => {
-  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
+  return await Instance.get(
+    `/withdrawal/accepted-withdrawal-requests?page=${page}`
+  );
 };
 export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
-}
+};
 export const getFoodSubCategory = async (data) => {
   return await Instance.get(`sub-categories/${data}`);
 };
@@ -243,14 +262,31 @@ export const getPharmaOrders = async () => {
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
 };
+export const getAllCouponsApi = async (data) => {
+  return await Instance.get(
+    `/coupon/get-all?page=1&pageSize=${data}&pageSize=5`
+  );
+};
+
+export const addCouponApi = async (data) => {
+  return await Instance.post(`/coupon/create`, data);
+};
+
+export const updateCouponApi = async (data) => {
+  return await Instance.put(`/coupon/update`, data);
+};
 export const addHomecareCategory = async (data) => {
   return await Instance.post(`main-categories/home-care/create`, data);
 };
 export const getRecommendedTestsbyCategoryApi = async (cat_id) => {
-  return await Instance.get(`tests/all-tests?recommended=${true}&category_id=${cat_id}`);
-}
+  return await Instance.get(
+    `tests/all-tests?recommended=${true}&category_id=${cat_id}`
+  );
+};
 export const getDisbledTestByCatApi = async (cat_id) => {
-  return await Instance.get(`tests/all-tests?disabled=${true}&category_id=${cat_id}`);
+  return await Instance.get(
+    `tests/all-tests?disabled=${true}&category_id=${cat_id}`
+  );
 };
 export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
@@ -277,4 +313,11 @@ export const recommendedTest = async (id) => {
 };
 export const addResultApi = async (data) => {
   return await Instance.post(`/bookings/add-result`,data);
+};
+
+export const getNotificationApi = async () => {
+  return await Instance.get(`/notification`);
+};
+export const readNotification = async (data) => {
+  return await Instance.post(`/notification/mark-read?id=${data}`);
 };
