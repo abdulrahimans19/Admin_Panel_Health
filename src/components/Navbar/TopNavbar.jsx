@@ -5,17 +5,31 @@ import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Typography,
+} from "@material-tailwind/react";
+import {
+  onMessageListener,
+  requestForToken,
+} from "../../firebase/Firebaseconfig";
+import Notification from "./Notification";
+import NotificationBar from "./NotificationMenu";
 
 function NavBar() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { toggleSidebar, topnavData } = useSelector((state) => {
+  const { toggleSidebar, topnavData,notification } = useSelector((state) => {
     return state.navbar;
   });
   const [currentRoute, setCurrentRoute] = useState(useLocation().pathname);
 
   const [openMenu, setOpenMenu] = useState(false);
+  const [openNotification, setOpenNotification] = useState(false);
   const list = {
     visible: { opacity: 1, scale: 1 },
     hidden: { opacity: 0, scale: 0 },
@@ -36,6 +50,7 @@ function NavBar() {
   //   }
   useEffect(() => {
     console.log(window.location.pathname);
+
     // setCurrentRoute(useLocation().pathname)
   }, [useLocation().pathname]);
 
@@ -43,6 +58,7 @@ function NavBar() {
     <>
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
+          <Notification />
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
@@ -127,18 +143,36 @@ function NavBar() {
 
             <div className="flex items-center">
               {/* Notification and Profile */}
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+              <div class="flex items-center ms-3">
+                <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <button
+                    type="button"
+                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    onClick={async () => {
+                      setOpenNotification((e) => !e);
+                    }}
+                  >
+                    <BellIcon className="h-6 w-6" />
+                  </button>
+                  <div
+                    className="badge  p-2 absolute  rounded-full flex items-center justify-center right-5 top-4
+                  
+                   "
+                    style={{
+                      width: "15px",
+                      height: "15px",
+                      backgroundColor: "red",
+                    }}
+                  >
+                    <span className="text-white text-xs">15</span>
+                  </div>
+                </div>
+                {openNotification && (
+                 <NotificationBar  notifications={notification} setOpenNotification={setOpenNotification}/>
+                )}
               </div>
               <div class="flex items-center ms-3">
-                <div>
+                {/* <div>
                   <button
                     onClick={() => {
                       setOpenMenu((e) => !e);
@@ -155,7 +189,7 @@ function NavBar() {
                       alt="user photo"
                     />
                   </button>
-                </div>
+                </div> */}
                 {openMenu && (
                   <motion.div
                     initial="hidden"

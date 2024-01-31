@@ -240,7 +240,9 @@ export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
 };
 export const GetDrAprovedWithdrawalRequsts = async (page) => {
-  return await Instance.get(`/withdrawal/withdrawal-requests?page=${page}`);
+  return await Instance.get(
+    `/withdrawal/accepted-withdrawal-requests?page=${page}`
+  );
 };
 export const getAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
@@ -260,6 +262,19 @@ export const getPharmaOrders = async () => {
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
 };
+export const getAllCouponsApi = async (data) => {
+  return await Instance.get(
+    `/coupon/get-all?page=1&pageSize=${data}&pageSize=5`
+  );
+};
+
+export const addCouponApi = async (data) => {
+  return await Instance.post(`/coupon/create`, data);
+};
+
+export const updateCouponApi = async (data) => {
+  return await Instance.put(`/coupon/update`, data);
+};
 export const addHomecareCategory = async (data) => {
   return await Instance.post(`main-categories/home-care/create`, data);
 };
@@ -275,4 +290,34 @@ export const getDisbledTestByCatApi = async (cat_id) => {
 };
 export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
+};
+export const homeCareUpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/home-care/update`, data);
+};
+export const createTests = async (data) => {
+  return await Instance.post(`/tests/create`, data);
+};
+export const editTests = async (data) => {
+  console.log("to update",data);
+  return await Instance.put(`/tests/update`, data);
+};
+export const getSingleTestApi = async (id) => {
+  console.log(id);
+  return await Instance.get(`/tests/single/${id}`);
+};
+export const disableTest = async (id) => {
+  return await Instance.delete(`/tests/delete?id=${id}`);
+};
+export const recommendedTest = async (id) => {
+  return await Instance.put(`/tests/update-recommended?test_id=${id}`);
+};
+export const addResultApi = async (data) => {
+  return await Instance.post(`/bookings/add-result`,data);
+};
+
+export const getNotificationApi = async () => {
+  return await Instance.get(`/notification`);
+};
+export const readNotification = async (data) => {
+  return await Instance.post(`/notification/mark-read?id=${data}`);
 };

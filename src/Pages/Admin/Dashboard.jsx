@@ -7,6 +7,7 @@ import AppoimentTable from "../../components/Tables/AppointmentTable";
 import PriceDisplayCard2 from "../../components/PriceDisplayCard2";
 import PriceDisplayCard3 from "../../components/PriceDisplayCard3";
 import { TotalAppointmentApi, monthlyEarningApi, totalDoctorApi } from "../../API/ApiCall";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [totalDoctors, setTotalDoctors] = useState(0)
   const [totalAppointment, setTotalAppointment] = useState(0)
   const [chartData, setChartData] = useState();
+  const navigate = useNavigate();
   const monthlErnings = () => {
     if (foodChart) {
       monthlyEarningApi("FOOD").then(({ data }) => {
@@ -108,8 +110,14 @@ console.log(data.data,"appoimt");
                   <p className="text-xl font-semibold">
                     Lab appointment Details
                   </p>
-                  <p className="font-semibold flex ">
-                    see all{" "}
+                  <button>
+                  <a
+                   onClick={()=>{
+                    
+                    navigate('/homecare/appoinment-details')
+                   }}
+                   className="font-semibold flex ">
+                    See all{" "}
                     <span className="pt-1">
                       <svg
                         width="16"
@@ -127,7 +135,8 @@ console.log(data.data,"appoimt");
                         />
                       </svg>
                     </span>
-                  </p>
+                  </a>
+                  </button>
                 </div>
 
                 <AppoimentTable />

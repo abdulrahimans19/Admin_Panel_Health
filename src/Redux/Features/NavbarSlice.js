@@ -1,12 +1,49 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import images from "../../assets/images/image";
 import Withdrawal from "../../assets/images/withdrawal.svg";
+import { getNotificationApi } from "../../API/ApiCall";
 
 const { category, testtube, book } = images;
 const initialState = {
   toggleSidebar: false,
   topnavData: [],
+  notificationCount:0,
+  notification:[]
 };
+
+export const getCartItems = createAsyncThunk(
+  '/notification',
+  async (name, thunkAPI) => {
+    try {
+      // console.log(name);
+      // console.log(thunkAPI);
+      // console.log(thunkAPI.getState());
+      // thunkAPI.dispatch(openModal());
+      const resp = getNotificationApi();
+console.log(resp);
+      return resp;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
+export const fcmTokenUpdate = createAsyncThunk(
+  '/fcm_token',
+  async (name, thunkAPI) => {
+    try {
+      // console.log(name);
+      // console.log(thunkAPI);
+      // console.log(thunkAPI.getState());
+      // thunkAPI.dispatch(openModal());
+      const resp = getNotificationApi();
+console.log(resp);
+      return resp;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
+
 const NavBarSlice = createSlice({
   name: "navbar",
   initialState,
@@ -74,7 +111,6 @@ const NavBarSlice = createSlice({
         {
           name: "Doctor",
           link: "/telemedicine/doctor",
-
           logo: (
             <svg
               fill=""
@@ -592,7 +628,34 @@ const NavBarSlice = createSlice({
     cleartopNav: (state, action) => {
       state.topnavData = [];
     },
+
+    notificationCount:(state,payload)=>
+    {
+state.notificationCount=0
+    }
   },
+  extraReducers:(builder)=>
+  {
+      builder.addCase(getCartItems.pending,(state=>
+          {
+
+              // console.log('thsi working ');
+              // state.isLoading=false
+          })).addCase(getCartItems.fulfilled,(state,action)=>
+          {
+            console.log(state);
+            console.log(action.payload.data.data.notifications ,"payload");
+            state.notification=action.payload.data.data.notifications 
+
+              // state.CartItem=action.payload
+          }).addCase(getCartItems.rejected,(state)=>
+          {
+           
+          })
+
+  }
+
+
 });
 export default NavBarSlice.reducer;
 
@@ -603,4 +666,5 @@ export const {
   cleartopNav,
   pharmacyNav,
   homecare,
+  notification
 } = NavBarSlice.actions;
