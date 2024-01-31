@@ -49,10 +49,10 @@ function Recommended() {
       </div>
 
       <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
-        {recommendedTest[0] && 
+        { recommendedTest[0] &&
         recommendedTest.map((data)=>{
           return(
-            <TestCard data={data} />
+            <TestCard data={data} getData={getAllRecomendedTests} getAllTests={getAllRecomendedTests} type={'recommended'}/>
           )
         })
         }

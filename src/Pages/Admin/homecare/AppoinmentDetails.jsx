@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import FilterDropDown from "./FilterDropDown";
 import ResultModal from "./LabItems/lab_components/ResultModal";
 import KeyValuePairResultModal from "./LabItems/lab_components/KeyValuePairResultModal";
 import AddImage from "../../../assets/images/addImage.png";
 import DatePicker from "react-datepicker";
 import DateInput from "./appoinments/DateInput";
-import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
 import {
+  UploadImageUrl,
+  addResultApi,
   getAppoinmentsApi,
   getCurrentAppoinmentsApi,
+  uploadToAws,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
 import { homecare } from "../../../Redux/Features/NavbarSlice";
+import { useDispatch } from "react-redux";
 
 function AppoinmentDetails() {
   const [showModal, setShowModal] = React.useState(false);
   const [appoinments, setAppoinments] = React.useState([]);
+  const [selectedUser, setSelectedUser] = React.useState(null);
+  const [fileToUpload, setFileToUpload] = React.useState(null);
+  const [showImage, setShowImage] = React.useState(false);
+
+  const [Image, setImage] = React.useState("");
   useEffect(() => {
-    dispatch(homecare());
     getTodayAppoinments();
+    // console.log(appoinments);
   }, []);
   const [totalPagecount, setTotalPagecount] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -52,6 +61,59 @@ function AppoinmentDetails() {
       setAppoinments(data.data.data.bookings);
     });
   };
+  const openModal = (userData) => {
+    setSelectedUser(userData); // Set the selected user's data
+    console.log("asdad", selectedUser);
+    setShowModal(true); // Show the modal
+  };
+  const onDrop = useCallback((acceptedFiles) => {
+    setFileToUpload(acceptedFiles[0]);
+    setShowImage(true);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    console.log(reader);
+    reader.readAsDataURL(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: "image/*",
+  });
+
+  
+  const addResult=(e)=>{
+    
+    const form = new FormData(e.target);
+    const UserData = Object.fromEntries(form);
+    console.log("image is",fileToUpload);
+    UploadImageUrl().then((datas) => {
+      const presignedUrl = datas.data.presignedUrl;
+      const publicUrl = datas.data.publicUrl;
+  
+      uploadToAws(presignedUrl, fileToUpload).then(() => {
+        console.log("Image uploaded to AWS");
+        // Now publicUrl is available here
+        console.log("Uploaded image URL:", publicUrl);
+        console.log("book",selectedUser?._id);
+        const resultData={
+      
+          booking_id:selectedUser._id,
+          result_url:publicUrl
+      
+      }
+      addResultApi(resultData).then((data)=>{
+        console.log(data.data);
+      })
+      });
+    });
+   
+
+      
+    
+  }
   return (
     <div>
       <div className="flex justify-between">
@@ -90,9 +152,7 @@ function AppoinmentDetails() {
                   <th scope="col" class="px-6 py-3">
                     Name
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Member
-                  </th>
+                  
                   <th scope="col" class="px-6 py-3">
                     ID
                   </th>
@@ -130,7 +190,7 @@ function AppoinmentDetails() {
                           {data.profile_id.last_name}
                           {/* {data.middle_name} { data.last_name} */}
                         </th>
-                        <td class="px-6 py-4">Silver</td>
+                       
                         <td class="px-6 py-4">{data.profile_id.user_id}</td>
                         <td class="px-6 py-4">{data.test_id.name}</td>
                         <td class="px-6 py-4">
@@ -144,7 +204,9 @@ function AppoinmentDetails() {
                         <td class="px-6 py-4 text-right">
                           <button
                             type="button"
-                            onClick={() => setShowModal(true)}
+                            onClick={() => {
+                              openModal(data);
+                            }}
                             class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
                           >
                             Accepted{" "}
@@ -153,21 +215,28 @@ function AppoinmentDetails() {
                             <>
                               <div className="fixed inset-0 z-50 overflow-hidden">
                                 <div className="flex items-center justify-center min-h-screen">
+                                  <form onSubmit={addResult}>
                                   <div className="bg-white rounded-lg shadow-lg p-8 w-96 relative">
                                     {/* Close button */}
                                     <div className="absolute top-4 right-4 w-7 h-7 bg-stone-300 bg-opacity-20 rounded-3xl flex items-center justify-center">
                                       <div className="w-5 h-5"></div>
                                     </div>
 
-                                    {/* Content */}
+                                   
                                     <div className="flex flex-col gap-4 text-left ">
                                       <KeyValuePairResultModal
-                                        label="Name"
-                                        value="Joel"
+                                        label={"Name"}
+                                        value={`${
+                                          selectedUser.profile_id.first_name
+                                        } ${
+                                          data.profile_id.middle_name == null
+                                            ? data.profile_id.middle_name
+                                            : " "
+                                        } ${data.profile_id.last_name}`}
                                       />
                                       <KeyValuePairResultModal
                                         label="ID"
-                                        value="65461"
+                                        value={`${selectedUser.profile_id.user_id}`}
                                       />
                                       <KeyValuePairResultModal
                                         label="Member"
@@ -175,29 +244,41 @@ function AppoinmentDetails() {
                                       />
                                       <KeyValuePairResultModal
                                         label="Testname"
-                                        value="Comprehensive full body check up with vitamin"
+                                        value={`${selectedUser.test_id.name}`}
                                       />
                                       <KeyValuePairResultModal
                                         label="Address"
-                                        value="18 Al Murwah Street, Ajman Al rigga, Green corner , 703, 7 Mobile number: +971 502407809"
+                                        value={`${selectedUser.address_id.street_address} ${selectedUser.address_id.state} ${selectedUser.address_id.city} ${selectedUser.address_id.zip_code} ph: ${selectedUser.address_id.phone_number}`}
                                       />
                                       <KeyValuePairResultModal
                                         label="Date & Time"
-                                        value="4:00 PM Dec 15, 2023"
+                                        value={`${selectedUser.created_at}`}
                                       />
                                       <KeyValuePairResultModal
                                         label="Total price"
-                                        value="AED 100"
+                                        value={`${selectedUser.test_id.price}`}
                                       />
                                       Add Result
                                       <div>
-                                        <div className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400">
+                                        <div
+                                          {...getRootProps()}
+                                          className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
+                                        >
                                           <button>
-                                            <img
-                                              src={AddImage}
-                                              alt=""
-                                              className="w-20 h-30 mb-2 p-2"
-                                            />
+                                            <div
+                                              sx={{
+                                                overflow: "hidden",
+                                                objectFit: "cover",
+                                                marginTop: 2,
+                                              }}
+                                            >
+                                              <img
+                                                height={100}
+                                                src={Image}
+                                                alt="Your Image"
+                                                sx={{ width: "100%" }}
+                                              />
+                                            </div>
                                           </button>
                                           <p className=" text-xs text-center  p-2 ">
                                             Drag and drop an image here or click
@@ -205,18 +286,23 @@ function AppoinmentDetails() {
                                           </p>
                                         </div>
                                       </div>
-                                      <div className="flex items-centergap-3.5">
+                                      <div
+                                        onClick={() => setShowModal(false)}
+                                        className="flex items-center gap-3.5"
+                                      >
                                         <div className="grow shrink basis-0 h-12 px-3.5 py-4 bg-emerald-200 rounded-lg justify-center items-center gap-2.5">
                                           <button
-                                            onClick={() => setShowModal(false)}
-                                            className=" text-center text-green-600 text-base font-normal font-['Roboto Flex'] text-sm"
-                                          >
+                                          onClick={()=>{
+                                            addResult(selectedUser._id)
+                                          }}
+                                          className="flex text-center text-green-600 text-base font-normal font-['Roboto Flex'] text-sm">
                                             Done
                                           </button>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
+                                  </form>
                                 </div>
                               </div>
 

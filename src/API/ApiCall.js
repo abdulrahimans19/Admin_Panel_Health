@@ -291,6 +291,29 @@ export const getDisbledTestByCatApi = async (cat_id) => {
 export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+export const homeCareUpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/home-care/update`, data);
+};
+export const createTests = async (data) => {
+  return await Instance.post(`/tests/create`, data);
+};
+export const editTests = async (data) => {
+  console.log("to update",data);
+  return await Instance.put(`/tests/update`, data);
+};
+export const getSingleTestApi = async (id) => {
+  console.log(id);
+  return await Instance.get(`/tests/single/${id}`);
+};
+export const disableTest = async (id) => {
+  return await Instance.delete(`/tests/delete?id=${id}`);
+};
+export const recommendedTest = async (id) => {
+  return await Instance.put(`/tests/update-recommended?test_id=${id}`);
+};
+export const addResultApi = async (data) => {
+  return await Instance.post(`/bookings/add-result`,data);
+};
 
 export const getDoctorProfileAndWallet = async () => {
   return await Instance.get("/doctor/doctor-profile");

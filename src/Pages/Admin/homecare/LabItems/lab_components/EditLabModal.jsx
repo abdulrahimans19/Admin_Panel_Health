@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import AddSubTestingModal from "./AddSubtestModal";
 import AddImage from "../../../../../assets/images/addImage.png";
+import { useDropzone } from "react-dropzone";
 import {
   GetHomecareCategoriesApi,
   UploadImageUrl,
-  createTests,
+  editTests,
   uploadToAws,
 } from "../../../../../API/ApiCall";
-import { useDropzone } from "react-dropzone";
-
-function LabModal({ callback, setShowModal }) {
+function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
   const [addSubTestingModal, setAddSubTestingModal] = useState(false);
   const [addTestModal, setAddTestModal] = useState(false);
+  const [sampleModal, setSampleModal] = useState(false);
+  const [subTestModal, setSubTestModal] = useState(false);
   // const [showModal1, setShowModal] = React.useState(false);
   const [fileToUpload, setFileToUpload] = useState(null);
   const [Image, setImage] = React.useState("");
@@ -19,12 +20,19 @@ function LabModal({ callback, setShowModal }) {
   const [showImage, setShowImage] = React.useState(false);
   const [homeCareCategories, setHomeCareCategory] = useState([]);
 
-  const [samples, setSamples] = useState([]);
+  const [samples, setSamples] = useState([data.samples]);
+  const [newSamples, setNewSamples] = useState([]);
+
   const [sampleInput, setSampleInput] = useState("");
   const [numberofField, setnumberofField] = useState([{ inputValue: "" }]);
   const [subCategories, setSubCategories] = useState([]);
-  const [isRecommended, setIsRecommended] = useState(false);
-
+  const [isRecommended, setIsRecommended] = useState();
+  const [forModalTestData, setForModalTestData] = useState([]);
+  const [forModalSampleData, setForModalSampleData] = useState([]);
+  const [editTestSubata, setEditTestSubata] = useState([]);
+  const [indexvalue, setindex] = useState(0);
+  const [onloadSamples,setOnloadSamples]=useState([])
+  const [isEditImage,setisEditImage]=useState(true)
   const handleAddSample = () => {
     if (sampleInput.trim() !== "") {
       console.log("sampleinp", sampleInput);
@@ -33,7 +41,10 @@ function LabModal({ callback, setShowModal }) {
       setSampleInput("");
     }
   };
-
+  useEffect(()=>{
+    setOnloadSamples(data.samples)
+    setIsRecommended(data.is_recommended)
+  },[])
   const handleInputChange = (e) => {
     setSampleInput(e.target.value);
   };
@@ -41,12 +52,12 @@ function LabModal({ callback, setShowModal }) {
   const onDrop = useCallback((acceptedFiles) => {
     setFileToUpload(acceptedFiles[0]);
     setShowImage(true);
-
+    setisEditImage(false)
     const reader = new FileReader();
     reader.onload = () => {
       setImage(reader.result);
     };
-    console.log(reader);
+    // console.log(reader);
     reader.readAsDataURL(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -61,9 +72,10 @@ function LabModal({ callback, setShowModal }) {
     });
   };
   useEffect(() => {
+    // console.log(data);
     getHomecareCategories();
   }, []);
-  const [setsaveTestDat, setSetsaveTestDat] = useState([]);
+  const [setsaveTestDat, setSetsaveTestDat] = useState(data.tests);
   const saveTest = () => {
     console.log(TestName);
     console.log(subCategories);
@@ -77,76 +89,247 @@ function LabModal({ callback, setShowModal }) {
     setSubCategories([]);
     setAddSubTestingModal(false);
   };
+  const forEditTest = () => {
+    setForModalTestData(setsaveTestDat);
+    console.log("aszfsfaf", forModalTestData);
+  };
 
-  const addLabModal = (e) => {
+  const editLabModal = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-    // console.log("user data",UserData);
-    // console.log("saved nest data",setsaveTestDat);
-    // console.log("samples", samples);
-    // console.log(subCategories, "subcat");
-    // console.log("UserData.testName:", UserData.testName);
-    //   const filterSubCategories = () => {
-    //     const filteredSubCategories = subCategories.filter(category => category.inputValue
-    //        );
-    //     setSubCategories(filteredSubCategories);
-    //     console.log("sukhgf",filteredSubCategories);
-    // };
-    // filterSubCategories()
-    // const subTestsData = subCategories.map((subTest, index) => ({
-    //   name: UserData[`inputfield${index}`], // Get the value of each sub-test input field
-    // }));
-
+console.log("userta",UserData,setsaveTestDat);
     console.log("image", fileToUpload);
     let publicUrl;
-    function uploadImageAndCreateTest() {
-      UploadImageUrl().then((data) => {
-          const presignedUrl = data.data.presignedUrl;
-          const publicUrl = data.data.publicUrl;
-  
-          uploadToAws(presignedUrl, fileToUpload).then(() => {
-              console.log("Image uploaded to AWS");
-  
-              // Now publicUrl is available here
-              console.log("Uploaded image URL:", publicUrl);
-            console.log(UserData.categoryName);
-              const wholeData = {
-                  name: UserData.testName,
-                  image: publicUrl,
-                  category_id: UserData.categoryName,
-                  testing_time: parseInt(UserData.report_time),
-                  samples: samples,
-                  price: parseInt(UserData.rate),
-                  daily_test_limit: parseInt(UserData.daily_test_limit),
-                  tests: setsaveTestDat,
-                  is_recommended: isRecommended,
-              };
-  
-              console.log("Data to be sent:", wholeData);
-  
-              createTests(wholeData).then((data) => {
-                  console.log("API response after data submission:", data);
-                  setShowModal(false);
-              });
-          });
+
+
+if(!isEditImage){
+  if(fileToUpload){
+    UploadImageUrl().then((datas) => {
+      const presignedUrl = datas.data.presignedUrl;
+      const publicUrl = datas.data.publicUrl;
+
+      uploadToAws(presignedUrl, fileToUpload).then(() => {
+        console.log("Image uploaded to AWS");
+        // Now publicUrl is available here
+        console.log("Uploaded image URL:", publicUrl);
+        const joinedSamples=samples.join(',')
+        const wholeData = {
+          test_id:data._id,
+          name: UserData.testName,
+          image: publicUrl,
+          category_id: UserData.categoryName,
+          testing_time: parseInt(UserData.report_time),
+          samples: joinedSamples.split(','),
+          price: parseInt(UserData.rate),
+          daily_test_limit: parseInt(UserData.daily_test_limit),
+          tests: setsaveTestDat,
+          is_recommended: isRecommended,
+        };
+
+        console.log("Data to be sent:", wholeData);
+
+        editTests(wholeData).then((data) => {
+          console.log("API response after data submission:", data);
+          setEditShowModal1(false);
+        });
       });
+    });
   }
-  uploadImageAndCreateTest();
+
+}
+else{
+  const joinedSamples=samples.join(',')
+  const wholeData = {
+    test_id:data._id,
+    name: UserData.testName,
+    image: data.image,
+    category_id: UserData.categoryName,
+    testing_time: parseInt(UserData.report_time),
+    samples: joinedSamples.split(','),
+    price: parseInt(UserData.rate),
+    daily_test_limit: parseInt(UserData.daily_test_limit),
+    tests: setsaveTestDat,
+    is_recommended: isRecommended,
   };
+  editTests(wholeData).then((data) => {
+    console.log("API response after data submission:", data);
+    setEditShowModal1(false);
+  });
+
+
+
+}
+    
+
+getAllTests()
+
+  };
+  const testModalFunction = (e) => {
+    e.preventDefault();
+    setSubTestModal(false);
+    const form = new FormData(e.target);
+    const UserData = Object.fromEntries(form);
+    // console.log("usderdad", UserData);
+
+    const firstKey = Object.keys(UserData)[0];
+    const firstValue = UserData[firstKey];
+
+    const remainingKeyValuePairs = Object.keys(UserData)
+      .slice(1) // Skip the first key
+      .map((key) => ({ ["name"]: UserData[key] }));
+      console.log("hai",remainingKeyValuePairs);
+    const allData = {
+      name: firstValue,
+      sub_tests: remainingKeyValuePairs,
+    };
+
+    setSetsaveTestDat((prevArray) => {
+      const newArray = [...prevArray];
+      console.log(newArray, "orihgoesirg");
+      newArray[indexvalue] = allData;
+      return newArray;
+    });
+  };
+  const sampleModalFunction=(e)=>{
+    e.preventDefault();
+    setSampleModal(false)
+    const form = new FormData(e.target);
+    const UserData = Object.fromEntries(form);
+    const getSampleArray= Object.values(UserData)
+    setOnloadSamples(getSampleArray)
+    console.log("daaaaa",data);
+  }
 
   return (
     <div>
       <>
-        <div className="fixed inset-0 z-50 overflow-auto">
-          <form onSubmit={addLabModal} id="addmodal">
-            <div className="flex items-center justify-center min-h-screen ">
+        {subTestModal && (
+          <div className="fixed z-50 inset-0 overflow-auto">
+            <div className="flex z-50  items-center justify-center min-h-screen">
+              <div className="bg-white  z-50  rounded-lg shadow-md p-6">
+                <form onSubmit={testModalFunction} id="form">
+                  <div className="grid">
+                    <div>
+                      <input
+                        type="text"
+                        name="testName"
+                        className="mt-2 p-2 border rounded-md bg-gray-400"
+                        defaultValue={forModalTestData.name}
+                      />
+                    </div>
+                    <div>
+                      {forModalTestData.sub_tests &&
+                        forModalTestData.sub_tests.map((subTest, index) => (
+                          <input
+                            key={index}
+                            type="text"
+                            name={`testSubName${index}`}
+                            placeholder={`Subtest ${index + 1}`}
+                            className="mt-2 p-2 border rounded-md"
+                            defaultValue={subTest.name}
+                          />
+                        ))}
+                    </div>
+
+                    <div className=" pt-2">
+                      <div className="flex justify-between">
+                        <div className="">
+                          <button
+                            onClick={() => setSubTestModal(false)}
+                            className="bg-red-500 text-white px-4 py-2 rounded-md"
+                          >
+                            Close
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            type="submit"
+                            className="bg-green-500 text-white px-4 py-2 rounded-md"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                {/* Second Input Field */}
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-20 bg-black"></div>
+          </div>
+        )}
+        {sampleModal && (
+          <div className="fixed z-50 inset-0 overflow-auto">
+            <div className="flex z-50  items-center justify-center min-h-screen">
+              <div className="bg-white  z-50  rounded-lg shadow-md p-6">
+                <form onSubmit={sampleModalFunction} id="form">
+                  <div className="">
+                    <div className="flex flex-col">
+                      {onloadSamples &&
+                        onloadSamples.map((subTest, index) => (
+                          <input
+                            key={index}
+                            type="text"
+                            name={`samples${index}`}
+                            // value={subTest}
+                            placeholder={`Subtest ${index + 1}`}
+                            className="mt-2 p-1 border rounded-md"
+                            defaultValue={subTest}
+                          />
+                        ))}
+                    </div>
+
+                    <div className=" pt-2">
+                      <div className="flex justify-between">
+                        <div className="">
+                          <button
+                            onClick={() => setSampleModal(false)}
+                            className="bg-red-500 text-white px-4 py-2 rounded-md"
+                          >
+                            Close
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            type="submit"
+                            className="bg-green-500 text-white px-4 py-2 rounded-md"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                {/* Second Input Field */}
+              </div>
+            </div>
+            <div className="opacity-25 fixed inset-0 z-20 bg-black"></div>
+          </div>
+        )}
+        <div className="fixed inset-0 z-30 overflow-auto top-11 p-6">
+          <form onSubmit={editLabModal} id="addmodal">
+            <div className="flex items-center justify-center  ">
               <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
-                <div className="flex flex-row gap-3.5">
+                <div className="flex  flex-row gap-3.5">
                   <div
                     {...getRootProps()}
-                    className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
+                    className="flex w-2/5 flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
                   >
+
+
+{!showImage &&<img
+                          height={100}
+                          src={data.image}
+                          alt="Your Image"
+                          sx={{ width: "100%" }}
+                        />}
+
+
                     {!showImage ? (
                       <div>
                         <p>
@@ -172,7 +355,7 @@ function LabModal({ callback, setShowModal }) {
                     )}
                   </div>
                   <div>
-                    <div className="mr-4">
+                    <div className="mr-4 w-4/5">
                       <h2 class="text-xl mb-4">Create test</h2>
                       <div class="flex flex-row space-x-4">
                         <div class="flex flex-col">
@@ -184,24 +367,26 @@ function LabModal({ callback, setShowModal }) {
                           </label>
                           <select
                             id="category"
+                            
+                            
                             name="categoryName"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           >
-                            <option disabled selected value="Choose a category">
-                              Choose a category
+                            <option disabled selected>
+                              {data.category_name}
                             </option>
 
                             {homeCareCategories[0] &&
                               homeCareCategories.map((data) => {
                                 return (
-                                  <option value={data?._id}>
+                                  <option value={data?._id }>
                                     {data.title}
                                   </option>
                                 );
                               })}
                           </select>
                         </div>
-                        <div class="flex flex-col">
+                        <div class="flex flex-col p-4">
                           <label
                             for="type_of_samples"
                             class="text-sm font-medium text-gray-700 mb-2"
@@ -209,31 +394,38 @@ function LabModal({ callback, setShowModal }) {
                             Type of samples
                           </label>
                           <div className="flex gap-3">
-                            <input
+                          <div
+                            onClick={() => {
+                              setForModalSampleData(samples)
+                              console.log("ssssss",forModalSampleData);
+                              setSampleModal(true);
+                            }}
+                            className="flex"
+                          >
+                            <ul className="mt-2 list-disc">
+                              {onloadSamples.map((sample, index) => (
+                                <li key={index}>{sample}</li>
+                              ))}
+                            </ul>
+                          </div>
+                            {/* <input
                               type="text"
-                              required
                               onChange={handleInputChange}
                               value={sampleInput}
                               name="sampleType"
                               id="type_of_samples"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                               placeholder="Ex: Blood test"
-                            ></input>
-                            <button
+                            ></input> */}
+                            {/* <button
                               type="button"
                               className="border-4"
                               onClick={handleAddSample}
                             >
                               +
-                            </button>
+                            </button> */}
                           </div>
-                          <div className="flex p-4">
-                            <ul className="mt- list-disc">
-                              {samples.map((sample, index) => (
-                                <li key={index}>{sample}</li>
-                              ))}
-                            </ul>
-                          </div>
+                          
                         </div>
                       </div>
                       <div class="flex flex-row space-x-4">
@@ -247,12 +439,13 @@ function LabModal({ callback, setShowModal }) {
                           <input
                             type="text"
                             name="testName"
+                            defaultValue={data.name}
                             id="name_of_test"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                             placeholder="Ex: Blood test, Body check..."
                           ></input>
                         </div>
-                        <div class="p-6">
+                        <div class="p-4">
                           <label
                             for="is_recommended"
                             class="text-sm font-medium text-gray-700 mb-2"
@@ -277,10 +470,10 @@ function LabModal({ callback, setShowModal }) {
                         </label>
                         <input
                           type="text"
+                          value={TestName}
                           onChange={(e) => {
                             setTestName(e.target.value);
                           }}
-                          value={TestName}
                           name="test_or_subtests"
                           id="tests_subtests"
                           class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
@@ -313,9 +506,19 @@ function LabModal({ callback, setShowModal }) {
                                 setnumberofField={setnumberofField}
                               />
                               <div>
-                                {setsaveTestDat.map((data) => {
+                                {setsaveTestDat.map((data, index) => {
                                   return (
-                                    <div className="p-4 border-2  ">
+                                    <div
+                                      onClick={() => {
+                                        // console.log("daataa",data);
+                                        setSubTestModal(true);
+                                        setindex(index);
+                                        setForModalTestData(data);
+                                        // forEditTest();
+                                        
+                                      }}
+                                      className="p-4 border-2"
+                                    >
                                       {data.name}
                                       <div>
                                         {data?.sub_tests?.map((name) => {
@@ -327,12 +530,29 @@ function LabModal({ callback, setShowModal }) {
                                 })}
                                 <div className="w-52 bg-red-500"></div>
                               </div>
+                              {/* {editTestSubata && editTestSubata.map((data)=>{
+                                return (
+                                  <div
+                                    onClick={() => {
+                                      // setSubTestModal(true);
+                                      // setForModalTestData(data);
+                                    }}
+                                    className="p-4 border-2"
+                                  >
+                                    {data.name}
+                                    <div>
+                                      {data?.sub_tests?.map((name) => {
+                                        return <div>{name?.name}</div>;
+                                      })}
+                                    </div>
+                                  </div>
+                                );
+                              })} */}
                             </div>
                           )}
                         </div>
 
-                        
-                          {/* {addTestModal &&(
+                        {/* {addTestModal &&(
                         <input
                         type="text"
                         name="test_or_subtests"
@@ -342,7 +562,6 @@ function LabModal({ callback, setShowModal }) {
                       ></input>
                       
                       )} */}
-                        
                       </div>
                       <button
                         type="button"
@@ -377,6 +596,7 @@ function LabModal({ callback, setShowModal }) {
                           </label>
                           <input
                             type="number"
+                            defaultValue={data.testing_time}
                             name="report_time"
                             placeholder="Set this time"
                             id="report_time"
@@ -396,6 +616,7 @@ function LabModal({ callback, setShowModal }) {
                             <input
                               placeholder="Set rate"
                               type="number"
+                              defaultValue={data.price}
                               name="rate"
                               id="rate"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
@@ -403,6 +624,7 @@ function LabModal({ callback, setShowModal }) {
                             <input
                               type="number"
                               id="rate"
+                              defaultValue={data.daily_test_limit}
                               name="daily_test_limit"
                               className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                               placeholder="Daily test limit"
@@ -436,10 +658,11 @@ function LabModal({ callback, setShowModal }) {
             </div>
           </form>
         </div>
-        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+
+        <div className="opacity-25 fixed inset-0 z-20 bg-black"></div>
       </>
     </div>
   );
 }
 
-export default LabModal;
+export default EditLabModal;

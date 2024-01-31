@@ -111,7 +111,6 @@ const NavBarSlice = createSlice({
         {
           name: "Doctor",
           link: "/telemedicine/doctor",
-
           logo: (
             <svg
               fill=""
