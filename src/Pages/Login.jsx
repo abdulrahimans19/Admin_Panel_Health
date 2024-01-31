@@ -380,14 +380,14 @@ const Login = () => {
               />
               {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
             </div>
-            {selectedOption === "Doctor" && (
+            {selectedOption === "Doctor" ? (
               <a
                 href="/forgot"
                 className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] mr-10 flex justify-end items-center"
               >
                 Forgot Password?
               </a>
-            )}
+            ):<><div className="p-2"></div></>}
 
             <div>
               <button
@@ -398,7 +398,7 @@ const Login = () => {
                   Login
                 </div>
               </button>
-              {selectedOption === "Doctor" && (
+              {selectedOption === "Doctor" ? (
                 <div className="flex items-center ml-20 mt-6">
                   <span>Dont have an account? </span>
                   <a
@@ -408,7 +408,7 @@ const Login = () => {
                     Signup
                   </a>
                 </div>
-              )}
+              ):<><div className="p-4"></div></>}
             </div>
           </form>
         </div>
