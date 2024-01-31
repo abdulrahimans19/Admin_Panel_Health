@@ -5,7 +5,8 @@ const initialState = {
   amount: 9,
   role: null,
   isLoading: true,
-  testFilter:null
+  testFilter:null,
+  subTestsData:[]
 };
 // export const  getCartData=createAsyncThunk('cart/getcartDAta',async ()=>
 // {
@@ -24,6 +25,10 @@ const AdminSlice = createSlice({
     setFilter: (state, action) => {
       console.log(action);
       state.testFilter = action.payload;
+    },
+    setSubtest: (state, action) => {
+      console.log(action);
+      state.subTestsData.push(action.payload)
     },
   },
   
@@ -44,4 +49,4 @@ const AdminSlice = createSlice({
   // }
 });
 export default AdminSlice.reducer;
-export const { test,setFilter } = AdminSlice.actions;
+export const { test,setFilter,setSubtest } = AdminSlice.actions;

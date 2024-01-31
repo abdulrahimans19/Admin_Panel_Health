@@ -9,19 +9,22 @@ import AllTests from "./LabItems/AllTests";
 import Recommended from "./LabItems/Recommended";
 import Disabled from "./LabItems/Disabled";
 import LabModal from "./LabItems/lab_components/LabModal";
-import { GetHomecareCategoriesApi } from "../../../API/ApiCall";
+import { GetHomecareCategoriesApi, createTests } from "../../../API/ApiCall";
 import { setFilter } from "../../../Redux/Features/AdminSlice";
 
 export function HomecareLabItems() {
-  const [showModal, setShowModal] = useState(false);
+  const [showLabModal1, setShowLabModal1] = useState(false);
   const [testCategories, setTestCategories] = useState([]);
   const toggleMenu = () => {
-    setShowModal(!showModal);
+    console.log("togggl",showLabModal1);
+    setShowLabModal1(!showLabModal1);
   };
 
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(1);
   useEffect(() => {
+
+    
     dispatch(homecare());
     GetHomecareCategoriesApi().then((data) => {
       setTestCategories(data.data.data.mainCategories);
@@ -33,8 +36,7 @@ export function HomecareLabItems() {
   };
   const handleEvent = (testValue) => {
     console.log(testValue);
-    dispatch(setFilter(testValue))
-    
+    dispatch(setFilter(testValue));
   };
   const renderTabContent = () => {
     switch (activeTab) {
@@ -58,18 +60,21 @@ export function HomecareLabItems() {
   };
   return (
     <div>
-      <LabModal showModal={showModal} callback={toggleMenu} />
-
       <div className="flex justify-between">
         <div>
           <h2 className="font-bold text-lg">Lab Items</h2>
           {/* <p>2 available items</p> */}
         </div>
-        <AddLabItemsButton
-          showModel={showModal}
-          text={"Add lab items "}
-          callback={toggleMenu}
-        />
+        <button
+          onClick={() => {
+            console.log("modal opened");
+            setShowLabModal1(true);
+          }}
+        >
+          <AddLabItemsButton text={"Add lab items "}
+          //  callback={toggleMenu}
+            />
+        </button>
       </div>
       <div className="flex justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
@@ -118,26 +123,28 @@ export function HomecareLabItems() {
         <div className="relative">
           <div>
             <select
-            onChange={(e) => handleEvent(e.target.value)}
+              onChange={(e) => handleEvent(e.target.value)}
               id="category"
               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
             >
-              <option
-              disabled selected
-               value="Filter by category">Filter by category</option>
+              <option disabled selected value="Filter by category">
+                Filter by category
+              </option>
 
               {testCategories[0] &&
                 testCategories.map((data) => {
-                  return (
-                    <option value={data?._id}>
-                      {data.title}
-                    </option>
-                  );
+                  return <option value={data?._id}>{data.title}</option>;
                 })}
             </select>
 
             {/* <!-- Dropdown menu --> */}
           </div>
+          {showLabModal1 && 
+            <LabModal 
+             callback={toggleMenu}
+             setShowModal={setShowLabModal1}
+             />
+          }
         </div>
       </div>
 
