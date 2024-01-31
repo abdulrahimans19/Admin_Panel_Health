@@ -12,15 +12,20 @@ import {
   GetHomecareCategories,
   GetHomecareCategoriesApi,
   addHomecareCategory,
+  homeCareUpadateCate
 } from "../../../API/ApiCall";
 import AddCategoryModal from "../../../components/Modal/AddCategoryModal";
 import AddCategoryModalHomecare from "./modal/AddCategoryModalHomecare";
 import AddCategory from "../../../components/Modal/AddCategory";
+import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 
 export default function Homecare() {
   const [addcategoryModal, setAddCategoryModal] = useState(false);
   const dispatch = useDispatch();
   const [homeCareCategories, setHomeCareCategory] = useState([]);
+  const [editShowModal, setEditShowModal] = useState(false);
+  const [editData, setEditData] = useState();
+  const [viewCatInfoModal, setViewCatInfoModal] = useState(false);
 
   // const getHomecareCat = () => {
   //   getPharmaCategory().then(({ data }) => {
@@ -32,11 +37,26 @@ export default function Homecare() {
     getHomecareCategories();
     dispatch(homecare());
   }, []);
+  const getCategory=()=>{
+
+    console.log("inside edit");
+    getHomecareCategories().then((data)=>{
+      console.log("data is ",data);
+      setHomeCareCategory(data?.data?.data?.mainCategories)
+    })
+  }
   function addCategory() {
     console.log("this is add category in homecare @@@@@@@");
   }
   const editCat = (data) => {
-    console.log(data);
+    setEditShowModal(true);
+    setEditData(data);
+
+  };
+  const viewCatInfo = (data) => {
+    setEditData(data);
+
+    setViewCatInfoModal(true);
   };
   const getHomecareCategories = () => {
     GetHomecareCategoriesApi().then((data) => {
@@ -69,9 +89,8 @@ export default function Homecare() {
             return (
               <CatCard
                 data={data}
-                showModal={true}
+                viewCatInfo={viewCatInfo}
                 callback={editCat}
-                isHomecareCategory={true}
               />
             );
           })}
@@ -81,6 +100,23 @@ export default function Homecare() {
           catFunction={addHomecareCategory}
           setShowModal={setAddCategoryModal}
           GetPharmacyCat={getHomecareCategories}
+          />
+
+        )
+      }
+      {editShowModal && (
+        <AddCategory
+          catFunction={homeCareUpadateCate}
+          incomingType={"edit"}
+          dataToUpload={editData}
+          setShowModal={setEditShowModal}
+          GetPharmacyCat={getHomecareCategories}
+        />
+      )}
+      {viewCatInfoModal && (
+        <CatInfoModal
+          catInfo={editData}
+          setViewCatInfoModal={setViewCatInfoModal}
         />
       )}
     </div>
