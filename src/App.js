@@ -47,22 +47,23 @@ import { getCartItems } from "./Redux/Features/NavbarSlice";
 
 function App() {
   const [notification, setNotification] = useState({ title: "", body: "" });
-  // const notify = () =>  toast(<ToastDisplay/>);
-  // function ToastDisplay() {
-  //   return (
-  //     <div>
-  //       <p><b>{notification?.title}</b></p>
-  //       <p>{notification?.body}</p>
-  //     </div>
-  //   );
-  // };
-const dispatch=useDispatch()
+  const notify = () => toast(<ToastDisplay />);
+  function ToastDisplay() {
+    return (
+      <div>
+        <p>
+          <b>{notification?.title}</b>
+        </p>
+        <p>{notification?.body}</p>
+      </div>
+    );
+  }
+  const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
-if(user){
-  dispatch(getCartItems())
-
-}
+    if (user) {
+      dispatch(getCartItems());
+    }
     if (notification?.title) {
       //  notify()
     }
@@ -79,7 +80,10 @@ if(user){
           position: "top-right",
         }
       );
-      // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
+      setNotification({
+        title: payload?.notification?.title,
+        body: payload?.notification?.body,
+      });
     })
     .catch((err) => console.log("failed: ", err));
 
