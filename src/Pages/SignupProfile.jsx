@@ -329,7 +329,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                 className="ml-1 text-gray-300 cursor-pointer"
               >
                 I agree with terms of use
-              </label>
+              </label> 
             </div>
 
             <div className="flex justify-between">
