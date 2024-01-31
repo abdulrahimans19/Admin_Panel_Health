@@ -126,19 +126,19 @@ export default function FoodOrder() {
                     <Link to={`/order/${order._id}/details`}>{order._id}</Link>
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.address_id.full_name}
+                    {order.address_id ? order.full_name : "No Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id.name}
+                    {order.product_id ? order.product_id.name : "No Product"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id.quantity}
+                    {order.product_id ? order.quantity : "0"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {formatDate(order.product_id.created_at)}
+                    {formatDate(order.product_id ? order.created_at : "0/0/0")}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id.price}
+                    {order.product_id ? order.price : "0"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {order.order_status}
