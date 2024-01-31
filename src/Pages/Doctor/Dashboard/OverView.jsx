@@ -23,15 +23,13 @@ export default function OverView() {
   const [availableSlots, setAvailableslots] = useState([]);
   const [todayApintments, setApointments] = useState([]);
   const [currentime, setCurrenTime] = useState();
-  const [hour, setHour] = useState();
-  const [isPm, setIsPm] = useState();
-  const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
     getDoctor();
     getToatalApointments();
     getAvalabeSlots();
     getTodayApointment();
+    setInterval(time, 60000);
     // setInterval(sameTime, 60000);
   }, []);
 
@@ -68,24 +66,6 @@ export default function OverView() {
     // setminut(minutes);
     // setIsPm(ampm.toLocaleLowerCase());
     setCurrenTime(strTime);
-  }
-
-  setInterval(time, 60000);
-
-  function sameTime(timeString, id) {
-    const time1 = "5:50 pm";
-    const time2 = "12:00 am";
-
-    const formattedTime1 = convertTo24HourFormat(currentime);
-    const formattedTime2 = convertTo24HourFormat(timeString);
-
-    if (formattedTime1 && formattedTime2 && formattedTime1 === formattedTime2) {
-      console.log("The times are the same.");
-      console.log(id, " this id is d");
-      setSelectedId(id);
-    } else {
-      console.log("The times are not the same.");
-    }
   }
 
   function getDoctor() {

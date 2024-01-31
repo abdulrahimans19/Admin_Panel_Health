@@ -61,15 +61,11 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
-    if (user) {
+    if (user?.user_role == "Admin") {
       dispatch(getCartItems());
-    }
-    if (notification?.title) {
-      //  notify()
+      requestForToken();
     }
   }, [notification]);
-
-  requestForToken();
 
   onMessageListener()
     .then((payload) => {
