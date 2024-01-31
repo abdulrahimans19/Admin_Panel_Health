@@ -317,3 +317,9 @@ export const addAvailableSlot = async (data) => {
 export const getTodayApointments = async () => {
   return await Instance.get("/appointment/doctor-appointments?status=upcoming");
 };
+export const getNotificationApi = async () => {
+  return await Instance.get(`/notification`);
+};
+export const readNotification = async (data) => {
+  return await Instance.post(`/notification/mark-read?id=${data}`);
+};

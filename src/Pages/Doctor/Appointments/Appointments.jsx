@@ -39,7 +39,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -61,7 +67,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -83,7 +95,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -105,7 +123,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -127,7 +151,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -149,7 +179,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
@@ -171,7 +207,13 @@ export default function Appointments() {
           {/* card */}
           <div className="p-3 border w-[350px] border-blue-300 border-thin rounded-lg">
             <div className=" flex  items-center ">
-              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin"></div>
+              <div className=" w-[100px] h-[100px] rounded-full border border-blue-300 border-thin">
+                <img
+                  src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  className="w-[100px] h-[100px] rounded-full"
+                  alt=""
+                />
+              </div>
               <div className="ml-3">
                 <h1 className=" font-bold">Mrs. Watkins rome</h1>
                 <p className="text-gray-400 text-xs mt-4">Duration: 30 min</p>
