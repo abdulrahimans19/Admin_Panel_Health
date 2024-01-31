@@ -44,6 +44,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { requestForToken, onMessageListener } from "./firebase/Firebaseconfig";
 import { getCartItems } from "./Redux/Features/NavbarSlice";
+import NotificationPage from "./Pages/Admin/Notification/NotificationPage";
 
 function App() {
   const [notification, setNotification] = useState({ title: "", body: "" });
@@ -122,6 +123,7 @@ if(user?.user_role == "Admin"){
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
+          <Route element={<NotificationPage />} path="/push-notification" />
 
           <Route element={<Coupons />} path="/coupons" />
         </Route>

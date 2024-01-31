@@ -152,9 +152,7 @@ function AppoinmentDetails() {
                   <th scope="col" class="px-6 py-3">
                     Name
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Member
-                  </th>
+                  
                   <th scope="col" class="px-6 py-3">
                     ID
                   </th>
@@ -192,7 +190,7 @@ function AppoinmentDetails() {
                           {data.profile_id.last_name}
                           {/* {data.middle_name} { data.last_name} */}
                         </th>
-                        <td class="px-6 py-4">Silver</td>
+                       
                         <td class="px-6 py-4">{data.profile_id.user_id}</td>
                         <td class="px-6 py-4">{data.test_id.name}</td>
                         <td class="px-6 py-4">
