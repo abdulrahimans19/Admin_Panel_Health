@@ -12,11 +12,14 @@ function WithdrawalTable({
   availabe,
   callBack,
   btText,
-  setData,
+  getWithdrawalRequsts,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
   const [withdrawID, setWithdrawID] = useState();
+  const [table, setTable] = useState([]);
+  const [myfunction, setFunction] = useState();
+  const [selectpage, setSelectPage] = useState();
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -24,11 +27,14 @@ function WithdrawalTable({
   const handlePageChange = (selectedPage) => {
     if (btText === "Approved") {
       GetDrAprovedWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
-        setData(data?.data?.data?.doctors);
+        setTable(data.data.data.withdrawals);
       });
     } else {
       GetDoctorWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
-        setData(data?.data?.data?.doctors);
+        console.log(" this is working");
+        setSelectPage(selectedPage.selected + 1);
+
+        setTable(data.data.data.withdrawals);
       });
     }
   };
@@ -45,6 +51,9 @@ function WithdrawalTable({
         callback={callBack}
         status={"aprove"}
         id={withdrawID}
+        myfunction={GetDoctorWithdrawalRequsts}
+        getWithdrawalRequsts={getWithdrawalRequsts}
+        sectpage={selectpage}
       />
       <h1 className="font-bold mt-3 text-lg">Doctor</h1>
       <p className="text-gray-500 text-xs">
@@ -69,77 +78,142 @@ function WithdrawalTable({
           </tr>
         </thead>
         <tbody class="text-xs text-center">
-          {data &&
-            data[0] &&
-            data.map((data) => {
-              return (
-                <tr class="bg-card rounded text-black text-xs text-center ">
-                  <td class="p-1">{data._id}</td>
-                  {
-                    <td class="p-1">
-                      {" "}
-                      {data.created_at &&
-                        new Date(data.created_at).toLocaleString()}
+          {table && table[0]
+            ? table.map((data) => {
+                console.log(data, " im table");
+                return (
+                  <tr class="bg-card rounded text-black text-xs text-center ">
+                    <td class="p-1">{data._id}</td>
+                    {
+                      <td class="p-1">
+                        {" "}
+                        {data.created_at &&
+                          new Date(data.created_at).toLocaleString()}
+                      </td>
+                    }
+                    <td class="p-1 flex justify-center items-center">
+                      <img
+                        src={data?.doctor_id?.image}
+                        alt=""
+                        className="w-10 h-10"
+                      />
                     </td>
-                  }
-                  <td class="p-1 flex justify-center items-center">
-                    <img
-                      src={data?.doctor_id?.image}
-                      alt=""
-                      className="w-10 h-10"
-                    />
-                  </td>
-                  <td class="p-1">{data.name}</td>
-                  <td class="p-1">{data.country}</td>
-                  <td class="p-1">{data.bank_name}</td>
-                  <td class="p-1">{data.account_number}</td>
-                  <td class="p-1">{data.swift_code}</td>
-                  <td class="p-1">{data?.doctor_id?.wallet}</td>
-                  <td class="p-1">{data.amount}</td>
+                    <td class="p-1">{data.name}</td>
+                    <td class="p-1">{data.country}</td>
+                    <td class="p-1">{data.bank_name}</td>
+                    <td class="p-1">{data.account_number}</td>
+                    <td class="p-1">{data.swift_code}</td>
+                    <td class="p-1">{data?.doctor_id?.wallet}</td>
+                    <td class="p-1">{data.amount}</td>
 
-                  <td class="p-1">
-                    {btText === "Approved" ? (
-                      <p
-                        style={{
-                          backgroundColor: "#AAFFCC",
-                          color: "#41945D",
-                        }}
-                        className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded  outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
-                      >
-                        {btText}
-                      </p>
-                    ) : (
-                      <button
-                        style={{
-                          backgroundColor: "#AAFFCC",
-                          color: "#41945D",
-                        }}
-                        className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                        onClick={() => {
-                          setUser(data?.doctor_id);
-                          setWithdrawID(data?._id);
-                          setShowModal(true);
-                        }}
-                      >
-                        {btText}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+                    <td class="p-1">
+                      {btText === "Approved" ? (
+                        <p
+                          style={{
+                            backgroundColor: "#AAFFCC",
+                            color: "#41945D",
+                          }}
+                          className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded  outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                        >
+                          {btText}
+                        </p>
+                      ) : (
+                        <button
+                          style={{
+                            backgroundColor: "#AAFFCC",
+                            color: "#41945D",
+                          }}
+                          className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => {
+                            setUser(data?.doctor_id);
+                            setWithdrawID(data?._id);
+
+                            setShowModal(true);
+                          }}
+                        >
+                          {btText}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            : data &&
+              data[0] &&
+              data.map((data) => {
+                console.log(data, "in data");
+                return (
+                  <tr class="bg-card rounded text-black text-xs text-center ">
+                    <td class="p-1">{data._id}</td>
+                    {
+                      <td class="p-1">
+                        {" "}
+                        {data.created_at &&
+                          new Date(data.created_at).toLocaleString()}
+                      </td>
+                    }
+                    <td class="p-1 flex justify-center items-center">
+                      <img
+                        src={data?.doctor_id?.image}
+                        alt=""
+                        className="w-10 h-10"
+                      />
+                    </td>
+                    <td class="p-1">{data.name}</td>
+                    <td class="p-1">{data.country}</td>
+                    <td class="p-1">{data.bank_name}</td>
+                    <td class="p-1">{data.account_number}</td>
+                    <td class="p-1">{data.swift_code}</td>
+                    <td class="p-1">{data?.doctor_id?.wallet}</td>
+                    <td class="p-1">{data.amount}</td>
+
+                    <td class="p-1">
+                      {btText === "Approved" ? (
+                        <p
+                          style={{
+                            backgroundColor: "#AAFFCC",
+                            color: "#41945D",
+                          }}
+                          className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded  outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                        >
+                          {btText}
+                        </p>
+                      ) : (
+                        <button
+                          style={{
+                            backgroundColor: "#AAFFCC",
+                            color: "#41945D",
+                          }}
+                          className="text-xs p-1 pl-3 pr-3 ml-0.5 mt-1 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => {
+                            setUser(data?.doctor_id);
+                            setWithdrawID(data?._id);
+
+                            setShowModal(true);
+                          }}
+                        >
+                          {btText}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
       {page > 1 && (
-        <ReactPaginate
-          pageCount={page} // Replace with the total number of pages
-          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-          marginPagesDisplayed={1} // Number of pages to display for margin pages
-          onPageChange={handlePageChange}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
+        <div className="mt-5">
+          <ReactPaginate
+            pageCount={page} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+          />
+        </div>
       )}
     </div>
   );
