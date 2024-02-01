@@ -56,7 +56,12 @@ function ResultModal() {
       <div class="grow shrink basis-0 h-12 px-3.5 py-4 bg-emerald-200 rounded-lg justify-center items-center gap-2.5 flex">
         <button 
         onClick={() => setShowModal(false)}
-        class="text-green-600 text-base font-normal font-['Roboto Flex']">Done</button>
+        class="text-green-600 text-base font-normal ">Done</button>
+      </div>
+      <div class="grow shrink basis-0 h-12 px-3.5 py-4 bg-emerald-200 rounded-lg justify-center items-center gap-2.5 flex">
+        <button 
+        onClick={() => setShowModal(false)}
+        class="text-green-600 text-base font-normal ">Cancel</button>
       </div>
     </div>
   </div>
