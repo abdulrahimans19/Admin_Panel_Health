@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import clock from "../../../assets/images/Vector (1).png";
 import date from "../../../assets/images/date(1).png";
 import dollar from "../../../assets/images/dollar.png";
-import arrowDown from "../../../assets/images/arrowDown.png";
+
 import { Card } from "@material-tailwind/react";
-import propic from "../../../assets/images/Ellipse.png";
+
 import rightArrow from "../../../assets/images/rightArrow.png";
 import WithdrawModal from "./modal/WithdrawModal";
 import SlotModal from "./modal/SlotModal";
@@ -14,6 +14,7 @@ import {
   getDoctorProfileAndWallet,
   getTodayApointments,
 } from "../../../API/ApiCall";
+import ReactPaginate from "react-paginate";
 
 export default function OverView() {
   const [showModal, setShowModal] = useState(false);
@@ -23,6 +24,7 @@ export default function OverView() {
   const [availableSlots, setAvailableslots] = useState([]);
   const [todayApintments, setApointments] = useState([]);
   const [currentime, setCurrenTime] = useState();
+  const [document, setDocument] = useState();
 
   useEffect(() => {
     getDoctor();
@@ -82,6 +84,7 @@ export default function OverView() {
     getTodayApointments().then((data) => {
       console.log(data.data.data);
       setApointments(data?.data?.data?.appointments);
+      setDocument(data?.data?.data?.total_document);
     });
   }
   function getAvalabeSlots() {
@@ -95,6 +98,14 @@ export default function OverView() {
   const isSlotModal = () => {
     setShowSlot(!showSlot);
   };
+  const handlePageChange = (selectedPage) => {
+    getTodayApointments(selectedPage).then((data) => {
+      setApointments(data?.data?.data?.appointments);
+    });
+  };
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
   return (
     <div className="container ">
       <div className="flex justify-between p-1">
@@ -199,8 +210,7 @@ export default function OverView() {
         </div>
       </div>
       {/* AppointmentTable Start */}
-      {todayApintments &&
-        todayApintments[0] &&
+      {todayApintments && todayApintments[0] ? (
         todayApintments.map((data) => {
           const formattedTime1 = convertTo24HourFormat(currentime);
 
@@ -250,7 +260,12 @@ export default function OverView() {
               )}
             </div>
           );
-        })}
+        })
+      ) : (
+        <div className="flex justify-center items-center">
+          Datas Not Avilable
+        </div>
+      )}
       {/* next card */}
       {/* TableEnd */}
       <SlotModal
@@ -263,6 +278,16 @@ export default function OverView() {
         showModal={showModal}
         profile={Profile}
       />{" "}
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      )}
     </div>
   );
 }

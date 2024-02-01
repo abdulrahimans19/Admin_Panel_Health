@@ -298,7 +298,7 @@ export const createTests = async (data) => {
   return await Instance.post(`/tests/create`, data);
 };
 export const editTests = async (data) => {
-  console.log("to update",data);
+  console.log("to update", data);
   return await Instance.put(`/tests/update`, data);
 };
 export const getSingleTestApi = async (id) => {
@@ -312,7 +312,7 @@ export const recommendedTest = async (id) => {
   return await Instance.put(`/tests/update-recommended?test_id=${id}`);
 };
 export const addResultApi = async (data) => {
-  return await Instance.post(`/bookings/add-result`,data);
+  return await Instance.post(`/bookings/add-result`, data);
 };
 
 export const getDoctorProfileAndWallet = async () => {
@@ -337,8 +337,10 @@ export const addAvailableSlot = async (data) => {
   return await Instance.post("doctor/add-slots", data);
 };
 
-export const getTodayApointments = async () => {
-  return await Instance.get("/appointment/doctor-appointments?status=upcoming");
+export const getTodayApointments = async (page = 1) => {
+  return await Instance.get(
+    `/appointment/doctor-appointments?status=upcoming${page}`
+  );
 };
 export const getNotificationApi = async () => {
   return await Instance.get(`/notification`);

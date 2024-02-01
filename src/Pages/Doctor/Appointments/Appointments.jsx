@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import ViewPatient from "../Dashboard/modal/ViewPatient";
 import VideoModal from "../Dashboard/modal/VideoModal";
+import ReactPaginate from "react-paginate";
 
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
@@ -19,6 +20,8 @@ export default function Appointments() {
   const [date, setDate] = useState(null);
   const [showModal, setShowMadal] = useState(false);
   const [getDate, setGetDAte] = useState();
+  const [document, setDocument] = useState();
+  const [formatedDate, setFormatedDate] = useState();
 
   useEffect(() => {
     getTodayApointment();
@@ -64,8 +67,9 @@ export default function Appointments() {
   }
 
   function getTodayApointment() {
-    getTodayApointments().then((data) => {
+    getTodayApointments(1).then((data) => {
       setApointments(data?.data?.data?.appointments);
+      setDocument(data?.data?.data?.total_document);
     });
   }
   function handleDateSelect(date) {
@@ -105,14 +109,31 @@ export default function Appointments() {
     const formattedDate = `${
       targetDate.getMonth() + 1
     }/${targetDate.getDate()}/${targetDate.getFullYear()}`;
-
+    setFormatedDate(formatedDate);
     getApointmentByDate(formattedDate).then((data) => {
+      console.log("is it page");
+
       setApointments(data?.data?.data?.appointments);
     });
   }
   const isSlectedDate = () => {
     setOpenCalender(!openCalender);
   };
+
+  const handlePageChange = (selectedPage) => {
+    if (formatedDate) {
+      getApointmentByDate(formatedDate, selectedPage).then((data) => {
+        setApointments(data?.data?.data?.appointments);
+        setDocument(data?.data?.data?.total_document);
+      });
+    }
+    // getAllApointment(selectedPage).then((data) => {
+    //   setData(data?.data?.data?.appointments);
+    // });
+  };
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
 
   return (
     <div>
@@ -221,8 +242,18 @@ export default function Appointments() {
               );
             })}
         </div>
-        <VideoModal showModal={showModal} setShowMadal={setShowMadal} />
+        {/* <VideoModal showModal={showModal} setShowMadal={setShowMadal} /> */}
       </div>
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      )}
     </div>
   );
 }

@@ -3,42 +3,83 @@ import { motion } from "framer-motion";
 import { addWithdrawRequest } from "../../../../API/ApiCall";
 
 function WithdrawModal({ showModal, isShowModal, profile }) {
-  const [amount, setamount] = useState();
-  const [name, setname] = useState();
-  const [country, setcountry] = useState();
-  const [bank_name, setbank_name] = useState();
-  const [account_type, setaccount_type] = useState();
-  const [account_number, setaccount_number] = useState();
-  const [swift_code, setswift_code] = useState();
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+  const [formData, setFormData] = useState({
+    amount: "",
+    name: "",
+    country: "",
+    bank_name: "",
+    account_type: "",
+    account_number: "",
+    swift_code: "",
+  });
 
-    const wholedata = {
-      amount: amount,
-      name: name,
-      country: country,
-      bank_name: bank_name,
-      account_type: account_type,
-      account_number: account_number,
-      swift_code: swift_code,
-    };
-    addWithdrawRequest(wholedata).then((data) => {
-      console.log(data);
-      setamount("");
-      setname("");
-      setcountry("");
-      setbank_name("");
-      setaccount_type("");
-      setaccount_number("");
-      setswift_code("");
+  const [formErrors, setFormErrors] = useState({});
 
-      isShowModal();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
+    setFormErrors({
+      ...formErrors,
+      [name]: null,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const errors = {};
+
+    if (!formData.amount.trim()) {
+      errors.amount = "Amount is required";
+    }
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    }
+    console.log(formData.country, " @@@@@@@@@@@");
+    if (!formData.country.trim()) {
+      errors.country = "country is required";
+    }
+    if (!formData.bank_name.trim()) {
+      errors.bank_name = "country is required";
+    }
+    if (!formData.account_type.trim()) {
+      errors.account_type = "country is required";
+    }
+    if (!formData.account_number.trim()) {
+      errors.account_number = "country is required";
+    }
+    if (!formData.swift_code.trim()) {
+      errors.swift_code = "country is required";
+    }
+    // Add more validation rules as needed
+
+    if (Object.keys(errors).length === 0) {
+      addWithdrawRequest(formData).then((data) => {
+        console.log(data);
+
+        setFormData({
+          amount: "",
+          name: "",
+          country: "",
+          bank_name: "",
+          account_type: "",
+          account_number: "",
+          swift_code: "",
+        });
+
+        isShowModal();
+      });
+    } else {
+      setFormErrors(errors);
+    }
   };
 
   const animationVariants = {
     hidden: { y: 100, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
+    visible: { y: 30, opacity: 1 },
   };
 
   const animationTransition = {
@@ -46,6 +87,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     damping: 10,
     stiffness: 100,
   };
+
   return (
     <div>
       <div>
@@ -61,19 +103,14 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                   style={{
                     position: "absolute",
                     bottom: 0,
-
                     transform: "translateX(-50%)",
-
                     padding: "20px",
                     borderRadius: "8px",
                   }}
                   className="relative w-auto my-6 mx-auto max-w-3xl  flex justify-center "
                 >
-                  {/*content*/}
-
                   <form onSubmit={handleSubmit}>
                     <div className="p-3  shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                      {/* Head */}
                       <div className="flex justify-between p-2 mt-5">
                         <div>
                           <h1 className="font-[30px] fond-bold text-xl">
@@ -87,98 +124,108 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                           Balance: {profile && profile?.wallet} AED
                         </p>
                       </div>
-                      {/* {body} */}
-
+                      <div className="text-center">
+                        <span className="text-red-500 text-center">
+                          {formErrors && formErrors.name
+                            ? formErrors.name
+                            : formErrors.country
+                            ? formErrors?.country
+                            : formErrors?.swift_code
+                            ? formErrors?.swift_code
+                            : formErrors?.amount
+                            ? formErrors?.amount
+                            : formErrors?.account_number
+                            ? formErrors.account_number
+                            : formErrors.account_type
+                            ? formErrors.account_type
+                            : ""}
+                        </span>
+                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-2 mt-3">
                         <div className="">
                           <p className="mb-2">Name</p>
                           <input
-                            required
                             type="text"
-                            name="name" // This should match the key in your state
-                            value={name}
+                            name="name"
+                            value={formData.name}
                             className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setname(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="">
                           <p className="mb-2">Country</p>
                           <select
-                            required
-                            name="country" // This should match the key in your state
-                            className="w-full p-2 outline-none border border-gray-400 rounded-lg h-10"
-                            value={country}
-                            onChange={(e) => setcountry(e.target.value)}
+                            name="country"
+                            className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
+                            value={formData.country}
+                            onChange={handleInputChange}
                           >
-                            <option selected>Select country</option>
+                            <option>Select country</option>
                             <option value="United States">United States</option>
-                            <option value="United Arab Emarits">
-                              United Arab Emarits
+                            <option value="United Arab Emirates">
+                              United Arab Emirates
                             </option>
-                            <option value="india">India</option>
+                            <option value="India">India</option>
                           </select>
+                          <div></div>
                         </div>
                       </div>
-                      {/* secontinput */}
+
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-1 mt-10">
                         <div className="">
                           <p className="mb-2">Swift code</p>
                           <input
-                            required
                             type="text"
-                            name="swift_code" // This should match the key in your state
-                            value={swift_code}
+                            name="swift_code"
+                            value={formData.swift_code}
                             className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setswift_code(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="">
-                          <p className="mb-2">Amount to withdraw</p>
+                          <p className="mb-2 mt-3">Amount to withdraw</p>
                           <input
-                            required
-                            type="text"
-                            name="amount" // This should match the key in your state
-                            value={amount}
+                            type="number"
+                            name="amount"
+                            value={formData.amount}
                             className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setamount(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
-                      {/* third */}
+
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-2 mt-10">
                         <div className="">
                           <p className="mb-1">Bank name</p>
                           <input
-                            required
                             type="text"
-                            name="bank_name" // This should match the key in your state
-                            value={bank_name}
+                            name="bank_name"
+                            value={formData.bank_name}
                             className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setbank_name(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                         <div className="">
                           <p>Account number</p>
                           <input
-                            required
                             type="text"
-                            name="account_number" // This should match the key in your state
-                            value={account_number}
+                            name="account_number"
+                            value={formData.account_number}
                             className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setaccount_number(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
 
                       <div className="flex justify-center mt-3 text-center">
                         <div>
-                          <p>account_type</p>
+                          <p>Account Type</p>
                           <input
                             type="text"
-                            name="account_type" // This should match the key in your state
-                            value={account_type}
+                            name="account_type"
+                            value={formData.account_type}
                             className="mt-1 p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
-                            onChange={(e) => setaccount_type(e.target.value)}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
