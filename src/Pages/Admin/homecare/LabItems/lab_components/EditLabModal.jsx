@@ -42,7 +42,8 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
     }
   };
   useEffect(() => {
-    setOnloadSamples(valdata.samples);
+    setSamples(valdata.samples)
+    // setOnloadSamples();
     setIsRecommended(valdata.is_recommended);
   }, []);
   const handleInputChange = (e) => {
@@ -85,27 +86,65 @@ const [incomingCat, setIncomingCat] = useState()
   }, []);
   const [setsaveTestDat, setSetsaveTestDat] = useState(valdata.tests);
   const saveTest = () => {
+
+    let tempErrors = {};
     console.log(TestName);
     console.log(subCategories);
-    const wholeSubData = {
-      name: TestName,
-      sub_tests: subCategories,
-    };
-    setSetsaveTestDat([...setsaveTestDat, wholeSubData]);
-    setTestName("");
-    setnumberofField([{ inputValue: "" }]);
-    setSubCategories([]);
-    setAddSubTestingModal(false);
+    tempErrors.secondTest =  TestName !=""?"":"add Tests"
+    setErrors(tempErrors);
+
+    if(TestName!=""){
+      const wholeSubData = {
+        name: TestName,
+        sub_tests: subCategories,
+      };
+      setSetsaveTestDat([...setsaveTestDat, wholeSubData]);
+      setTestName("");
+      setnumberofField([{ inputValue: "" }]);
+      setSubCategories([]);
+      setAddSubTestingModal(false);
+    }
+    else{
+      return
+    }
   };
   const forEditTest = () => {
     setForModalTestData(setsaveTestDat);
     console.log("aszfsfaf", forModalTestData);
   };
 
+  const [errors, setErrors] = useState({});
+
+  const validate=(UserData)=>
+  {
+  console.log();
+    let tempErrors = {};
+   
+  
+  console.log(UserData?.categoryName );
+  console.log(UserData);
+    tempErrors.typeSample =  samples[0]?"":"add at least one sample"
+    tempErrors.NameOfTest =  UserData?.testName?"":"add name of the  Primary Test"
+    tempErrors.secondTest =  setsaveTestDat[0]?"":"add at least one test"
+    // tempErrors.sub_category =  !hasNull?"":"add name of the  sub test canot be empty"
+    tempErrors.testTime =  UserData?.report_time?"":"add test time"
+    tempErrors.rate =  UserData.rate?"":"add offer rate"
+    tempErrors.daily_test_limit =  UserData?.daily_test_limit?"":"add test limit"
+    tempErrors.showImage =  showImage !=isEditImage  ?"":"add image "
+    tempErrors.category =  UserData?.categoryName  != undefined ?"":"add Category"
+    console.log(tempErrors,"errors");
+  console.log(tempErrors.category );
+    setErrors(tempErrors);
+  
+    // Return true if no errors
+    return Object.values(tempErrors).every(x => x === "");
+  }
+
   const editLabModal = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
+    if (!validate(UserData)) return;
     console.log("userta", UserData, setsaveTestDat);
     console.log("image", fileToUpload);
     let publicUrl;
@@ -197,8 +236,8 @@ const [incomingCat, setIncomingCat] = useState()
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
     const getSampleArray = Object.values(UserData);
-    setOnloadSamples(getSampleArray);
-    
+   
+    setSamples(getSampleArray)
   };
 
   return (
@@ -262,14 +301,15 @@ const [incomingCat, setIncomingCat] = useState()
           </div>
         )}
         {sampleModal && (
+          
           <div className="fixed z-50 inset-0 overflow-auto">
             <div className="flex z-50  items-center justify-center min-h-screen">
               <div className="bg-white  z-50  rounded-lg shadow-md p-6">
                 <form onSubmit={sampleModalFunction} id="form">
                   <div className="">
                     <div className="flex flex-col">
-                      {onloadSamples &&
-                        onloadSamples.map((subTest, index) => (
+                      {samples[0] &&
+                        samples.map((subTest, index) => (
                           <input
                             key={index}
                             type="text"
@@ -311,17 +351,26 @@ const [incomingCat, setIncomingCat] = useState()
             <div className="opacity-25 fixed inset-0 z-20 bg-black"></div>
           </div>
         )}
-        <div className="fixed inset-0 z-30 overflow-auto top-11 p-6">
-          <form onSubmit={editLabModal} id="addmodal">
-            <div className="flex items-center justify-center  ">
-              <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
-                <div className="flex  flex-row gap-3.5">
+
+
+
+
+<div>
+<div className="absolute inset-0 z-30  overflow-auto top-16 ">
+          <form  className="p-4" onSubmit={editLabModal} id="addmodal">
+          <div className="flex items-center justify-center">
+      <div className="flex flex-col bg-white rounded-lg shadow-md  sm:p-6 max-w-full sm:max-w-7xl mx-2">
+                      <h2 class="text-xl mb-4 text-center">update test</h2>
+
+                <div className="md:flex p-1 gap-3.5">
+
+
                   <div
                     {...getRootProps()}
-                    className="flex w-2/5 flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
+                    className="flex flex-col  justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
                   >
                     {!showImage && (
-                      <img
+                      <img className=""
                         height={80}
                         src={valdata.image}
                         alt="Your Image"
@@ -353,10 +402,11 @@ const [incomingCat, setIncomingCat] = useState()
                       </div>
                     )}
                   </div>
-                  <div>
-                    <div className="mr-4 w-4/5">
-                      <h2 class="text-xl mb-4">Create test</h2>
-                      <div class="flex flex-row space-x-4">
+
+
+                  <div className="">
+                    <div className="mr-4 ">
+                      <div class="md:flex flex-row space-x-4">
                         <div class="flex flex-col">
                           <label
                             for="category"
@@ -369,13 +419,13 @@ const [incomingCat, setIncomingCat] = useState()
                             name="categoryName"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           >
-                            <option value={incomingCat?._id} disabled selected>
+                            <option value={incomingCat?._id}  selected>
                               {incomingCat?.title}  
                             </option>
 
                             {homeCareCategories[0] &&
                               homeCareCategories.map((data) => {
-                                console.log(data,"cat");
+                               
                                 return (
                                   <option value={data?._id}>
                                     {data.title}
@@ -383,8 +433,10 @@ const [incomingCat, setIncomingCat] = useState()
                                 );
                               })}
                           </select>
+                          {errors.category && <p className="text-red-500 text-xs">{errors.category}</p>}
+
                         </div>
-                        <div class="flex flex-col p-4">
+                        <div class="flex flex-col ">
                           <label
                             for="type_of_samples"
                             class="text-sm font-medium text-gray-700 mb-2"
@@ -392,7 +444,25 @@ const [incomingCat, setIncomingCat] = useState()
                             Type of samples
                           </label>
                           <div className="flex gap-3">
-                            <div
+                 
+                            <input
+                              type="text"
+                              onChange={handleInputChange}
+                              value={sampleInput}
+                              name="sampleType"
+                              id="type_of_samples"
+                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
+                              placeholder="Ex: Blood test"
+                            ></input>
+                            <button
+                              type="button"
+                              className="border-4"
+                              onClick={handleAddSample}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div
                               onClick={() => {
                                 setForModalSampleData(samples);
                                 console.log("ssssss", forModalSampleData);
@@ -401,31 +471,16 @@ const [incomingCat, setIncomingCat] = useState()
                               className="flex"
                             >
                               <ul className="mt-2 list-disc">
-                                {onloadSamples.map((sample, index) => (
+                                {samples.map((sample, index) => (
                                   <li key={index}>{sample}</li>
                                 ))}
                               </ul>
                             </div>
-                            {/* <input
-                              type="text"
-                              onChange={handleInputChange}
-                              value={sampleInput}
-                              name="sampleType"
-                              id="type_of_samples"
-                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
-                              placeholder="Ex: Blood test"
-                            ></input> */}
-                            {/* <button
-                              type="button"
-                              className="border-4"
-                              onClick={handleAddSample}
-                            >
-                              +
-                            </button> */}
-                          </div>
+                            {errors.typeSample && <p className="text-red-500 text-xs">{errors.typeSample}</p>}
+
                         </div>
                       </div>
-                      <div class="flex flex-row space-x-4">
+                      <div class="md:flex flex-row space-x-4">
                         <div class="flex flex-col">
                           <label
                             for="name_of_test"
@@ -441,6 +496,8 @@ const [incomingCat, setIncomingCat] = useState()
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                             placeholder="Ex: Blood test, Body check..."
                           ></input>
+                             {errors.NameOfTest && <p className="text-red-500 text-xs">{errors.NameOfTest}</p>}
+
                         </div>
                         <div class="p-4">
                           <label
@@ -476,6 +533,8 @@ const [incomingCat, setIncomingCat] = useState()
                           class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           placeholder="Add Test name"
                         ></input>
+{errors.secondTest && <p className="text-red-500 text-xs">{errors.secondTest}</p>}
+
                         <div className="flex gap-x-2.5 ">
                           <div>
                             <button
@@ -529,7 +588,7 @@ const [incomingCat, setIncomingCat] = useState()
                                     </div>
                                   );
                                 })}
-                                <div className="w-52 bg-red-500"></div>
+                              
                               </div>
                               {/* {editTestSubata && editTestSubata.map((data)=>{
                                 return (
@@ -573,6 +632,8 @@ const [incomingCat, setIncomingCat] = useState()
                       >
                         save test
                       </button>
+                      {errors.subtest && <p className="text-red-500 text-xs">{errors.subtest}</p>}
+
                       <div class="flex flex-row space-x-4">
                         {/* <div class="flex flex-col">
                           <label
@@ -603,6 +664,8 @@ const [incomingCat, setIncomingCat] = useState()
                             id="report_time"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           ></input>
+                             {errors.testTime && <p className="text-red-500 text-xs">{errors.testTime}</p>}
+
                         </div>
                       </div>
                       <div class="flex flex-col space-x-4">
@@ -614,6 +677,7 @@ const [incomingCat, setIncomingCat] = useState()
                             Rate & offer rate
                           </label>
                           <div class="flex flex-row space-x-2">
+                            <div>
                             <input
                               placeholder="Set rate"
                               type="number"
@@ -622,7 +686,14 @@ const [incomingCat, setIncomingCat] = useState()
                               id="rate"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                             ></input>
-                            <input
+                               {errors.rate && <p className="text-red-500 text-xs">{errors.rate}</p>}
+
+                            </div>
+                         <div>
+
+                          <div  className="flex flex-col" >
+                    
+                         <input
                               type="number"
                               id="rate"
                               defaultValue={valdata.daily_test_limit}
@@ -630,6 +701,13 @@ const [incomingCat, setIncomingCat] = useState()
                               className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                               placeholder="Daily test limit"
                             />
+                          </div>
+                    
+                               {errors.daily_test_limit && <p className="text-red-500 text-xs">{errors.daily_test_limit}</p>}
+
+                         </div>
+                            
+                        
                           </div>
                         </div>
                       </div>
@@ -661,6 +739,8 @@ const [incomingCat, setIncomingCat] = useState()
         </div>
 
         <div className="opacity-25 fixed inset-0 z-20 bg-black"></div>
+</div>
+      
       </>
     </div>
   );

@@ -125,14 +125,14 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="fixed inset-0 flex items-center justify-center overflow-auto p-5">
-        <div className="w-full max-w-[800px] h-full max-h-[600px] bg-[#1C3A68] rounded-lg border border-white border-opacity-10 backdrop-blur-[39.60px] relative flex flex-col  lg:flex-row overflow-auto">
+      <div className="fixed inset-0 flex items-center justify-center overflow-auto md:p-5">
+        <div className="w-full md:max-w-[800px] h-full md:max-h-[600px] bg-[#1C3A68] rounded-lg border border-white border-opacity-10 backdrop-blur-[39.60px] relative flex flex-col  lg:flex-row overflow-auto">
           {/* Close Button at the Top Right */}
 
           <button
             type="button"
             onClick={() => onClose()}
-            className="absolute top-0 right-0 m-2 border-2 border-white border-opacity-40 rounded-[20px] p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+            className="absolute top-0 right-0 m-2 border-2 border-white border-opacity-40 rounded-[10px] p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
             <svg
               className="h-6 w-6"
@@ -204,7 +204,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                     minutes.
                   </p>
                 </div>
-                <div className=" flex gap-5">
+                <div className=" sm:flex gap-5">
                   <div className="">
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
@@ -294,7 +294,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                       <div className="label"></div>
                     </label>
                   </div>
-                  <div className="mt-20">
+                  <div className="">
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Upload Certificate</span>
@@ -370,7 +370,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                 <div className="flex justify-between">
                   <button
                     type="submit"
-                    className="text-black bg-white focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-20 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
+                    className="text-black w-full text-center flex bg-white focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-20 py-2.5  justify-center items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
                     disabled={!isAgreed} // Disable button based on isAgreed state
                   >
                     Register
