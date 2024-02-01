@@ -10,6 +10,13 @@ export const LoginUserdata = async (data) => {
   return await Instance.post("/auth/sign-in", data);
 };
 
+export const VerifyEmail = async (email, otp) => {
+  return await Instance.post("/auth/doctor/verify-email", { email, otp });
+};
+export const forgotOtp = async (email, otp) => {
+  return await Instance.post("/auth/doctor/validate-otp", { email, otp });
+};
+
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
@@ -81,8 +88,9 @@ export const SignupUserdata = async (data) => {
   return await Instance.post("/auth/doctor/sign-up", data);
 };
 
-export const DoctorForgotdata = async (data) => {
-  return await Instance.post("/auth/doctor/forgot-password", data);
+export const DoctorForgotdata = async (email) => {
+  console.log(email, "forgot");
+  return await Instance.post("/auth/doctor/forgot-password", { email });
 };
 
 export const MainDoctorCategories = async (data) => {
