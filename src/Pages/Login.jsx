@@ -226,6 +226,7 @@ import AdminImage from "../assets/login/images/adminLogin.png";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
 import { DoctorLogInApi } from "../API/DoctorApi";
+import { requestForToken } from "../firebase/Firebaseconfig";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("Admin");
@@ -248,7 +249,9 @@ const Login = () => {
     if (selectedOption === "Admin") {
       LoginUserdata(UserData)
         .then((data) => {
+          console.log("fcm  updateing");
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+          requestForToken();
           navigate("/");
         })
         .catch((err) => {
@@ -259,6 +262,9 @@ const Login = () => {
       DoctorLogInApi(UserData)
         .then((data) => {
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+         
+
+
           navigate("/doctor/overview");
         })
         .catch((err) => {

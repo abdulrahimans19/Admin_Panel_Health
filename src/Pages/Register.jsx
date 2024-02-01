@@ -290,9 +290,7 @@ import React, { useState } from "react";
 import doctorImage from "../assets/login/images/doctorLogin.png";
 import SignupProfile from "./SignupProfile";
 
-
 const Register = () => {
-  const [errmsg, setErrmsg] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [email, setEmail] = useState("");
   const [passerror, setError] = useState("");
@@ -312,6 +310,9 @@ const Register = () => {
       // Removed navigation
       // You can add your logic here for handling the form submission
     }
+  };
+  const isFormFilled = () => {
+    return email.length > 0 && password.length > 0;
   };
 
   const handleEmailChange = (event) => {
@@ -391,6 +392,7 @@ const Register = () => {
                 <button
                   className="w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-full flex items-center justify-center text-white text-1xl font-semibold font-['Roboto Flex']"
                   type="submit"
+                  disabled={!isFormFilled()} // Button will be disabled unless both email and password are filled
                 >
                   Continue
                 </button>
