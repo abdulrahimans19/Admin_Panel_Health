@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { openSidebar } from "../../Redux/Features/NavbarSlice";
+import { getCartItems, openSidebar } from "../../Redux/Features/NavbarSlice";
 import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Button,
   Card,
@@ -12,23 +13,33 @@ import {
   CardFooter,
   Typography,
 } from "@material-tailwind/react";
+import wavFile from "../../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3";
 import {
   onMessageListener,
   requestForToken,
 } from "../../firebase/Firebaseconfig";
-import Notification from "./Notification";
+// import Notification from "./Notification";
 import NotificationBar from "./NotificationMenu";
+import { getNotificationApi } from "../../API/ApiCall";
 
 function NavBar() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { toggleSidebar, topnavData,notification } = useSelector((state) => {
+  const {
+    toggleSidebar,
+    topnavData,
+    notification,
+    notificationCount,
+    notificationData,
+  } = useSelector((state) => {
     return state.navbar;
   });
+
   const [currentRoute, setCurrentRoute] = useState(useLocation().pathname);
 
   const [openMenu, setOpenMenu] = useState(false);
+  const [notificationnew, setNotificationnew] = useState();
   const [openNotification, setOpenNotification] = useState(false);
   const list = {
     visible: { opacity: 1, scale: 1 },
@@ -48,17 +59,77 @@ function NavBar() {
   //     })
   //     console.log(topnavData);
   //   }
-  useEffect(() => {
-    console.log(window.location.pathname);
+  // useEffect(() => {
+  //   console.log(window.location.pathname);
 
-    // setCurrentRoute(useLocation().pathname)
-  }, [useLocation().pathname]);
+  //   // setCurrentRoute(useLocation().pathname)
+  // }, [useLocation().pathname]);
+
+  // const [audio] = useState(new Audio('../../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3'));
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    onMessageListener()
+      .then((payload) => {
+        setNotificationnew(payload);
+        console.log(payload, "its coming here");
+        dispatch(getCartItems());
+        getNotificationData()
+        const audio = new Audio(wavFile);
+        console.log(document.hasFocus());
+        if(!document.hasFocus()){
+          console.log("ifworking");
+          audio.play().catch((err)=>
+          {
+            console.log(err);
+          })
+         
+        }
+        else{
+          console.log("else working");
+          audio.play().catch((err)=>
+          {
+            console.log(err);
+          })
+        }
+        toast.success(
+          `${payload?.notification?.title}:${payload.notification?.body}`,
+          {
+            duration: 6000,
+            position: "top-right",
+          }
+        );
+        // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
+      })
+      .catch((err) => console.log("failed: ", err));
+  }, [notificationnew]);
+
+const [getNotData, setGetNotData] = useState(0)
+const getNotificationData=()=>
+{
+  getNotificationApi().then(({data})=>
+  {
+    console.log(data,"notification");
+    setGetNotData(data.data.unread_notifications
+      )
+  })
+}
+
+
+useEffect(()=>
+{
+  getNotificationData()
+},[])
+
+
+
 
   return (
     <>
+      <Toaster />
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
-          <Notification />
+          {/* <Notification /> */}
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
               <button
@@ -164,11 +235,17 @@ function NavBar() {
                       backgroundColor: "red",
                     }}
                   >
-                    <span className="text-white text-xs">15</span>
+                    <span className="text-white text-xs">
+                      {getNotData}
+                    </span>
                   </div>
                 </div>
                 {openNotification && (
-                 <NotificationBar  notifications={notification} setOpenNotification={setOpenNotification}/>
+                  <NotificationBar 
+                  getNotificationData={getNotificationData}
+                    notifications={notification}
+                    setOpenNotification={setOpenNotification}
+                  />
                 )}
               </div>
               <div class="flex items-center ms-3">
@@ -190,7 +267,7 @@ function NavBar() {
                     />
                   </button>
                 </div> */}
-                {openMenu && (
+                {/* {openMenu && (
                   <motion.div
                     initial="hidden"
                     animate="visible"
@@ -258,7 +335,7 @@ function NavBar() {
                       </li>
                     </motion.ul>
                   </motion.div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

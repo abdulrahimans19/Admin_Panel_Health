@@ -298,7 +298,7 @@ export const createTests = async (data) => {
   return await Instance.post(`/tests/create`, data);
 };
 export const editTests = async (data) => {
-  console.log("to update",data);
+  console.log("to update", data);
   return await Instance.put(`/tests/update`, data);
 };
 export const getSingleTestApi = async (id) => {
@@ -312,7 +312,7 @@ export const recommendedTest = async (id) => {
   return await Instance.put(`/tests/update-recommended?test_id=${id}`);
 };
 export const addResultApi = async (data) => {
-  return await Instance.post(`/bookings/add-result`,data);
+  return await Instance.post(`/bookings/add-result`, data);
 };
 
 export const getDoctorProfileAndWallet = async () => {
@@ -345,4 +345,11 @@ export const getNotificationApi = async () => {
 };
 export const readNotification = async (data) => {
   return await Instance.post(`/notification/mark-read?id=${data}`);
+};
+export const unreadNotification = async () => {
+  return await Instance.get(`/notification/read?read=false`);
+};
+
+export const updateFcmApi = async (data) => {
+  return await Instance.post(`/user/update-fcm-token`, data);
 };

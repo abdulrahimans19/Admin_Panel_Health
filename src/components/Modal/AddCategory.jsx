@@ -41,11 +41,24 @@ export default function AddCategory({
     multiple: false,
     accept: "image/*",
   });
+  const [errors, setErrors] = useState({});
 
+  const validate = () => {
+    let tempErrors = {};
+    tempErrors.categoryName = categoryName ? "" : "Category name is required";
+    tempErrors.description = description ? "" : "Description is required";
+    tempErrors.image = showImage ? "" : "Image is required";
+    setErrors(tempErrors);
+
+    // Return true if no errors
+    return Object.values(tempErrors).every((x) => x === "");
+  };
   const SubmitCat = (e) => {
     console.log(dataToUpload, "testig");
     // console.log(Image);
     e.preventDefault();
+    if (!validate()) return;
+
     let imageUrl;
 
     if (editImage) {
@@ -153,6 +166,11 @@ export default function AddCategory({
                                   Drag 'n' drop some files here, or click to
                                   select files
                                 </p>
+                                {errors.image && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.image}
+                                  </p>
+                                )}
                               </div>
                             ) : (
                               <div
@@ -194,6 +212,11 @@ export default function AddCategory({
                           placeholder="Type name"
                           className="rounded-[10px] pl-3 p-1 border border-gray-300 outline-none "
                         />
+                        {errors.categoryName && (
+                          <p className="text-red-500 text-xs">
+                            {errors.categoryName}
+                          </p>
+                        )}
 
                         <label
                           for="message"
@@ -211,6 +234,11 @@ export default function AddCategory({
                           class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Write your thoughts here..."
                         ></textarea>
+                        {errors.description && (
+                          <p className="text-red-500 text-xs">
+                            {errors.description}
+                          </p>
+                        )}
                       </div>
                       {/*footer*/}
                       <div className=" flex items-center justify-end pt-4 pb-6 pr-5  rounded-b ">

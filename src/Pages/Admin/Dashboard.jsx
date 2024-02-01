@@ -20,26 +20,31 @@ export default function Dashboard() {
   const [totalDoctors, setTotalDoctors] = useState(0);
   const [totalAppointment, setTotalAppointment] = useState(0);
   const [chartData, setChartData] = useState();
+  const [earningCard, setearningCard] = useState();
+  const [cardDifference, setCardDifference] = useState();
   const navigate = useNavigate();
 
   const monthlErnings = () => {
     if (foodChart) {
       monthlyEarningApi("FOOD").then(({ data }) => {
-        console.log(data.data);
+        console.log(data.data, "food monthly");
 
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
         });
-        setChartData(data.data);
 
-        setMonthlyEarning(data.data[currentMonth]);
+        setChartData(data.data.earnings);
+        console.log(data.data.earnings[currentMonth], "current month");
+        setCardDifference(data.data.incomeDifference);
+        setearningCard();
+        setMonthlyEarning(data.data.earnings[currentMonth]);
       });
     } else {
       console.log("else worog");
       monthlyEarningApi("PHARMA").then(({ data }) => {
-        console.log(data.data);
-        setChartData(data.data);
+        console.log(data.data.earnings);
+        setChartData(data.data.earnings);
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
@@ -72,7 +77,10 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold p-2 mt-5">DashBoard</h1>
       <div class="grid grid-cols-1 md:grid-cols-1  lg:grid-cols-3 gap-4 mb-4">
         <div class="grid grid-cols-1 md:grid-cols-3   gap-4 mb-4 lg:col-span-2">
-          <PriceDisplayCard data={monthlyEarning} />
+          <PriceDisplayCard
+            data={monthlyEarning}
+            cardDifference={cardDifference}
+          />
           <PriceDisplayCard2 data={totalDoctors} />
           <PriceDisplayCard3 data={totalAppointment} />
 
@@ -141,7 +149,6 @@ export default function Dashboard() {
                     </a>
                   </button>
                 </div>
-
                 <AppoimentTable />
               </div>
             </div>
