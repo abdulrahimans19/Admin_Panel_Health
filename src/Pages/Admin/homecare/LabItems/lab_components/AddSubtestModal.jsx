@@ -55,10 +55,11 @@ import { useDispatch } from 'react-redux';
             />
             </div>
             <div>
-              <button
+              {/* <button 
+              onClick={()=>{handleRemoveField()}}
               className='p-2'
               // onClick={handleRemoveField(index)}
-              >x</button>
+              >x</button> */}
             </div>
             
       

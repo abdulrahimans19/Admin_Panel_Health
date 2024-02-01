@@ -8,7 +8,7 @@ import {
   editTests,
   uploadToAws,
 } from "../../../../../API/ApiCall";
-function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
+function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
   const [addSubTestingModal, setAddSubTestingModal] = useState(false);
   const [addTestModal, setAddTestModal] = useState(false);
   const [sampleModal, setSampleModal] = useState(false);
@@ -20,7 +20,7 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
   const [showImage, setShowImage] = React.useState(false);
   const [homeCareCategories, setHomeCareCategory] = useState([]);
 
-  const [samples, setSamples] = useState([data.samples]);
+  const [samples, setSamples] = useState([valdata.samples]);
   const [newSamples, setNewSamples] = useState([]);
 
   const [sampleInput, setSampleInput] = useState("");
@@ -31,8 +31,8 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
   const [forModalSampleData, setForModalSampleData] = useState([]);
   const [editTestSubata, setEditTestSubata] = useState([]);
   const [indexvalue, setindex] = useState(0);
-  const [onloadSamples,setOnloadSamples]=useState([])
-  const [isEditImage,setisEditImage]=useState(true)
+  const [onloadSamples, setOnloadSamples] = useState([]);
+  const [isEditImage, setisEditImage] = useState(true);
   const handleAddSample = () => {
     if (sampleInput.trim() !== "") {
       console.log("sampleinp", sampleInput);
@@ -41,10 +41,10 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
       setSampleInput("");
     }
   };
-  useEffect(()=>{
-    setOnloadSamples(data.samples)
-    setIsRecommended(data.is_recommended)
-  },[])
+  useEffect(() => {
+    setOnloadSamples(valdata.samples);
+    setIsRecommended(valdata.is_recommended);
+  }, []);
   const handleInputChange = (e) => {
     setSampleInput(e.target.value);
   };
@@ -52,7 +52,7 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
   const onDrop = useCallback((acceptedFiles) => {
     setFileToUpload(acceptedFiles[0]);
     setShowImage(true);
-    setisEditImage(false)
+    setisEditImage(false);
     const reader = new FileReader();
     reader.onload = () => {
       setImage(reader.result);
@@ -65,17 +65,25 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
     multiple: false,
     accept: "image/*",
   });
-
+const [incomingCat, setIncomingCat] = useState()
   const getHomecareCategories = () => {
     GetHomecareCategoriesApi().then((data) => {
+      console.log("hitu",data.data.data.mainCategories);
+      console.log(valdata._id );
+      const foundObject = data.data.data.mainCategories.find(item => item._id ===valdata.category_id
+        );
+      setIncomingCat(foundObject)
+
+      console.log(foundObject,"this data");
       setHomeCareCategory(data.data.data.mainCategories);
     });
   };
   useEffect(() => {
-    // console.log(data);
+    console.log("fitting",valdata);
     getHomecareCategories();
+    
   }, []);
-  const [setsaveTestDat, setSetsaveTestDat] = useState(data.tests);
+  const [setsaveTestDat, setSetsaveTestDat] = useState(valdata.tests);
   const saveTest = () => {
     console.log(TestName);
     console.log(subCategories);
@@ -98,79 +106,71 @@ function EditLabModal({ data, callback, setEditShowModal1,getAllTests }) {
     e.preventDefault();
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-console.log("userta",UserData,setsaveTestDat);
+    console.log("userta", UserData, setsaveTestDat);
     console.log("image", fileToUpload);
     let publicUrl;
 
+    if (!isEditImage) {
+      if (fileToUpload) {
+        UploadImageUrl().then((datas) => {
+          const presignedUrl = datas.data.presignedUrl;
+          const publicUrl = datas.data.publicUrl;
 
-if(!isEditImage){
-  if(fileToUpload){
-    UploadImageUrl().then((datas) => {
-      const presignedUrl = datas.data.presignedUrl;
-      const publicUrl = datas.data.publicUrl;
+          uploadToAws(presignedUrl, fileToUpload).then(() => {
+            console.log("Image uploaded to AWS");
+            // Now publicUrl is available here
+            console.log("Uploaded image URL:", publicUrl);
+            const joinedSamples = samples.join(",");
+            const wholeData = {
+              test_id: valdata._id,
+              name: UserData.testName,
+              image: publicUrl,
+              category_id: UserData.categoryName,
+              testing_time: parseInt(UserData.report_time),
+              samples: joinedSamples.split(","),
+              price: parseInt(UserData.rate),
+              daily_test_limit: parseInt(UserData.daily_test_limit),
+              tests: setsaveTestDat,
+              is_recommended: isRecommended,
+            };
 
-      uploadToAws(presignedUrl, fileToUpload).then(() => {
-        console.log("Image uploaded to AWS");
-        // Now publicUrl is available here
-        console.log("Uploaded image URL:", publicUrl);
-        const joinedSamples=samples.join(',')
-        const wholeData = {
-          test_id:data._id,
-          name: UserData.testName,
-          image: publicUrl,
-          category_id: UserData.categoryName,
-          testing_time: parseInt(UserData.report_time),
-          samples: joinedSamples.split(','),
-          price: parseInt(UserData.rate),
-          daily_test_limit: parseInt(UserData.daily_test_limit),
-          tests: setsaveTestDat,
-          is_recommended: isRecommended,
-        };
+            console.log("Data to be sent:", wholeData);
 
-        console.log("Data to be sent:", wholeData);
-
-        editTests(wholeData).then((data) => {
-          console.log("API response after data submission:", data);
-          setEditShowModal1(false);
+            editTests(wholeData).then((data) => {
+              console.log("API response after data submission:", data);
+              setEditShowModal1(false);
+            });
+          });
         });
+      }
+    } else {
+      const joinedSamples = samples.join(",");
+      const wholeData = {
+        test_id: valdata._id,
+        name: UserData.testName,
+        image: valdata.image,
+        category_id: UserData.categoryName,
+        testing_time: parseInt(UserData.report_time),
+        samples: joinedSamples.split(","),
+        price: parseInt(UserData.rate),
+        daily_test_limit: parseInt(UserData.daily_test_limit),
+        tests: setsaveTestDat,
+        is_recommended: isRecommended,
+      };
+      editTests(wholeData).then((data) => {
+        console.log("API response after data submission:", data);
+        setEditShowModal1(false);
       });
-    });
-  }
+    }
 
-}
-else{
-  const joinedSamples=samples.join(',')
-  const wholeData = {
-    test_id:data._id,
-    name: UserData.testName,
-    image: data.image,
-    category_id: UserData.categoryName,
-    testing_time: parseInt(UserData.report_time),
-    samples: joinedSamples.split(','),
-    price: parseInt(UserData.rate),
-    daily_test_limit: parseInt(UserData.daily_test_limit),
-    tests: setsaveTestDat,
-    is_recommended: isRecommended,
-  };
-  editTests(wholeData).then((data) => {
-    console.log("API response after data submission:", data);
-    setEditShowModal1(false);
-  });
-
-
-
-}
-    
-
-getAllTests()
-
+    getAllTests();
   };
   const testModalFunction = (e) => {
     e.preventDefault();
     setSubTestModal(false);
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-    // console.log("usderdad", UserData);
+    console.log("usderdad", UserData);
 
     const firstKey = Object.keys(UserData)[0];
     const firstValue = UserData[firstKey];
@@ -178,7 +178,7 @@ getAllTests()
     const remainingKeyValuePairs = Object.keys(UserData)
       .slice(1) // Skip the first key
       .map((key) => ({ ["name"]: UserData[key] }));
-      console.log("hai",remainingKeyValuePairs);
+    console.log("hai", remainingKeyValuePairs);
     const allData = {
       name: firstValue,
       sub_tests: remainingKeyValuePairs,
@@ -191,15 +191,15 @@ getAllTests()
       return newArray;
     });
   };
-  const sampleModalFunction=(e)=>{
+  const sampleModalFunction = (e) => {
     e.preventDefault();
-    setSampleModal(false)
+    setSampleModal(false);
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-    const getSampleArray= Object.values(UserData)
-    setOnloadSamples(getSampleArray)
-    console.log("daaaaa",data);
-  }
+    const getSampleArray = Object.values(UserData);
+    setOnloadSamples(getSampleArray);
+    
+  };
 
   return (
     <div>
@@ -320,15 +320,14 @@ getAllTests()
                     {...getRootProps()}
                     className="flex w-2/5 flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
                   >
-
-
-{!showImage &&<img
-                          height={100}
-                          src={data.image}
-                          alt="Your Image"
-                          sx={{ width: "100%" }}
-                        />}
-
+                    {!showImage && (
+                      <img
+                        height={80}
+                        src={valdata.image}
+                        alt="Your Image"
+                        sx={{ width: "80%" }}
+                      />
+                    )}
 
                     {!showImage ? (
                       <div>
@@ -367,19 +366,18 @@ getAllTests()
                           </label>
                           <select
                             id="category"
-                            
-                            
                             name="categoryName"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           >
-                            <option disabled selected>
-                              {data.category_name}
+                            <option value={incomingCat?._id} disabled selected>
+                              {incomingCat?.title}  
                             </option>
 
                             {homeCareCategories[0] &&
                               homeCareCategories.map((data) => {
+                                console.log(data,"cat");
                                 return (
-                                  <option value={data?._id }>
+                                  <option value={data?._id}>
                                     {data.title}
                                   </option>
                                 );
@@ -394,20 +392,20 @@ getAllTests()
                             Type of samples
                           </label>
                           <div className="flex gap-3">
-                          <div
-                            onClick={() => {
-                              setForModalSampleData(samples)
-                              console.log("ssssss",forModalSampleData);
-                              setSampleModal(true);
-                            }}
-                            className="flex"
-                          >
-                            <ul className="mt-2 list-disc">
-                              {onloadSamples.map((sample, index) => (
-                                <li key={index}>{sample}</li>
-                              ))}
-                            </ul>
-                          </div>
+                            <div
+                              onClick={() => {
+                                setForModalSampleData(samples);
+                                console.log("ssssss", forModalSampleData);
+                                setSampleModal(true);
+                              }}
+                              className="flex"
+                            >
+                              <ul className="mt-2 list-disc">
+                                {onloadSamples.map((sample, index) => (
+                                  <li key={index}>{sample}</li>
+                                ))}
+                              </ul>
+                            </div>
                             {/* <input
                               type="text"
                               onChange={handleInputChange}
@@ -425,7 +423,6 @@ getAllTests()
                               +
                             </button> */}
                           </div>
-                          
                         </div>
                       </div>
                       <div class="flex flex-row space-x-4">
@@ -439,7 +436,7 @@ getAllTests()
                           <input
                             type="text"
                             name="testName"
-                            defaultValue={data.name}
+                            defaultValue={valdata.name}
                             id="name_of_test"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                             placeholder="Ex: Blood test, Body check..."
@@ -488,7 +485,7 @@ getAllTests()
                               type="button"
                               class="inline-flex mt-1 justify-center rounded bg-blue-400 items-center font-bold px-2 py-1 text-sm text-white hover:text-gray-700"
                             >
-                              Add sub test
+                              view sub test
                             </button>
                           </div>
                           <div></div>
@@ -515,15 +512,19 @@ getAllTests()
                                         setindex(index);
                                         setForModalTestData(data);
                                         // forEditTest();
-                                        
                                       }}
                                       className="p-4 border-2"
                                     >
                                       {data.name}
                                       <div>
-                                        {data?.sub_tests?.map((name) => {
-                                          return <div>{name?.name}</div>;
-                                        })}
+                                        
+                                        {
+                                        data?.sub_tests?.map((name) => {
+                                          
+                                          return (<div>{name?.name}</div> )
+                                        })
+
+                                        }
                                       </div>
                                     </div>
                                   );
@@ -596,7 +597,7 @@ getAllTests()
                           </label>
                           <input
                             type="number"
-                            defaultValue={data.testing_time}
+                            defaultValue={valdata.testing_time}
                             name="report_time"
                             placeholder="Set this time"
                             id="report_time"
@@ -616,7 +617,7 @@ getAllTests()
                             <input
                               placeholder="Set rate"
                               type="number"
-                              defaultValue={data.price}
+                              defaultValue={valdata.price}
                               name="rate"
                               id="rate"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
@@ -624,7 +625,7 @@ getAllTests()
                             <input
                               type="number"
                               id="rate"
-                              defaultValue={data.daily_test_limit}
+                              defaultValue={valdata.daily_test_limit}
                               name="daily_test_limit"
                               className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                               placeholder="Daily test limit"

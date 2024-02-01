@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ViewPatient from "../Dashboard/modal/ViewPatient";
 import { getAllApointment } from "../../../API/DoctorApi";
+import ReactPaginate from "react-paginate";
 
 export default function AppointmentHistory() {
   const [showModal, setShowModal] = useState(false);
@@ -88,7 +89,7 @@ export default function AppointmentHistory() {
   }
 
   function getApointmentHistory() {
-    getAllApointment().then((data) => {
+    getAllApointment(1).then((data) => {
       setData(data?.data?.data?.appointments);
 
       setDocument(data?.data?.data?.total_document);
@@ -102,6 +103,16 @@ export default function AppointmentHistory() {
     setPassingDate(date);
     setShowModal(true);
   }
+
+  const handlePageChange = (selectedPage) => {
+    getAllApointment(selectedPage).then((data) => {
+      setData(data?.data?.data?.appointments);
+    });
+  };
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
+
   return (
     <div>
       <div className="container">
@@ -192,6 +203,16 @@ export default function AppointmentHistory() {
           date={passingdate}
         />
       </div>
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      )}
     </div>
   );
 }
