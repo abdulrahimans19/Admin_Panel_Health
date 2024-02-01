@@ -66,38 +66,74 @@ function LabModal({ callback, setShowModal,getAllTests }) {
   }, []);
   const [setsaveTestDat, setSetsaveTestDat] = useState([]);
   const saveTest = () => {
+
+  let tempErrors = {};
+
+    const hasNull = subCategories.includes(null);
+console.log();
+    hasNull? setErrors({...tempErrors,subtest:" sub test  can  not empty"}):setErrors({...tempErrors,subtest:""})
+  
     console.log(TestName);
     console.log(subCategories);
-    const wholeSubData = {
-      name: TestName,
-      sub_tests: subCategories,
-    };
-    setSetsaveTestDat([...setsaveTestDat, wholeSubData]);
-    setTestName("");
-    setnumberofField([{ inputValue: "" }]);
-    setSubCategories([]);
-    setAddSubTestingModal(false);
+    console.log( tempErrors.secondTest =  TestName !="");
+    tempErrors.secondTest =  TestName !=""?"":"add Tests"
+    setErrors(tempErrors);
+
+    if(TestName!=""){
+      const wholeSubData = {
+        name: TestName,
+        sub_tests: subCategories,
+      };
+      setSetsaveTestDat([...setsaveTestDat, wholeSubData]);
+      setTestName("");
+      setnumberofField([{ inputValue: "" }]);
+      setSubCategories([]);
+      setAddSubTestingModal(false);
+    }
+    else{
+      return
+    }
+    
   };
+
+  const [errors, setErrors] = useState({});
+
+const validate=(UserData)=>
+{
+
+  let tempErrors = {};
+ 
+
+console.log(UserData?.categoryName );
+console.log(UserData);
+  tempErrors.typeSample =  samples[0]?"":"add at least one sample"
+  tempErrors.NameOfTest =  UserData?.testName?"":"add name of the  Primary Test"
+  tempErrors.secondTest =  setsaveTestDat[0]?"":"add at least one test"
+  // tempErrors.sub_category =  !hasNull?"":"add name of the  sub test canot be empty"
+  tempErrors.testTime =  UserData?.report_time?"":"add test time"
+  tempErrors.rate =  UserData.rate?"":"add offer rate"
+  tempErrors.daily_test_limit =  UserData?.daily_test_limit?"":"add test limit"
+  tempErrors.showImage =  showImage?"":"add image "
+  tempErrors.category =  UserData?.categoryName  != undefined ?"":"add Category"
+console.log(tempErrors.category );
+  setErrors(tempErrors);
+
+  // Return true if no errors
+  return Object.values(tempErrors).every(x => x === "");
+}
+
 
   const addLabModal = (e) => {
     e.preventDefault();
+
+    
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-    // console.log("user data",UserData);
-    // console.log("saved nest data",setsaveTestDat);
-    // console.log("samples", samples);
-    // console.log(subCategories, "subcat");
-    // console.log("UserData.testName:", UserData.testName);
-    //   const filterSubCategories = () => {
-    //     const filteredSubCategories = subCategories.filter(category => category.inputValue
-    //        );
-    //     setSubCategories(filteredSubCategories);
-    //     console.log("sukhgf",filteredSubCategories);
-    // };
-    // filterSubCategories()
-    // const subTestsData = subCategories.map((subTest, index) => ({
-    //   name: UserData[`inputfield${index}`], // Get the value of each sub-test input field
-    // }));
+    console.log(UserData);
+    if (!validate(UserData)) return;
+
+
+
 
     console.log("image", fileToUpload);
     let publicUrl;
@@ -158,6 +194,8 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                           Drag 'n' drop some files here, or click to select
                           files
                         </p>
+                        {errors.showImage && <p className="text-red-500 text-xs text-xl font-semibold text-center">{errors.showImage}</p>}
+
                       </div>
                     ) : (
                       <div
@@ -195,7 +233,7 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                             name="categoryName"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           >
-                            <option disabled selected value="Choose a category">
+                            <option disabled selected value="">
                               Choose a category
                             </option>
 
@@ -208,6 +246,8 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                                 );
                               })}
                           </select>
+                          {errors.category && <p className="text-red-500 text-xs">{errors.category}</p>}
+
                         </div>
                         <div class="flex flex-col">
                           <label
@@ -227,6 +267,7 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                               placeholder="Ex: Blood test"
                             ></input>
+
                             <button
                               type="button"
                               className="border-4"
@@ -235,6 +276,8 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                               +
                             </button>
                           </div>
+   {errors.typeSample && <p className="text-red-500 text-xs">{errors.typeSample}</p>}
+
                           <div className="flex p-4">
                             <ul className="mt- list-disc">
                               {samples.map((sample, index) => (
@@ -255,11 +298,13 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                           <input
                             type="text"
                             name="testName"
-                            required
+                             
                             id="name_of_test"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                             placeholder="Ex: Blood test, Body check..."
                           ></input>
+                             {errors.NameOfTest && <p className="text-red-500 text-xs">{errors.NameOfTest}</p>}
+
                         </div>
                         <div class="p-6">
                           <label
@@ -295,16 +340,19 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                           class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           placeholder="Add Test name"
                         ></input>
+
+{errors.secondTest && <p className="text-red-500 text-xs">{errors.secondTest}</p>}
+
                         <div className="flex gap-x-2.5 ">
                           <div>
                             <button
                               onClick={() => {
-                                setAddSubTestingModal(true);
+                                setAddSubTestingModal(!addSubTestingModal);
                               }}
                               type="button"
                               class="inline-flex mt-1 justify-center rounded bg-blue-400 items-center font-bold px-2 py-1 text-sm text-white hover:text-gray-700"
                             >
-                              Add or View Test
+                            {addSubTestingModal?"hide subtest":  "Add sub test or View Test"}
                             </button>
                           </div>
                           <div></div>
@@ -362,6 +410,8 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                       >
                         save test
                       </button>
+                      {errors.subtest && <p className="text-red-500 text-xs">{errors.subtest}</p>}
+
                       <div class="flex flex-row space-x-4">
                         {/* <div class="flex flex-col">
                           <label
@@ -386,12 +436,14 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                           </label>
                           <input
                             type="number"
-                            required
+                             
                             name="report_time"
                             placeholder="Set this time"
                             id="report_time"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                           ></input>
+                             {errors.testTime && <p className="text-red-500 text-xs">{errors.testTime}</p>}
+
                         </div>
                       </div>
                       <div class="flex flex-col space-x-4">
@@ -403,22 +455,32 @@ function LabModal({ callback, setShowModal,getAllTests }) {
                             Rate & offer rate
                           </label>
                           <div class="flex flex-row space-x-2">
-                            <input
+                           <div>
+                           <input
                               placeholder="Set rate"
                               type="number"
-                              required
+                               
                               name="rate"
                               id="rate"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                             ></input>
+                               {errors.rate && <p className="text-red-500 text-xs">{errors.rate}</p>}
+
+                           </div>
+                          
+                            <div>
                             <input
                               type="number"
                               id="rate"
-                              required
+                               
                               name="daily_test_limit"
                               className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                               placeholder="Daily test limit"
                             />
+                               {errors.daily_test_limit && <p className="text-red-500 text-xs">{errors.daily_test_limit}</p>}
+
+                            </div>
+                
                           </div>
                         </div>
                       </div>

@@ -73,7 +73,7 @@ function NavBar() {
       .then((payload) => {
         setNotificationnew(payload);
         console.log(payload, "its coming here");
-        dispatch(getCartItems());
+        // dispatch(getCartItems());
         getNotificationData()
         const audio = new Audio(wavFile);
         console.log(document.hasFocus());
