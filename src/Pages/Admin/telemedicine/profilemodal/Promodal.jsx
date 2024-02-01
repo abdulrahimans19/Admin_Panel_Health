@@ -9,6 +9,9 @@ export default function ({
   btImg,
   btText,
   id,
+  myfunction,
+  sectpage,
+  getWithdrawalRequsts,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
 
@@ -168,11 +171,9 @@ export default function ({
                             className="text-xs p-1 pl-5 pr-5 rounded shadow hover:shadow-lg outline-none focus:outline-none  mb-1 ease-linear transition-all duration-150"
                             type="button"
                             onClick={async () => {
-                              const aprove = await callback(
-                                id ? id : user?._id
-                              );
-                              // window.location.reload();
-                              console.log(aprove);
+                              callback(id ? id : user?._id);
+                              getWithdrawalRequsts();
+                              sectpage ? myfunction(sectpage) : myfunction();
                               toggleModal();
                             }}
                           >
@@ -193,7 +194,7 @@ export default function ({
                             type="button"
                             onClick={async () => {
                               await callback(user?._id);
-                              window.location.reload();
+                              //  window.location.reload();
                               toggleModal();
                             }}
                           >
