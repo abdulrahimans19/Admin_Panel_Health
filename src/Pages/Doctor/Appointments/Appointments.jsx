@@ -138,6 +138,20 @@ export default function Appointments() {
   var page = Math.floor(document / 10);
   var remainder = document % 10;
   page = page + (remainder > 0 ? 1 : 0);
+  function isSameDate(dateString) {
+    // Convert the given date string to a Date object
+    const givenDate = new Date(dateString);
+
+    // Get today's date
+    const today = new Date();
+
+    // Check if the year, month, and day are the same
+    return (
+      givenDate.getFullYear() === today.getFullYear() &&
+      givenDate.getMonth() === today.getMonth() &&
+      givenDate.getDate() === today.getDate()
+    );
+  }
 
   return (
     <div>
@@ -199,16 +213,38 @@ export default function Appointments() {
             todayApintments[0] &&
             todayApintments.map((data) => {
               const formattedTime1 = convertTo24HourFormat(currentime);
-              console.log(formattedTime1, currentime, "dgfd ");
+              const result = isSameDate(data);
+
               let formattedTime2 = convertTo24HourFormat(
                 data?.slotId?.start_time
+                //data?._id === "65b156f8276d32609b4e08ae" ? "10:37pm" : "9:29pm"
               );
+              //
               // if (data._id == "65b9ce2e518e7f283a6a631d") {
               //   formattedTime2 = convertTo24HourFormat("8:29pm");
               // } else {
 
               // }
-              console.log(formattedTime2);
+              //time Updatein start
+              let updatedFormattedTime1;
+              if (currentime) {
+                const time1Parts = formattedTime2?.split(":");
+                const date1 = new Date();
+                date1?.setHours(parseInt(time1Parts[0], 10));
+                date1?.setMinutes(parseInt(time1Parts[1], 10));
+
+                date1?.setMinutes(date1.getMinutes() + 15);
+
+                updatedFormattedTime1 =
+                  String(date1.getHours()).padStart(2, "0") +
+                  ":" +
+                  String(date1.getMinutes()).padStart(2, "0");
+                console.log(formattedTime1, " current time");
+                console.log(updatedFormattedTime1, "updated time");
+                console.log(formattedTime2, " data time");
+              }
+              /// time updating end
+
               return (
                 <div className="p-3 border  border-blue-300 border-thin rounded-lg">
                   <div className=" flex  items-center ">
@@ -242,11 +278,16 @@ export default function Appointments() {
                         setShowMadal(false)
                       }
                       className={`${
-                        formattedTime1 >= formattedTime2
-                          ? "bg-green-900"
+                        formattedTime1 >= formattedTime2 &&
+                        formattedTime1 <= updatedFormattedTime1
+                          ? //&& result
+                            //
+                            "bg-green-900"
                           : "bg-green-200"
                       } w-full  text-white p-3 rounded-lg mt-6`}
-                      disabled={formattedTime1 <= formattedTime2}
+                      // disabled={
+                      //   result === null && formattedTime1 <= formattedTime2
+                      // }
                     >
                       join now
                     </button>
