@@ -15,16 +15,15 @@ import { setFilter } from "../../../Redux/Features/AdminSlice";
 export function HomecareLabItems() {
   const [showLabModal1, setShowLabModal1] = useState(false);
   const [testCategories, setTestCategories] = useState([]);
+  const [filterCategory, setFilterCategory] = useState("");
   const toggleMenu = () => {
-    console.log("togggl",showLabModal1);
+    console.log("togggl", showLabModal1);
     setShowLabModal1(!showLabModal1);
   };
 
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = React.useState(1);
   useEffect(() => {
-
-    
     dispatch(homecare());
     GetHomecareCategoriesApi().then((data) => {
       setTestCategories(data.data.data.mainCategories);
@@ -34,9 +33,8 @@ export function HomecareLabItems() {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  const handleEvent = (testValue) => {
-    console.log(testValue);
-    dispatch(setFilter(testValue));
+  const handleEvent = (data) => {
+    dispatch(setFilter(data));
   };
   const renderTabContent = () => {
     switch (activeTab) {
@@ -65,18 +63,9 @@ export function HomecareLabItems() {
           <h2 className="font-bold text-lg">Lab Items</h2>
           {/* <p>2 available items</p> */}
         </div>
-        <button
-          onClick={() => {
-            console.log("modal opened");
-            setShowLabModal1(true);
-          }}
-        >
-          <AddLabItemsButton text={"Add lab items "}
-          //  callback={toggleMenu}
-            />
-        </button>
+        
       </div>
-      <div className="flex justify-between mt-2">
+      <div className=" justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
           <ul className="flex -mb-px">
             <li className="me-2">
@@ -120,15 +109,19 @@ export function HomecareLabItems() {
             </li>
           </ul>
         </div>
-        <div className="relative">
+        <div className="relative p-2 flex justify-end">
           <div>
             <select
-              onChange={(e) => handleEvent(e.target.value)}
+              onChange={(e) => {
+                setFilterCategory(e.target.value);
+
+                handleEvent(e.target.value);
+              }}
               id="category"
               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
             >
               <option disabled selected value="Filter by category">
-                Filter by category
+              Filter Category
               </option>
 
               {testCategories[0] &&
@@ -139,12 +132,9 @@ export function HomecareLabItems() {
 
             {/* <!-- Dropdown menu --> */}
           </div>
-          {showLabModal1 && 
-            <LabModal 
-             callback={toggleMenu}
-             setShowModal={setShowLabModal1}
-             />
-          }
+          {showLabModal1 && (
+            <LabModal callback={toggleMenu} setShowModal={setShowLabModal1} />
+          )}
         </div>
       </div>
 
