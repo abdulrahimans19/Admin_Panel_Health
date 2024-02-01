@@ -50,7 +50,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
-    const SowphweeFcm = localStorage.getItem("sophwee_fcm");
+    const SowphweeFcm = localStorage.getItem("sophwe_fcm");
     console.log(SowphweeFcm, "token");
     console.log(user);
     if (user?.user_role == "Admin") {
