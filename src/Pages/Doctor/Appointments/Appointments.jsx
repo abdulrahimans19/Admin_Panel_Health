@@ -70,6 +70,7 @@ export default function Appointments() {
   function getTodayApointment() {
     getTodayApointments(1).then((data) => {
       setApointments(data?.data?.data?.appointments);
+      console.log(data?.data?.data?.appointments);
       setDocument(data?.data?.data?.total_document);
     });
   }
@@ -245,7 +246,7 @@ export default function Appointments() {
                           ? "bg-green-900"
                           : "bg-green-200"
                       } w-full  text-white p-3 rounded-lg mt-6`}
-                      disabled={formattedTime1 >= formattedTime2}
+                      disabled={formattedTime1 <= formattedTime2}
                     >
                       join now
                     </button>
