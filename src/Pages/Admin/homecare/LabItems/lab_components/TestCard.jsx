@@ -3,8 +3,9 @@ import AddLabItemsButton from "../../AddLabItemsButton";
 import LabModal from "./LabModal";
 import EditLabModal from "./EditLabModal";
 import { disableTest, getSingleTestApi, recommendedTest } from "../../../../../API/ApiCall";
+import { useSelector } from "react-redux";
 
-function TestCard({data,getAllTests,type}) {
+function TestCard({data,getAllTests,type ,getLabTestsbyCategory}) {
   // const [showLabModal, setShowLabModal] = useState(false);
   const [editshowModal1, setEditShowModal1] = useState(false);
   const [showList, setShowList] = useState(false);
@@ -13,13 +14,25 @@ function TestCard({data,getAllTests,type}) {
   const toggleModal=()=>{
     setShowList(!showList)
   }
-
+  const { testFilter } = useSelector((state) => {
+    return state.admin;
+  });
   const disabled = () => {
-    console.log(data._id);
+    console.log(data,"this id of card");
     disableTest(data._id).then((data)=>{
-    getAllTests()
+
+      if(testFilter){
+        getLabTestsbyCategory(testFilter)
+      }else{
+        getAllTests()
+      }
+
+    
     setShowList(false);
 
+    }).catch((err)=>
+    {
+      console.log(err);
     })
   };
   const recommended=()=>{
@@ -51,12 +64,12 @@ const toggleEditModal=()=>{
       } */}
       {
       editshowModal1 && 
-      <EditLabModal data={data} callback={toggleEditModal} setEditShowModal1={setEditShowModal1} getAllTests={getAllTests} />
+      <EditLabModal valdata={data} callback={toggleEditModal} setEditShowModal1={setEditShowModal1} getAllTests={getAllTests} />
       }
       <div class="relative">
         {/* <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->  */}
 
-        <div class="px-5 py-2.5 rounded-lg border border-zinc-300 flex-col">
+        <div class="px-5  h-52 py-2.5 rounded-lg border border-zinc-300 flex-col">
           <div class="flex-col justify-start items-start flex">
           <div className="flex justify-between w-full">
                <div className="">
@@ -106,7 +119,7 @@ const toggleEditModal=()=>{
                     class=" absolute right-16 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
                   >
                    { type ==='' &&(
-                    <ul class="py-2" aria-labelledby="dropdownButton">
+                    <ul class="py-2 bg-slate-100 hover:bg-white rounded-md" aria-labelledby="dropdownButton">
                       
                     <li>
                     <a
@@ -135,7 +148,7 @@ const toggleEditModal=()=>{
                   </li>
                   
                   
-                    <li>
+                    {data.is_recommended ? null : <li>
                     <a
                       onClick={recommended}
                       href="#"
@@ -143,7 +156,7 @@ const toggleEditModal=()=>{
                     >
                       Add to Recommended
                     </a>
-                  </li>
+                  </li>}
                   
                 </ul>
                    )} 
@@ -216,14 +229,14 @@ const toggleEditModal=()=>{
               </div>
             </div>
             <div class="justify-start items-start gap-2.5 inline-flex">
-              <h3 class="text-slate-600 text-xs font-normal">
+              <h3 class="text-black text-xs font-normal">
                 Includes {data?.daily_test_limit} tests
               </h3>
               <div class="justify-start items-end gap-1 flex">
                 <div class="w-3.5 h-3.5 relative">
                   <div class="w-3.5 h-3.5 left-0 top-0 absolute"></div>
                 </div>
-                <div class="text-slate-500 text-xs font-light">
+                <div class="text-black text-xs font-light">
                   Reports in {data?.testing_time} Hrs
                 </div>
               </div>
@@ -237,12 +250,20 @@ const toggleEditModal=()=>{
           <div class="justify-end items-center gap-40 inline-flex">
             <div class="justify-end items-center gap-1 flex">
               <div class="flex-col justify-center items-start gap-2.5 inline-flex">
-                <p class="text-slate-500 text-xs font-normal line-through">
+                <p class="text-green-400 text-xs font-normal line-through">
                   AED {data?.price + 50}
                 </p>
-                <p class="text-slate-600 text-base font-bold">
+                <p class="text-green-600 text-base font-bold">
                   AED {data?.price}
                 </p>
+                <div class="justify-start items-end">
+                <div class="">
+                  
+                </div>
+                <div class="text-black text-xs font-semibold" >
+                  {data.is_recommended ? "Recommended test" : "" }
+                </div>
+              </div>
               </div>
             </div>
           </div>

@@ -33,7 +33,7 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-const [enableProduct, setEnableProduct] = useState(false)
+  const [enableProduct, setEnableProduct] = useState(false)
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);

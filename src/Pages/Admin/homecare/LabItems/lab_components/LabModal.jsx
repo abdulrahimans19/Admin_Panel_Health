@@ -9,9 +9,10 @@ import {
 } from "../../../../../API/ApiCall";
 import { useDropzone } from "react-dropzone";
 
-function LabModal({ callback, setShowModal }) {
+function LabModal({ callback, setShowModal,getAllTests }) {
   const [addSubTestingModal, setAddSubTestingModal] = useState(false);
   const [addTestModal, setAddTestModal] = useState(false);
+  const [load, setload] = useState(0)
   // const [showModal1, setShowModal] = React.useState(false);
   const [fileToUpload, setFileToUpload] = useState(null);
   const [Image, setImage] = React.useState("");
@@ -127,12 +128,16 @@ function LabModal({ callback, setShowModal }) {
   
               createTests(wholeData).then((data) => {
                   console.log("API response after data submission:", data);
+                getAllTests()
+
                   setShowModal(false);
               });
           });
       });
   }
   uploadImageAndCreateTest();
+  
+
   };
 
   return (
@@ -142,7 +147,7 @@ function LabModal({ callback, setShowModal }) {
           <form onSubmit={addLabModal} id="addmodal">
             <div className="flex items-center justify-center min-h-screen ">
               <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
-                <div className="flex flex-row gap-3.5">
+                <div className="lg:flex md:flex flex-row gap-3.5">
                   <div
                     {...getRootProps()}
                     className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
@@ -162,7 +167,10 @@ function LabModal({ callback, setShowModal }) {
                           marginTop: 2,
                         }}
                       >
+                        Drag 'n' drop some files here, or click to select
+                          files
                         <img
+                        className="max-w-sm"
                           height={100}
                           src={Image}
                           alt="Your Image"
@@ -211,7 +219,7 @@ function LabModal({ callback, setShowModal }) {
                           <div className="flex gap-3">
                             <input
                               type="text"
-                              required
+
                               onChange={handleInputChange}
                               value={sampleInput}
                               name="sampleType"
@@ -247,6 +255,7 @@ function LabModal({ callback, setShowModal }) {
                           <input
                             type="text"
                             name="testName"
+                            required
                             id="name_of_test"
                             class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
                             placeholder="Ex: Blood test, Body check..."
@@ -257,7 +266,7 @@ function LabModal({ callback, setShowModal }) {
                             for="is_recommended"
                             class="text-sm font-medium text-gray-700 mb-2"
                           >
-                            Is Recommended?
+                            Is Recommended ?
                           </label>
                           <input
                             type="checkbox"
@@ -295,7 +304,7 @@ function LabModal({ callback, setShowModal }) {
                               type="button"
                               class="inline-flex mt-1 justify-center rounded bg-blue-400 items-center font-bold px-2 py-1 text-sm text-white hover:text-gray-700"
                             >
-                              Add sub test
+                              Add or View Test
                             </button>
                           </div>
                           <div></div>
@@ -319,7 +328,7 @@ function LabModal({ callback, setShowModal }) {
                                       {data.name}
                                       <div>
                                         {data?.sub_tests?.map((name) => {
-                                          return <div>{name?.name}</div>;
+                                          return <div className="p-2">{name?.name}</div>;
                                         })}
                                       </div>
                                     </div>
@@ -377,6 +386,7 @@ function LabModal({ callback, setShowModal }) {
                           </label>
                           <input
                             type="number"
+                            required
                             name="report_time"
                             placeholder="Set this time"
                             id="report_time"
@@ -396,6 +406,7 @@ function LabModal({ callback, setShowModal }) {
                             <input
                               placeholder="Set rate"
                               type="number"
+                              required
                               name="rate"
                               id="rate"
                               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
@@ -403,6 +414,7 @@ function LabModal({ callback, setShowModal }) {
                             <input
                               type="number"
                               id="rate"
+                              required
                               name="daily_test_limit"
                               className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
                               placeholder="Daily test limit"

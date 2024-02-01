@@ -7,11 +7,11 @@ import ReactPaginate from "react-paginate";
 function Disabled() {
   const [disbledTest, setDisabledTest] = useState([]);
   const [totalPagecount, setTotalPagecount] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (selectedPage) => {
     // Handle page change logic here, e.g., fetching data for the new page
-    setCurrentPage(selectedPage.selected);
+    setCurrentPage(selectedPage.selected +1);
   }
   const {testFilter}=useSelector((state)=>{
     return state.admin
@@ -23,11 +23,14 @@ function Disabled() {
   },[testFilter])
 
   useEffect(() => {
-    getDisabledTestCards();
-  },[]);
+    if(!testFilter){
+      getDisabledTestCards();
+
+    }
+  },[currentPage]);
 
   const getDisabledTestCards = () => {
-    getDisbledTestApi().then((data) => {
+    getDisbledTestApi(currentPage).then((data) => {
       const totalPages = Math.ceil(data.data.data.total_document / 10);
       console.log("totsl pagesdssdg",totalPages);
       setTotalPagecount(totalPages)
@@ -53,10 +56,11 @@ function Disabled() {
         {disbledTest[0] &&
         disbledTest.map((data)=>{
           return (
-            <TestCard data={data} getAllTests={getDisabledTestCards} type={'disabled'}/>
+            <TestCard data={data} getAllTests={getDisabledTestCards} getLabTestsbyCategory={getDisabledTestByCat} type={'disabled'}/>
           )
         })
       }
+      
       </div>
       <ReactPaginate
         pageCount={totalPagecount}  // Replace with the total number of pages
@@ -65,6 +69,8 @@ function Disabled() {
         onPageChange={handlePageChange}
         containerClassName={'pagination'}
         activeClassName={'active'}
+        forcePage={currentPage -1 }
+
       />
     </div>
   );
