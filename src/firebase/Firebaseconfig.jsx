@@ -49,13 +49,13 @@ console.log(err);
   export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
-      const audio = new Audio(wavFile);
+      // const audio = new Audio(wavFile);
 
-      console.log("payload", payload)
-      audio.play().catch((err)=>
-      {
-        console.log(err);
-      })
+      // console.log("payload", payload)
+      // audio.play().catch((err)=>
+      // {
+      //   console.log(err);
+      // })
       resolve(payload);
     });
   });
