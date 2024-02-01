@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import clock from "../../../assets/images/Vector (1).png";
 import date from "../../../assets/images/date(1).png";
 import dollar from "../../../assets/images/dollar.png";
-
+import noDAta from "../../../assets/images/noData.png";
 import { Card } from "@material-tailwind/react";
 
 import rightArrow from "../../../assets/images/rightArrow.png";
@@ -90,6 +90,7 @@ export default function OverView() {
   function getAvalabeSlots() {
     getAvailableSlot().then((data) => {
       setAvailableslots(data.data.data);
+      console.log(data?.data?.data);
     });
   }
   const isShowModal = () => {
@@ -99,7 +100,7 @@ export default function OverView() {
     setShowSlot(!showSlot);
   };
   const handlePageChange = (selectedPage) => {
-    getTodayApointments(selectedPage).then((data) => {
+    getTodayApointments(selectedPage.selected + 1).then((data) => {
       setApointments(data?.data?.data?.appointments);
     });
   };
@@ -111,7 +112,7 @@ export default function OverView() {
       <div className="flex justify-between p-1">
         <div>
           <h1 className="text-xl font-bold">
-            Welcome ,Dr {Profile && Profile?.name}
+            Welcome , {Profile && Profile?.name}
           </h1>
           <p className="text-sm mt-5">Have a nice a day at great work</p>
         </div>
@@ -262,8 +263,13 @@ export default function OverView() {
           );
         })
       ) : (
-        <div className="flex justify-center items-center">
-          Datas Not Avilable
+        <div className="">
+          <div className="flex justify-center items-center text-red-300 text-lg fond-bold mt-10">
+            <img src={noDAta} alt="" className="w-[50px]" />
+          </div>
+          <div className="flex justify-center items-center text-red-300 text-lg fond-bold ">
+            <h1>No data found!</h1>
+          </div>
         </div>
       )}
       {/* next card */}

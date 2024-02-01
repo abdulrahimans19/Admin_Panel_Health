@@ -13,3 +13,8 @@ export const getAllApointment = async (page = 1) => {
     `/appointment/doctor-appointments?status=completed&&page=${page}`
   );
 };
+
+export const getMyWithdrawelHisoty = async (page = 1) => {
+  console.log(page, "in page is page");
+  return await Instance.get(`/withdrawal/my-withdrawal-requests?page=${page}`);
+};

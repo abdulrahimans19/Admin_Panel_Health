@@ -57,21 +57,31 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     // Add more validation rules as needed
 
     if (Object.keys(errors).length === 0) {
-      addWithdrawRequest(formData).then((data) => {
-        console.log(data);
+      addWithdrawRequest(formData)
+        .then((data) => {
+          console.log(data);
 
-        setFormData({
-          amount: "",
-          name: "",
-          country: "",
-          bank_name: "",
-          account_type: "",
-          account_number: "",
-          swift_code: "",
+          setFormData({
+            amount: "",
+            name: "",
+            country: "",
+            bank_name: "",
+            account_type: "",
+            account_number: "",
+            swift_code: "",
+          });
+
+          isShowModal();
+        })
+        .catch((err) => {
+          console.log(err.response.data.data.message);
+
+          errors.confict = err?.response?.data?.data?.message
+            ? err?.response?.data?.data?.message
+            : "Something went wrong";
+          setFormErrors(errors);
         });
-
-        isShowModal();
-      });
+      //Conflict
     } else {
       setFormErrors(errors);
     }
@@ -82,6 +92,8 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     visible: { y: 30, opacity: 1 },
   };
 
+  const screenWidth = window.screen.width;
+  console.log("Screen Width: " + screenWidth + " pixels");
   const animationTransition = {
     type: "spring",
     damping: 10,
@@ -138,10 +150,12 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                             ? formErrors.account_number
                             : formErrors.account_type
                             ? formErrors.account_type
+                            : formErrors.confict
+                            ? formErrors.confict
                             : ""}
                         </span>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-2 mt-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mt-3">
                         <div className="">
                           <p className="mb-2">Name</p>
                           <input
@@ -171,7 +185,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-1 mt-10">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mt-10">
                         <div className="">
                           <p className="mb-2">Swift code</p>
                           <input
@@ -183,7 +197,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                           />
                         </div>
                         <div className="">
-                          <p className="mb-2 mt-3">Amount to withdraw</p>
+                          <p className="mb-2">Amount to withdraw</p>
                           <input
                             type="number"
                             name="amount"
@@ -194,7 +208,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-2 mt-10">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mt-10">
                         <div className="">
                           <p className="mb-1">Bank name</p>
                           <input
@@ -206,7 +220,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                           />
                         </div>
                         <div className="">
-                          <p>Account number</p>
+                          <p className="mb-1">Account number</p>
                           <input
                             type="text"
                             name="account_number"
@@ -230,11 +244,8 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-2 mt-5 p-5">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mt-5 p-5">
                         <button
-                          onClick={() => {
-                            console.log("hiiiiiiiiiiiiii");
-                          }}
                           className="rounded-lg h-10 w-[150px] text-white"
                           style={{ backgroundColor: "rgba(36, 168, 250, 1)" }}
                           type="submit"

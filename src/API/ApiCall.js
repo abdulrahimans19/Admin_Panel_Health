@@ -239,7 +239,7 @@ export const disabledFarmaProductApi = async (data) => {
 export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
 };
-export const GetDrAprovedWithdrawalRequsts = async (page) => {
+export const GetDrAprovedWithdrawalRequsts = async (page = 1) => {
   return await Instance.get(
     `/withdrawal/accepted-withdrawal-requests?page=${page}`
   );
@@ -343,17 +343,15 @@ export const getTodayApointments = async (page = 1) => {
   );
 };
 export const getNotificationApi = async () => {
-  
   return await Instance.get(`/notification`);
 };
 export const readNotification = async (data) => {
   return await Instance.post(`/notification/mark-read?id=${data}`);
 };
 export const unreadNotification = async () => {
-
   return await Instance.get(`/notification/read?read=false`);
 };
 
 export const updateFcmApi = async (data) => {
-  return await Instance.post(`/user/update-fcm-token`,data);
+  return await Instance.post(`/user/update-fcm-token`, data);
 };
