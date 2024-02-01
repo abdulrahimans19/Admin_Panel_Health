@@ -341,8 +341,17 @@ export const getTodayApointments = async () => {
   return await Instance.get("/appointment/doctor-appointments?status=upcoming");
 };
 export const getNotificationApi = async () => {
+  
   return await Instance.get(`/notification`);
 };
 export const readNotification = async (data) => {
   return await Instance.post(`/notification/mark-read?id=${data}`);
+};
+export const unreadNotification = async () => {
+
+  return await Instance.get(`/notification/read?read=false`);
+};
+
+export const updateFcmApi = async (data) => {
+  return await Instance.post(`/user/update-fcm-token`,data);
 };

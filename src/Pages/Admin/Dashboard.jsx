@@ -20,7 +20,7 @@ export default function Dashboard() {
   const monthlErnings = () => {
     if (foodChart) {
       monthlyEarningApi("FOOD").then(({ data }) => {
-        console.log(data.data);
+        console.log(data.data,"food monthly");
 
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
