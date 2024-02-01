@@ -26,15 +26,16 @@ export default function Dashboard() {
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
         });
-        setChartData(data.data);
 
-        setMonthlyEarning(data.data[currentMonth]);
+        setChartData(data.data.earnings);
+
+        setMonthlyEarning(data.data.earnings[currentMonth]);
       });
     } else {
       console.log("else worog");
       monthlyEarningApi("PHARMA").then(({ data }) => {
-        console.log(data.data);
-        setChartData(data.data);
+        console.log(data.data.earnings);
+        setChartData(data.data.earnings);
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
