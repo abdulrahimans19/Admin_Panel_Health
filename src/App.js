@@ -47,24 +47,22 @@ import { getCartItems } from "./Redux/Features/NavbarSlice";
 import NotificationPage from "./Pages/Admin/Notification/NotificationPage";
 import NotFound from "./Pages/NotFound";
 function App() {
-  
-
   const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
     const SowphweeFcm = localStorage.getItem("sophwee_fcm");
     console.log(SowphweeFcm, "token");
     console.log(user);
-    if (user) {
+    if (user?.user_role == "Admin") {
       if (!SowphweeFcm) {
-        console.log("if working");
+      
         requestForToken();
       }
     }
 
-    if (user?.user_role == "Admin") {
-      dispatch(getCartItems());
-    }
+    // if (user?.user_role == "Admin") {
+    //   dispatch(getCartItems());
+    // }
   }, []);
 
   // onMessageListener()
@@ -144,9 +142,8 @@ function App() {
         <Route element={<SignupProfile />} path="/set-profile" />
       </Route>
 
-      <Route path="/404" element={<NotFound/>} />
-                <Route path="*" element={<Navigate replace to="/404" />} />
-
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<Navigate replace to="/404" />} />
     </Routes>
   );
 }
