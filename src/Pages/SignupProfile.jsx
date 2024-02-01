@@ -327,9 +327,9 @@ const SignupProfile = ({ email, password, onClose }) => {
               <label
                 htmlFor="agreeCheckbox"
                 className="ml-1 text-gray-300 cursor-pointer"
-              > 
+              >
                 I agree with terms of use
-              </label> 
+              </label>
             </div>
 
             <div className="flex justify-between">

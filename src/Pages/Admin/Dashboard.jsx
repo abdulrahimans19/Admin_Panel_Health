@@ -6,17 +6,22 @@ import PriceDisplayCard from "../../components/PriceDisplayCard";
 import AppoimentTable from "../../components/Tables/AppointmentTable";
 import PriceDisplayCard2 from "../../components/PriceDisplayCard2";
 import PriceDisplayCard3 from "../../components/PriceDisplayCard3";
-import { TotalAppointmentApi, monthlyEarningApi, totalDoctorApi } from "../../API/ApiCall";
+import {
+  TotalAppointmentApi,
+  monthlyEarningApi,
+  totalDoctorApi,
+} from "../../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [foodChart, setFoodChart] = useState(true);
   const [monthlyEarning, setMonthlyEarning] = useState(0);
-  const [totalDoctors, setTotalDoctors] = useState(0)
-  const [totalAppointment, setTotalAppointment] = useState(0)
+  const [totalDoctors, setTotalDoctors] = useState(0);
+  const [totalAppointment, setTotalAppointment] = useState(0);
   const [chartData, setChartData] = useState();
   const navigate = useNavigate();
+
   const monthlErnings = () => {
     if (foodChart) {
       monthlyEarningApi("FOOD").then(({ data }) => {
@@ -45,22 +50,18 @@ export default function Dashboard() {
     }
   };
 
-
-
-
   useEffect(() => {
     dispatch(cleartopNav());
 
-totalDoctorApi().then(({data})=>{
-  console.log(data.data,"docy");
-  setTotalDoctors(data.data)
-})
+    totalDoctorApi().then(({ data }) => {
+      console.log(data.data, "docy");
+      setTotalDoctors(data.data);
+    });
 
-TotalAppointmentApi().then(({data})=>{
-  setTotalAppointment(data.data)
-console.log(data.data,"appoimt");
-})
-
+    TotalAppointmentApi().then(({ data }) => {
+      setTotalAppointment(data.data);
+      console.log(data.data, "appoimt");
+    });
   }, []);
 
   useEffect(() => {
@@ -73,10 +74,12 @@ console.log(data.data,"appoimt");
         <div class="grid grid-cols-1 md:grid-cols-3   gap-4 mb-4 lg:col-span-2">
           <PriceDisplayCard data={monthlyEarning} />
           <PriceDisplayCard2 data={totalDoctors} />
-          <PriceDisplayCard3 data={totalAppointment}/>
+          <PriceDisplayCard3 data={totalAppointment} />
 
           <div className=" md:col-span-3">
-            {chartData && <LineChart  earnings={monthlyEarning} data={chartData} />}
+            {chartData && (
+              <LineChart earnings={monthlyEarning} data={chartData} />
+            )}
             <div className="flex gap-3 p-3">
               <p
                 onClick={() => {
@@ -111,31 +114,31 @@ console.log(data.data,"appoimt");
                     Lab appointment Details
                   </p>
                   <button>
-                  <a
-                   onClick={()=>{
-                    
-                    navigate('/homecare/appoinment-details')
-                   }}
-                   className="font-semibold flex ">
-                    See all{" "}
-                    <span className="pt-1">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3.3335 8.00016H12.6668M12.6668 8.00016L8.00016 3.3335M12.6668 8.00016L8.00016 12.6668"
-                          stroke="#8E95A9"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </a>
+                    <a
+                      onClick={() => {
+                        navigate("/homecare/appoinment-details");
+                      }}
+                      className="font-semibold flex "
+                    >
+                      See all{" "}
+                      <span className="pt-1">
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M3.3335 8.00016H12.6668M12.6668 8.00016L8.00016 3.3335M12.6668 8.00016L8.00016 12.6668"
+                            stroke="#8E95A9"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </a>
                   </button>
                 </div>
 
