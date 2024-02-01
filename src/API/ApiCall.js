@@ -292,8 +292,8 @@ export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
 
-export const getNotificationApi = async (data) => {
-  console.log(data,"pagination");
+export const getNotificationApi = async () => {
+  
   return await Instance.get(`/notification`);
 };
 export const readNotification = async (data) => {

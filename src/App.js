@@ -70,6 +70,8 @@ console.log(user);
 
     if (user?.user_role == "Admin") {
       dispatch(getCartItems());
+    
+
     }
   }, []);
 

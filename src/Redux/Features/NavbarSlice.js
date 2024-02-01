@@ -17,17 +17,10 @@ export const getCartItems = createAsyncThunk(
   "/notification",
   async (name, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
-      
-      // state.navbar.pagecount=state.navbar.pagecount+1
-      console.log(state.navbar.pagecount, "this is state");
-      // console.log(name);
-      // console.log(thunkAPI);
-      // console.log(thunkAPI.getState());
-      // thunkAPI.dispatch(openModal());
-      const resp = getNotificationApi();
-      console.log(resp);
-      return resp;
+      const response = await getNotificationApi(); // Assuming this returns a promise
+      // Extract only the necessary data from the response
+      const data = response.data.data?.unread_notifications;
+      return data; // Dispatch only the data, not the entire response object
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
@@ -654,11 +647,15 @@ const NavBarSlice = createSlice({
         // state.isLoading=false
       })
       .addCase(getCartItems.fulfilled, (state, action) => {
+
         // console.log(state.pagecount);
         // state.pagecount=state.pagecount+1
         // console.log(action.payload.data.data.notifications, "notification paloaf");
-        state.notification = action.payload.data.data.notifications
-        state.notificationCount = action.payload.data.data.unread_notifications;
+        console.log("notification read");
+        console.log(action?.payload?.data?.unread_notifications);
+        console.log(action?.payload);
+        // state.notification = action.payload.data.data.notifications
+        state.notificationCount = action?.payload
 
         // state.CartItem=action.payload
       })
