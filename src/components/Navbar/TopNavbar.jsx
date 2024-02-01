@@ -76,19 +76,22 @@ function NavBar() {
         dispatch(getCartItems());
         getNotificationData()
         const audio = new Audio(wavFile);
-        
-        if(document.hidden){
-
-          audio.play().catch((err) => {
+        console.log(document.hasFocus());
+        if(!document.hasFocus()){
+          console.log("ifworking");
+          audio.play().catch((err)=>
+          {
             console.log(err);
-          });
+          })
+         
         }
         else{
-          audio.play().catch((err) => {
+          console.log("else working");
+          audio.play().catch((err)=>
+          {
             console.log(err);
-          });
+          })
         }
-        
         toast.success(
           `${payload?.notification?.title}:${payload.notification?.body}`,
           {

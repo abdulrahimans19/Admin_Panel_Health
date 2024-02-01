@@ -291,7 +291,55 @@ export const getDisbledTestByCatApi = async (cat_id) => {
 export const getCurrentAppoinmentsApi = async (year, month, date) => {
   return await Instance.get(`/bookings/all?date=${year}-${month}-${date}`);
 };
+export const homeCareUpadateCate = async (data) => {
+  return await Instance.put(`/main-categories/home-care/update`, data);
+};
+export const createTests = async (data) => {
+  return await Instance.post(`/tests/create`, data);
+};
+export const editTests = async (data) => {
+  console.log("to update",data);
+  return await Instance.put(`/tests/update`, data);
+};
+export const getSingleTestApi = async (id) => {
+  console.log(id);
+  return await Instance.get(`/tests/single/${id}`);
+};
+export const disableTest = async (id) => {
+  return await Instance.delete(`/tests/delete?id=${id}`);
+};
+export const recommendedTest = async (id) => {
+  return await Instance.put(`/tests/update-recommended?test_id=${id}`);
+};
+export const addResultApi = async (data) => {
+  return await Instance.post(`/bookings/add-result`,data);
+};
 
+export const getDoctorProfileAndWallet = async () => {
+  return await Instance.get("/doctor/doctor-profile");
+};
+export const getApointments = async (
+  startDate = "01/25/2023",
+  endDate = "01/26/2024"
+) => {
+  return await Instance.get(
+    `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
+  );
+};
+export const addWithdrawRequest = async (data) => {
+  return await Instance.post("/withdrawal/add-withdrawal-request", data);
+};
+export const getAvailableSlot = async () => {
+  return await Instance.get("/slots/time-slots");
+};
+
+export const addAvailableSlot = async (data) => {
+  return await Instance.post("doctor/add-slots", data);
+};
+
+export const getTodayApointments = async () => {
+  return await Instance.get("/appointment/doctor-appointments?status=upcoming");
+};
 export const getNotificationApi = async () => {
   
   return await Instance.get(`/notification`);

@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { updateFcmApi } from '../API/ApiCall';
+import wavFile from "../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3";
 
 
 
@@ -48,8 +49,13 @@ console.log(err);
   export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
+      const audio = new Audio(wavFile);
+
       console.log("payload", payload)
-      
+      audio.play().catch((err)=>
+      {
+        console.log(err);
+      })
       resolve(payload);
     });
   });

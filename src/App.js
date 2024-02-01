@@ -44,23 +44,16 @@ import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { requestForToken, onMessageListener } from "./firebase/Firebaseconfig";
 import { getCartItems } from "./Redux/Features/NavbarSlice";
+import NotificationPage from "./Pages/Admin/Notification/NotificationPage";
 function App() {
-  const [notification, setNotification] = useState({ title: "", body: "" });
-  // const notify = () =>  toast(<ToastDisplay/>);
-  // function ToastDisplay() {
-  //   return (
-  //     <div>
-  //       <p><b>{notification?.title}</b></p>
-  //       <p>{notification?.body}</p>
-  //     </div>
-  //   );
-  // };
+  
+
   const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
     const SowphweeFcm = localStorage.getItem("sophwee_fcm");
     console.log(SowphweeFcm, "token");
-console.log(user);
+    console.log(user);
     if (user) {
       if (!SowphweeFcm) {
         console.log("if working");
@@ -70,8 +63,6 @@ console.log(user);
 
     if (user?.user_role == "Admin") {
       dispatch(getCartItems());
-    
-
     }
   }, []);
 
@@ -93,7 +84,7 @@ console.log(user);
       <Route element={<LoggedOutUser />}>
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
-          <Route element={<Notification />} path="/notification" />
+          {/* <Route element={<Notification />} path="/notification" /> */}
           <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
@@ -127,6 +118,7 @@ console.log(user);
           {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
           <Route element={<Food />} path="/food" />
           <Route element={<Transaction />} path="/transaction" />
+          <Route element={<NotificationPage />} path="/push-notification" />
 
           <Route element={<Coupons />} path="/coupons" />
         </Route>

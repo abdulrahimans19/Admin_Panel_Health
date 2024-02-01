@@ -53,7 +53,7 @@ function Disabled() {
         {disbledTest[0] &&
         disbledTest.map((data)=>{
           return (
-            <TestCard data={data} isdisbled={true}/>
+            <TestCard data={data} getAllTests={getDisabledTestCards} type={'disabled'}/>
           )
         })
       }
