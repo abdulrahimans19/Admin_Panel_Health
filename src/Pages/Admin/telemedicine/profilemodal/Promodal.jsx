@@ -12,6 +12,7 @@ export default function ({
   myfunction,
   sectpage,
   getWithdrawalRequsts,
+  isCancel,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
 
@@ -20,16 +21,25 @@ export default function ({
     return urlPattern.test(str);
   }
 
-  const downloadImage = (imageUrl, fileName) => {
-    const link = document.createElement("a");
-    const confirmUrl = isURL(imageUrl);
-    if (confirmUrl) {
-      link.href = imageUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+  const downloadImage = (filePath, fileName = "Example.jpg") => {
+    fetch(filePath)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.parentNode.removeChild(link);
+      })
+      .catch((error) => {
+        console.error("Failed to download the file:", error);
+      });
   };
 
   // Extract text until the position of "i"
@@ -136,7 +146,10 @@ export default function ({
                           <button
                             onClick={
                               () => {
-                                downloadImage(user.certificate, "certificate");
+                                downloadImage(
+                                  user.certificate,
+                                  "certificate.jpg"
+                                );
                               }
                               //user?.certificate
                             }
@@ -177,7 +190,11 @@ export default function ({
                               toggleModal();
                             }}
                           >
-                            {status === "aprove" ? "Accept" : "Save"}
+                            {status === "aprove"
+                              ? "Accept"
+                              : isCancel
+                              ? "Reject ?"
+                              : "Save"}
                           </button>
                         </>
                       )}

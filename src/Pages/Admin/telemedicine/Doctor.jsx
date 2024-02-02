@@ -36,35 +36,38 @@ export default function Doctor() {
   }, []);
 
   function getDoctorRequests() {
-    DoctorRequests().then((data) => {
-      setDocument(data?.data?.data?.total_document);
-      setRequests(data?.data?.data?.doctors);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    DoctorRequests()
+      .then((data) => {
+        setDocument(data?.data?.data?.total_document);
+        setRequests(data?.data?.data?.doctors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function getAllDoctors() {
-    GetAllDoctors().then((data) => {
-      console.log(data?.data?.data);
-      setDocument1(data?.data?.data?.total_document);
-      setApproved(data?.data?.data?.doctors);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    GetAllDoctors()
+      .then((data) => {
+        console.log(data?.data?.data);
+        setDocument1(data?.data?.data?.total_document);
+        setApproved(data?.data?.data?.doctors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function getBlockedDoctors() {
-    GetAllBlockd().then((data) => {
-      //console.log(data?.data?.data);
-      setDocument2(data?.data?.data?.total_document);
-      setBlocked(data?.data?.data?.doctor);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    GetAllBlockd()
+      .then((data) => {
+        //console.log(data?.data?.data);
+        setDocument2(data?.data?.data?.total_document);
+        setBlocked(data?.data?.data?.doctor);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   //console.log(Blocked);
   const handleTabClick = (tab) => {
@@ -73,6 +76,7 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
+        getDoctorRequests();
         return (
           <DoctorRequstTable
             isRequsted={true}
@@ -86,6 +90,7 @@ export default function Doctor() {
         );
 
       case 2:
+        getAllDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -100,6 +105,7 @@ export default function Doctor() {
         );
 
       case 3:
+        getBlockedDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}

@@ -26,6 +26,7 @@ export default function DoctorRequstTable({
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
   const [datas, setData] = useState([]);
+  const [isCancel, setIsCancel] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -88,6 +89,7 @@ export default function DoctorRequstTable({
         btText={btText}
         callback={callBack}
         myfunction={myfunction}
+        isCancel={isCancel}
       />
       {/* searchHandler */}
       <div className="flex justify-between items-center w-full">
@@ -231,6 +233,7 @@ export default function DoctorRequstTable({
                           <button
                             onClick={() => {
                               setUser(data);
+                              setIsCancel(true);
                               setShowModal(true);
                             }}
                             style={{
