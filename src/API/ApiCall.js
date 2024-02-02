@@ -274,7 +274,7 @@ export const getLabTestsbyCategoryApi = async (cat_id) => {
 };
 export const getCategoryDetailsById = async (cat_id) => {
   console.log(cat_id);
-  return await Instance.get(
+  return await Instance.post(
     `/sub-categories/get-category-details?id=${cat_id}`
   );
 };
