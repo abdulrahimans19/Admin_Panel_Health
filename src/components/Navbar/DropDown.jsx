@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion, useAnimation } from "framer-motion";
@@ -51,7 +50,7 @@ function DropDown({ title, dropdowndata, currentRoute, setCurrentRoute }) {
           }
         }}
         variants={dropdown}
-        class={`flex cursor-pointer items-center p-2 text-gray-900 rounded-t-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${
+        class={`flex cursor-pointer items-center p-2 pl-12 rounded-t-lg text-white  group ${
           droping && "bg-gray-900 border-t border-l border-r"
         }  `}
       >
@@ -89,7 +88,7 @@ function DropDown({ title, dropdowndata, currentRoute, setCurrentRoute }) {
                   navigate(data.link);
                 }}
                 key={index}
-                className={`item  flex  pl-9  items-left p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer ${
+                className={`item  flex justify-around  pl-10  items-left p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer ${
                   data.link == currentRoute && "bg-gray-600"
                 } `}
                 initial={{ visibility: "hidden" }}
