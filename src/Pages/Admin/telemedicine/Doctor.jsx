@@ -5,6 +5,7 @@ import DoctorRequstTable from "../../../components/Tables/telemedicin/DoctorRequ
 import blockimg from "../../../assets/images/Vector.png";
 import { useNavigate } from "react-router-dom";
 import {
+  AprovetDoctor,
   BlockOrUnBlockDoctor,
   DoctorRequests,
   GetAllBlockd,
@@ -35,26 +36,38 @@ export default function Doctor() {
   }, []);
 
   function getDoctorRequests() {
-    DoctorRequests().then((data) => {
-      setDocument(data?.data?.data?.total_document);
-      setRequests(data?.data?.data?.doctors);
-    });
+    DoctorRequests()
+      .then((data) => {
+        setDocument(data?.data?.data?.total_document);
+        setRequests(data?.data?.data?.doctors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function getAllDoctors() {
-    GetAllDoctors().then((data) => {
-      console.log(data?.data?.data);
-      setDocument1(data?.data?.data?.total_document);
-      setApproved(data?.data?.data?.doctors);
-    });
+    GetAllDoctors()
+      .then((data) => {
+        console.log(data?.data?.data);
+        setDocument1(data?.data?.data?.total_document);
+        setApproved(data?.data?.data?.doctors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function getBlockedDoctors() {
-    GetAllBlockd().then((data) => {
-      //console.log(data?.data?.data);
-      setDocument2(data?.data?.data?.total_document);
-      setBlocked(data?.data?.data?.doctor);
-    });
+    GetAllBlockd()
+      .then((data) => {
+        //console.log(data?.data?.data);
+        setDocument2(data?.data?.data?.total_document);
+        setBlocked(data?.data?.data?.doctor);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   //console.log(Blocked);
   const handleTabClick = (tab) => {
@@ -63,22 +76,26 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
+        getDoctorRequests();
         return (
           <DoctorRequstTable
             isRequsted={true}
             status={"requests"}
             data={requests}
             availabe={"Requested"}
-
-            //callBack={CanclationDoctor}
+            myfunction={getDoctorRequests}
+            callBack={AprovetDoctor}
+            document={document}
           />
         );
 
       case 2:
+        getAllDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
             btText={"Block"}
+            myfunction={getAllDoctors}
             status={"approved"}
             data={approved}
             document={document1}
@@ -88,6 +105,7 @@ export default function Doctor() {
         );
 
       case 3:
+        getBlockedDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -96,6 +114,7 @@ export default function Doctor() {
             availabe={"blocked"}
             document={document2}
             data={Blocked}
+            myfunction={getBlockedDoctors}
             callBack={BlockOrUnBlockDoctor}
           />
         );

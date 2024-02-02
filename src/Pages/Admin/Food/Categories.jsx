@@ -43,10 +43,14 @@ export default function FoodCategory() {
   };
 
   const GetFoodCat = () => {
-    getFoodCategory().then(({ data }) => {
-      console.log(data.data.mainCategories);
-      setCategoryMenu(data.data.mainCategories);
-    });
+    getFoodCategory()
+      .then(({ data }) => {
+        console.log(data.data.mainCategories);
+        setCategoryMenu(data.data.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -58,10 +62,14 @@ export default function FoodCategory() {
     console.log(data);
     setEditData(data);
 
-    getFoodSubCategory(data._id).then(({ data }) => {
-      console.log(data.data.subCategories);
-      setSubCatData(data.data.subCategories);
-    });
+    getFoodSubCategory(data._id)
+      .then(({ data }) => {
+        console.log(data.data.subCategories);
+        setSubCatData(data.data.subCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setViewCatInfoModal(true);
   };
 

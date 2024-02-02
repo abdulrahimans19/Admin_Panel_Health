@@ -80,7 +80,6 @@ export function HomecareLabItems() {
           <h2 className="font-bold text-lg">Lab Items</h2>
           {/* <p>2 available items</p> */}
         </div>
-        
       </div>
       <div className=" justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">

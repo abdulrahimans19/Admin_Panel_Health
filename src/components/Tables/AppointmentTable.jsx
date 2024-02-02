@@ -6,10 +6,10 @@ export default function AppointmentTable() {
   const [totalPagecount, setTotalPagecount] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [appoinments, setAppoinments] = useState([]);
-  
+
   useEffect(() => {
     getTodayAppoinments();
-    console.log("appoinmnens",appoinments);
+    console.log("appoinmnens", appoinments);
   }, []);
   const getTodayAppoinments = () => {
     const today = new Date();
@@ -17,7 +17,6 @@ export default function AppointmentTable() {
     const month = today.getMonth() + 1;
     const day = today.getDate();
     getCurrentAppoinmentsApi(year, month, day).then((data) => {
-  
       console.log(data.data.data.total_count);
       const totalPages = Math.ceil(data.data.data.total_count / 10);
       setTotalPagecount(totalPages);
@@ -26,31 +25,34 @@ export default function AppointmentTable() {
   };
   return (
     <div>
-      <table class="table-auto w-full mt-5 rounded  border-separate border-spacing-y-3">
-        <thead class="text-left rounded-lg bg-gray-100 text-gray-500 tracking-wider">
-          <tr>
-            <th class="p-1">Name</th>
-            <th class="p-3">ID</th>
-            <th class="p-1">Test Name</th>
-          </tr>
-        </thead>
-        <tbody class="">
-          {appoinments[0] ? appoinments.map((data)=>{
-            return (
-              <tr class="bg-card rounded text-black border outline outline-offset-2 outline-1 outline-gray-300  ">
-            <td class="p-1">{data.profile_id.first_name}</td>
-           
-            <td class="p-3">{data.profile_id.user_id}</td>
-            <td class="p-1">{data.test_id.name}</td>
-          </tr>
-            )
-          }):
-          <div className="flex justify-center" >
-            <NoDataImage text={"No Appoinments for this data"}/>
-          </div>
-          }
-        </tbody>
-      </table>
+      {appoinments && appoinments.length > 0 ? (
+        <table class="table-auto w-full mt-5 rounded border-separate border-spacing-y-3">
+          <thead class="text-left rounded-lg bg-gray-100 text-gray-500 tracking-wider">
+            <tr>
+              <th class="p-1">Name</th>
+              <th class="p-3">ID</th>
+              <th class="p-1">Test Name</th>
+            </tr>
+          </thead>
+          <tbody class="">
+            {appoinments.map((data) => (
+              <tr class="bg-card rounded text-black border outline outline-offset-2 outline-1 outline-gray-300">
+                <td class="p-1">
+                  {data.profile_id?.first_name || "No Data Available"}
+                </td>
+                <td class="p-3">
+                  {data.profile_id?.user_id || "No Data Available"}
+                </td>
+                <td class="p-1">{data.test_id?.name || "No Data Available"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div class="text-black mt-5 p-3 rounded bg-card border outline outline-offset-2 outline-1 outline-gray-300">
+          No Data Available
+        </div>
+      )}
     </div>
   );
 }

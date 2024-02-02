@@ -52,6 +52,8 @@ function AllTests() {
       const totalPages = Math.ceil(data.data.data.total_document / 10);
       setTotalPagecount(totalPages);
       setLabtest(data.data.data.tests);
+    })  .catch((err) => {
+      console.log(err);
     });
   };
 
@@ -61,7 +63,9 @@ function AllTests() {
       const totalPages = Math.ceil(data.data.data.total_document / 10);
       setTotalPagecount(totalPages);
       setLabtest(data.data.data.tests);
-      console.log("laddada", labTest);
+      console.log("laddada",labTest);
+    })  .catch((err) => {
+      console.log(err);
     });
   };
 

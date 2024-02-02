@@ -19,24 +19,30 @@ function WithdrawalPannel() {
     getWithdrawalRequsts();
     GetAprovedWithdrawalRequsts();
   }, []);
-
+  console.log(data);
   function getWithdrawalRequsts() {
     GetDoctorWithdrawalRequsts().then((data) => {
       SetData(data.data.data.withdrawals);
       SetDocument(data.data.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   function GetAprovedWithdrawalRequsts() {
     GetDrAprovedWithdrawalRequsts().then((data) => {
       SetAprovedData(data.data.data.withdrawals);
       SetDocument1(data.data.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  // console.log(data);
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
@@ -46,6 +52,7 @@ function WithdrawalPannel() {
             btText={"Accept "}
             data={data}
             callBack={AprovingwithdrawalRequest}
+            getWithdrawalRequsts={getWithdrawalRequsts}
             document={document}
             setData={SetData}
           />
@@ -53,7 +60,6 @@ function WithdrawalPannel() {
       case 2:
         return (
           <WithdrawalTable
-            callBack={""}
             data={aproveddata}
             availabe={"Request Approved"}
             btText={"Approved"}

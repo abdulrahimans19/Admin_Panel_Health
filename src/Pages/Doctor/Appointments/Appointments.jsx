@@ -5,12 +5,8 @@ import { getTodayApointments } from "../../../API/ApiCall";
 import { getApointmentByDate } from "../../../API/DoctorApi";
 import ReactDatePicker from "react-datepicker";
 import { motion, useAnimationControls } from "framer-motion";
-
 import "react-datepicker/dist/react-datepicker.css";
-
-import ViewPatient from "../Dashboard/modal/ViewPatient";
-import VideoModal from "../Dashboard/modal/VideoModal";
-
+import ReactPaginate from "react-paginate";
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
   const [todayApintments, setApointments] = useState([]);
@@ -19,11 +15,13 @@ export default function Appointments() {
   const [date, setDate] = useState(null);
   const [showModal, setShowMadal] = useState(false);
   const [getDate, setGetDAte] = useState();
+  const [document, setDocument] = useState();
+  const [formatedDate, setFormatedDate] = useState();
 
   useEffect(() => {
     getTodayApointment();
-    setInterval(time, 60000);
   }, []);
+  setInterval(time, 6000);
   const list = {
     visible: { opacity: 50, scale: 1 },
     hidden: { opacity: 0, scale: 0 },
@@ -57,16 +55,19 @@ export default function Appointments() {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? "0" + minutes : minutes;
     var strTime = hours + ":" + minutes + " " + ampm;
-    // setHour(hours);
-    // setminut(minutes);
-    // setIsPm(ampm.toLocaleLowerCase());
+
     setCurrenTime(strTime);
   }
 
   function getTodayApointment() {
-    getTodayApointments().then((data) => {
+    getTodayApointments(1).then((data) => {
       setApointments(data?.data?.data?.appointments);
-    });
+
+      setDocument(data?.data?.data?.total_document);
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   function handleDateSelect(date) {
     setDate(date);
@@ -81,7 +82,10 @@ export default function Appointments() {
       setDay("");
       setDate("");
       setApointments(data?.data?.data?.appointments);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
     setOpenCalender(false);
   }
   function selectedDate(stringdate) {
@@ -105,14 +109,52 @@ export default function Appointments() {
     const formattedDate = `${
       targetDate.getMonth() + 1
     }/${targetDate.getDate()}/${targetDate.getFullYear()}`;
-
+    setFormatedDate(formatedDate);
     getApointmentByDate(formattedDate).then((data) => {
       setApointments(data?.data?.data?.appointments);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   const isSlectedDate = () => {
     setOpenCalender(!openCalender);
   };
+
+  const handlePageChange = (selectedPage) => {
+    if (formatedDate) {
+      getApointmentByDate(formatedDate, selectedPage.selected + 1).then(
+        (data) => {
+          setApointments(data?.data?.data?.appointments);
+
+          setDocument(data?.data?.data?.total_document);
+        }
+      ).catch((err)=>
+      {
+        console.log(err);
+      })
+    }
+    // getAllApointment(selectedPage).then((data) => {
+    //   setData(data?.data?.data?.appointments);
+    // });
+  };
+  var page = Math.floor(document / 10);
+  var remainder = document % 10;
+  page = page + (remainder > 0 ? 1 : 0);
+  function isSameDate(dateString) {
+    // Convert the given date string to a Date object
+    const givenDate = new Date(dateString);
+
+    // Get today's date
+    const today = new Date();
+
+    // Check if the year, month, and day are the same
+    return (
+      givenDate.getFullYear() === today.getFullYear() &&
+      givenDate.getMonth() === today.getMonth() &&
+      givenDate.getDate() === today.getDate()
+    );
+  }
 
   return (
     <div>
@@ -173,11 +215,35 @@ export default function Appointments() {
           {todayApintments &&
             todayApintments[0] &&
             todayApintments.map((data) => {
-              const formattedTime1 = convertTo24HourFormat("10:00am");
+              const formattedTime1 = convertTo24HourFormat(currentime);
+              const result = isSameDate(data?.created_at);
 
-              const formattedTime2 = convertTo24HourFormat(
+              let formattedTime2 = convertTo24HourFormat(
                 data?.slotId?.start_time
+                // data?._id === "65b156f8276d32609b4e08ae" ? "6:15pm" : "6:17pm"
               );
+              //
+              // if (data._id == "65b9ce2e518e7f283a6a631d") {
+              //   formattedTime2 = convertTo24HourFormat("8:29pm");
+              // } else {
+
+              // }
+              //time Updatein start
+              let updatedFormattedTime1;
+              if (currentime) {
+                const time1Parts = formattedTime2?.split(":");
+                const date1 = new Date();
+                date1?.setHours(parseInt(time1Parts[0], 10));
+                date1?.setMinutes(parseInt(time1Parts[1], 10));
+
+                date1?.setMinutes(date1.getMinutes() + 15);
+
+                updatedFormattedTime1 =
+                  String(date1.getHours()).padStart(2, "0") +
+                  ":" +
+                  String(date1.getMinutes()).padStart(2, "0");
+              }
+              /// time updating end
 
               return (
                 <div className="p-3 border  border-blue-300 border-thin rounded-lg">
@@ -207,10 +273,23 @@ export default function Appointments() {
                   </div>
                   <div className="p-3">
                     <button
-                      onClick={() => setShowMadal(true)}
+                      onClick={() => {
+                        if (
+                          formattedTime1 >= formattedTime2 &&
+                          formattedTime1 <= updatedFormattedTime1 &&
+                          result
+                        ) {
+                          window.open(data?.meeting_url, "_blank");
+                        }
+                      }}
                       className={`${
-                        formattedTime1 === formattedTime2
-                          ? "bg-green-900"
+                        formattedTime1 >= formattedTime2 &&
+                        formattedTime1 <= updatedFormattedTime1 &&
+                        result
+                          ? //
+                            //
+                            //
+                            "bg-green-900"
                           : "bg-green-200"
                       } w-full  text-white p-3 rounded-lg mt-6`}
                     >
@@ -221,8 +300,29 @@ export default function Appointments() {
               );
             })}
         </div>
-        <VideoModal showModal={showModal} setShowMadal={setShowMadal} />
       </div>
+      {/* <VideoModal showModal={showModal} setShowMadal={setShowMadal} /> */}
+      {/* {todayApintments == null &&
+        !todayApintments[0]==-1(
+          <div className="">
+            <div className="flex justify-center items-center text-red-300 text-lg fond-bold mt-10">
+              <img src={noDAta} alt="" className="w-[50px]" />
+            </div>
+            <div className="flex justify-center items-center text-red-300 text-lg fond-bold ">
+              <h1>No data found!</h1>
+            </div>
+          </div>
+        )} */}
+      {page > 1 && (
+        <ReactPaginate
+          pageCount={page} // Replace with the total number of pages
+          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+          marginPagesDisplayed={1} // Number of pages to display for margin pages
+          onPageChange={handlePageChange}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      )}
     </div>
   );
 }

@@ -9,6 +9,25 @@ export const Validate = async (data) => {
 export const LoginUserdata = async (data) => {
   return await Instance.post("/auth/sign-in", data);
 };
+export const UserEmailVerify = async (email) => {
+  console.log("verify email", email);
+  return await Instance.post("/doctor/check-doctor-email", { email });
+};
+
+export const VerifyEmail = async (email, otp) => {
+  return await Instance.post("/auth/doctor/verify-email", { email, otp });
+};
+export const forgotOtp = async (email, otp) => {
+  return await Instance.post("/auth/doctor/validate-otp", { email, otp });
+};
+export const SetPassword = async (email, reset_password_token, password) => {
+  console.log("passwordsss:", email, reset_password_token, password);
+  return await Instance.post("/auth/doctor/set-password", {
+    email,
+    reset_password_token,
+    password,
+  });
+};
 
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
@@ -81,8 +100,8 @@ export const SignupUserdata = async (data) => {
   return await Instance.post("/auth/doctor/sign-up", data);
 };
 
-export const DoctorForgotdata = async (data) => {
-  return await Instance.post("/auth/doctor/forgot-password", data);
+export const DoctorForgotdata = async (email) => {
+  return await Instance.post("/auth/doctor/forgot-password", { email });
 };
 
 export const MainDoctorCategories = async (data) => {
@@ -158,9 +177,10 @@ export const monthlyEarningApi = async (data) => {
   return await Instance.get(`/order/monthly-earnings?type=${data}`);
 };
 export const GetAllDoctors = async (page = 1) => {
-  console.log(page, " = = =page in api");
-
   return await Instance.get(`/doctor/admin/all?page=${page}`);
+};
+export const GetSearchAllDoctors = async (search) => {
+  return await Instance.get(`/doctor/admin/all?search=${search}`);
 };
 
 export const CanclationDoctor = async (id) => {
@@ -239,17 +259,26 @@ export const disabledFarmaProductApi = async (data) => {
 export const filterPharmaAPi = async (data, page) => {
   return await Instance.get(`product/all-products/${data}?page=${page}`);
 };
-export const GetDrAprovedWithdrawalRequsts = async (page) => {
+export const GetDrAprovedWithdrawalRequsts = async (page = 1) => {
   return await Instance.get(
     `/withdrawal/accepted-withdrawal-requests?page=${page}`
   );
 };
-export const getAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
 };
+export const getCategoryDetailsById = async (cat_id) => {
+  console.log(cat_id);
+  return await Instance.post(
+    `/sub-categories/get-category-details?id=${cat_id}`
+  );
+};
+
 export const getFoodSubCategory = async (data) => {
   return await Instance.get(`sub-categories/${data}`);
 };
@@ -278,7 +307,7 @@ export const updateCouponApi = async (data) => {
 export const addHomecareCategory = async (data) => {
   return await Instance.post(`main-categories/home-care/create`, data);
 };
-export const getRecommendedTestsbyCategoryApi = async (cat_id,page) => {
+export const getRecommendedTestsbyCategoryApi = async (cat_id, page) => {
   return await Instance.get(
     `tests/all-tests?recommended=${true}&page=${page}&category_id=${cat_id}`
   );
@@ -288,8 +317,10 @@ export const getDisbledTestByCatApi = async (cat_id) => {
     `tests/all-tests?disabled=${true}&category_id=${cat_id}`
   );
 };
-export const getCurrentAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getCurrentAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const homeCareUpadateCate = async (data) => {
   return await Instance.put(`/main-categories/home-care/update`, data);
@@ -298,7 +329,7 @@ export const createTests = async (data) => {
   return await Instance.post(`/tests/create`, data);
 };
 export const editTests = async (data) => {
-  console.log("to update",data);
+  console.log("to update", data);
   return await Instance.put(`/tests/update`, data);
 };
 export const getSingleTestApi = async (id) => {
@@ -315,7 +346,7 @@ export const getAllCategoryTests = async () => {
   return await Instance.put(`/tests`);
 };
 export const addResultApi = async (data) => {
-  return await Instance.post(`/bookings/add-result`,data);
+  return await Instance.post(`/bookings/add-result`, data);
 };
 
 export const getDoctorProfileAndWallet = async () => {
@@ -327,7 +358,9 @@ export const getApointments = async (
 ) => {
   return await Instance.get(
     `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
-  );
+  ).catch((err) => {
+    console.log(err);
+  });
 };
 export const addWithdrawRequest = async (data) => {
   return await Instance.post("/withdrawal/add-withdrawal-request", data);
@@ -340,23 +373,23 @@ export const addAvailableSlot = async (data) => {
   return await Instance.post("doctor/add-slots", data);
 };
 
-export const getTodayApointments = async () => {
-  return await Instance.get("/appointment/doctor-appointments?status=upcoming");
+export const getTodayApointments = async (page = 1) => {
+  return await Instance.get(
+    `/appointment/doctor-appointments?status=upcoming${page}`
+  );
 };
 export const getNotificationApi = async () => {
-  
   return await Instance.get(`/notification`);
 };
 export const readNotification = async (data) => {
   return await Instance.post(`/notification/mark-read?id=${data}`);
 };
 export const unreadNotification = async () => {
-
   return await Instance.get(`/notification/read?read=false`);
 };
 
 export const updateFcmApi = async (data) => {
-  return await Instance.post(`/user/update-fcm-token`,data);
+  return await Instance.post(`/user/update-fcm-token`, data);
 };
 export const sendNotification = async (data) => {
   return await Instance.post(`/notification/send-notification`,data);

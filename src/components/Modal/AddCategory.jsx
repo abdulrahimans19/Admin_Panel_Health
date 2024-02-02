@@ -42,6 +42,7 @@ export default function AddCategory({
     accept: "image/*",
   });
   const [errors, setErrors] = useState({});
+
   const validate = () => {
     let tempErrors = {};
     tempErrors.categoryName = categoryName ? "" : "Category name is required";
@@ -50,7 +51,7 @@ export default function AddCategory({
     setErrors(tempErrors);
 
     // Return true if no errors
-    return Object.values(tempErrors).every(x => x === "");
+    return Object.values(tempErrors).every((x) => x === "");
   };
   const SubmitCat = (e) => {
     console.log(dataToUpload, "testig");
@@ -84,43 +85,47 @@ export default function AddCategory({
     } else {
       if (Image) {
         console.log("this working wretryyhj");
-        UploadImageUrl().then((data) => {
-          console.log(data.data);
+        UploadImageUrl()
+          .then((data) => {
+            console.log(data.data);
 
-          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-            console.log(data, "uploaded");
-          });
-          imageUrl = data.data.publicUrl;
-          let WholeData;
-          console.log(data);
-          if (dataToUpload) {
-            WholeData = {
-              category_id: dataToUpload._id,
-              title: categoryName,
-              description: description,
-              image: imageUrl,
-            };
-          } else {
-            WholeData = {
-              title: categoryName,
-              description: description,
-              image: imageUrl,
-            };
-          }
-
-          console.log(WholeData);
-
-          catFunction(WholeData)
-            .then((data) => {
-              GetPharmacyCat();
-
-              setShowModal(false);
-            })
-            .catch((err) => {
-              console.log(err);
+            uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+              console.log(data, "uploaded");
             });
-          console.log(imageUrl, "public url");
-        });
+            imageUrl = data.data.publicUrl;
+            let WholeData;
+            console.log(data);
+            if (dataToUpload) {
+              WholeData = {
+                category_id: dataToUpload._id,
+                title: categoryName,
+                description: description,
+                image: imageUrl,
+              };
+            } else {
+              WholeData = {
+                title: categoryName,
+                description: description,
+                image: imageUrl,
+              };
+            }
+
+            console.log(WholeData);
+
+            catFunction(WholeData)
+              .then((data) => {
+                GetPharmacyCat();
+
+                setShowModal(false);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            console.log(imageUrl, "public url");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };
@@ -165,7 +170,11 @@ export default function AddCategory({
                                   Drag 'n' drop some files here, or click to
                                   select files
                                 </p>
-                                {errors.image && <p className="text-red-500 text-xs">{errors.image}</p>}
+                                {errors.image && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.image}
+                                  </p>
+                                )}
                               </div>
                             ) : (
                               <div
@@ -185,11 +194,8 @@ export default function AddCategory({
                             )}
                           </div>
                         </label>
-
                       </div>
-                      
                     </div>
-              
 
                     {/* rightDiv */}
                     <div
@@ -198,7 +204,6 @@ export default function AddCategory({
                         width: "300px",
                       }}
                     >
-                      
                       <div className="heding flex flex-col pt-5 pr-3">
                         <h6 className="mb-4 font-bold">Category</h6>
                         <p className="text-xs mb-1">Type Category name </p>
@@ -211,7 +216,11 @@ export default function AddCategory({
                           placeholder="Type name"
                           className="rounded-[10px] pl-3 p-1 border border-gray-300 outline-none "
                         />
-   {errors.categoryName && <p className="text-red-500 text-xs">{errors.categoryName}</p>}
+                        {errors.categoryName && (
+                          <p className="text-red-500 text-xs">
+                            {errors.categoryName}
+                          </p>
+                        )}
 
                         <label
                           for="message"
@@ -229,8 +238,11 @@ export default function AddCategory({
                           class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Write your thoughts here..."
                         ></textarea>
-                         {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
-
+                        {errors.description && (
+                          <p className="text-red-500 text-xs">
+                            {errors.description}
+                          </p>
+                        )}
                       </div>
                       {/*footer*/}
                       <div className=" flex items-center justify-end pt-4 pb-6 pr-5  rounded-b ">

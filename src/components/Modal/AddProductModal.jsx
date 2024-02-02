@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import {
   UploadImageUrl,
   addProductApi,
+  getCategoryDetailsById,
   countryCodesApi,
   getPharmaCategory,
   getSubCatData,
@@ -19,7 +20,6 @@ const ProductModal = ({
 }) => {
   // const [image, setImage] = useState(null);
 
-
   const [showImage, setShowImage] = React.useState(false);
   const [Image, setImage] = React.useState("");
   const [fileToUpload, setFileToUpload] = useState(null);
@@ -27,31 +27,37 @@ const ProductModal = ({
   const [mainCategoyData, setMainCategoyData] = useState([]);
   const [subcategoryData, setSubcategoryData] = useState([]);
   const [countries, setCountrieCode] = useState([]);
-
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [errors, setErrors] = useState({});
-  
+  const [categoryDetails, setCategoryDetails] = useState({
+    mainCategory: "",
+    subCategory: "",
+  });
+
   const validate = (UserData) => {
     let tempErrors = {};
-  console.log(UserData);
-    tempErrors.name = UserData?.name!="" ? "" : "Name is required";
-    tempErrors.description = UserData?.description!="" ? "" : "description is required"
-    tempErrors.brand = UserData?.brand!="" ? "" :"brand is required"
-    tempErrors.quantity = UserData?.quantity!="" ? "" : "quantity is required"
-    tempErrors.price = UserData?.price !="" ? "" : "price is required"
-    tempErrors.subcategory = UserData?.subcategory !=undefined ? "" : "subcategory is required"
-    tempErrors.category = UserData?.category !=undefined ? "" : "category is required"
-    tempErrors.country = selectedCountries[0]  ? "" : "country code is required"
-    tempErrors.image = Image  ? "" : "image is required"
-    tempErrors.quantity =UserData?.quantity !=Number ? "" : "quantity should  a number"
- 
+    console.log(UserData);
+    tempErrors.name = UserData?.name != "" ? "" : "Name is required";
+    tempErrors.description =
+      UserData?.description != "" ? "" : "description is required";
+    tempErrors.brand = UserData?.brand != "" ? "" : "brand is required";
+    tempErrors.quantity =
+      UserData?.quantity != "" ? "" : "quantity is required";
+    tempErrors.price = UserData?.price != "" ? "" : "price is required";
+    tempErrors.subcategory =
+      UserData?.subcategory != undefined ? "" : "subcategory is required";
+    tempErrors.category =
+      UserData?.category != undefined ? "" : "category is required";
+    tempErrors.country = selectedCountries[0] ? "" : "country code is required";
+    tempErrors.image = Image ? "" : "image is required";
+    tempErrors.quantity =
+      UserData?.quantity != Number ? "" : "quantity should  a number";
+
     setErrors(tempErrors);
 
-    return Object.values(tempErrors).every(x => x === "");
+    return Object.values(tempErrors).every((x) => x === "");
   };
 
-
-  
   const onDrop = useCallback((acceptedFiles) => {
     seteditImage(false);
     console.log(acceptedFiles[0]);
@@ -106,70 +112,101 @@ const ProductModal = ({
           getProducts();
         });
     } else {
-      UploadImageUrl().then((data) => {
-        uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-          console.log(data, "uploaded");
-        });
-        console.log(data.data.publicUrl, "uploadedssssss");
-        publicUrl = data.data.publicUrl;
-        console.log(publicUrl);
-
-        let wholeData;
-        if (incomingType == "edit") {
-          wholeData = {
-            product_id: editProductData._id,
-            name: UserData.name,
-            description: UserData.description,
-            brand: UserData.brand,
-            image: publicUrl,
-            quantity: parseInt(UserData.quantity),
-            price: parseInt(UserData.price),
-            sub_category_id: UserData.dropdown2,
-            country_codes: selectedCountries,
-          };
-        } else {
-          wholeData = {
-            name: UserData.name,
-            description: UserData.description,
-            brand: UserData.brand,
-            image: publicUrl,
-            quantity: parseInt(UserData.quantity),
-            price: parseInt(UserData.price),
-            sub_category_id: UserData.dropdown2,
-            country_codes: selectedCountries,
-          };
-        }
-
-        apiCall(wholeData)
-          .then((data) => {
-            setAddProductModal(false);
-            getProducts();
-          })
-          .catch((err) => {
-            setAddProductModal(false);
-            getProducts();
+      UploadImageUrl()
+        .then((data) => {
+          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+            console.log(data, "uploaded");
           });
-      });
+          console.log(data.data.publicUrl, "uploadedssssss");
+          publicUrl = data.data.publicUrl;
+          console.log(publicUrl);
+
+          let wholeData;
+          if (incomingType == "edit") {
+            wholeData = {
+              product_id: editProductData._id,
+              name: UserData.name,
+              description: UserData.description,
+              brand: UserData.brand,
+              image: publicUrl,
+              quantity: parseInt(UserData.quantity),
+              price: parseInt(UserData.price),
+              sub_category_id: UserData.dropdown2,
+              country_codes: selectedCountries,
+            };
+          } else {
+            wholeData = {
+              name: UserData.name,
+              description: UserData.description,
+              brand: UserData.brand,
+              image: publicUrl,
+              quantity: parseInt(UserData.quantity),
+              price: parseInt(UserData.price),
+              sub_category_id: UserData.dropdown2,
+              country_codes: selectedCountries,
+            };
+          }
+
+          apiCall(wholeData)
+            .then((data) => {
+              setAddProductModal(false);
+              getProducts();
+            })
+            .catch((err) => {
+              setAddProductModal(false);
+              getProducts();
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const mainCategory = () => {
-    getPharmaCategory().then(({ data }) => {
-      setMainCategoyData(data?.data?.mainCategories);
-    });
+    getPharmaCategory()
+      .then(({ data }) => {
+        setMainCategoyData(data?.data?.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getSubCategory = (data) => {
-    getSubCatData(data).then(({ data }) => {
-      setSubcategoryData(data.data.subCategories);
-    });
+    getSubCatData(data)
+      .then(({ data }) => {
+        setSubcategoryData(data.data.subCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
+    if (editProductData && editProductData.sub_category_id) {
+      getCategoryDetailsById(editProductData.sub_category_id)
+        .then((response) => {
+          const categoryData = response.data.data.subcategory.main_category_id;
+          const subCategoryData = response.data.data.subcategory;
+          setMainCategoyData([categoryData]);
+          setSubcategoryData([subCategoryData]);
+        })
+        .catch((err) =>
+          console.error("Fetching category details failed:", err)
+        );
+    }
+  }, [editProductData]);
+
+  useEffect(() => {
     mainCategory();
-    countryCodesApi().then((data) => {
-      setCountrieCode(data);
-    });
+    countryCodesApi()
+      .then((data) => {
+        setCountrieCode(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
@@ -186,7 +223,7 @@ const ProductModal = ({
         <form onSubmit={AddProduct} id="addProduct">
           <div className="bg-white p-8 rounded-lg ">
             <div className="text-xl p-4 font-semibold">Add Product</div>
-   
+
             <div className="flex gap-3 p-5">
               {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> */}
               <div className="w-2/5">
@@ -199,8 +236,11 @@ const ProductModal = ({
                             Drag 'n' drop some files here, or click to select
                             files
                           </p>
-                  {errors.image && <p className="text-red-500 text-xs">{errors.image}</p>}
-
+                          {errors.image && (
+                            <p className="text-red-500 text-xs">
+                              {errors.image}
+                            </p>
+                          )}
                         </div>
                       ) : (
                         <div
@@ -233,22 +273,23 @@ const ProductModal = ({
                   <select
                     onChange={(data) => {
                       getSubCategory(data.target.value);
+                      setCategoryDetails((prevDetails) => ({
+                        ...prevDetails,
+                        mainCategory: data.target.value,
+                      }));
                     }}
-                   defaultValue={""}
+                    value={categoryDetails.mainCategory} // Use the selected main category ID
                     id="category"
                     name="category"
-                    className="mt-1 p-2 border rounded-md w-full disabled:"
-                    // onChange={handleOptionChange}
+                    className="mt-1 p-2 border rounded-md w-full"
                   >
-                    <option value={""} className="pointer-events-none" selected disabled  >
-                      select Choice
-                    </option>
-
                     {mainCategoyData.map((data) => {
-                      return <option value={data._id}>{data?.title}</option>;
+                      return <option value={data._id}>{data.title}</option>;
                     })}
                   </select>
-                  {errors.category && <p className="text-red-500 text-xs">{errors.category}</p>}
+                  {errors.category && (
+                    <p className="text-red-500 text-xs">{errors.category}</p>
+                  )}
                   <label
                     for="message"
                     class="block  mt-4 text-sm font-medium text-gray-900"
@@ -262,22 +303,35 @@ const ProductModal = ({
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option
-                      selected
-                      disabled
-                      defaultValue={editProductData?.sub_category_id?editProductData?.sub_category_id:""}
-                    >
-                      {editProductData?.sub_category_id
-                        ? editProductData?.sub_category_id
-                        : "select Choice"}
-                    </option>
-
-                    {subcategoryData?.map((data) => {
-                      console.log(data);
-                      return <option value={data._id}>{data.title}</option>;
-                    })}
+                    {/* Display the default option based on editProductData */}
+                    {editProductData?.sub_category_id &&
+                    subcategoryData.length > 0 ? (
+                      subcategoryData.map((data) => {
+                        // Check if this is the subcategory to be displayed as selected
+                        if (data._id === editProductData?.sub_category_id) {
+                          return (
+                            <option key={data._id} value={data._id} selected>
+                              {data.title}
+                            </option>
+                          );
+                        } else {
+                          return (
+                            <option key={data._id} value={data._id}>
+                              {data.title}
+                            </option>
+                          );
+                        }
+                      })
+                    ) : (
+                      // Fallback or initial option
+                      <option value="" disabled selected>
+                        Select Choice
+                      </option>
+                    )}
                   </select>
-                  {errors.subcategory && <p className="text-red-500 text-xs">{errors.subcategory}</p>}
+                  {errors.subcategory && (
+                    <p className="text-red-500 text-xs">{errors.subcategory}</p>
+                  )}
 
                   <label
                     for="message"
@@ -318,8 +372,9 @@ const ProductModal = ({
                       return <option value={data.code}>{data.name}</option>;
                     })}
                   </select>
-                  {errors.country && <p className="text-red-500 text-xs">{errors.country}</p>}
-
+                  {errors.country && (
+                    <p className="text-red-500 text-xs">{errors.country}</p>
+                  )}
                 </div>
               </div>
 
@@ -331,7 +386,9 @@ const ProductModal = ({
                   name="name"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
- {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+                {errors.name && (
+                  <p className="text-red-500 text-xs">{errors.name}</p>
+                )}
 
                 <div className="mt-4">Brand:</div>
                 <input
@@ -340,7 +397,9 @@ const ProductModal = ({
                   type="text"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
-                {errors.brand && <p className="text-red-500 text-xs">{errors.brand}</p>}
+                {errors.brand && (
+                  <p className="text-red-500 text-xs">{errors.brand}</p>
+                )}
                 <div className="mt-2">quantity</div>
                 <input
                   defaultValue={editProductData?.quantity}
@@ -348,7 +407,9 @@ const ProductModal = ({
                   name="quantity"
                   className="mt-1 p-2 border rounded-md w-full"
                 />
-                {errors.quantity && <p className="text-red-500 text-xs">{errors.quantity}</p>}
+                {errors.quantity && (
+                  <p className="text-red-500 text-xs">{errors.quantity}</p>
+                )}
                 <div className="mt-2">price</div>
                 <input
                   defaultValue={editProductData?.price}
@@ -360,7 +421,9 @@ const ProductModal = ({
                   for="message"
                   class="block mt-4 text-sm font-medium text-gray-900"
                 >
-                  {errors.price && <p className="text-red-500 text-xs">{errors.price}</p>}
+                  {errors.price && (
+                    <p className="text-red-500 text-xs">{errors.price}</p>
+                  )}
                   Description
                 </label>
                 <textarea
@@ -371,7 +434,9 @@ const ProductModal = ({
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Write your thoughts here..."
                 ></textarea>
-                {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
+                {errors.description && (
+                  <p className="text-red-500 text-xs">{errors.description}</p>
+                )}
               </div>
             </div>
             <div className="flex justify-end m-5">

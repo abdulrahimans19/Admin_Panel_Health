@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems, openSidebar } from "../../Redux/Features/NavbarSlice";
+import { openSidebar } from "../../Redux/Features/NavbarSlice";
 import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -73,60 +73,70 @@ function NavBar() {
       .then((payload) => {
         setNotificationnew(payload);
         console.log(payload, "its coming here");
-        dispatch(getCartItems());
-        getNotificationData()
+        getNotificationData();
         const audio = new Audio(wavFile);
         console.log(document.hasFocus());
-        if(!document.hasFocus()){
+        if (!document.hasFocus()) {
           console.log("ifworking");
-          audio.play().catch((err)=>
-          {
+          audio.play().catch((err) => {
             console.log(err);
-          })
-         
-        }
-        else{
+          });
+        } else {
           console.log("else working");
-          audio.play().catch((err)=>
-          {
+          audio.play().catch((err) => {
             console.log(err);
-          })
+          });
         }
-        toast.success(
-          `${payload?.notification?.title}:${payload.notification?.body}`,
-          {
-            duration: 6000,
-            position: "top-right",
-          }
-        );
+        toast.custom((t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 pt-0.5"></div>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-900">
+                    {payload?.notification?.title}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {payload.notification?.body}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ));
+
         // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
       })
       .catch((err) => console.log("failed: ", err));
   }, [notificationnew]);
 
-const [getNotData, setGetNotData] = useState(0)
-const getNotificationData=()=>
-{
-  getNotificationApi().then(({data})=>
-  {
-    console.log(data,"notification");
-    setGetNotData(data.data.unread_notifications
-      )
-  })
-}
+  const [getNotData, setGetNotData] = useState(0);
+  const getNotificationData = () => {
+    getNotificationApi().then(({ data }) => {
+      console.log(data, "notification");
+      setGetNotData(data.data.unread_notifications);
+    });
+  };
 
-
-useEffect(()=>
-{
-  getNotificationData()
-},[])
-
-
-
+  useEffect(() => {
+    getNotificationData();
+  }, []);
 
   return (
     <>
-      <Toaster />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           {/* <Notification /> */}
@@ -235,14 +245,12 @@ useEffect(()=>
                       backgroundColor: "red",
                     }}
                   >
-                    <span className="text-white text-xs">
-                      {getNotData}
-                    </span>
+                    <span className="text-white text-xs">{getNotData}</span>
                   </div>
                 </div>
                 {openNotification && (
-                  <NotificationBar 
-                  getNotificationData={getNotificationData}
+                  <NotificationBar
+                    getNotificationData={getNotificationData}
                     notifications={notification}
                     setOpenNotification={setOpenNotification}
                   />

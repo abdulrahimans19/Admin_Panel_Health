@@ -1,121 +1,146 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { VerifyEmail, forgotOtp } from "../API/ApiCall";
+
 import mail from "../assets/images/mail.png";
 import key from "../assets/images/message.png";
 
 const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
+  const [verificationError, setVerificationError] = useState("");
 
-  const containerStyle = {
-    display: "flex",
-    height: "100vh",
-    width: "100%",
-  };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const inputRefs = useRef([0, 1, 2, 3].map(() => React.createRef()));
 
-  const leftSideStyle = {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  };
+  const { email, flow } = location.state || { email: null, flow: null };
 
-  const rightSideStyle = {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+  const handleVerification = () => {
+    const otpString = otp.join("");
+    console.log("Request Payload:", { email, otp: otpString });
+
+    const apiFunction = flow === "forgot" ? forgotOtp : VerifyEmail;
+
+    apiFunction(email, otpString)
+      .then((response) => {
+        console.log(response, "OTP verification success");
+        if (response.data.statusCode === 200 && response.data.status) {
+          if (response.data.message === "Valid OTP") {
+            if (response.data.data && response.data.data.reset_password_token) {
+              const nextState = {
+                email,
+                reset_password_token: response.data.data.reset_password_token,
+              };
+              console.log("Navigating to /set-password with state:", nextState); // Log to confirm data
+              navigate("/set-password", { state: nextState });
+            } else {
+              console.error("No reset password token provided in response.");
+              setVerificationError(
+                "No reset password token provided. Please try again or contact support."
+              );
+            }
+          } else if (
+            response.data.message ===
+            "Email successfully verified, waiting for admin confirmation"
+          ) {
+            const messageState = { message: response.data.message };
+            console.log("Navigating to /login with state:", messageState);
+            setTimeout(() => {
+              navigate("/login", { state: messageState });
+            }, 5000);
+          }
+        } else {
+          setVerificationError(
+            response.data.message ||
+              "An unexpected error occurred. Please try again."
+          );
+        }
+      })
+      .catch((err) => {
+        console.error(err, "OTP verification error");
+        const errorMsg =
+          err.response?.data?.message ||
+          "Error verifying OTP. Please try again.";
+        setVerificationError(errorMsg);
+      });
   };
 
   const handleOtpChange = (index, value) => {
-    // Update the OTP state based on user input
     const newOtp = [...otp];
-    newOtp[index] = value;
+    newOtp[index] = value.slice(0, 1);
     setOtp(newOtp);
+
+    if (value && index < inputRefs.current.length - 1) {
+      inputRefs.current[index + 1].current.focus();
+    }
+  };
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === "Backspace" && !otp[index]) {
+      event.preventDefault();
+      if (index > 0) {
+        inputRefs.current[index - 1].current.focus();
+      }
+    }
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={leftSideStyle}>
-        <div className="w-[540px] h-[746px] flex-col justify-start items-center gap-[20px]  inline-flex">
-          <div className="flex-col justify-center items-center gap-[92px] flex">
-            <div className="flex-col justify-start items-center gap-[66px] flex">
-              <div className="flex-col justify-start items-center gap-[49px] flex">
-                <div className="w-[126px] h-[126px] relative">
-                  <img
-                    className="w-24 h-[87.77px] left-[15px] top-[69px] relative"
-                    src={key}
-                    alt="Key"
-                  />
-                  <div className="w-14 h-14 left-[35px] top-[35px] absolute justify-center items-center inline-flex">
-                    <div className="w-14 h-14 relative"></div>
-                  </div>
-                </div>
-                <div className="text-zinc-800 text-5xl font-bold font-['Roboto Flex']">
-                  Enter your OTP
-                </div>
-                <div className="text-center text-neutral-400">
-                  <span
-                    style={{
-                      color: "neutral-400",
-                      fontSize: "2xl",
-                      fontWeight: "normal",
-                      fontFamily: "Roboto Flex",
-                      lineHeight: "loose",
-                    }}
-                  >
-                    Please enter the four-digit verification code we sent to
-                    <br />
-                  </span>
-                  <span
-                    style={{
-                      color: "neutral-400",
-                      fontSize: "2xl",
-                      fontWeight: "bold",
-                      fontFamily: "Roboto Flex",
-                      lineHeight: "loose",
-                    }}
-                  >
-                    example@gmail.com
-                  </span>
-                </div>
-              </div>
-              <div className="justify-center items-center gap-4 inline-flex">
-                {otp.map((digit, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    className="w-[65px] h-[65px] bg-neutral-300 rounded-[10px] text-center"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                  />
-                ))}
-              </div>
+    <div className="flex flex-col lg:flex-row h-screen">
+      <div className="flex flex-1 flex-col items-center justify-center lg:px-0 px-4">
+        <div className="w-full max-w-lg flex-col justify-start items-center gap-6 inline-flex">
+          <div className="flex-col justify-center items-center gap-8 flex">
+            <div className="w-32 h-32 relative">
+              <img
+                className="absolute w-24 h-auto left-4 top-4"
+                src={key}
+                alt="Key"
+              />
             </div>
-            <div className="flex-col justify-start items-start  flex">
-              <button className="h-[58px] px-[70px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
-                <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
-                  Redirect to Email
-                </div>
-              </button>
+            <div className="text-zinc-800 text-3xl lg:text-5xl font-bold">
+              Enter your OTP
             </div>
-          </div>
-          <div className="justify-center items-center gap-1 inline-flex">
-            <a
-              href="/login"
-              className="text-zinc-800 text-1xl font-normal font-['Roboto Flex']"
+            <div className="text-center text-neutral-400">
+              Please enter the four-digit verification code we sent to
+              <br />
+              <span className="font-bold">{location.state?.email}</span>
+            </div>
+            <div className="flex justify-center items-center gap-4">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  className="w-16 h-16 bg-neutral-300 rounded-lg text-center text-2xl"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  ref={inputRefs.current[index]}
+                />
+              ))}
+            </div>
+            <button
+              className="h-14 px-20 bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-full flex justify-center items-center"
+              onClick={handleVerification}
             >
+              <span className="text-white text-xl font-semibold">
+                Confirm OTP
+              </span>
+            </button>
+            {verificationError && (
+              <div className="text-red-500">{verificationError}</div>
+            )}
+            <a href="/login" className="text-zinc-800 text-lg">
               Back to login
             </a>
           </div>
         </div>
       </div>
-
-      <div style={rightSideStyle}>
+      <div className="hidden lg:flex flex-1 items-center justify-center">
         <img
           src={mail}
-          alt="Centered Image"
-          style={{ maxWidth: "60%", maxHeight: "70%" }}
+          alt="Mail"
+          className="max-w-xs lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl"
         />
       </div>
     </div>

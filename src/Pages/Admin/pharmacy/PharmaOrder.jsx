@@ -35,7 +35,7 @@ export default function PharmaOrder() {
       <div>
         <h1 className="p-3 text-xl font-semibold">Order </h1>
       </div>
-      <div>
+      {/* <div>
         <div className="flex justify-center ">
           <form class="flex items-baseline justify-center">
             <label for="voice-search" class="sr-only">
@@ -82,7 +82,7 @@ export default function PharmaOrder() {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
 
       {/* Orders Table */}
       <div className="p-5">
