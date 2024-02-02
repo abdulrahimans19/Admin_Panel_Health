@@ -1,6 +1,6 @@
 import React from "react";
 
-function EditMessageModal({setEditMessageModal}) {
+function EditMessageModal({callback,setEditMessageModal}) {
 
     
   return (
@@ -48,13 +48,14 @@ function EditMessageModal({setEditMessageModal}) {
             Edit
           </button>
           <button
-          onClick={()=>{setEditMessageModal(false)}} 
+          type="submit"
+          onClick={()=>{callback()}} 
           class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400">
             Confirm
           </button>
         </div>
       </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className=" opacity-25 fixed inset-0 z-40 bg-black"></div>
     </div>
   );
 }
