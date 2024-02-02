@@ -1,9 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-// Assuming VerifyEmail and forgotOtp are your API call functions
 import { VerifyEmail, forgotOtp } from "../API/ApiCall";
 
 import mail from "../assets/images/mail.png";
@@ -17,50 +14,58 @@ const Otp = () => {
   const navigate = useNavigate();
   const inputRefs = useRef([0, 1, 2, 3].map(() => React.createRef()));
 
-  // Correctly destructure and use the provided state
   const { email, flow } = location.state || { email: null, flow: null };
 
   const handleVerification = () => {
     const otpString = otp.join("");
     console.log("Request Payload:", { email, otp: otpString });
-  
+
     const apiFunction = flow === "forgot" ? forgotOtp : VerifyEmail;
-  
+
     apiFunction(email, otpString)
       .then((response) => {
         console.log(response, "OTP verification success");
-        // Adjusted to correctly check the nested `status` and `statusCode` within `response.data`
         if (response.data.statusCode === 200 && response.data.status) {
           if (response.data.message === "Valid OTP") {
-            // For the forgot password flow, also correctly access the nested `reset_password_token`
-            // Check if `reset_password_token` is provided in the response
             if (response.data.data && response.data.data.reset_password_token) {
-              const nextState = { email, reset_password_token: response.data.data.reset_password_token };
+              const nextState = {
+                email,
+                reset_password_token: response.data.data.reset_password_token,
+              };
               console.log("Navigating to /set-password with state:", nextState); // Log to confirm data
               navigate("/set-password", { state: nextState });
             } else {
-              // Handle case where `reset_password_token` might not be provided
               console.error("No reset password token provided in response.");
-              setVerificationError("No reset password token provided. Please try again or contact support.");
+              setVerificationError(
+                "No reset password token provided. Please try again or contact support."
+              );
             }
-          } else if (response.data.message === "Email successfully verified, waiting for admin confirmation") {
-            // For email verification flow
+          } else if (
+            response.data.message ===
+            "Email successfully verified, waiting for admin confirmation"
+          ) {
             const messageState = { message: response.data.message };
             console.log("Navigating to /login with state:", messageState);
-            navigate("/login", { state: messageState });
+            setTimeout(() => {
+              navigate("/login", { state: messageState });
+            }, 5000);
           }
         } else {
-          // Handle other responses as errors
-          setVerificationError(response.data.message || "An unexpected error occurred. Please try again.");
+          setVerificationError(
+            response.data.message ||
+              "An unexpected error occurred. Please try again."
+          );
         }
       })
       .catch((err) => {
         console.error(err, "OTP verification error");
-        const errorMsg = err.response?.data?.message || "Error verifying OTP. Please try again.";
+        const errorMsg =
+          err.response?.data?.message ||
+          "Error verifying OTP. Please try again.";
         setVerificationError(errorMsg);
       });
   };
-  
+
   const handleOtpChange = (index, value) => {
     const newOtp = [...otp];
     newOtp[index] = value.slice(0, 1);
@@ -138,7 +143,6 @@ const Otp = () => {
           className="max-w-xs lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl"
         />
       </div>
-      <ToastContainer />
     </div>
   );
 };
