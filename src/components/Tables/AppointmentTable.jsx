@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCurrentAppoinmentsApi } from "../../API/ApiCall";
+import NoDataImage from "../NoDataImage";
 
 export default function AppointmentTable() {
   const [totalPagecount, setTotalPagecount] = useState(0);

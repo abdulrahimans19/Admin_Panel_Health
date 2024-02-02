@@ -16,7 +16,8 @@ import {
 import ReactPaginate from "react-paginate";
 import { homecare } from "../../../Redux/Features/NavbarSlice";
 import { useDispatch } from "react-redux";
-
+import noDataImage from "../../../assets/images/no_data.png";
+import NoDataImage from "../../../components/NoDataImage";
 function AppoinmentDetails() {
   const today = new Date();
   const [startDate, setStartDate] = useState(new Date());
@@ -32,13 +33,30 @@ function AppoinmentDetails() {
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [year, setYear] = useState(today.getDate());
   const [Image, setImage] = useState("");
-
+  const [fileInputs, setFileInputs] = useState([{ file: null }]);
+const [error, seterror] = useState()
   useEffect(() => {
     dispatch(homecare());
 
     getTodayAppoinments();
     // console.log("currnt", currentPage);
   }, [currentPage]);
+  const handleFileChange = (e, index) => {
+    const files = e.target.files[0]
+    const updatedFileInputs = [...fileInputs];
+    updatedFileInputs[index].file = files;
+    setFileInputs(updatedFileInputs);
+  };
+  const deleteFileInput = (index) => {
+    if (fileInputs.length > 1) {
+      const updatedFileInputs = fileInputs.filter((_, i) => i !== index);
+      setFileInputs(updatedFileInputs);
+    }
+  };
+
+  const addFileInput = () => {
+    setFileInputs([...fileInputs, { file: null }]);
+  };
   const dispatch = useDispatch();
   const handlePageChange = (selectedPage) => {
     // Handle page change logic here, e.g., fetching data for the new page
@@ -53,7 +71,9 @@ function AppoinmentDetails() {
       const totalPages = Math.ceil(data.data.data.total_count / 10);
       setTotalPagecount(totalPages);
       setAppoinments(data.data.data.bookings);
-    });
+    }).catch((error)=>{
+      console.log(error);
+    })
   };
 
   const getTableData = () => {
@@ -61,19 +81,21 @@ function AppoinmentDetails() {
       const totalPages = Math.ceil(data.data.data.total_count / 10);
       setTotalPagecount(totalPages);
       setAppoinments(data.data.data.bookings);
-      // console.log("appoinmsansnsnn",appoinments);
-    });
+      console.log("appoinmsansnsnn", appoinments);
+    }).catch((error)=>{
+      console.log(error);
+    })
   };
   useEffect(() => {
     getTableData();
-  }, [year]);
+  }, [year, day, month]);
   const handleDateChange = (data) => {
     setStartDate(data);
 
     setYear(data.getFullYear());
     setMonth(data.getMonth() + 1);
     setDay(data.getDate());
-    console.log("yaaaaa", year, month, day);
+    // console.log("yaaaaa", year, month, day);
     // console.log(`${year}-${month}-${date}`);
   };
   const openModal = (userData) => {
@@ -82,15 +104,18 @@ function AppoinmentDetails() {
     setShowModal(true); // Show the modal
   };
   const onDrop = useCallback((acceptedFiles) => {
-    setFileToUpload(acceptedFiles[0]);
-    setShowImage(true);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    console.log(reader);
-    reader.readAsDataURL(acceptedFiles[0]);
+    // Update the state to include the newly accepted files
+    console.log("on drop");
+    const updatedFiles = acceptedFiles.map((file) => ({ file }));
+    setFileInputs((prevInputs) => [...prevInputs, ...updatedFiles]);
+console.log("files rere",fileInputs);
+    // Optionally, if you want to show previews for multiple files:
+    const filePreviews = acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+    // Here, you can set these previews to a state or handle them as needed
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -98,30 +123,76 @@ function AppoinmentDetails() {
     accept: "image/*",
   });
 
-  const addResult = (e) => {
-    const form = new FormData(e.target);
-    const UserData = Object.fromEntries(form);
-    console.log("image is", fileToUpload);
-    UploadImageUrl().then((datas) => {
+  const addResult = async () => {
+  
+    // e.preventDefault(); // Prevent the form from submitting the traditional way
+    
+    // Assuming 'fileToUpload' is the name attribute of your file input
+    // const filesToUpload = form.getAll("fileToUpload");
+    console.log("files to upload ",fileToUpload);
+    const uploadedUrls = [];
+console.log(fileInputs,"fileinput here");
+if (fileInputs.some(obj => obj.hasOwnProperty("file") && obj["file"] === null)) {
+  console.log("add files");
+  seterror("input files")
+}
+else{
+  seterror("")
+console.log("else working");
+  for (const input of fileInputs) {
+    const file = input.file;
+    console.log("uolpoiu",file); // Directly accessing the file object
+    if(file==null){
+      return ;
+    }
+    try {
+      const datas = await UploadImageUrl(); 
+      console.log("iuhhhhhhh",datas.data);// Get a presigned URL for each file
       const presignedUrl = datas.data.presignedUrl;
       const publicUrl = datas.data.publicUrl;
 
-      uploadToAws(presignedUrl, fileToUpload).then(() => {
-        console.log("Image uploaded to AWS");
-        // Now publicUrl is available here
-        console.log("Uploaded image URL:", publicUrl);
-        console.log("book", selectedUser?._id);
-        const resultData = {
-          booking_id: selectedUser._id,
-          result_url: publicUrl,
-        };
-        // console.log(publicUrl);
-        console.log(resultData);
-        addResultApi(resultData).then((data) => {
-          console.log(data.data);
-        });
-      });
-    });
+      await uploadToAws(presignedUrl, file)
+      // .then((data)=>{
+      //   console.log("uploadinfdfd",data);
+      // }); // Upload the file to AWS
+      uploadedUrls.push(publicUrl); // Collect the public URL after successful upload
+
+      console.log("Uploaded image URL:", publicUrl);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      // Handle any errors here, such as breaking the loop or showing a message
+    }
+    setFileInputs([{file:null}])
+  }
+
+  console.log("All uploaded URLs:", uploadedUrls);
+  if (uploadedUrls.length > 0) {
+    // After all files are uploaded, you might want to do something with the URLs
+    const resultData = {
+      booking_id: selectedUser._id,
+      result_urls: uploadedUrls, // Store all URLs in resultData
+    };
+
+    console.log("Result data with URLs:", resultData);
+    // Call your API with the result data
+    try {
+      await addResultApi(resultData);
+      // console.log("Result API response:", data);
+      getTodayAppoinments();
+      setShowModal(false)
+      // Refresh appointments or handle the next steps
+    } catch (apiError) {
+      console.error("Error calling addResultApi:", apiError);
+      // Handle API call error here
+    }
+  }
+
+}
+
+
+    
+
+    
   };
   return (
     <div>
@@ -153,40 +224,41 @@ function AppoinmentDetails() {
           </div>
         </div>
       </div>
+
       <div>
         <div>
-          <div class="flex items-center relative overflow-x-auto shadow-md sm:rounded-lg my-4">
-            <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 border-separate border-spacing-y-4">
-              <thead class="text-xs text-gray-700 uppercase dark:bg-gray-200 text-neutral-950">
-                <tr>
-                  <th scope="col" class="px-6 py-3">
-                    Name
-                  </th>
+          {appoinments[0] ? (
+            <div class="flex items-center relative overflow-x-auto shadow-md sm:rounded-lg my-4">
+              <table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 border-separate border-spacing-y-4">
+                <thead class="text-xs text-gray-700 uppercase dark:bg-gray-200 text-neutral-950">
+                  <tr>
+                    <th scope="col" class="px-6 py-3">
+                      Name
+                    </th>
 
-                  <th scope="col" class="px-6 py-3">
-                    ID
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Test name
-                  </th>
+                    <th scope="col" class="px-6 py-3">
+                      ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Test name
+                    </th>
 
-                  <th scope="col" class="px-6 py-3">
-                    Address{" "}
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Date Added
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    Total price
-                  </th>
-                  <th scope="col" class="px-6 py-3">
-                    status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="text-neutral-950">
-                {appoinments[0] &&
-                  appoinments.map((data) => {
+                    <th scope="col" class="px-6 py-3">
+                      Address{" "}
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Date Added
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      Total price
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                      status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="text-neutral-950">
+                  {appoinments.map((data) => {
                     return (
                       <tr class="bg-white border-bdark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-200">
                         <th
@@ -212,8 +284,8 @@ function AppoinmentDetails() {
                         <td class="px-6 py-4">{data.created_at}</td>
                         <td class="px-6 py-4">${data.test_id.price}</td>
                         <td class="px-6 py-4 text-right">
-                          {data.result_url ? (
-                            <div class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm py-1 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white">
+                          {data?.result_url[0] ? (
+                            <div class="text-green-700 border border-green-700  focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm py-1 text-center dark:border-green-500 dark:text-green-500 ">
                               Result added
                             </div>
                           ) : (
@@ -231,7 +303,7 @@ function AppoinmentDetails() {
                             <>
                               <div className="fixed inset-0 z-50 overflow-hidden">
                                 <div className="flex items-center justify-center min-h-screen">
-                                  <form onSubmit={addResult}>
+                              
                                     <div className="bg-white rounded-lg shadow-lg p-8 w-96 relative">
                                       {/* Close button */}
                                       <div className="absolute top-4 right-4 w-7 h-7 bg-stone-300 bg-opacity-20 rounded-3xl flex items-center justify-center">
@@ -274,49 +346,63 @@ function AppoinmentDetails() {
                                           label="Total price"
                                           value={`${selectedUser?.test_id?.price}`}
                                         />
-                                        Add Result
-                                        <div>
-                                          <div
-                                            {...getRootProps()}
-                                            className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
+                                        <p>  Add Result</p> 
+                                {error && <p className="text-red-500 text-xs">{error}</p>}
+
+                                        <div className="justify-end">
+                                          {fileInputs.map((input, index) => (
+                                            <div
+                                              key={index}
+                                              className="flex items-center justify-between mb-2"
+                                            >
+                                              <input
+                                                multiple
+                                                className="flex-grow text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600"
+                                                type="file"
+                                                onChange={(e) =>
+                                                  handleFileChange(e, index)
+                                                }
+                                              />
+                                              {fileInputs.length > 1 && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    deleteFileInput(index)
+                                                  }
+                                                  className="ml-2 text-red-500 hover:text-white hover:bg-red-500 border border-red-500 focus:outline-none font-medium rounded-lg text-sm p-1"
+                                                  aria-label="Delete file input"
+                                                >
+                                                  <svg
+                                                    class="fill-current text-red-700"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="18"
+                                                    height="18"
+                                                    viewBox="0 0 18 18"
+                                                  >
+                                                    <path d="M12.45 11.75L11.25 12.95L9 10.7L6.75 12.95L5.55 11.75L7.8 9.5L5.55 7.25L6.75 6.05L9 8.3L11.25 6.05L12.45 7.25L10.2 9.5L12.45 11.75Z" />
+                                                  </svg>
+                                                </button>
+                                              )}
+                                            </div>
+                                          ))}
+
+                                          {/* Button to add more file inputs */}
+                                          <button
+                                            type="button"
+                                            onClick={addFileInput}
+                                            className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
                                           >
-                                            {!showImage ? (
-                                              <div>
-                                                <p>
-                                                  Drag 'n' drop some files here,
-                                                  or click to select files
-                                                </p>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                sx={{
-                                                  overflow: "hidden",
-                                                  objectFit: "cover",
-                                                  marginTop: 2,
-                                                }}
-                                              >
-                                                <img
-                                                  height={100}
-                                                  src={Image}
-                                                  alt="Your Image"
-                                                  sx={{ width: "100%" }}
-                                                />
-                                              </div>
-                                            )}
-                                            <p className=" text-xs text-center  p-2 ">
-                                              Drag and drop an image here or
-                                              click to select one
-                                            </p>
-                                          </div>
+                                            +
+                                          </button>
                                         </div>
                                         <div
-                                          onClick={() => setShowModal(false)}
+                                         
                                           className="flex justify-end items-center gap-1"
                                         >
                                           <div className="">
                                             <button
                                               onClick={() => {
-                                                addResult(selectedUser._id);
+                                                addResult();
                                               }}
                                               className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
                                             >
@@ -336,31 +422,39 @@ function AppoinmentDetails() {
                                         </div>
                                       </div>
                                     </div>
-                                  </form>
+                               
                                 </div>
                               </div>
 
-                              <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                              <div className="opacity-25 fixed inset-0 z-40 bg-slate-700"></div>
                             </>
                           ) : null}
                         </td>
                       </tr>
                     );
                   })}
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+
+              <NoDataImage text={"No Appoinments For this Date"} />
+            </div>
+          )}
         </div>
+        {appoinments[0] ? (
+          <ReactPaginate
+            pageCount={totalPagecount} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            forcePage={currentPage - 1}
+          />
+        ) : null}
       </div>
-      <ReactPaginate
-        pageCount={totalPagecount} // Replace with the total number of pages
-        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-        marginPagesDisplayed={1} // Number of pages to display for margin pages
-        onPageChange={handlePageChange}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-        forcePage={currentPage - 1}
-      />
     </div>
   );
 }

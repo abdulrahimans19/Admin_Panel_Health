@@ -43,6 +43,8 @@ export default function Homecare() {
     getHomecareCategories().then((data)=>{
       console.log("data is ",data);
       setHomeCareCategory(data?.data?.data?.mainCategories)
+    }).catch((error)=>{
+      console.log(error);
     })
   }
   function addCategory() {
@@ -61,7 +63,9 @@ export default function Homecare() {
   const getHomecareCategories = () => {
     GetHomecareCategoriesApi().then((data) => {
       setHomeCareCategory(data.data.data.mainCategories);
-    });
+    }).catch((error)=>{
+      console.log(error);
+    })
   };
   return (
     <div>
