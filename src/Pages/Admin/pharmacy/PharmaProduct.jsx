@@ -46,7 +46,10 @@ export default function PharmaProduct() {
     getPharmaCategory().then(({ data }) => {
       console.log(data, "maincat");
       setCategories(data.data.mainCategories);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
 
   const PharmaProduct = () => {
@@ -56,7 +59,10 @@ export default function PharmaProduct() {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
         setPharmaProductsData(data.data.products);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     } else if (categoryMenu) {
       getPharmaProductApi(pageNumber).then(({ data }) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
@@ -64,14 +70,20 @@ export default function PharmaProduct() {
         console.log(data.data.products);
 
         setPharmaProductsData(data.data.products);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     } else {
       disabledFarmaProductApi().then(({ data }) => {
         const totalPages = Math.ceil(data.data.total_document / 10);
         setTotalPagecount(totalPages);
         console.log(data.data);
         setPharmaProductsData(data.data.products);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     }
   };
 
@@ -88,23 +100,32 @@ export default function PharmaProduct() {
 
     if (filterId) {
       filterPharmaAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
-        setPageNumber(selectedPage.selected + 1);
+        setPageNumber(selectedPage.selected + 1)
 
         setPharmaProductsData(data.data.products);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     } else {
       if (categoryMenu) {
         getPharmaProductApi(selectedPage.selected + 1).then(({ data }) => {
           console.log(data.data.products);
           setPageNumber(selectedPage.selected + 1);
           setPharmaProductsData(data.data.products);
-        });
+        }).catch((err)=>
+        {
+          console.log(err);
+        })
       } else {
         disabledFarmaProductApi(selectedPage.selected + 1).then(({ data }) => {
           console.log(data.data.products);
           setPageNumber(selectedPage.selected + 1);
           setPharmaProductsData(data.data.products);
-        });
+        }).catch((err)=>
+        {
+          console.log(err);
+        })
       }
     }
   };
@@ -127,7 +148,12 @@ export default function PharmaProduct() {
       console.log(data);
       PharmaProduct()
       setDisableProducts(false);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+      setDisableProducts(false);
+
+    })
   };
 
 
@@ -163,7 +189,7 @@ export default function PharmaProduct() {
       <div className="flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
-            {categoryMenu ? "Categories" : "sub Categories"}
+            {categoryMenu ? "Categories" : ""}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {/* {PharmaProductsData.length} categories */}

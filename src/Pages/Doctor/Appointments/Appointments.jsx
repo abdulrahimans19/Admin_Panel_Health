@@ -64,7 +64,10 @@ export default function Appointments() {
       setApointments(data?.data?.data?.appointments);
 
       setDocument(data?.data?.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   function handleDateSelect(date) {
     setDate(date);
@@ -79,7 +82,10 @@ export default function Appointments() {
       setDay("");
       setDate("");
       setApointments(data?.data?.data?.appointments);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
     setOpenCalender(false);
   }
   function selectedDate(stringdate) {
@@ -106,7 +112,10 @@ export default function Appointments() {
     setFormatedDate(formatedDate);
     getApointmentByDate(formattedDate).then((data) => {
       setApointments(data?.data?.data?.appointments);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   const isSlectedDate = () => {
     setOpenCalender(!openCalender);
@@ -120,7 +129,10 @@ export default function Appointments() {
 
           setDocument(data?.data?.data?.total_document);
         }
-      );
+      ).catch((err)=>
+      {
+        console.log(err);
+      })
     }
     // getAllApointment(selectedPage).then((data) => {
     //   setData(data?.data?.data?.appointments);

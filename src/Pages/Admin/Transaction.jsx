@@ -91,7 +91,10 @@ const Transactions = () => {
     fetchFunction(formattedStartDate, formattedEndDate).then(({ data }) => {
       setTransactions(data.data.transaction);
       setTotalAmountForSelectedCategory(data.data.total_income);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
 
   // Function to format date

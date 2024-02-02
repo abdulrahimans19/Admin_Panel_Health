@@ -49,7 +49,7 @@ import { useDispatch } from 'react-redux';
               type="text"
               id={`inputField${index}`}
               name={`inputField${index}`}
-              placeholder={`option ${index+1 }`}
+              placeholder={`sub test ${index+1 }`}
               className="mt-1 p-1 border rounded-md w-full"
               onChange={(e) => handleInputChange(index, e)}
             />

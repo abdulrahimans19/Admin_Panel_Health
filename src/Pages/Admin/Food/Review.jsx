@@ -20,17 +20,18 @@ export default function PharmaReview() {
   const [viewReview, setViewReview] = useState(false);
   const [reviewdata, setReviewdata] = useState("");
   const [reviews, setReviews] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
   const GetPharmacyCat = () => {
-    getFoodProductApi(currentPage).then(({ data }) => {
-      const totalPages = Math.ceil(data.data.total_document / 10);
-      setTotalPagecount(totalPages);
-      setCategoryData(data.data.products);
-    });
+    getFoodProductApi(currentPage)
+      .then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+        setCategoryData(data.data.products);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-
-
-
 
   const editCat = () => {};
 
@@ -43,10 +44,14 @@ export default function PharmaReview() {
   };
 
   const collectData = (data) => {
-    getFoodReview(data._id).then(({ data }) => {
-      console.log(data);
-      setReviews(data.reviews);
-    });
+    getFoodReview(data._id)
+      .then(({ data }) => {
+        console.log(data);
+        setReviews(data.reviews);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -63,11 +68,10 @@ export default function PharmaReview() {
       month < 10 ? "0" : ""
     }${month}-${year}`;
   };
-const handlePageChange=(selectedPage)=>
-{
-console.log(selectedPage);
-setCurrentPage(selectedPage.selected+1);
-}
+  const handlePageChange = (selectedPage) => {
+    console.log(selectedPage);
+    setCurrentPage(selectedPage.selected + 1);
+  };
   return (
     <>
       <div>
@@ -185,16 +189,17 @@ setCurrentPage(selectedPage.selected+1);
             </div>
           )}
         </div>
-        {!viewReview&&   <ReactPaginate
-        pageCount={totalPagecount} // Replace with the total number of pages
-        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-        marginPagesDisplayed={1} // Number of pages to display for margin pages
-        onPageChange={handlePageChange}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-       forcePage={currentPage-1}
-      />}
-     
+        {!viewReview && (
+          <ReactPaginate
+            pageCount={totalPagecount} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            forcePage={currentPage - 1}
+          />
+        )}
       </div>
     </>
   );

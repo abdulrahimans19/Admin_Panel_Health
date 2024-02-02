@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PriceDisplayCard({ data }) {
+export default function PriceDisplayCard({ data, cardDifference }) {
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
       <svg
@@ -39,7 +39,13 @@ export default function PriceDisplayCard({ data }) {
       </a>
       <div className="flex items-center space-x-4">
         <span className="font-semibold text-3xl">${data?.toFixed(2)}</span>
-        <span className="font-semibold text-green-500">+222</span>
+        <span
+          className={`font-semibold ${
+            cardDifference < 0 ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {cardDifference?.toFixed(0)}
+        </span>
       </div>
     </div>
   );

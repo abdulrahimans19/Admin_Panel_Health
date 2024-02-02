@@ -24,7 +24,10 @@ export default function PharmaReview() {
       const totalPages = Math.ceil(data.data.total_document / 10);
       setTotalPagecount(totalPages);
       setCategoryData(data.data.products);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
 
 
@@ -44,7 +47,10 @@ export default function PharmaReview() {
     getFoodReview(data._id).then(({ data }) => {
       console.log(data);
       setReviews(data.reviews);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
 
   useEffect(() => {

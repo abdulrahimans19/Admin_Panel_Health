@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MainDoctorCategories, SignupUserdata } from "../API/ApiCall";
+import {
+  MainDoctorCategories,
+  SignupUserdata,
+  UploadImageUrl,
+  uploadToAws,
+} from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 
 const SignupProfile = ({ email, password, onClose }) => {
@@ -20,13 +25,20 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [docCateogries, setDocCateogries] = useState([]);
   const navigate = useNavigate();
-
+  const [profileImagedata, setProfileImage] = useState();
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
+    console.log(file, "fie");
+    setProfileImage(file);
+    console.log("roshigergerg");
     if (file) {
       const reader = new FileReader();
+      console.log(reader);
       reader.onloadend = () => {
+
+
         setSelectedImage(reader.result);
+        
       };
       reader.readAsDataURL(file);
     }
@@ -50,6 +62,7 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   const handlePaste = (e) => {
     e.preventDefault();
+
     const clipboardData = e.clipboardData || window.clipboardData;
     const file = clipboardData.files[0];
     if (file) {
@@ -82,56 +95,79 @@ const SignupProfile = ({ email, password, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(selectedImage, "asdfg");
+      console.log(formData.certificate);
+
       const imageUrl = await uploadImageToAws();
 
-      const userData = {
-        email,
-        password,
-        name: formData.name,
-        description: formData.description,
-        gender: formData.gender,
-        consulting_fee: parseInt(formData.consulting_fee, 10),
-        certificate:
-          "https://marketplace.canva.com/EAFNlUJs5g4/2/0/1600w/canva-white-simple-certificate-of-appreciation-Fcz7KkZ5YaU.jpg",
-        category_id: "658156b7f418ada4a7a8f7ff",
-        image:
-          "https://www.citizenshospitals.com/static/uploads/130789a4-764e-4ee3-88fe-68f9278452d6-1692966652977.png",
-        experience: parseInt(formData.experience, 10),
-      };
+      let profileImage;
+      let GetDocumenet;
+     await  UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, profileImagedata).then((data) => {
+          console.log(data, "uploaded");
+        });
+        profileImage = data.data.publicUrl;
+      });
 
-      console.log("Data to be sent:", userData);
+    await   UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, formData.certificate).then(
+          (data) => {
+            console.log(data, "uploaded");
+          }
+        );
+        GetDocumenet = data.data.publicUrl;
+      });
 
-      const response = await SignupUserdata(userData);
-      console.log("User registered successfully:", response.data);
-      navigate("/otp");
+      console.log(profileImage);
+
+      if (profileImage && GetDocumenet) {
+        const userData = {
+          email,
+          password,
+          name: formData.name,
+          description: formData.description,
+          gender: formData.gender,
+          consulting_fee: parseInt(formData.consulting_fee, 10),
+          certificate: GetDocumenet,
+          image: profileImage,
+          experience: parseInt(formData.experience, 10),
+        };
+
+        console.log("Data to be sent:", userData);
+
+        const response = await SignupUserdata(userData);
+        console.log("User registered successfully:", response.data);
+        navigate("/otp", { state: { email } });
+      }
     } catch (error) {
       console.error("Error registering user:", error);
     }
   };
 
   const getDocCategory = () => {
-    MainDoctorCategories().then((data) => {
-      console.log(data);
-      setDocCateogries();
-    }).catch(err=>
-      {
+    MainDoctorCategories()
+      .then((data) => {
+        console.log(data);
+        setDocCateogries();
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
     getDocCategory();
-  },[]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="fixed inset-0 flex items-center justify-center overflow-auto p-5">
-        <div className="w-full max-w-[800px] h-full max-h-[600px] bg-[#1C3A68] rounded-lg border border-white border-opacity-10 backdrop-blur-[39.60px] relative flex flex-col  lg:flex-row overflow-auto">
+      <div className="fixed inset-0 flex items-center justify-center overflow-auto md:p-5">
+        <div className="w-full md:max-w-[800px] h-full md:max-h-[600px] bg-[#1C3A68] rounded-lg border border-white border-opacity-10 backdrop-blur-[39.60px] relative flex flex-col  lg:flex-row overflow-auto">
           {/* Close Button at the Top Right */}
 
           <button
             type="button"
             onClick={() => onClose()}
-            className="absolute top-0 right-0 m-2 border-2 border-white border-opacity-40 rounded-[20px] p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+            className="absolute top-0 right-0 m-2 border-2 border-white border-opacity-40 rounded-[10px] p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
           >
             <svg
               className="h-6 w-6"
@@ -203,7 +239,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                     minutes.
                   </p>
                 </div>
-                <div className=" flex gap-5">
+                <div className=" sm:flex gap-5">
                   <div className="">
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
@@ -293,7 +329,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                       <div className="label"></div>
                     </label>
                   </div>
-                  <div className="mt-20">
+                  <div className="">
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Upload Certificate</span>
@@ -369,7 +405,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                 <div className="flex justify-between">
                   <button
                     type="submit"
-                    className="text-black bg-white focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-20 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
+                    className="text-black w-full text-center flex bg-white focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-20 py-2.5  justify-center items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
                     disabled={!isAgreed} // Disable button based on isAgreed state
                   >
                     Register
