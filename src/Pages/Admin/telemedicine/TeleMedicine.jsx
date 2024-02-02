@@ -24,7 +24,10 @@ export default function TeleMedicine() {
   const getCategory = () => {
     MainDoctorCategories().then((data) => {
       setCategories(data?.data?.data?.mainCategories);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
   const isShowModal = () => {
     setShowModal(!showModal);

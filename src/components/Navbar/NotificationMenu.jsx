@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getCartItems } from "../../Redux/Features/NavbarSlice";
 
-const NotificationBar = ({ notifications, setOpenNotification,getNotificationData }) => {
+const NotificationBar = ({
+  notifications,
+  setOpenNotification,
+  getNotificationData,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const notificationListRef = useRef(null);
@@ -26,7 +30,6 @@ const NotificationBar = ({ notifications, setOpenNotification,getNotificationDat
   };
 
   useEffect(() => {
-    
     getAllNotification();
   }, []);
 
@@ -66,13 +69,15 @@ const NotificationBar = ({ notifications, setOpenNotification,getNotificationDat
         {navbardata.map((notification, index) => (
           <li
             onClick={() => {
-              readNotification(notification._id).then((data)=>
-              {
-                getNotificationData()
-                setOpenNotification(false);
-              })
+              readNotification(notification._id)
+                .then((data) => {
+                  getNotificationData();
+                  setOpenNotification(false);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
               // dispatch(getCartItems());
-            
 
               // navigate(notification.link)
             }}

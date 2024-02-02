@@ -1,7 +1,7 @@
 // ConfirmationModal.js
 import React from "react";
 
-const ConfirmationModal = ({ onClose, onConfirm,text }) => {
+const ConfirmationModal = ({ onClose, onConfirm, text }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-800 opacity-75"></div>

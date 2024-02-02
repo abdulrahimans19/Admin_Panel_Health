@@ -110,17 +110,18 @@ const SignupProfile = ({ email, password, onClose }) => {
   };
 
   const getDocCategory = () => {
-    MainDoctorCategories().then((data) => {
-      console.log(data);
-      setDocCateogries();
-    }).catch(err=>
-      {
+    MainDoctorCategories()
+      .then((data) => {
+        console.log(data);
+        setDocCateogries();
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
     getDocCategory();
-  },[]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>

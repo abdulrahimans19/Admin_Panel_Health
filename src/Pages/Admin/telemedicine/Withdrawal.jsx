@@ -24,13 +24,19 @@ function WithdrawalPannel() {
     GetDoctorWithdrawalRequsts().then((data) => {
       SetData(data.data.data.withdrawals);
       SetDocument(data.data.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   function GetAprovedWithdrawalRequsts() {
     GetDrAprovedWithdrawalRequsts().then((data) => {
       SetAprovedData(data.data.data.withdrawals);
       SetDocument1(data.data.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tab) => {

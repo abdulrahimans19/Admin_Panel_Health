@@ -262,8 +262,6 @@ const Login = () => {
       DoctorLogInApi(UserData)
         .then((data) => {
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-         
-
 
           navigate("/doctor/overview");
         })
@@ -393,7 +391,11 @@ const Login = () => {
               >
                 Forgot Password?
               </a>
-            ):<><div className="p-2"></div></>}
+            ) : (
+              <>
+                <div className="p-2"></div>
+              </>
+            )}
 
             <div>
               <button
@@ -414,7 +416,11 @@ const Login = () => {
                     Signup
                   </a>
                 </div>
-              ):<><div className="p-4"></div></>}
+              ) : (
+                <>
+                  <div className="p-4"></div>
+                </>
+              )}
             </div>
           </form>
         </div>

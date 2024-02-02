@@ -11,14 +11,14 @@ const AddSubCategoryModal = ({ onClose, displayData }) => {
     setSubCategories(selectedOption);
   };
   const [errors, setErrors] = useState({});
-  
+
   const validate = () => {
     let tempErrors = {};
     tempErrors.subCategories = subCategories ? "" : "Main category is required";
     tempErrors.subCatName = subCatName ? "" : "Subcategory name is required";
     setErrors(tempErrors);
 
-    return Object.values(tempErrors).every(x => x === "");
+    return Object.values(tempErrors).every((x) => x === "");
   };
   const handleSubmit = () => {
     // Handle the form submission logic here
@@ -38,7 +38,6 @@ const AddSubCategoryModal = ({ onClose, displayData }) => {
       .catch((err) => {
         console.log(err);
         onClose();
-        
       });
   };
 
@@ -60,13 +59,17 @@ const AddSubCategoryModal = ({ onClose, displayData }) => {
           className="mt-1 p-2 border rounded-md w-full"
           onChange={handleOptionChange}
         >
-           <option selected  disabled>select Category</option>
+          <option selected disabled>
+            select Category
+          </option>
           {displayData.map((data) => {
             return <option value={data._id}>{data.title}</option>;
           })}
         </select>
-        {errors.subCategories && <p className="text-red-500 text-xs">{errors.subCategories}</p>}
-        
+        {errors.subCategories && (
+          <p className="text-red-500 text-xs">{errors.subCategories}</p>
+        )}
+
         <label className="block text-sm font-medium text-gray-700 mt-2">
           Sub category:
         </label>
@@ -92,7 +95,9 @@ const AddSubCategoryModal = ({ onClose, displayData }) => {
           className="mt-1 p-2 border rounded-md w-full"
           // onChange={(e) => handleInputChange(index, e)}
         />
- {errors.subCatName && <p className="text-red-500 text-xs">{errors.subCatName}</p>}
+        {errors.subCatName && (
+          <p className="text-red-500 text-xs">{errors.subCatName}</p>
+        )}
 
         <div className="flex justify-end mt-3">
           <button

@@ -59,6 +59,8 @@ function LabModal({ callback, setShowModal,getAllTests }) {
   const getHomecareCategories = () => {
     GetHomecareCategoriesApi().then((data) => {
       setHomeCareCategory(data.data.data.mainCategories);
+    })  .catch((err) => {
+      console.log(err);
     });
   };
   useEffect(() => {
@@ -76,7 +78,7 @@ console.log();
     console.log(TestName);
     console.log(subCategories);
     console.log( tempErrors.secondTest =  TestName !="");
-    tempErrors.secondTest =  TestName !=""?"":"add Tests"
+    tempErrors.secondTest =  TestName !=""?"":"add at least one test"
     setErrors(tempErrors);
 
     if(TestName!=""){
@@ -164,11 +166,15 @@ console.log(tempErrors.category );
   
               createTests(wholeData).then((data) => {
                   console.log("API response after data submission:", data);
+                  setShowModal(false);
                 getAllTests()
 
-                  setShowModal(false);
+              })  .catch((err) => {
+                console.log(err);
               });
           });
+      })  .catch((err) => {
+        console.log(err);
       });
   }
   uploadImageAndCreateTest();
@@ -181,9 +187,12 @@ console.log(tempErrors.category );
       <>
         <div className="fixed inset-0 z-50 overflow-auto">
           <form onSubmit={addLabModal} id="addmodal">
+            
             <div className="flex items-center justify-center min-h-screen ">
               <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
                 <div className="lg:flex md:flex flex-row gap-3.5">
+                <h2 class="text-xl mb-4">Create test</h2>
+
                   <div
                     {...getRootProps()}
                     className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
@@ -219,7 +228,6 @@ console.log(tempErrors.category );
                   </div>
                   <div>
                     <div className="mr-4">
-                      <h2 class="text-xl mb-4">Create test</h2>
                       <div class="flex flex-row space-x-4">
                         <div class="flex flex-col">
                           <label

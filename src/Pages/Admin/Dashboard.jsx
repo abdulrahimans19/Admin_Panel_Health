@@ -25,12 +25,15 @@ export default function Dashboard() {
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
-        });
+        })
 
         setChartData(data.data.earnings);
 
         setMonthlyEarning(data.data.earnings[currentMonth]);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     } else {
       console.log("else worog");
       monthlyEarningApi("PHARMA").then(({ data }) => {
@@ -42,7 +45,10 @@ export default function Dashboard() {
         });
         console.log(data.data[currentMonth]);
         setMonthlyEarning(data.data[currentMonth]);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     }
   };
 
@@ -55,11 +61,17 @@ export default function Dashboard() {
 totalDoctorApi().then(({data})=>{
   console.log(data.data,"docy");
   setTotalDoctors(data.data)
+}).catch((err)=>
+{
+  console.log(err);
 })
 
 TotalAppointmentApi().then(({data})=>{
   setTotalAppointment(data.data)
 console.log(data.data,"appoimt");
+}).catch((err)=>
+{
+  console.log(err);
 })
 
   }, []);
