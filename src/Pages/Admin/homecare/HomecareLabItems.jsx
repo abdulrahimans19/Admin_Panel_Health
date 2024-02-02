@@ -63,7 +63,6 @@ export function HomecareLabItems() {
           <h2 className="font-bold text-lg">Lab Items</h2>
           {/* <p>2 available items</p> */}
         </div>
-        
       </div>
       <div className=" justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
@@ -121,7 +120,7 @@ export function HomecareLabItems() {
               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
             >
               <option disabled selected value="Filter by category">
-              Filter Category
+                Filter Category
               </option>
 
               {testCategories[0] &&

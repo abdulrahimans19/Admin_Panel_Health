@@ -38,7 +38,10 @@ export default function Doctor() {
     DoctorRequests().then((data) => {
       setDocument(data?.data?.data?.total_document);
       setRequests(data?.data?.data?.doctors);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
 
   function getAllDoctors() {
@@ -46,7 +49,10 @@ export default function Doctor() {
       console.log(data?.data?.data);
       setDocument1(data?.data?.data?.total_document);
       setApproved(data?.data?.data?.doctors);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
 
   function getBlockedDoctors() {
@@ -54,7 +60,10 @@ export default function Doctor() {
       //console.log(data?.data?.data);
       setDocument2(data?.data?.data?.total_document);
       setBlocked(data?.data?.data?.doctor);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   //console.log(Blocked);
   const handleTabClick = (tab) => {

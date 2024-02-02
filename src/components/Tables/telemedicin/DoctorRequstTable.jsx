@@ -28,18 +28,30 @@ export default function DoctorRequstTable({
 
   const handlePageChange = (selectedPage) => {
     if (status === "approved") {
-      GetAllDoctors(selectedPage.selected + 1).then((data) => {
-        setData(data?.data?.data?.doctors);
-      });
-      if (status === "requests") {
-        DoctorRequests(selectedPage.selected + 1).then((data) => {
+      GetAllDoctors(selectedPage.selected + 1)
+        .then((data) => {
           setData(data?.data?.data?.doctors);
+        })
+        .catch((err) => {
+          console.log(err);
         });
+      if (status === "requests") {
+        DoctorRequests(selectedPage.selected + 1)
+          .then((data) => {
+            setData(data?.data?.data?.doctors);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
       if (status === "unBlock") {
-        GetAllBlockd(selectedPage.selected + 1).then((data) => {
-          setData(data?.data?.data?.doctors);
-        });
+        GetAllBlockd(selectedPage.selected + 1)
+          .then((data) => {
+            setData(data?.data?.data?.doctors);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };

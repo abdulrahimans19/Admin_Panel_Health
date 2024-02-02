@@ -26,16 +26,24 @@ function WithdrawalTable({
 
   const handlePageChange = (selectedPage) => {
     if (btText === "Approved") {
-      GetDrAprovedWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
-        setTable(data.data.data.withdrawals);
-      });
+      GetDrAprovedWithdrawalRequsts(selectedPage.selected + 1)
+        .then((data) => {
+          setTable(data.data.data.withdrawals);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      GetDoctorWithdrawalRequsts(selectedPage.selected + 1).then((data) => {
-        console.log(" this is working");
-        setSelectPage(selectedPage.selected + 1);
+      GetDoctorWithdrawalRequsts(selectedPage.selected + 1)
+        .then((data) => {
+          console.log(" this is working");
+          setSelectPage(selectedPage.selected + 1);
 
-        setTable(data.data.data.withdrawals);
-      });
+          setTable(data.data.data.withdrawals);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
   var page = Math.floor(document / 10);

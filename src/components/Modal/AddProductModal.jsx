@@ -109,72 +109,88 @@ const ProductModal = ({
           getProducts();
         });
     } else {
-      UploadImageUrl().then((data) => {
-        uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-          console.log(data, "uploaded");
-        });
-        console.log(data.data.publicUrl, "uploadedssssss");
-        publicUrl = data.data.publicUrl;
-        console.log(publicUrl);
-
-        let wholeData;
-        if (incomingType == "edit") {
-          wholeData = {
-            product_id: editProductData._id,
-            name: UserData.name,
-            description: UserData.description,
-            brand: UserData.brand,
-            image: publicUrl,
-            quantity: parseInt(UserData.quantity),
-            price: parseInt(UserData.price),
-            sub_category_id: UserData.dropdown2,
-            country_codes: selectedCountries,
-          };
-        } else {
-          wholeData = {
-            name: UserData.name,
-            description: UserData.description,
-            brand: UserData.brand,
-            image: publicUrl,
-            quantity: parseInt(UserData.quantity),
-            price: parseInt(UserData.price),
-            sub_category_id: UserData.dropdown2,
-            country_codes: selectedCountries,
-          };
-        }
-
-        apiCall(wholeData)
-          .then((data) => {
-            setAddProductModal(false);
-            getProducts();
-          })
-          .catch((err) => {
-            setAddProductModal(false);
-            getProducts();
+      UploadImageUrl()
+        .then((data) => {
+          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+            console.log(data, "uploaded");
           });
-      });
+          console.log(data.data.publicUrl, "uploadedssssss");
+          publicUrl = data.data.publicUrl;
+          console.log(publicUrl);
+
+          let wholeData;
+          if (incomingType == "edit") {
+            wholeData = {
+              product_id: editProductData._id,
+              name: UserData.name,
+              description: UserData.description,
+              brand: UserData.brand,
+              image: publicUrl,
+              quantity: parseInt(UserData.quantity),
+              price: parseInt(UserData.price),
+              sub_category_id: UserData.dropdown2,
+              country_codes: selectedCountries,
+            };
+          } else {
+            wholeData = {
+              name: UserData.name,
+              description: UserData.description,
+              brand: UserData.brand,
+              image: publicUrl,
+              quantity: parseInt(UserData.quantity),
+              price: parseInt(UserData.price),
+              sub_category_id: UserData.dropdown2,
+              country_codes: selectedCountries,
+            };
+          }
+
+          apiCall(wholeData)
+            .then((data) => {
+              setAddProductModal(false);
+              getProducts();
+            })
+            .catch((err) => {
+              setAddProductModal(false);
+              getProducts();
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   const mainCategory = () => {
-    getPharmaCategory().then(({ data }) => {
-      setMainCategoyData(data?.data?.mainCategories);
-    });
+    getPharmaCategory()
+      .then(({ data }) => {
+        setMainCategoyData(data?.data?.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const getSubCategory = (data) => {
-    getSubCatData(data).then(({ data }) => {
-      setSubcategoryData(data.data.subCategories);
-    });
+    getSubCatData(data)
+      .then(({ data }) => {
+        setSubcategoryData(data.data.subCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
     mainCategory();
-    countryCodesApi().then((data) => {
-      setCountrieCode(data);
-    });
+    countryCodesApi()
+      .then((data) => {
+        setCountrieCode(data); 
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
-
+ 
   useEffect(() => {
     if (editProductData?.image) {
       setShowImage(true);
