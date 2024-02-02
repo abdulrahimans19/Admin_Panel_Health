@@ -1,73 +1,44 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import success from "../assets/images/success.png";
 import logo from "../assets/images/key.png";
 
 const Success = () => {
-  const containerStyle = {
-    display: "flex",
-    height: "100vh",
-    width: "100%",
-  };
+  const navigate = useNavigate();
 
-  const leftSideStyle = {
-    flex: 1,
-    position: "relative",
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const imageStyle = {
-    maxWidth: "70%",
-    maxHeight: "60%",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    navigate("/login");
   };
-
-  const rightSideStyle = {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={leftSideStyle}>
-        <img src={success} alt="Centered Image" style={imageStyle} />
+    <div className="flex flex-wrap h-screen">
+      <div className="w-full md:w-1/2 flex justify-center items-center p-4">
+        <img
+          src={success}
+          alt="Success"
+          className="max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg 2xl:max-w-xl mx-auto"
+        />
       </div>
-      <div style={rightSideStyle}>
-        <div class="w-[540px] h-[463px] flex-col justify-start items-center gap-[60px] inline-flex">
-          <div class="w-[126px] h-[126px] relative">
-            {/* <div class="w-[126px] h-[126px] left-0 top-0 absolute bg-gradient-to-b from-teal-500 to-zinc-300 rounded-full"></div> */}
-            <img
-              class="w-24 h-[87.77px] left-[15px] top-[19px] relative "
-              src={logo}
-            />
-            {/* <img src={logo} alt="Logo" style={logoStyle} /> */}
-          </div>
-          <div class="flex-col justify-start items-center gap-[60px] flex">
-            <div class="flex-col justify-start items-center gap-[60px] flex">
-              <div class="flex-col justify-start items-center gap-[17px] flex">
-                <div class="text-zinc-800 text-5xl font-bold font-['Roboto Flex']">
-                  Password reset
-                </div> 
-                <div class="text-center text-neutral-400 text-2xl font-normal font-['Roboto Flex']">
-                  Your Password has been successfully reset
-                  <br />
-                  please try to login again with the new password
-                </div>
-              </div>
-              <div class="flex-col justify-start items-start gap-[30px] flex">
-                <button className="h-[68px] px-[80px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
-                  <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
-                    Done
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-4">
+        <img src={logo} alt="Logo" className="w-24 h-auto mb-8" />
+        <div className="text-center">
+          <h2 className="text-zinc-800 text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            Password reset
+          </h2>
+          <p className="text-neutral-400 text-lg md:text-xl lg:text-2xl mb-10">
+            Your Password has been successfully reset. <br />
+            Please try to login again with the new password.
+          </p>
         </div>
+        <button
+          onClick={handleSubmit}
+          className="w-full  lg:w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center"
+          type="submit"
+        >
+          <span className="text-white font-semibold">Continue to Login</span>
+        </button>
       </div>
     </div>
   );

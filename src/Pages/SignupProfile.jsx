@@ -103,24 +103,25 @@ const SignupProfile = ({ email, password, onClose }) => {
 
       const response = await SignupUserdata(userData);
       console.log("User registered successfully:", response.data);
-      navigate("/otp");
+      navigate("/otp", { state: { email } });
     } catch (error) {
       console.error("Error registering user:", error);
     }
   };
 
   const getDocCategory = () => {
-    MainDoctorCategories().then((data) => {
-      console.log(data);
-      setDocCateogries();
-    }).catch(err=>
-      {
+    MainDoctorCategories()
+      .then((data) => {
+        console.log(data);
+        setDocCateogries();
+      })
+      .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
     getDocCategory();
-  },[]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>

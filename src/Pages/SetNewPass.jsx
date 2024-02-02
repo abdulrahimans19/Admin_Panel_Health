@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import sideImage from "../assets/images/setpass.png";
 import key from "../assets/images/key.png";
 
@@ -10,121 +9,98 @@ const SetNewPass = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    validatePassword(e.target.value, confirmPassword);
   };
 
   const handleConfirmPasswordChange = (e) => {
-    const confirmPasswordValue = e.target.value;
-    setConfirmPassword(confirmPasswordValue);
+    setConfirmPassword(e.target.value);
+    validatePassword(password, e.target.value);
+  };
 
-    if (confirmPasswordValue !== "" && password !== confirmPasswordValue) {
+  const validatePassword = (pass, confirmPass) => {
+    if (confirmPass !== "" && pass !== confirmPass) {
       setValidationMessage("Password does not match!");
     } else {
       setValidationMessage("");
     }
   };
 
-  const containerStyle = {
-    display: "flex",
-    height: "100vh",
-    width: "100%",
-  };
-
-  const leftSideStyle = {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  const rightSideStyle = {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+  const isFormFilled = () => {
+    return (
+      password.length > 0 &&
+      confirmPassword.length > 0 &&
+      validationMessage === ""
+    );
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={leftSideStyle}>
-        <div className="w-[540px] h-[746px] flex-col justify-start items-center gap-[20px] inline-flex">
-          <div className="flex-col justify-center items-center gap-[60px] flex">
-            <div className="flex-col justify-start items-center gap-[30px] flex">
-              <div className="flex-col justify-start items-center gap-[35px] flex">
-                <div className="w-[126px] h-[126px] relative">
-                  <img
-                    className="w-24 h-[87.77px] left-[15px] top-[69px] relative"
-                    src={key}
-                    alt="Key"
-                  />
-                  <div className="w-14 h-14 left-[35px] top-[35px] absolute justify-center items-center inline-flex">
-                    <div className="w-14 h-14 relative"></div>
-                  </div>
-                </div>
-                <div className="text-zinc-800 text-5xl font-bold font-['Roboto Flex']">
-                  Set new password
-                </div>
-                <div className="text-neutral-400 text-2xl font-normal font-['Roboto Flex'] text-center">
-                  Your new password must be different to<br></br>
-                  previously used password
-                </div>
-              </div>
+    <div className="flex flex-wrap h-screen w-full">
+      <div className="flex flex-1 flex-col items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-8">
+          <div className="space-y-4">
+            <img className="mx-auto h-32 w-auto" src={key} alt="Key" />
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+              Set new password
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Your new password must be different from previously used
+              passwords.
+            </p>
+          </div>
 
-              <div className="flex-col justify-center items-center gap-[20px] flex">
-                <div className="flex flex-col items-center justify-center space-y-4 ">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-100 focus:ring-2 focus:ring-blue-300"
-                    value={password}
-                    onChange={handlePasswordChange}
-                  />
-                  <div>
-                    <input
-                      type="password"
-                      id="confirm_password"
-                      name="confirm_password"
-                      placeholder="Confirm Password"
-                      className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                    />
-                    <p
-                      id="validation"
-                      className="text-center text-orange-500 italic text-sm"
-                    >
-                      {validationMessage}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex-col justify-start items-start  flex">
-                  <button className="h-[58px] px-[105px] py-[30px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex-col justify-center items-center gap-1 flex">
-                    <div className="text-white text-2xl font-semibold font-['Roboto Flex']">
-                      Reset Password
-                    </div>
-                  </button>
-                </div>
+          <form className="mt-8 space-y-6" action="#" method="POST">
+            <div className="rounded-md shadow-sm -space-y-px">
+              <div className="mb-4">
+                {" "}
+                {/* Added mb-4 to create a gap */}
+                <input
+                  name="password"
+                  type="password"
+                  required
+                  className="w-full rounded-full border-2 border-gray-300 p-3 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Password"
+                  onChange={handlePasswordChange}
+                />
               </div>
-              <div className="justify-center items-center gap-1 inline-flex">
-                <a
-                  href="/login"
-                  className="text-zinc-800 text-1xl font-normal font-['Roboto Flex']"
-                >
-                  Back to login
-                </a>
+              <div>
+                <input
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  className="w-full rounded-full border-2 border-gray-300 p-3 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Confirm Password"
+                  onChange={handleConfirmPasswordChange}
+                />
+                {validationMessage && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {validationMessage}
+                  </p>
+                )}
               </div>
             </div>
+
+            <button
+              disabled={!isFormFilled()}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Continue
+            </button>
+          </form>
+          <div className="text-center">
+            <a
+              href="/login"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Back to login
+            </a>
           </div>
         </div>
       </div>
-      <div style={rightSideStyle}>
+      <div className="flex-1 hidden lg:flex items-center justify-center p-4">
         <img
+          className="max-w-full h-auto"
           src={sideImage}
-          alt="Centered Image"
-          style={{ maxWidth: "60%", maxHeight: "70%" }}
+          alt="Set New Password"
         />
       </div>
     </div>
