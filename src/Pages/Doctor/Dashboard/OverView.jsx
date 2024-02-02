@@ -4,7 +4,7 @@ import date from "../../../assets/images/date(1).png";
 import dollar from "../../../assets/images/dollar.png";
 import noDAta from "../../../assets/images/noData.png";
 import { Card } from "@material-tailwind/react";
-
+import downArrow from "../../../assets/images/arrowDown.png";
 import rightArrow from "../../../assets/images/rightArrow.png";
 import WithdrawModal from "./modal/WithdrawModal";
 import SlotModal from "./modal/SlotModal";
@@ -71,27 +71,33 @@ export default function OverView() {
   }
 
   function getDoctor() {
-    getDoctorProfileAndWallet().then((data) => {
-      setProfile(data?.data?.data);
-    });
+    getDoctorProfileAndWallet()
+      .then((data) => {
+        setProfile(data?.data?.data);
+      })
+      .catch((err) => console.log(err));
   }
   function getToatalApointments() {
-    getApointments().then((data) => {
-      setTotalApointment(data?.data?.data);
-    });
+    getApointments()
+      .then((data) => {
+        setTotalApointment(data?.data?.data);
+      })
+      .then((err) => console.log(err));
   }
   function getTodayApointment() {
-    getTodayApointments().then((data) => {
-      console.log(data.data.data);
-      setApointments(data?.data?.data?.appointments);
-      setDocument(data?.data?.data?.total_document);
-    });
+    getTodayApointments()
+      .then((data) => {
+        setApointments(data?.data?.data?.appointments);
+        setDocument(data?.data?.data?.total_document);
+      })
+      .then((err) => console.log(err));
   }
   function getAvalabeSlots() {
-    getAvailableSlot().then((data) => {
-      setAvailableslots(data.data.data);
-      console.log(data?.data?.data);
-    });
+    getAvailableSlot()
+      .then((data) => {
+        setAvailableslots(data.data.data);
+      })
+      .catch((err) => console.log(err));
   }
   const isShowModal = () => {
     setShowModal(!showModal);
@@ -100,9 +106,11 @@ export default function OverView() {
     setShowSlot(!showSlot);
   };
   const handlePageChange = (selectedPage) => {
-    getTodayApointments(selectedPage.selected + 1).then((data) => {
-      setApointments(data?.data?.data?.appointments);
-    });
+    getTodayApointments(selectedPage.selected + 1)
+      .then((data) => {
+        setApointments(data?.data?.data?.appointments);
+      })
+      .then((err) => console.log(err));
   };
   var page = Math.floor(document / 10);
   var remainder = document % 10;

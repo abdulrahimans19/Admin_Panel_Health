@@ -10,19 +10,26 @@ function ViewPatient({ ShowModal, setShowModal, data, age, duration, date }) {
   };
   console.log(data);
 
-  function downloadImage(url, filename) {
-    const anchor = document.createElement("a");
+  const downloadFile = (filePath, fileName = "Example.jpg") => {
+    fetch(filePath)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
 
-    anchor.href = url;
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
 
-    anchor.download = filename;
+        document.body.appendChild(link);
 
-    document.body.appendChild(anchor);
+        link.click();
 
-    anchor.click();
-
-    document.body.removeChild(anchor);
-  }
+        link.parentNode.removeChild(link);
+      })
+      .catch((error) => {
+        console.error("Failed to download the file:", error);
+      });
+  };
 
   const animationTransition = {
     damping: 10,
@@ -135,13 +142,13 @@ function ViewPatient({ ShowModal, setShowModal, data, age, duration, date }) {
                         </div>
                         <button
                           onClick={() =>
-                            downloadImage(
-                              "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
-                              "download"
+                            downloadFile(
+                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAY0GcwNBL7sai0QNDz43SxPA1v8tLmkvLealZoQoNupZtWB17",
+                              `${data?.patientId?.first_name}_prescription.jpg`
                             )
                           }
                         >
-                          <img src={download} className="w-5 h-6" alt="" />
+                          <img src={download} className="w-5 h-4.5" alt="" />
                         </button>
                       </div>
                     </div>

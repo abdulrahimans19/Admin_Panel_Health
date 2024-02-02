@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* Add this to your CSS file or your Tailwind CSS setup */
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -11,6 +12,9 @@
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+  .react-select__control {
+    outline: none;
   }
 }
 
