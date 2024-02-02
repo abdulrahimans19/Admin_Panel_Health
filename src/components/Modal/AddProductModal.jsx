@@ -219,12 +219,12 @@ const ProductModal = ({
   return (
     <>
       (
-      <div className="fixed inset-0 z-50 w-full flex items-center justify-center p-4 bg-gray-800 bg-opacity-50">
+      <div className="fixed inset-0 z-50 w-full flex  items-center justify-center p-4 bg-gray-800 bg-opacity-50">
         <form onSubmit={AddProduct} id="addProduct">
-          <div className="bg-white p-8 rounded-lg ">
-            <div className="text-xl p-4 font-semibold">Add Product</div>
+          <div className="bg-white p-4 rounded-lg ">
+            <div className="text-xl  font-semibold">Add Product</div>
 
-            <div className="flex gap-3 p-5">
+            <div className="flex gap-3 ">
               {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> */}
               <div className="w-2/5">
                 <div class="flex  items-center justify-center bg-grey-lighter">
@@ -439,6 +439,7 @@ const ProductModal = ({
                 )}
               </div>
             </div>
+
             <div className="flex justify-end m-5">
               <button
                 type="submit"
