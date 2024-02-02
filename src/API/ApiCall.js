@@ -158,9 +158,10 @@ export const monthlyEarningApi = async (data) => {
   return await Instance.get(`/order/monthly-earnings?type=${data}`);
 };
 export const GetAllDoctors = async (page = 1) => {
-  console.log(page, " = = =page in api");
-
   return await Instance.get(`/doctor/admin/all?page=${page}`);
+};
+export const GetSearchAllDoctors = async (search) => {
+  return await Instance.get(`/doctor/admin/all?search=${search}`);
 };
 
 export const CanclationDoctor = async (id) => {
@@ -244,8 +245,10 @@ export const GetDrAprovedWithdrawalRequsts = async (page = 1) => {
     `/withdrawal/accepted-withdrawal-requests?page=${page}`
   );
 };
-export const getAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
@@ -278,7 +281,7 @@ export const updateCouponApi = async (data) => {
 export const addHomecareCategory = async (data) => {
   return await Instance.post(`main-categories/home-care/create`, data);
 };
-export const getRecommendedTestsbyCategoryApi = async (cat_id,page) => {
+export const getRecommendedTestsbyCategoryApi = async (cat_id, page) => {
   return await Instance.get(
     `tests/all-tests?recommended=${true}&category_id=${cat_id}&page=${page}`
   );
@@ -288,8 +291,10 @@ export const getDisbledTestByCatApi = async (cat_id) => {
     `tests/all-tests?disabled=${true}&category_id=${cat_id}`
   );
 };
-export const getCurrentAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getCurrentAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const homeCareUpadateCate = async (data) => {
   return await Instance.put(`/main-categories/home-care/update`, data);
@@ -324,7 +329,9 @@ export const getApointments = async (
 ) => {
   return await Instance.get(
     `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
-  );
+  ).catch((err) => {
+    console.log(err);
+  });
 };
 export const addWithdrawRequest = async (data) => {
   return await Instance.post("/withdrawal/add-withdrawal-request", data);

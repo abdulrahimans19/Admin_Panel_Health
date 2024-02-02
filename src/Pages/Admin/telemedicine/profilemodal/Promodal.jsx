@@ -172,7 +172,7 @@ export default function ({
                             type="button"
                             onClick={async () => {
                               callback(id ? id : user?._id);
-                              getWithdrawalRequsts();
+                              status === "aprove" && getWithdrawalRequsts();
                               sectpage ? myfunction(sectpage) : myfunction();
                               toggleModal();
                             }}
@@ -193,8 +193,9 @@ export default function ({
                             className="text-xs background-transparent p-1 pl-3 pr-3 mt-1 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                             type="button"
                             onClick={async () => {
-                              await callback(user?._id);
-                              //  window.location.reload();
+                              const test = await callback(user?._id);
+                              console.log(test, "this my testing");
+                              myfunction();
                               toggleModal();
                             }}
                           >

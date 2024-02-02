@@ -5,13 +5,8 @@ import { getTodayApointments } from "../../../API/ApiCall";
 import { getApointmentByDate } from "../../../API/DoctorApi";
 import ReactDatePicker from "react-datepicker";
 import { motion, useAnimationControls } from "framer-motion";
-import noDAta from "../../../assets/images/noData.png";
 import "react-datepicker/dist/react-datepicker.css";
-
-import ViewPatient from "../Dashboard/modal/ViewPatient";
-import VideoModal from "../Dashboard/modal/VideoModal";
 import ReactPaginate from "react-paginate";
-
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
   const [todayApintments, setApointments] = useState([]);
@@ -60,17 +55,14 @@ export default function Appointments() {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? "0" + minutes : minutes;
     var strTime = hours + ":" + minutes + " " + ampm;
-    // setHour(hours);
-    // setminut(minutes);
-    // setIsPm(ampm.toLocaleLowerCase());
-    // console.log(strTime, " str time");
+
     setCurrenTime(strTime);
   }
 
   function getTodayApointment() {
     getTodayApointments(1).then((data) => {
       setApointments(data?.data?.data?.appointments);
-      console.log(data?.data?.data?.appointments);
+
       setDocument(data?.data?.data?.total_document);
     });
   }
@@ -113,8 +105,6 @@ export default function Appointments() {
     }/${targetDate.getDate()}/${targetDate.getFullYear()}`;
     setFormatedDate(formatedDate);
     getApointmentByDate(formattedDate).then((data) => {
-      console.log(data?.data?.data?.appointments);
-
       setApointments(data?.data?.data?.appointments);
     });
   }
@@ -127,6 +117,7 @@ export default function Appointments() {
       getApointmentByDate(formatedDate, selectedPage.selected + 1).then(
         (data) => {
           setApointments(data?.data?.data?.appointments);
+
           setDocument(data?.data?.data?.total_document);
         }
       );
@@ -213,11 +204,11 @@ export default function Appointments() {
             todayApintments[0] &&
             todayApintments.map((data) => {
               const formattedTime1 = convertTo24HourFormat(currentime);
-              const result = isSameDate(data);
+              const result = isSameDate(data?.created_at);
 
               let formattedTime2 = convertTo24HourFormat(
                 data?.slotId?.start_time
-                //data?._id === "65b156f8276d32609b4e08ae" ? "10:37pm" : "9:29pm"
+                // data?._id === "65b156f8276d32609b4e08ae" ? "6:15pm" : "6:17pm"
               );
               //
               // if (data._id == "65b9ce2e518e7f283a6a631d") {
@@ -239,9 +230,6 @@ export default function Appointments() {
                   String(date1.getHours()).padStart(2, "0") +
                   ":" +
                   String(date1.getMinutes()).padStart(2, "0");
-                console.log(formattedTime1, " current time");
-                console.log(updatedFormattedTime1, "updated time");
-                console.log(formattedTime2, " data time");
               }
               /// time updating end
 
@@ -273,21 +261,25 @@ export default function Appointments() {
                   </div>
                   <div className="p-3">
                     <button
-                      onClick={() =>
-                        // window.open(meetURL, "_blank")
-                        setShowMadal(false)
-                      }
+                      onClick={() => {
+                        if (
+                          formattedTime1 >= formattedTime2 &&
+                          formattedTime1 <= updatedFormattedTime1 &&
+                          result
+                        ) {
+                          window.open(data?.meeting_url, "_blank");
+                        }
+                      }}
                       className={`${
                         formattedTime1 >= formattedTime2 &&
-                        formattedTime1 <= updatedFormattedTime1
-                          ? //&& result
+                        formattedTime1 <= updatedFormattedTime1 &&
+                        result
+                          ? //
+                            //
                             //
                             "bg-green-900"
                           : "bg-green-200"
                       } w-full  text-white p-3 rounded-lg mt-6`}
-                      // disabled={
-                      //   result === null && formattedTime1 <= formattedTime2
-                      // }
                     >
                       join now
                     </button>

@@ -8,9 +8,11 @@ function SlotModal({ isSlotModal, showSlot, slots }) {
 
   const handleSubmit = () => {
     const availability = [...id];
-    addAvailableSlot(availability).then((data) => {
-      console.log(data, " in the available slot");
-    });
+    addAvailableSlot(availability).then((data) => {});
+    // .catch((err) => {
+    //   console.log(err);
+    //   isSlotModal();
+    // });
     setId([""]);
   };
   const animationVariants = {
@@ -86,13 +88,14 @@ function SlotModal({ isSlotModal, showSlot, slots }) {
                             return (
                               <div
                                 onClick={() => handleSelect(data._id)}
+                                key={data?._id}
                                 className={`${
                                   id.includes(data._id)
                                     ? "selected"
                                     : "bg-default-color"
                                 } border border-gray-400 rounded-lg items-center flex justify-center`}
                               >
-                                <p className="p-2 text-sm">
+                                <p key={data?._id} className="p-2 text-sm">
                                   {data?.start_time}
                                 </p>
                               </div>

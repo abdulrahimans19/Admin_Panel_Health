@@ -5,6 +5,7 @@ import DoctorRequstTable from "../../../components/Tables/telemedicin/DoctorRequ
 import blockimg from "../../../assets/images/Vector.png";
 import { useNavigate } from "react-router-dom";
 import {
+  AprovetDoctor,
   BlockOrUnBlockDoctor,
   DoctorRequests,
   GetAllBlockd,
@@ -69,8 +70,9 @@ export default function Doctor() {
             status={"requests"}
             data={requests}
             availabe={"Requested"}
-
-            //callBack={CanclationDoctor}
+            myfunction={getDoctorRequests}
+            callBack={AprovetDoctor}
+            document={document}
           />
         );
 
@@ -79,6 +81,7 @@ export default function Doctor() {
           <DoctorRequstTable
             btImg={blockimg}
             btText={"Block"}
+            myfunction={getAllDoctors}
             status={"approved"}
             data={approved}
             document={document1}
@@ -96,6 +99,7 @@ export default function Doctor() {
             availabe={"blocked"}
             document={document2}
             data={Blocked}
+            myfunction={getBlockedDoctors}
             callBack={BlockOrUnBlockDoctor}
           />
         );

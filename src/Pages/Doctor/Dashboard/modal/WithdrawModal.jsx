@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { motion } from "framer-motion";
-import { addWithdrawRequest } from "../../../../API/ApiCall";
+import { addWithdrawRequest, countryCodesApi } from "../../../../API/ApiCall";
 
 function WithdrawModal({ showModal, isShowModal, profile }) {
+  const [country, setCountry] = useState([]);
+  const [search, setSearchTerm] = useState();
   const [formData, setFormData] = useState({
     amount: "",
     name: "",
@@ -12,8 +15,22 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     account_number: "",
     swift_code: "",
   });
+  useEffect(() => {
+    countryCodesApi()
+      .then((data) => {
+        const formattedData = data.map((item) => ({
+          value: item.name,
+          label: item.name,
+        }));
+        setCountry(formattedData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const [formErrors, setFormErrors] = useState({});
+  const [isOpen, setIsOpen] = useState();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +55,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     if (!formData.name.trim()) {
       errors.name = "Name is required";
     }
-    console.log(formData.country, " @@@@@@@@@@@");
+
     if (!formData.country.trim()) {
       errors.country = "country is required";
     }
@@ -59,8 +76,6 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     if (Object.keys(errors).length === 0) {
       addWithdrawRequest(formData)
         .then((data) => {
-          console.log(data);
-
           setFormData({
             amount: "",
             name: "",
@@ -74,7 +89,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
           isShowModal();
         })
         .catch((err) => {
-          console.log(err.response.data.data.message);
+          console.log(err.response, "  ");
 
           errors.confict = err?.response?.data?.data?.message
             ? err?.response?.data?.data?.message
@@ -92,8 +107,6 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
     visible: { y: 30, opacity: 1 },
   };
 
-  const screenWidth = window.screen.width;
-  console.log("Screen Width: " + screenWidth + " pixels");
   const animationTransition = {
     type: "spring",
     damping: 10,
@@ -168,20 +181,38 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                         </div>
                         <div className="">
                           <p className="mb-2">Country</p>
-                          <select
+                          <Select
+                            //onFocus={null}
+                            options={country}
+                            className=""
+                            value={country.find(
+                              (item) => item.value === formData.country
+                            )}
+                            onChange={(selectedOption) =>
+                              setFormData({
+                                ...formData,
+                                country: selectedOption.value,
+                                // Extract the selected value
+                              })
+                            }
+                          />
+                          c
+                          {/* <select
                             name="country"
-                            className="p-2 outline-none border border-gray-400 rounded-lg w-auto h-10"
+                            className="w-[200px] outline-none border border-gray-400 rounded-lg h-10"
                             value={formData.country}
                             onChange={handleInputChange}
                           >
-                            <option>Select country</option>
-                            <option value="United States">United States</option>
-                            <option value="United Arab Emirates">
-                              United Arab Emirates
-                            </option>
-                            <option value="India">India</option>
-                          </select>
-                          <div></div>
+                            {country &&
+                              country[0] &&
+                              country.map((data) => {
+                                return (
+                                  <option key={data.name} value={data.name}>
+                                    {data.name}
+                                  </option>
+                                );
+                              })}
+                          </select> */}
                         </div>
                       </div>
 
@@ -254,7 +285,18 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                         </button>
                         <button
                           className="rounded-lg border border-1 border-blue-300 h-10 w-[150px] text-blue-400"
-                          onClick={() => isShowModal()}
+                          onClick={() => {
+                            setFormData({
+                              amount: "",
+                              name: "",
+                              country: "",
+                              bank_name: "",
+                              account_type: "",
+                              account_number: "",
+                              swift_code: "",
+                            });
+                            isShowModal();
+                          }}
                         >
                           Cancel
                         </button>
