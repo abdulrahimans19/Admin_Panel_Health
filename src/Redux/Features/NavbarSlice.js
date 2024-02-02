@@ -7,35 +7,18 @@ const { category, testtube, book } = images;
 const initialState = {
   toggleSidebar: false,
   topnavData: [],
-  notificationCount: 0,
   notification: [],
   notificationData: null,
-  pagecount: 1,
+
 };
 
-export const getCartItems = createAsyncThunk(
-  "/notification",
-  async (name, thunkAPI) => {
-    try {
-      const response = await getNotificationApi(); // Assuming this returns a promise
-      // Extract only the necessary data from the response
-      const data = response.data.data?.unread_notifications;
-      return data; // Dispatch only the data, not the entire response object
-    } catch (error) {
-      return thunkAPI.rejectWithValue("something went wrong");
-    }
-  }
-);
+
 export const fcmTokenUpdate = createAsyncThunk(
   "/fcm_token",
   async (name, thunkAPI) => {
     console.log(name, "thunkdata");
 
     try {
-      // console.log(name);
-      // console.log(thunkAPI);
-      // console.log(thunkAPI.getState());
-      // thunkAPI.dispatch(openModal());
       const resp = getNotificationApi();
       console.log(resp);
       return resp;
@@ -630,36 +613,14 @@ const NavBarSlice = createSlice({
       state.topnavData = [];
     },
 
-    notificationCount: (state, payload) => {
-      state.notificationCount = 0;
-    },
+
 
     newNotification: (state, payload) => {
       console.log(payload);
       state.notificationData = payload;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getCartItems.pending, (state) => {
-        // console.log('thsi working ');
-        // state.isLoading=false
-      })
-      .addCase(getCartItems.fulfilled, (state, action) => {
 
-        // console.log(state.pagecount);
-        // state.pagecount=state.pagecount+1
-        // console.log(action.payload.data.data.notifications, "notification paloaf");
-        console.log("notification read");
-        console.log(action?.payload?.data?.unread_notifications);
-        console.log(action?.payload);
-        // state.notification = action.payload.data.data.notifications
-        state.notificationCount = action?.payload
-
-        // state.CartItem=action.payload
-      })
-      .addCase(getCartItems.rejected, (state) => {});
-  },
 });
 export default NavBarSlice.reducer;
 

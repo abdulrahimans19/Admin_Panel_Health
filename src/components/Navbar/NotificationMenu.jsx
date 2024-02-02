@@ -6,7 +6,6 @@ import {
 } from "../../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getCartItems } from "../../Redux/Features/NavbarSlice";
 
 const NotificationBar = ({
   notifications,
@@ -77,9 +76,7 @@ const NotificationBar = ({
                 .catch((err) => {
                   console.log(err);
                 });
-              // dispatch(getCartItems());
 
-              // navigate(notification.link)
             }}
             key={index}
             className={`border-b last:border-b-0 p-2 ${

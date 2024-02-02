@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MainDoctorCategories, SignupUserdata } from "../API/ApiCall";
+import {
+  MainDoctorCategories,
+  SignupUserdata,
+  UploadImageUrl,
+  uploadToAws,
+} from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 
 const SignupProfile = ({ email, password, onClose }) => {
@@ -20,13 +25,20 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [docCateogries, setDocCateogries] = useState([]);
   const navigate = useNavigate();
-
+  const [profileImagedata, setProfileImage] = useState();
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
+    console.log(file, "fie");
+    setProfileImage(file);
+    console.log("roshigergerg");
     if (file) {
       const reader = new FileReader();
+      console.log(reader);
       reader.onloadend = () => {
+
+
         setSelectedImage(reader.result);
+        
       };
       reader.readAsDataURL(file);
     }
@@ -50,6 +62,7 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   const handlePaste = (e) => {
     e.preventDefault();
+
     const clipboardData = e.clipboardData || window.clipboardData;
     const file = clipboardData.files[0];
     if (file) {
@@ -82,28 +95,50 @@ const SignupProfile = ({ email, password, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(selectedImage, "asdfg");
+      console.log(formData.certificate);
+
       const imageUrl = await uploadImageToAws();
 
-      const userData = {
-        email,
-        password,
-        name: formData.name,
-        description: formData.description,
-        gender: formData.gender,
-        consulting_fee: parseInt(formData.consulting_fee, 10),
-        certificate:
-          "https://marketplace.canva.com/EAFNlUJs5g4/2/0/1600w/canva-white-simple-certificate-of-appreciation-Fcz7KkZ5YaU.jpg",
-        category_id: "658156b7f418ada4a7a8f7ff",
-        image:
-          "https://www.citizenshospitals.com/static/uploads/130789a4-764e-4ee3-88fe-68f9278452d6-1692966652977.png",
-        experience: parseInt(formData.experience, 10),
-      };
+      let profileImage;
+      let GetDocumenet;
+     await  UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, profileImagedata).then((data) => {
+          console.log(data, "uploaded");
+        });
+        profileImage = data.data.publicUrl;
+      });
 
-      console.log("Data to be sent:", userData);
+    await   UploadImageUrl().then((data) => {
+        uploadToAws(data.data.presignedUrl, formData.certificate).then(
+          (data) => {
+            console.log(data, "uploaded");
+          }
+        );
+        GetDocumenet = data.data.publicUrl;
+      });
 
-      const response = await SignupUserdata(userData);
-      console.log("User registered successfully:", response.data);
-      navigate("/otp", { state: { email } });
+      console.log(profileImage);
+
+      if (profileImage && GetDocumenet) {
+        const userData = {
+          email,
+          password,
+          name: formData.name,
+          description: formData.description,
+          gender: formData.gender,
+          consulting_fee: parseInt(formData.consulting_fee, 10),
+          certificate: GetDocumenet,
+          image: profileImage,
+          experience: parseInt(formData.experience, 10),
+        };
+
+        console.log("Data to be sent:", userData);
+
+        const response = await SignupUserdata(userData);
+        console.log("User registered successfully:", response.data);
+        navigate("/otp", { state: { email } });
+      }
     } catch (error) {
       console.error("Error registering user:", error);
     }

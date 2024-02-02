@@ -8,11 +8,6 @@ const initialState = {
   testFilter:null,
   subTestsData:[]
 };
-// export const  getCartData=createAsyncThunk('cart/getcartDAta',async ()=>
-// {
-//     const {data} =await axios.get('')
-//     return data
-// })
 
 const AdminSlice = createSlice({
   name: "admin",
@@ -32,21 +27,6 @@ const AdminSlice = createSlice({
     },
   },
   
-  // extraReducers:(builder)=>
-  // {
-  //     builder.addCase(getCartData.pending,(state=>
-  //         {
-  //             console.log('thsi working ');
-  //             state.isLoading=false
-  //         })).addCase(getCartData.fulfilled,(state,action)=>
-  //         {
-  //             state.CartItem=action.payload
-  //         }).addCase(getCartData.rejected,(state)=>
-  //         {
-  //             state.isLoading=true
-  //         })
-
-  // }
 });
 export default AdminSlice.reducer;
 export const { test,setFilter,setSubtest } = AdminSlice.actions;

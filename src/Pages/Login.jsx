@@ -227,6 +227,7 @@ import AdminImage from "../assets/login/images/adminLogin.png";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
 import { DoctorLogInApi } from "../API/DoctorApi";
+import { requestForToken } from "../firebase/Firebaseconfig";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("Admin");
@@ -249,6 +250,10 @@ const Login = () => {
     apiCall(UserData)
       .then((data) => {
         localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+
+        if (selectedOption === "Admin") {
+          requestForToken();
+        }
         const redirectPath =
           selectedOption === "Admin" ? "/" : "/doctor/overview";
         navigate(redirectPath);
@@ -371,6 +376,6 @@ const Login = () => {
       </div>
     </div>
   );
-}; 
+};
 
 export default Login;
