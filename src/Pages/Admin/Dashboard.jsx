@@ -141,6 +141,7 @@ console.log(data.data,"appoimt");
                 </div>
 
                 <AppoimentTable />
+
               </div>
             </div>
           </div>

@@ -77,23 +77,32 @@ function Recommended() {
           />
         </button>
 </div>
+<div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
 
-        { recommendedTest[0] ?
+        { 
+        
+        
+        recommendedTest[0] ?
         recommendedTest.map((data)=>{
           return (
-      <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
             <TestCard data={data} getData={getAllRecomendedTests} getAllTests={getAllRecomendedTests} getLabTestsbyCategory={getRecomendedTestsByCat} type={'recommended'}/>
-      </div>
           )
         })
         :
-        <div className="flex justify-center">
-
-            <NoDataImage text={"No Recommended Tests"} />
-          </div> 
+    <></>
         }
         
+        </div>
+{
 
+recommendedTest[0]?<></>:
+<div className="w-full" >
+<div className="flex justify-center">
+
+<NoDataImage text={"No Recommended Tests"} />
+</div> 
+</div>
+}
       {showLabModal1 && (
             <LabModal getAllTests={getAllRecomendedTests} callback={toggleMenu} setShowModal={setShowLabModal1} />
           )}

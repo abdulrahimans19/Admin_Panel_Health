@@ -57,24 +57,31 @@ function Disabled() {
           {disbledTest.length != 0 ? disbledTest.length : 0} items disabled
         </div>
       </div>
+      <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
+
       {disbledTest[0] ? (
         disbledTest.map((data) => {
           return (
-            <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
               <TestCard
                 data={data}
                 getAllTests={getDisabledTestCards}
                 getLabTestsbyCategory={getDisabledTestByCat}
                 type={"disabled"}
               />
-            </div>
           );
         })
       ) : (
-        <div className="flex justify-center">
-          <NoDataImage text={"No Disabled Tests"} />
-        </div>
+     <></>
       )}
+            </div>
+
+{
+
+disbledTest[0]?<></>:   <div className="flex justify-center">
+  <NoDataImage text={"No Disabled Tests"} />
+</div>
+}
+
 
       {disbledTest[0] && (
         <ReactPaginate

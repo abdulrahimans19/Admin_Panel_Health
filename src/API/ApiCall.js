@@ -280,7 +280,7 @@ export const addHomecareCategory = async (data) => {
 };
 export const getRecommendedTestsbyCategoryApi = async (cat_id,page) => {
   return await Instance.get(
-    `tests/all-tests?recommended=${true}&category_id=${cat_id}&page=${page}`
+    `tests/all-tests?recommended=${true}&page=${page}&category_id=${cat_id}`
   );
 };
 export const getDisbledTestByCatApi = async (cat_id) => {

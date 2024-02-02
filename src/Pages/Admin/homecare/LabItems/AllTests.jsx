@@ -88,11 +88,16 @@ function AllTests() {
           />
         </button>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
 
       {labTest[0] ? (
+
+    
+
         labTest.map((data) => {
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
-            return{" "}
+          return(
+
+
             <TestCard
               data={data}
               getData={getAllTests}
@@ -100,15 +105,20 @@ function AllTests() {
               getAllTests={getAllTests}
               type={""}
             />
-            ;
-          </div>;
+         
+          )
+          
+        
+           
+            
         })
       ) : (
-        <div className="flex justify-center">
-          <NoDataImage text={"Tests Are Not Added"} />
-        </div>
+        <></>
       )}
-
+      </div>;
+{labTest[0] ?<></>:<div className=" flex justify-center">
+          <NoDataImage text={"Tests Are Not Added"} />
+        </div>}
       {labTest[0] ? (
         <ReactPaginate
           pageCount={totalPagecount} // Replace with the total number of pages
