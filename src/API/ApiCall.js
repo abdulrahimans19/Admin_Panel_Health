@@ -177,9 +177,10 @@ export const monthlyEarningApi = async (data) => {
   return await Instance.get(`/order/monthly-earnings?type=${data}`);
 };
 export const GetAllDoctors = async (page = 1) => {
-  console.log(page, " = = =page in api");
-
   return await Instance.get(`/doctor/admin/all?page=${page}`);
+};
+export const GetSearchAllDoctors = async (search) => {
+  return await Instance.get(`/doctor/admin/all?search=${search}`);
 };
 
 export const CanclationDoctor = async (id) => {
@@ -354,7 +355,9 @@ export const getApointments = async (
 ) => {
   return await Instance.get(
     `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
-  );
+  ).catch((err) => {
+    console.log(err);
+  });
 };
 export const addWithdrawRequest = async (data) => {
   return await Instance.post("/withdrawal/add-withdrawal-request", data);
