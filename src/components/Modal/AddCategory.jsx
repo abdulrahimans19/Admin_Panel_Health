@@ -42,6 +42,7 @@ export default function AddCategory({
     accept: "image/*",
   });
   const [errors, setErrors] = useState({});
+
   const validate = () => {
     let tempErrors = {};
     tempErrors.categoryName = categoryName ? "" : "Category name is required";

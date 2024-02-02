@@ -303,12 +303,10 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+    } else if (password.length !== 5) {
+      setError("Password must be atleast 5 digits");
     } else {
       setShowSignupProfile(true);
-
-      // Removed API call
-      // Removed navigation
-      // You can add your logic here for handling the form submission
     }
   };
   const isFormFilled = () => {
@@ -322,98 +320,98 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(newEmail));
   };
-
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
+      {/* Image Section: Now hidden on small screens, visible on lg and above */}
       <div className="hidden lg:flex items-center justify-center w-1/2 bg-indigo-500">
         <img
           src={doctorImage}
-          alt={`Login Image - Doctor`}
+          alt="Login Image - Doctor"
           className="object-cover w-full h-full"
         />
       </div>
 
+      {/* Signup Section */}
       <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
         <div className="max-w-md w-full space-y-8">
-          <div className="flex items-center justify-center">
-            <h2 className="mt-6 text-5xl p-5 font-extrabold text-gray-900">
+          {/* Form and content go here */}
+          <div className="text-center">
+            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900">
               Hello Doctor!
             </h2>
-          </div>
-
-          <div className="flex items-center justify-center">
-            <h2 className="text-3xl font-thin text-gray-400">
+            <p className="text-xl lg:text-2xl font-light text-gray-400">
               New here? Get started!
-            </h2>
+            </p>
           </div>
 
           <form onSubmit={signUser} className="mt-8 space-y-6">
-            <div className="flex flex-col items-center">
-              <div className="relative mb-4">
+            <div className="rounded-md shadow-sm space-y-4">
+              <div>
                 <input
                   value={email}
                   onChange={handleEmailChange}
                   name="email"
                   type="email"
-                  className="w-[400px] appearance-none rounded-full border-2 p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
+                  required
+                  className="w-full rounded-full border-gray-300 p-3 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Email Address"
                 />
                 {!isValidEmail && (
-                  <p style={{ color: "red", marginTop: "8px" }}>
+                  <p className="text-red-500 text-sm mt-2">
                     Invalid email address
                   </p>
                 )}
               </div>
-
-              <div className="relative mb-4">
+              <div>
                 <input
                   name="password"
                   type="password"
-                  className="w-[400px] appearance-none rounded-full border-2 p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
+                  required
+                  className="w-full rounded-full border-gray-300 p-3 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-
-              <div className="relative mb-4">
+              <div>
                 <input
                   name="confirmPassword"
                   type="password"
-                  className="w-[400px] appearance-none rounded-full border-2 p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
+                  required
+                  className="w-full rounded-full border-gray-300 p-3 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Confirm Password"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 {passerror && (
-                  <p style={{ color: "red", marginTop: "8px" }}>{passerror}</p>
+                  <p className="text-red-500 text-sm mt-2">{passerror}</p>
                 )}
-              </div>
-
-              <div className="mt-10">
-                <button
-                  className="w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-full flex items-center justify-center text-white text-1xl font-semibold font-['Roboto Flex']"
-                  type="submit"
-                  disabled={!isFormFilled()} // Button will be disabled unless both email and password are filled
-                >
-                  Continue
-                </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-center mt-6 ">
-              <span>Already have an account? </span>
+            <button
+              disabled={!isFormFilled()}
+              className="group relative w-full h-[54px] flex justify-center py-2 px-4 border  bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-full text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Continue
+            </button>
+          </form>
+
+          <div className="flex justify-center">
+            <p className="text-sm font-medium text-gray-600">
+              Already have an account?{" "}
               <a
                 href="/login"
-                className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] "
+                className="text-indigo-600 hover:text-indigo-500"
               >
                 Login
               </a>
-            </div>
-          </form>
+            </p>
+          </div>
+
           {showSignupProfile && (
             <SignupProfile
-              email={email} // Pass email to SignupProfile
-              password={password} // Pass password to SignupProfile
-              onClose={() => setShowSignupProfile(false)} // Pass a function to close the popup
+              email={email}
+              password={password}
+              onClose={() => setShowSignupProfile(false)}
             />
           )}
         </div>

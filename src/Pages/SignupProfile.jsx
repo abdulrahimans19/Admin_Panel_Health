@@ -103,7 +103,7 @@ const SignupProfile = ({ email, password, onClose }) => {
 
       const response = await SignupUserdata(userData);
       console.log("User registered successfully:", response.data);
-      navigate("/otp");
+      navigate("/otp", { state: { email } });
     } catch (error) {
       console.error("Error registering user:", error);
     }

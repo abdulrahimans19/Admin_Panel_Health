@@ -219,14 +219,14 @@
 //   );
 // };
 
-// export default Login;
+// export default Login;import React, { useState } from "react";
+
 import React, { useState } from "react";
 import { LoginUserdata } from "../API/ApiCall";
 import AdminImage from "../assets/login/images/adminLogin.png";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../assets/login/images/doctorLogin.png";
 import { DoctorLogInApi } from "../API/DoctorApi";
-import { requestForToken } from "../firebase/Firebaseconfig";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("Admin");
@@ -242,191 +242,135 @@ const Login = () => {
   const LoginUser = (e) => {
     e.preventDefault();
     setErrmsg("");
-
     const form = new FormData(e.target);
-    const UserData = Object.fromEntries(form);
+    const UserData = Object.fromEntries(form.entries());
 
-    if (selectedOption === "Admin") {
-      LoginUserdata(UserData)
-        .then((data) => {
-          console.log("fcm  updateing");
-          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-          requestForToken();
-          navigate("/");
-        })
-        .catch((err) => {
-          setErrmsg("Email or password is incorrect");
-        });
-    } else {
-      console.log("else is working");
-      DoctorLogInApi(UserData)
-        .then((data) => {
-          localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
-
-          navigate("/doctor/overview");
-        })
-        .catch((err) => {
-          setErrmsg("Email or password is incorrect");
-        });
-      console.log("doc log");
-    }
+    const apiCall = selectedOption === "Admin" ? LoginUserdata : DoctorLogInApi;
+    apiCall(UserData)
+      .then((data) => {
+        localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+        const redirectPath =
+          selectedOption === "Admin" ? "/" : "/doctor/overview";
+        navigate(redirectPath);
+      })
+      .catch((err) => {
+        setErrmsg("Email or password is incorrect");
+      });
   };
 
   const handleEmailChange = (event) => {
-    const newEmail = event.target.value;
-    setEmail(newEmail);
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setIsValidEmail(emailRegex.test(newEmail));
+    setEmail(event.target.value);
+    setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(event.target.value));
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <div className="hidden lg:flex items-center justify-center w-1/2 bg-indigo-500">
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
+      <div className="hidden lg:flex items-center justify-center flex-1 bg-indigo-500">
         <img
           src={selectedOption === "Admin" ? AdminImage : doctorImage}
-          alt={`Login Image - ${selectedOption}`}
+          alt="Login"
           className="object-cover w-full h-full"
         />
       </div>
 
-      <div className="flex items-center justify-center w-full lg:w-1/2 p-8">
-        <div className="max-w-md w-full space-y-8 ">
-          <div>
-            <div className="relative w-[340px] h-[68px] bg-white rounded-[60px] border border-zinc-400 overflow-hidden">
+      <div className="flex flex-1 items-center justify-center w-full lg:w-1/2 p-8">
+        <div className="max-w-md w-full space-y-8">
+          <div className="flex flex-col items-center justify-center space-y-5">
+            <h2 className="text-2xl lg:text-5xl font-extrabold text-gray-900">
+              Hello {selectedOption}!
+            </h2>
+            <h2 className="text-xl lg:text-3xl font-thin text-gray-400">
+              Welcome back
+            </h2>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <div className="relative w-full lg:w-[340px] h-[68px] bg-white rounded-full border border-zinc-400 overflow-hidden mb-6">
               <div
                 className={`absolute left-0 top-0 ${
-                  selectedOption === "Admin"
-                    ? "w-[170px]"
-                    : "w-[170px] left-[170px]"
-                } h-full bg-blue-950 rounded-[60px] shadow`}
-              />
+                  selectedOption === "Admin" ? "w-1/2" : "w-1/2 left-1/2"
+                } h-full bg-blue-950 rounded-full shadow`}
+              ></div>
               <button
                 onClick={() => handleToggle("Admin")}
-                className={`${
+                className={`absolute w-1/2 h-full text-center font-medium text-lg transition-all ease-in-out duration-300 ${
                   selectedOption === "Admin"
                     ? "bg-blue-950 text-white"
                     : "bg-white text-black"
                 }`}
-                style={{
-                  position: "absolute",
-                  left: "0",
-                  top: "0",
-                  width: "170px",
-                  height: "68px",
-                  borderRadius: "60px",
-                  border: "none",
-                  fontSize: "22.76px",
-                  fontWeight: "medium",
-                  fontFamily: "Roboto Flex",
-                }}
+                style={{ borderRadius: "60px" }}
               >
                 Admin
               </button>
-
               <button
                 onClick={() => handleToggle("Doctor")}
-                className={`${
+                className={`absolute w-1/2 h-full text-center font-medium text-lg transition-all ease-in-out duration-300 ${
                   selectedOption === "Doctor"
                     ? "bg-blue-950 text-white"
                     : "bg-white text-black"
                 }`}
-                style={{
-                  position: "absolute",
-                  left: "170px",
-                  top: "0",
-                  width: "170px",
-                  height: "68px",
-                  borderRadius: "60px",
-                  border: "none",
-                  fontSize: "22.76px",
-                  fontWeight: "medium",
-                  fontFamily: "Roboto Flex",
-                }}
+                style={{ left: "50%", borderRadius: "60px" }}
               >
                 Doctor
               </button>
             </div>
-
-            <div className="flex items-center justify-center">
-              <h2 className="mt-6 mr-20 text-5xl p-5 font-extrabold text-gray-900">
-                Hello {selectedOption === "Admin" ? "Admin" : "Doctor"}!
-              </h2>
-            </div>
-
-            <div className="flex items-center justify-center">
-              <h2 className=" mr-20 text-3xl font-thin text-gray-400">
-                Welcome back
-              </h2>
-            </div>
           </div>
-          <form onSubmit={LoginUser} className="mt-8 space-y-6">
-            <div className="relative">
-              <input
-                value={email}
-                onChange={handleEmailChange}
-                name="email"
-                type="email"
-                className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
-                placeholder="Email Address"
-              />
-              {!isValidEmail && (
-                <p style={{ color: "red" }}>Invalid email address</p>
-              )}
-            </div>
 
-            <div className=" relative">
-              <input
-                name="password"
-                type="password"
-                className="w-[400px] appearance-none rounded-full border-2  p-3 px-4 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
-                placeholder=" Password"
-              />
-              {errmsg && <p style={{ color: "red" }}>{errmsg}</p>}
-            </div>
+          <form
+            onSubmit={LoginUser}
+            className="w-full flex flex-col items-center space-y-4"
+          >
+            <input
+              value={email}
+              onChange={handleEmailChange}
+              name="email"
+              type="email"
+              className="w-full lg:w-[400px] appearance-none rounded-full border-2 p-3 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
+              placeholder="Email Address"
+            />
+            {!isValidEmail && (
+              <p className="text-red-500">Invalid email address</p>
+            )}
+
+            <input
+              name="password"
+              type="password"
+              className="w-full lg:w-[400px] appearance-none rounded-full border-2 p-3 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
+              placeholder="Password"
+            />
+            {errmsg && <p className="text-red-500">{errmsg}</p>}
+
             {selectedOption === "Doctor" ? (
               <a
                 href="/forgot"
-                className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] mr-10 flex justify-end items-center"
+                className="text-cyan-900 font-medium self-end mr-10"
               >
                 Forgot Password?
               </a>
             ) : (
-              <>
-                <div className="p-2"></div>
-              </>
+              <div className="h-8"></div>
             )}
 
-            <div>
-              <button
-                className="w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center "
-                type="submit"
-              >
-                <div className="text-white text-1xl font-semibold font-['Roboto Flex']">
-                  Login
-                </div>
-              </button>
-              {selectedOption === "Doctor" ? (
-                <div className="flex items-center ml-20 mt-6">
-                  <span>Dont have an account? </span>
-                  <a
-                    href="/register"
-                    className="text-cyan-900 text-1xl font-medium font-['Roboto Flex'] "
-                  >
-                    Signup
-                  </a>
-                </div>
-              ) : (
-                <>
-                  <div className="p-4"></div>
-                </>
-              )}
-            </div>
+            <button
+              className="w-full lg:w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center"
+              type="submit"
+            >
+              <span className="text-white font-semibold">Login</span>
+            </button>
+
+            {selectedOption === "Doctor" && (
+              <div className="flex justify-center lg:justify-start w-full lg:w-[400px] mt-4">
+                <span>Don't have an account? </span>
+                <a href="/register" className="text-cyan-900 ml-2 font-medium">
+                  Signup
+                </a>
+              </div>
+            )}
           </form>
         </div>
       </div>
     </div>
   );
-};
+}; 
 
 export default Login;
