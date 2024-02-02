@@ -52,6 +52,7 @@ const CategoryFilter = ({ selectedCategory, onSelect }) => (
 );
 
 // Component for transactions
+
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
@@ -59,6 +60,7 @@ const Transactions = () => {
   const [totalAmountForSelectedCategory, setTotalAmountForSelectedCategory] =
     useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Homecare");
+  const [noDataAvailable, setNoDataAvailable] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -89,12 +91,41 @@ const Transactions = () => {
     }
 
     fetchFunction(formattedStartDate, formattedEndDate).then(({ data }) => {
-      setTransactions(data.data.transaction);
-      setTotalAmountForSelectedCategory(data.data.total_income);
+      if (
+        !data ||
+        !data.data.transaction ||
+        data.data.transaction.length === 0
+      ) {
+        setNoDataAvailable(true);
+        setTransactions([]);
+        setTotalAmountForSelectedCategory(0);
+      } else {
+        setNoDataAvailable(false);
+        setTransactions(
+          data.data.transaction.map((item) => ({
+            ...item,
+            _id: item._id || "No Data Available",
+            profile_id: item.profile_id
+              ? `${item.profile_id.first_name || "No Data"} ${
+                  item.profile_id.last_name || "Available"
+                }`
+              : "No Data Available",
+            payment_type: item.payment_type || "No Data Available",
+            payment_id: item.payment_id || "No Data Available",
+            created_at: item.created_at || new Date(), // Assuming date is required, else "No Data Available"
+            payable_amount:
+              item.payable_amount !== undefined
+                ? item.payable_amount
+                : "No Data Available",
+            order_status: item.order_status || "No Data Available",
+            invoice: item.invoice || "No Data Available",
+          }))
+        );
+        setTotalAmountForSelectedCategory(data.data.total_income || 0);
+      }
     });
   };
 
-  // Function to format date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "numeric", day: "numeric" };
@@ -176,39 +207,45 @@ const Transactions = () => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((item, index) => (
-            <tr
-              key={index}
-              className={`${
-                index % 2 === 0 ? "bg-gray-100" : "bg-white"
-              } border-b`}
-            >
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item._id}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.profile_id.first_name} {item.profile_id.last_name}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.payment_type}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.payment_id}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {formatDate(item.created_at)}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.payable_amount}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.order_status}
-              </td>
-              <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                {item.invoice}
+          {noDataAvailable ? (
+            <tr>
+              <td colSpan="8" className="text-center py-4">
+                No Data Available
               </td>
             </tr>
-          ))}
+          ) : (
+            transactions.map((item, index) => (
+              <tr
+                key={index}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                } border-b`}
+              >
+                <td className="py-2 text-sm px-4">{item._id}</td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.profile_id.first_name} {item.profile_id.last_name}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.payment_type}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.payment_id}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {formatDate(item.created_at)}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.payable_amount}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.order_status}
+                </td>
+                <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                  {item.invoice}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <div className="bottom-0 right-0 sm:flex sm:flex-col items-end gap-6 mr-6 mb-6">

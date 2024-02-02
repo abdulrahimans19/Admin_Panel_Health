@@ -271,6 +271,13 @@ export const getAppoinmentsApi = async (year, month, date, page) => {
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
 };
+export const getCategoryDetailsById = async (cat_id) => {
+  console.log(cat_id);
+  return await Instance.get(
+    `/sub-categories/get-category-details?id=${cat_id}`
+  );
+};
+
 export const getFoodSubCategory = async (data) => {
   return await Instance.get(`sub-categories/${data}`);
 };

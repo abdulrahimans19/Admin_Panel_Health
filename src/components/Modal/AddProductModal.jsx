@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import {
   UploadImageUrl,
   addProductApi,
+  getCategoryDetailsById,
   countryCodesApi,
   getPharmaCategory,
   getSubCatData,
