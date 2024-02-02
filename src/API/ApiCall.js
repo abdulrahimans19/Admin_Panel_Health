@@ -16,6 +16,15 @@ export const VerifyEmail = async (email, otp) => {
 export const forgotOtp = async (email, otp) => {
   return await Instance.post("/auth/doctor/validate-otp", { email, otp });
 };
+export const SetPassword = async (email, reset_password_token, password) => {
+
+  console.log("passwordsss:", email, reset_password_token, password);
+  return await Instance.post("/auth/doctor/set-password", {
+    email,
+    reset_password_token,
+    password,
+  });
+};
 
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
@@ -252,8 +261,10 @@ export const GetDrAprovedWithdrawalRequsts = async (page = 1) => {
     `/withdrawal/accepted-withdrawal-requests?page=${page}`
   );
 };
-export const getAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
@@ -286,7 +297,7 @@ export const updateCouponApi = async (data) => {
 export const addHomecareCategory = async (data) => {
   return await Instance.post(`main-categories/home-care/create`, data);
 };
-export const getRecommendedTestsbyCategoryApi = async (cat_id,page) => {
+export const getRecommendedTestsbyCategoryApi = async (cat_id, page) => {
   return await Instance.get(
     `tests/all-tests?recommended=${true}&category_id=${cat_id}&page=${page}`
   );
@@ -296,8 +307,10 @@ export const getDisbledTestByCatApi = async (cat_id) => {
     `tests/all-tests?disabled=${true}&category_id=${cat_id}`
   );
 };
-export const getCurrentAppoinmentsApi = async (year, month, date,page) => {
-  return await Instance.get(`/bookings/all?date=${year}-${month}-${date}&page=${page}`);
+export const getCurrentAppoinmentsApi = async (year, month, date, page) => {
+  return await Instance.get(
+    `/bookings/all?date=${year}-${month}-${date}&page=${page}`
+  );
 };
 export const homeCareUpadateCate = async (data) => {
   return await Instance.put(`/main-categories/home-care/update`, data);

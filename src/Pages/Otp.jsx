@@ -23,40 +23,44 @@ const Otp = () => {
   const handleVerification = () => {
     const otpString = otp.join("");
     console.log("Request Payload:", { email, otp: otpString });
-
-    // Adjusted to use the destructured `flow` and `email`
+  
     const apiFunction = flow === "forgot" ? forgotOtp : VerifyEmail;
-
+  
     apiFunction(email, otpString)
       .then((response) => {
         console.log(response, "OTP verification success");
-        if (response.data.status && response.data.statusCode === 200) {
-          toast(response.data.message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          // Use the corrected flow check to navigate accordingly
-          const nextPage = flow === "forgot" ? "/set-password" : "/login";
-          navigate(nextPage);
+        // Adjusted to correctly check the nested `status` and `statusCode` within `response.data`
+        if (response.data.statusCode === 200 && response.data.status) {
+          if (response.data.message === "Valid OTP") {
+            // For the forgot password flow, also correctly access the nested `reset_password_token`
+            // Check if `reset_password_token` is provided in the response
+            if (response.data.data && response.data.data.reset_password_token) {
+              const nextState = { email, reset_password_token: response.data.data.reset_password_token };
+              console.log("Navigating to /set-password with state:", nextState); // Log to confirm data
+              navigate("/set-password", { state: nextState });
+            } else {
+              // Handle case where `reset_password_token` might not be provided
+              console.error("No reset password token provided in response.");
+              setVerificationError("No reset password token provided. Please try again or contact support.");
+            }
+          } else if (response.data.message === "Email successfully verified, waiting for admin confirmation") {
+            // For email verification flow
+            const messageState = { message: response.data.message };
+            console.log("Navigating to /login with state:", messageState);
+            navigate("/login", { state: messageState });
+          }
         } else {
-          setVerificationError(
-            response.data.message || "Invalid OTP. Please try again."
-          );
+          // Handle other responses as errors
+          setVerificationError(response.data.message || "An unexpected error occurred. Please try again.");
         }
       })
       .catch((err) => {
         console.error(err, "OTP verification error");
-        const errorMsg =
-          err.response?.data?.message ||
-          "Error verifying OTP. Please try again.";
+        const errorMsg = err.response?.data?.message || "Error verifying OTP. Please try again.";
         setVerificationError(errorMsg);
       });
   };
+  
   const handleOtpChange = (index, value) => {
     const newOtp = [...otp];
     newOtp[index] = value.slice(0, 1);

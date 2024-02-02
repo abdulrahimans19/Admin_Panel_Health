@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import sideImage from "../assets/images/setpass.png";
 import key from "../assets/images/key.png";
+import { SetPassword } from "../API/ApiCall";
 
 const SetNewPass = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const { email, reset_password_token } = location.state || {
+    email: null,
+    reset_password_token: null,
+  };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -32,6 +42,28 @@ const SetNewPass = () => {
       validationMessage === ""
     );
   };
+// Ensure you're using the useNavigate hook correctly
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (isFormFilled()) {
+    SetPassword(email, reset_password_token, password)
+      .then((response) => {
+        console.log("Password reset successful", response);
+        // Ensure this message exactly matches what the API returns
+        if (response.data.message === "Password reset successful, You'll be redirected to the login screen now") {
+          console.log('Attempting to navigate to /success'); // Debugging line
+          navigate('/success');
+        } else {
+          console.log("Password reset response:", response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to reset password", error);
+      });
+  }
+};
+
 
   return (
     <div className="flex flex-wrap h-screen w-full">
@@ -48,7 +80,7 @@ const SetNewPass = () => {
             </p>
           </div>
 
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="mb-4">
                 {" "}
