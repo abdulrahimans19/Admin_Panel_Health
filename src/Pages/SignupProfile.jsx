@@ -24,7 +24,29 @@ const SignupProfile = ({ email, password, onClose }) => {
   const fileInputRef = useRef(null);
   const [isAgreed, setIsAgreed] = useState(false);
   const [docCateogries, setDocCateogries] = useState([]);
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Please enter your name.";
+    if (!formData.gender) newErrors.gender = "Please select your gender.";
+    if (!formData.country) newErrors.country = "Please add your country.";
+    if (!formData.category_id) newErrors.category_id = "Choose your category.";
+    if (!formData.experience) newErrors.experience = "Add your experience.";
+    if (!formData.certificate)
+      newErrors.certificate = "Upload your certificate.";
+    if (!formData.consulting_fee)
+      newErrors.consulting_fee = "Please enter your consultation fee.";
+    if (!formData.description)
+      newErrors.description = "Briefly enter about you.";
+    if (!selectedImage) newErrors.image = "Please upload an image.";
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0; // Form is valid if there are no errors
+  };
+
   const [profileImagedata, setProfileImage] = useState();
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -35,10 +57,7 @@ const SignupProfile = ({ email, password, onClose }) => {
       const reader = new FileReader();
       console.log(reader);
       reader.onloadend = () => {
-
-
         setSelectedImage(reader.result);
-        
       };
       reader.readAsDataURL(file);
     }
@@ -94,6 +113,7 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     try {
       console.log(selectedImage, "asdfg");
       console.log(formData.certificate);
@@ -102,14 +122,14 @@ const SignupProfile = ({ email, password, onClose }) => {
 
       let profileImage;
       let GetDocumenet;
-     await  UploadImageUrl().then((data) => {
+      await UploadImageUrl().then((data) => {
         uploadToAws(data.data.presignedUrl, profileImagedata).then((data) => {
           console.log(data, "uploaded");
         });
         profileImage = data.data.publicUrl;
       });
 
-    await   UploadImageUrl().then((data) => {
+      await UploadImageUrl().then((data) => {
         uploadToAws(data.data.presignedUrl, formData.certificate).then(
           (data) => {
             console.log(data, "uploaded");
@@ -194,6 +214,8 @@ const SignupProfile = ({ email, password, onClose }) => {
             {/* Conditionally render the SVG or the selected image */}
             {!selectedImage ? (
               <div className="cursor-pointer" onClick={handleSvgClick}>
+                {errors.image && <p className="text-red-500">{errors.image}</p>}
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-24 w-24 md:h-40 md:w-40 fill-white stroke-indigo-500 border-2 border-white border-opacity-40 rounded-[20px] p-4 md:p-8"
@@ -244,6 +266,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Full Name</span>
+                        {errors.name && (
+                          <p className="text-red-500">{errors.name}</p>
+                        )}
                       </div>
                       <input
                         type="text"
@@ -260,6 +285,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Gender</span>
+                        {errors.gender && (
+                          <p className="text-red-500">{errors.gender}</p>
+                        )}
                       </div>
                       <select
                         className="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray-400 p-2 px-3 my-2"
@@ -278,6 +306,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Country</span>
+                        {errors.country && (
+                          <p className="text-red-500">{errors.country}</p>
+                        )}
                       </div>
                       <input
                         type="text"
@@ -295,6 +326,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                         <span className="label-text">
                           Professional Category
                         </span>
+                        {errors.category_id && (
+                          <p className="text-red-500">{errors.category_id}</p>
+                        )}
                       </div>
                       <select
                         id="countries"
@@ -313,6 +347,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Experience</span>
+                        {errors.experience && (
+                          <p className="text-red-500">{errors.experience}</p>
+                        )}
                       </div>
                       <input
                         type="number"
@@ -333,6 +370,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Upload Certificate</span>
+                        {errors.certificate && (
+                          <p className="text-red-500">{errors.certificate}</p>
+                        )}
                       </div>
                       <input
                         type="file"
@@ -351,6 +391,11 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Consultation Fee</span>
+                        {errors.consulting_fee && (
+                          <p className="text-red-500">
+                            {errors.consulting_fee}
+                          </p>
+                        )}
                       </div>
                       <input
                         type="number"
@@ -369,6 +414,9 @@ const SignupProfile = ({ email, password, onClose }) => {
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Description</span>
+                        {errors.description && (
+                          <p className="text-red-500">{errors.description}</p>
+                        )}
                       </div>
                       <textarea
                         placeholder="Tell us about yourself"

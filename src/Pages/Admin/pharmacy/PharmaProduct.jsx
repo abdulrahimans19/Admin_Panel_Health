@@ -33,7 +33,7 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [enableProduct, setEnableProduct] = useState(false)
+  const [enableProduct, setEnableProduct] = useState(false);
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -146,7 +146,7 @@ export default function PharmaProduct() {
     console.log(editProductData);
     disablePharmaProduct(editProductData._id).then((data) => {
       console.log(data);
-      PharmaProduct()
+      PharmaProduct();
       setDisableProducts(false);
     }).catch((err)=>
     {
@@ -155,8 +155,6 @@ export default function PharmaProduct() {
 
     })
   };
-
-
 
   return (
     <div>
@@ -280,14 +278,14 @@ export default function PharmaProduct() {
       />
       {disableProducts && (
         <ConfirmationModal
-        text={"are you sure you want to disable this product"}
+          text={"are you sure you want to disable this product"}
           onClose={setDisableProducts}
           onConfirm={disableProduct}
         />
       )}
-           {enableProduct && (
+      {enableProduct && (
         <ConfirmationModal
-        text={"are you sure you want to enable this product"}
+          text={"are you sure you want to enable this product"}
           onClose={setDisableProducts}
           onConfirm={disableProduct}
         />

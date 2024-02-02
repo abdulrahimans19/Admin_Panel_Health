@@ -9,12 +9,24 @@ export const Validate = async (data) => {
 export const LoginUserdata = async (data) => {
   return await Instance.post("/auth/sign-in", data);
 };
+export const UserEmailVerify = async (email) => {
+  console.log("verify email", email);
+  return await Instance.post("/doctor/check-doctor-email", { email });
+};
 
 export const VerifyEmail = async (email, otp) => {
   return await Instance.post("/auth/doctor/verify-email", { email, otp });
 };
 export const forgotOtp = async (email, otp) => {
   return await Instance.post("/auth/doctor/validate-otp", { email, otp });
+};
+export const SetPassword = async (email, reset_password_token, password) => {
+  console.log("passwordsss:", email, reset_password_token, password);
+  return await Instance.post("/auth/doctor/set-password", {
+    email,
+    reset_password_token,
+    password,
+  });
 };
 
 export const getPharmaCategory = async () => {
@@ -89,7 +101,6 @@ export const SignupUserdata = async (data) => {
 };
 
 export const DoctorForgotdata = async (email) => {
-  console.log(email, "forgot");
   return await Instance.post("/auth/doctor/forgot-password", { email });
 };
 
@@ -261,6 +272,13 @@ export const getAppoinmentsApi = async (year, month, date, page) => {
 export const getLabTestsbyCategoryApi = async (cat_id) => {
   return await Instance.get(`/tests?category_id=${cat_id}`);
 };
+export const getCategoryDetailsById = async (cat_id) => {
+  console.log(cat_id);
+  return await Instance.post(
+    `/sub-categories/get-category-details?id=${cat_id}`
+  );
+};
+
 export const getFoodSubCategory = async (data) => {
   return await Instance.get(`sub-categories/${data}`);
 };

@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import {
   UploadImageUrl,
   addProductApi,
+  getCategoryDetailsById,
   countryCodesApi,
   getPharmaCategory,
   getSubCatData,
@@ -26,9 +27,12 @@ const ProductModal = ({
   const [mainCategoyData, setMainCategoyData] = useState([]);
   const [subcategoryData, setSubcategoryData] = useState([]);
   const [countries, setCountrieCode] = useState([]);
-
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [errors, setErrors] = useState({});
+  const [categoryDetails, setCategoryDetails] = useState({
+    mainCategory: "",
+    subCategory: "",
+  });
 
   const validate = (UserData) => {
     let tempErrors = {};
@@ -180,6 +184,21 @@ const ProductModal = ({
   };
 
   useEffect(() => {
+    if (editProductData && editProductData.sub_category_id) {
+      getCategoryDetailsById(editProductData.sub_category_id)
+        .then((response) => {
+          const categoryData = response.data.data.subcategory.main_category_id;
+          const subCategoryData = response.data.data.subcategory;
+          setMainCategoyData([categoryData]);
+          setSubcategoryData([subCategoryData]);
+        })
+        .catch((err) =>
+          console.error("Fetching category details failed:", err)
+        );
+    }
+  }, [editProductData]);
+
+  useEffect(() => {
     mainCategory();
     countryCodesApi()
       .then((data) => {
@@ -254,24 +273,18 @@ const ProductModal = ({
                   <select
                     onChange={(data) => {
                       getSubCategory(data.target.value);
+                      setCategoryDetails((prevDetails) => ({
+                        ...prevDetails,
+                        mainCategory: data.target.value,
+                      }));
                     }}
-                    defaultValue={""}
+                    value={categoryDetails.mainCategory} // Use the selected main category ID
                     id="category"
                     name="category"
-                    className="mt-1 p-2 border rounded-md w-full disabled:"
-                    // onChange={handleOptionChange}
+                    className="mt-1 p-2 border rounded-md w-full"
                   >
-                    <option
-                      value={""}
-                      className="pointer-events-none"
-                      selected
-                      disabled
-                    >
-                      select Choice
-                    </option>
-
                     {mainCategoyData.map((data) => {
-                      return <option value={data._id}>{data?.title}</option>;
+                      return <option value={data._id}>{data.title}</option>;
                     })}
                   </select>
                   {errors.category && (
@@ -290,24 +303,31 @@ const ProductModal = ({
                     className="mt-1 p-2 border rounded-md w-full"
                     // onChange={handleOptionChange}
                   >
-                    <option
-                      selected
-                      disabled
-                      defaultValue={
-                        editProductData?.sub_category_id
-                          ? editProductData?.sub_category_id
-                          : ""
-                      }
-                    >
-                      {editProductData?.sub_category_id
-                        ? editProductData?.sub_category_id
-                        : "select Choice"}
-                    </option>
-
-                    {subcategoryData?.map((data) => {
-                      console.log(data);
-                      return <option value={data._id}>{data.title}</option>;
-                    })}
+                    {/* Display the default option based on editProductData */}
+                    {editProductData?.sub_category_id &&
+                    subcategoryData.length > 0 ? (
+                      subcategoryData.map((data) => {
+                        // Check if this is the subcategory to be displayed as selected
+                        if (data._id === editProductData?.sub_category_id) {
+                          return (
+                            <option key={data._id} value={data._id} selected>
+                              {data.title}
+                            </option>
+                          );
+                        } else {
+                          return (
+                            <option key={data._id} value={data._id}>
+                              {data.title}
+                            </option>
+                          );
+                        }
+                      })
+                    ) : (
+                      // Fallback or initial option
+                      <option value="" disabled selected>
+                        Select Choice
+                      </option>
+                    )}
                   </select>
                   {errors.subcategory && (
                     <p className="text-red-500 text-xs">{errors.subcategory}</p>

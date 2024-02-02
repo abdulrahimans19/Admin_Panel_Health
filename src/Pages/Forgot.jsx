@@ -7,11 +7,13 @@ import key from "../assets/images/key.png";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const resetPassword = (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set isLoading to true right before making the API call
     DoctorForgotdata(email)
       .then((response) => {
         if (response.data.status && response.data.statusCode === 200) {
@@ -32,7 +34,8 @@ const ForgotPassword = () => {
               "An error occurred. Please try again later."
           );
         }
-      });
+      })
+      .finally(() => setIsLoading(false)); // Ensure isLoading is set back to false after the API call
   };
 
   const handleEmailChange = (e) => {
@@ -134,9 +137,10 @@ const ForgotPassword = () => {
                   <button
                     className="w-full lg:w-[400px] h-[54px] bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-[60px] flex items-center justify-center"
                     type="submit"
+                    disabled={isLoading}
                   >
                     <span className="text-white font-semibold">
-                      Reset Password
+                    {isLoading ? "Loading...." : "Reset Password"}
                     </span>
                   </button>
                 </div>

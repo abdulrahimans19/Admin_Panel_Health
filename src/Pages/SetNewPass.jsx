@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import sideImage from "../assets/images/setpass.png";
 import key from "../assets/images/key.png";
+import { SetPassword } from "../API/ApiCall";
 
 const SetNewPass = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const { email, reset_password_token } = location.state || {
+    email: null,
+    reset_password_token: null,
+  };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -18,19 +28,49 @@ const SetNewPass = () => {
   };
 
   const validatePassword = (pass, confirmPass) => {
-    if (confirmPass !== "" && pass !== confirmPass) {
-      setValidationMessage("Password does not match!");
-    } else {
-      setValidationMessage("");
+    let validationErrors = [];
+    if (pass.length < 5) {
+      validationErrors.push("Password must be at least 5 characters long.");
     }
+    if (confirmPass !== "" && pass !== confirmPass) {
+      validationErrors.push("Passwords do not match!");
+    }
+    setValidationMessage(validationErrors.join(" "));
   };
 
   const isFormFilled = () => {
     return (
-      password.length > 0 &&
-      confirmPassword.length > 0 &&
+      password.length >= 5 &&
+      confirmPassword === password &&
       validationMessage === ""
     );
+  };
+
+  // Ensure you're using the useNavigate hook correctly
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setValidationMessage("Passwords do not match!");
+      return;
+    }
+    if (password.length < 5) {
+      setValidationMessage("Password must be at least 5 characters long.");
+      return;
+    }
+    if (isFormFilled()) {
+      SetPassword(email, reset_password_token, password)
+        .then((response) => {
+          console.log("Password reset successful", response);
+          navigate("/success");
+        })
+        .catch((error) => {
+          console.error("Failed to reset password", error);
+          setValidationMessage(
+            "An error occurred while resetting your password. Please try again."
+          );
+        });
+    }
   };
 
   return (
@@ -48,7 +88,7 @@ const SetNewPass = () => {
             </p>
           </div>
 
-          <form className="mt-8 space-y-6" action="#" method="POST">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="mb-4">
                 {" "}
@@ -80,8 +120,8 @@ const SetNewPass = () => {
             </div>
 
             <button
-              disabled={!isFormFilled()}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              // disabled={!isFormFilled()}
+              className="group relative w-full h-[54px] flex justify-center py-2 px-4 border  bg-gradient-to-r from-sky-950 via-blue-950 to-cyan-900 rounded-full text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Continue
             </button>

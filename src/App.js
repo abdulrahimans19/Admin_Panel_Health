@@ -54,7 +54,6 @@ function App() {
     console.log(user);
     if (user?.user_role == "Admin") {
       if (!SowphweeFcm) {
-      
         requestForToken();
       }
     }
@@ -120,7 +119,7 @@ function App() {
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
         <Route element={<ForgotPassword />} path="/forgot" />
-        <Route element={<Success />} path="/Success" />
+        <Route element={<Success />} path="/success" />
         <Route element={<Otp />} path="/otp" />
         <Route element={<SetNewPass />} path="/set-password" />
         <Route element={<SignupProfile />} path="/set-profile" />
