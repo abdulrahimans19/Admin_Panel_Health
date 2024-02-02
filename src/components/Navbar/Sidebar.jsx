@@ -642,6 +642,7 @@ function SideBar() {
               onClick={() => {
                 localStorage.removeItem("sophwe_token");
                 localStorage.removeItem("sophwe_fcm");
+                dispatch(cleartopNav())
 
                 navigate("/login");
               }}
