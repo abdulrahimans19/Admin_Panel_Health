@@ -22,10 +22,14 @@ export default function Coupons() {
   };
 
   const getAllCoupons = () => {
-    getAllCouponsApi(1).then(({ data }) => {
-      console.log(data.data.coupons);
-      setCouponData(data.data.coupons);
-    });
+    getAllCouponsApi(1)
+      .then(({ data }) => {
+        console.log(data.data.coupons);
+        setCouponData(data.data.coupons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     getAllCoupons();

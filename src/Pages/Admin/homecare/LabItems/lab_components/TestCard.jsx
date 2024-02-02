@@ -40,7 +40,9 @@ function TestCard({data,getAllTests,type ,getLabTestsbyCategory}) {
       getAllTests()
       setShowList(false)
 
-    })
+    })  .catch((err) => {
+      console.log(err);
+    });
   }
 
   // const toggleModal = () => {

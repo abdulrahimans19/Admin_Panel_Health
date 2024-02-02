@@ -85,43 +85,47 @@ export default function AddCategory({
     } else {
       if (Image) {
         console.log("this working wretryyhj");
-        UploadImageUrl().then((data) => {
-          console.log(data.data);
+        UploadImageUrl()
+          .then((data) => {
+            console.log(data.data);
 
-          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-            console.log(data, "uploaded");
-          });
-          imageUrl = data.data.publicUrl;
-          let WholeData;
-          console.log(data);
-          if (dataToUpload) {
-            WholeData = {
-              category_id: dataToUpload._id,
-              title: categoryName,
-              description: description,
-              image: imageUrl,
-            };
-          } else {
-            WholeData = {
-              title: categoryName,
-              description: description,
-              image: imageUrl,
-            };
-          }
-
-          console.log(WholeData);
-
-          catFunction(WholeData)
-            .then((data) => {
-              GetPharmacyCat();
-
-              setShowModal(false);
-            })
-            .catch((err) => {
-              console.log(err);
+            uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
+              console.log(data, "uploaded");
             });
-          console.log(imageUrl, "public url");
-        });
+            imageUrl = data.data.publicUrl;
+            let WholeData;
+            console.log(data);
+            if (dataToUpload) {
+              WholeData = {
+                category_id: dataToUpload._id,
+                title: categoryName,
+                description: description,
+                image: imageUrl,
+              };
+            } else {
+              WholeData = {
+                title: categoryName,
+                description: description,
+                image: imageUrl,
+              };
+            }
+
+            console.log(WholeData);
+
+            catFunction(WholeData)
+              .then((data) => {
+                GetPharmacyCat();
+
+                setShowModal(false);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            console.log(imageUrl, "public url");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };

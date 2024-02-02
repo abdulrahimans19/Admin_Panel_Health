@@ -49,34 +49,50 @@ export default function FoodProduct() {
   };
 
   const getFoodCategories = () => {
-    getFoodCategory().then(({ data }) => {
-      console.log(data, "maincat");
-      setCategories(data.data.mainCategories);
-    });
+    getFoodCategory()
+      .then(({ data }) => {
+        console.log(data, "maincat");
+        setCategories(data.data.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const FoodProduct = () => {
     if (filterId) {
       setCurrentPage(0);
-      filterFoodAPi(filterId, 1).then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        setFoodProductsData(data.data.products);
-      });
+      filterFoodAPi(filterId, 1)
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          setFoodProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (categoryMenu) {
-      getFoodProductApi(pageNumber).then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        console.log(data.data.products);
+      getFoodProductApi(pageNumber)
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          console.log(data.data.products);
 
-        setFoodProductsData(data.data.products);
-      });
+          setFoodProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      disabledFoodProductApi().then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        console.log(data.data);
-        setFoodProductsData(data.data.products);
-      });
+      disabledFoodProductApi()
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          console.log(data.data);
+          setFoodProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -96,24 +112,36 @@ export default function FoodProduct() {
     setCurrentPage(selectedPage.selected);
 
     if (filterId) {
-      filterFoodAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
-        setPageNumber(selectedPage.selected + 1);
+      filterFoodAPi(filterId, selectedPage.selected + 1)
+        .then(({ data }) => {
+          setPageNumber(selectedPage.selected + 1);
 
-        setFoodProductsData(data.data.products);
-      });
+          setFoodProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       if (categoryMenu) {
-        getFoodProductApi(selectedPage.selected + 1).then(({ data }) => {
-          console.log(data.data.products);
-          setPageNumber(selectedPage.selected + 1);
-          setFoodProductsData(data.data.products);
-        });
+        getFoodProductApi(selectedPage.selected + 1)
+          .then(({ data }) => {
+            console.log(data.data.products);
+            setPageNumber(selectedPage.selected + 1);
+            setFoodProductsData(data.data.products);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
-        disabledFoodProductApi(selectedPage.selected + 1).then(({ data }) => {
-          console.log(data.data.products);
-          setPageNumber(selectedPage.selected + 1);
-          setFoodProductsData(data.data.products);
-        });
+        disabledFoodProductApi(selectedPage.selected + 1)
+          .then(({ data }) => {
+            console.log(data.data.products);
+            setPageNumber(selectedPage.selected + 1);
+            setFoodProductsData(data.data.products);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };
@@ -127,9 +155,13 @@ export default function FoodProduct() {
   const disableProduct = () => {
     console.log("confirm working");
     console.log(editProductData);
-    disableFoodProduct(editProductData._id).then((data) => {
-      console.log(data);
-    });
+    disableFoodProduct(editProductData._id)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div>

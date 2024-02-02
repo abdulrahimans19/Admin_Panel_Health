@@ -32,14 +32,17 @@ export default function Dashboard() {
         const currentDate = new Date();
         const currentMonth = currentDate.toLocaleString("default", {
           month: "long",
-        });
+        })
 
         setChartData(data.data.earnings);
         console.log(data.data.earnings[currentMonth], "current month");
         setCardDifference(data.data.incomeDifference);
         setearningCard();
         setMonthlyEarning(data.data.earnings[currentMonth]);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     } else {
       console.log("else worog");
       monthlyEarningApi("PHARMA").then(({ data }) => {
@@ -51,7 +54,10 @@ export default function Dashboard() {
         });
         console.log(data.data[currentMonth]);
         setMonthlyEarning(data.data[currentMonth]);
-      });
+      }).catch((err)=>
+      {
+        console.log(err);
+      })
     }
   };
 

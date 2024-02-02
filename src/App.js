@@ -64,7 +64,7 @@ function App() {
     //   dispatch(getCartItems());
     // }
   }, []);
-
+console.log(process.env.REACT_APP_APIKEY,"api key");
   // onMessageListener()
   //   .then((payload) => {
   //     toast.success(

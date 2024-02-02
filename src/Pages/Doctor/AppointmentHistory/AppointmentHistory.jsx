@@ -93,7 +93,10 @@ export default function AppointmentHistory() {
       setData(data?.data?.data?.appointments);
 
       setDocument(data?.data?.data?.total_document);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   }
   function setDatas(duration, age, data, date) {
     console.log(data, "setdatas  ");
@@ -107,7 +110,10 @@ export default function AppointmentHistory() {
   const handlePageChange = (selectedPage) => {
     getAllApointment(selectedPage).then((data) => {
       setData(data?.data?.data?.appointments);
-    });
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
   };
   var page = Math.floor(document / 10);
   var remainder = document % 10;
