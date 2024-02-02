@@ -311,6 +311,9 @@ export const disableTest = async (id) => {
 export const recommendedTest = async (id) => {
   return await Instance.put(`/tests/update-recommended?test_id=${id}`);
 };
+export const getAllCategoryTests = async () => {
+  return await Instance.put(`/tests`);
+};
 export const addResultApi = async (data) => {
   return await Instance.post(`/bookings/add-result`,data);
 };
@@ -354,4 +357,7 @@ export const unreadNotification = async () => {
 
 export const updateFcmApi = async (data) => {
   return await Instance.post(`/user/update-fcm-token`,data);
+};
+export const sendNotification = async (data) => {
+  return await Instance.post(`/notification/send-notification`,data);
 };

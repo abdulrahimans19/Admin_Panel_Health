@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCurrentAppoinmentsApi } from "../../API/ApiCall";
+import NoDataImage from "../NoDataImage";
 
 export default function AppointmentTable() {
   const [totalPagecount, setTotalPagecount] = useState(0);
@@ -34,7 +35,7 @@ export default function AppointmentTable() {
           </tr>
         </thead>
         <tbody class="">
-          {appoinments[0] && appoinments.map((data)=>{
+          {appoinments[0] ? appoinments.map((data)=>{
             return (
               <tr class="bg-card rounded text-black border outline outline-offset-2 outline-1 outline-gray-300  ">
             <td class="p-1">{data.profile_id.first_name}</td>
@@ -43,7 +44,11 @@ export default function AppointmentTable() {
             <td class="p-1">{data.test_id.name}</td>
           </tr>
             )
-          })}
+          }):
+          <div className="flex justify-center" >
+            <NoDataImage text={"No Appoinments for this data"}/>
+          </div>
+          }
         </tbody>
       </table>
     </div>

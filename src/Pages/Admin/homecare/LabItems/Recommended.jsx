@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import AddLabItemsButton from "../AddLabItemsButton";
 import LabModal from "./lab_components/LabModal";
+import NoDataImage from "../../../../components/NoDataImage";
 
 function Recommended() {
   const [recommendedTest,setRecommendedTest]= useState([])
@@ -34,6 +35,8 @@ function Recommended() {
       const totalPages = Math.ceil(data.data.data.total_document / 10);
       setTotalPagecount(totalPages)
       setRecommendedTest(data.data.data.tests)
+    }).catch((error)=>{
+      console.log(error);
     })
   }
   const getAllRecomendedTests=()=>{
@@ -43,6 +46,8 @@ function Recommended() {
       setTotalPagecount(totalPages)
       setRecommendedTest(data.data.data.tests)
       console.log("recomended",recommendedTest);
+    }).catch((error)=>{
+      console.log(error);
     })
   }
   useEffect(() => {
@@ -73,21 +78,27 @@ function Recommended() {
         </button>
 </div>
 
-      <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
-        { recommendedTest[0] &&
+        { recommendedTest[0] ?
         recommendedTest.map((data)=>{
           return (
+      <div className="flex grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-3 mb-4 p-4">
             <TestCard data={data} getData={getAllRecomendedTests} getAllTests={getAllRecomendedTests} getLabTestsbyCategory={getRecomendedTestsByCat} type={'recommended'}/>
+      </div>
           )
         })
+        :
+        <div className="flex justify-center">
+
+            <NoDataImage text={"No Recommended Tests"} />
+          </div> 
         }
         
-      </div>
 
       {showLabModal1 && (
             <LabModal getAllTests={getAllRecomendedTests} callback={toggleMenu} setShowModal={setShowLabModal1} />
           )}
-      <ReactPaginate
+      { recommendedTest[0]? (
+        <ReactPaginate
         pageCount={totalPagecount}  // Replace with the total number of pages
         pageRangeDisplayed={3}  // Number of pages to display in the pagination bar
         marginPagesDisplayed={1}  // Number of pages to display for margin pages
@@ -97,6 +108,7 @@ function Recommended() {
         forcePage={currentPage -1 }
 
       />
+      ):null}
     </div>
   );
 }
