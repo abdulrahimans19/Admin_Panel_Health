@@ -9,6 +9,7 @@ import {
   telemedicine,
   homecare,
   cleartopNav,
+  openSidebar,
 } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
@@ -57,6 +58,7 @@ function SideBar() {
               onClick={() => {
                 setCurrentRoute("/dashboard");
                 navigate("/dashboard");
+                dispatch(openSidebar())
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
@@ -113,6 +115,8 @@ function SideBar() {
                 dispatch(telemedicine());
                 setCurrentRoute("/telemedicine/category");
                 navigate("/telemedicine/category");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex items-center p-2 pl-12 rounded-lg group ${
@@ -164,6 +168,8 @@ function SideBar() {
               onClick={() => {
                 setCurrentRoute("/homecare/categories");
                 navigate("/homecare/categories");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex items-center p-2 pl-12 rounded-lg group ${
@@ -209,6 +215,8 @@ function SideBar() {
                 dispatch(pharmacyNav());
                 setCurrentRoute("/pharmacy/category");
                 navigate("/pharmacy/category");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
@@ -262,6 +270,8 @@ function SideBar() {
               onClick={() => {
                 setCurrentRoute("/food/categories");
                 navigate("/food/categories");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
@@ -356,6 +366,8 @@ function SideBar() {
               onClick={() => {
                 setCurrentRoute("/transaction");
                 navigate("/transaction");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
@@ -557,6 +569,8 @@ function SideBar() {
                 dispatch(cleartopNav());
                 setCurrentRoute("/coupons");
                 navigate("/coupons");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
@@ -601,6 +615,8 @@ function SideBar() {
                 dispatch(cleartopNav());
                 setCurrentRoute("/push-notification");
                 navigate("/push-notification");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12 rounded-lg group ${
@@ -655,6 +671,8 @@ function SideBar() {
                 dispatch(cleartopNav());
 
                 navigate("/login");
+                dispatch(openSidebar())
+
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
