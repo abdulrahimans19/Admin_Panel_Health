@@ -382,7 +382,10 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                     <div
                       {...getRootProps()}
                       className="flex flex-col w-52 mt-24 md:mt-0 h-16 justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
+                      onClick={(e) => e.stopPropagation}
                     >
+                      <input {...getInputProps()} />
+
                       {!showImage && (
                         <img
                           className="cover"
@@ -460,21 +463,24 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                               Type of samples
                             </label>
                             <div className="flex align-baseline justify-start gap-3">
-                            <input
-                              type="text"
-                              onChange={handleInputChange}
-                              value={sampleInput}
-                              name="sampleType"
-                              id="type_of_samples"
-                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
-                              placeholder="Ex: Blood test"
-                            ></input>
+                              <input
+                                type="text"
+                                onChange={handleInputChange}
+                                value={sampleInput}
+                                name="sampleType"
+                                id="type_of_samples"
+                                class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
+                                placeholder="Ex: Blood test"
+                              ></input>
 
-<button  onClick={handleAddSample} class="bg-pink-500  sm:mt-0   text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1  ease-linear transition-all duration-150" type="button"
-      >
-   +
-</button>
-                          </div>
+                              <button
+                                onClick={handleAddSample}
+                                class="bg-pink-500  sm:mt-0   text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1  ease-linear transition-all duration-150"
+                                type="button"
+                              >
+                                +
+                              </button>
+                            </div>
                             <div
                               onClick={() => {
                                 setForModalSampleData(samples);
@@ -629,7 +635,6 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                                     );
                                   })}
                                 </div>
-                            
                               </div>
                             )}
                           </div>

@@ -40,6 +40,7 @@ function NotificationPage() {
     if (fileToUpload == null) {
       confirmSendNotification();
       return;
+
     }
     try {
       const { data } = await UploadImageUrl();
@@ -60,12 +61,15 @@ function NotificationPage() {
     const { name, value } = e.target;
     setNotificationData((prevState) => ({ ...prevState, [name]: value }));
   };
-
+const [error, seterror] = useState()
   const handleSendClick = () => {
     if (!notificationData.title.trim() || !notificationData.message.trim()) {
       // alert("Please fill in all required fields.");
+      seterror("add message")
       return;
     }
+    seterror("")
+
     setEditMessageModal(true);
   };
 
@@ -107,10 +111,11 @@ function NotificationPage() {
       <div class="flex flex-col items-center md:flex-row md:justify-between">
         <div class="w-full md:w-1/2 md:pl-4 xl:pl-10 pr-4">
           <div
-            {...getRootProps()}
+            {...getRootProps() }
+            onClick={e=>e.stopPropagation}
             class="w-full md:w-fit p-10 bg-slate-200 rounded-md"
           >
-            {/* <input {...getInputProps()} /> */}
+            <input {...getInputProps()} />
 
             <label
               for="file_input"
@@ -194,11 +199,17 @@ function NotificationPage() {
                   placeholder="Type message to send"
                   required
                 ></textarea>
-
+     {error && (
+                            <p className="text-red-500 text-xs">
+                              {error}
+                            </p>
+                          )}
                 <div class="flex space-x-2 pt-4">
                   {/* <button class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
               Cancel
             </button> */}
+
+
                   <button
                     onClick={handleSendClick}
                     class="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
