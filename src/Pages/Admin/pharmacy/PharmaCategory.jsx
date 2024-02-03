@@ -87,7 +87,7 @@ export default function PharmaCategory() {
             categoryMenu && "font-bold underline"
           }  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
         >
-          Categories
+         
         </p>
         {/* <p
           onClick={() => {
@@ -117,7 +117,7 @@ export default function PharmaCategory() {
               setAddCategoryModal(true);
             }}
           >
-            <AddItemButton text={"Add categories"} img={buttonImage} />
+            <AddItemButton text={"Add Category"} img={buttonImage} />
           </div>
           <div
             className="mt-3 md:mt-0"
@@ -125,7 +125,7 @@ export default function PharmaCategory() {
               setAddSubCategoryModal(true);
             }}
           >
-            <AddItemButton text={"Add sub Categories"} img={buttonImage} />
+            <AddItemButton text={"Add Sub Category"} img={buttonImage} />
           </div>
         </div>
       </div>

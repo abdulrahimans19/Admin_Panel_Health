@@ -72,7 +72,7 @@ export default function Homecare() {
       <div className="sm:flex justify-between">
         <div>
           <h2 className="font-bold text-lg">Categories</h2>
-          <p>{homeCareCategories.length} available categories</p>
+          <p>{homeCareCategories.length} Available Categories</p>
         </div>
         <div
           onClick={() => {
@@ -81,7 +81,7 @@ export default function Homecare() {
         >
           <div className="mt-5 sm:mt-0">
           <AddNewCategoryButton
-            text={"Add new categories"}
+            text={"Add Category"}
             callback={addCategory}
           />
           </div>

@@ -16,7 +16,7 @@ const MovieTicketCard = ({ callback, data }) => {
               <div>
                 <img className="w-5 " src={coupongreen} alt="error" />
               </div>
-              <div>coupon and Offers</div>
+              <div>Coupon & Offers</div>
             </div>
             <div
               onClick={() => {
@@ -32,13 +32,13 @@ const MovieTicketCard = ({ callback, data }) => {
           On min. purchase of AED {data?.min_amount}
         </Typography>
         <Typography color="gray" className="font-medium mt-2">
-         discount {data?.discount_percentage}%
+         Discount {data?.discount_percentage}%
         </Typography>
         <Typography color="gray" className="font-medium mt-2">
           Code : {data?.code}
         </Typography>
         <Typography color="gray" className="font-medium mt-2">
-          Expiry: {new Date(data?.expiry_date).toLocaleDateString()}
+          Expiry Date: {new Date(data?.expiry_date).toLocaleDateString()}
         </Typography>
       </CardBody>
     </Card>

@@ -38,7 +38,7 @@ const NavBarSlice = createSlice({
     telemedicine: (state, action) => {
       state.topnavData = [
         {
-          name: "categorys",
+          name: "Categories",
           link: "/telemedicine/category",
           logo: (
             <svg
@@ -285,7 +285,7 @@ const NavBarSlice = createSlice({
     pharmacyNav: (state, payload) => {
       state.topnavData = [
         {
-          name: "categories",
+          name: "Categories",
           link: "/pharmacy/category",
           logo: (
             <svg
@@ -377,7 +377,7 @@ const NavBarSlice = createSlice({
           ),
         },
         {
-          name: "Order",
+          name: "Orders",
           link: "/pharmacy/order",
           logo: (
             <svg
@@ -413,7 +413,7 @@ const NavBarSlice = createSlice({
           ),
         },
         {
-          name: "Review",
+          name: "Reviews",
           link: "/pharmacy/review",
           logo: (
             <svg
@@ -449,7 +449,7 @@ const NavBarSlice = createSlice({
     foodNavdata: (state, payload) => {
       state.topnavData = [
         {
-          name: "categories",
+          name: "Categories",
           link: "/food/categories",
           logo: (
             <svg
