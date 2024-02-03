@@ -7,6 +7,7 @@ import ReactDatePicker from "react-datepicker";
 import { motion, useAnimationControls } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactPaginate from "react-paginate";
+import NoDataImage from "../../../components/NoDataImage";
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
   const [todayApintments, setApointments] = useState([]);
@@ -19,7 +20,7 @@ export default function Appointments() {
   const [formatedDate, setFormatedDate] = useState();
 
   useEffect(() => {
-    getTodayApointment();
+    selectedDate();
   }, []);
   setInterval(time, 6000);
   const list = {
@@ -59,16 +60,6 @@ export default function Appointments() {
     setCurrenTime(strTime);
   }
 
-  function getTodayApointment() {
-    getTodayApointments(1).then((data) => {
-      setApointments(data?.data?.data?.appointments);
-
-      setDocument(data?.data?.data?.total_document);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
-  }
   function handleDateSelect(date) {
     setDate(date);
     //setOpenCalendar(false);
@@ -77,20 +68,21 @@ export default function Appointments() {
       date.getMonth() + 1
     }/${date.getDate()}/${date.getFullYear()}`;
 
-    getApointmentByDate(formattedDate).then((data) => {
-      setGetDAte(formattedDate);
-      setDay("");
-      setDate("");
-      setApointments(data?.data?.data?.appointments);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    getApointmentByDate(formattedDate)
+      .then((data) => {
+        setGetDAte(formattedDate);
+        setDay("");
+        setDate("");
+        setApointments(data?.data?.data?.appointments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setOpenCalender(false);
   }
+
   function selectedDate(stringdate) {
     setDay(stringdate);
-    // Prevent the default form submission behavior
 
     const date = stringdate;
     const currentDate = new Date();
@@ -102,37 +94,43 @@ export default function Appointments() {
     } else if (date === "Yesterday") {
       targetDate = new Date(currentDate);
       targetDate.setDate(currentDate.getDate() - 1);
+      console.log(targetDate, " yesterday");
     } else {
       targetDate = currentDate;
+      console.log(targetDate, " this target date");
     }
 
     const formattedDate = `${
       targetDate.getMonth() + 1
     }/${targetDate.getDate()}/${targetDate.getFullYear()}`;
-    setFormatedDate(formatedDate);
-    getApointmentByDate(formattedDate).then((data) => {
-      setApointments(data?.data?.data?.appointments);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    setFormatedDate(formattedDate); // Fix the typo here, it should be setFormattedDate
+    console.log(formattedDate);
+
+    getApointmentByDate(formattedDate)
+      .then((data) => {
+        setDocument(data?.data?.data?.total_document);
+        setApointments(data?.data?.data?.appointments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+
   const isSlectedDate = () => {
     setOpenCalender(!openCalender);
   };
 
   const handlePageChange = (selectedPage) => {
     if (formatedDate) {
-      getApointmentByDate(formatedDate, selectedPage.selected + 1).then(
-        (data) => {
+      getApointmentByDate(formatedDate, selectedPage.selected + 1)
+        .then((data) => {
           setApointments(data?.data?.data?.appointments);
 
           setDocument(data?.data?.data?.total_document);
-        }
-      ).catch((err)=>
-      {
-        console.log(err);
-      })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     // getAllApointment(selectedPage).then((data) => {
     //   setData(data?.data?.data?.appointments);
@@ -158,8 +156,8 @@ export default function Appointments() {
 
   return (
     <div>
-      <div className="container p-3">
-        <div className="flex justify-between">
+      <div className=" p-3">
+        <div className=" sm:flex justify-between p-1 ">
           <div>
             <h1 className="text-xl font-extrabold mb-3">
               See what you got here!!
@@ -168,7 +166,7 @@ export default function Appointments() {
               There are new appointments awaits you
             </p>
           </div>
-          <div className="flex justify-center items-center ">
+          <div className="flex justify-center items-center mt-4  sm:mt-0">
             <select
               className="border border-blue-300 border-thin 
             p-1 pt-3 pb-3 rounded-full flex  justify-center items-center outline-none "
@@ -301,28 +299,25 @@ export default function Appointments() {
             })}
         </div>
       </div>
-      {/* <VideoModal showModal={showModal} setShowMadal={setShowMadal} /> */}
-      {/* {todayApintments == null &&
-        !todayApintments[0]==-1(
-          <div className="">
-            <div className="flex justify-center items-center text-red-300 text-lg fond-bold mt-10">
-              <img src={noDAta} alt="" className="w-[50px]" />
-            </div>
-            <div className="flex justify-center items-center text-red-300 text-lg fond-bold ">
-              <h1>No data found!</h1>
-            </div>
-          </div>
-        )} */}
-      {page > 1 && (
-        <ReactPaginate
-          pageCount={page} // Replace with the total number of pages
-          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-          marginPagesDisplayed={1} // Number of pages to display for margin pages
-          onPageChange={handlePageChange}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
+      {todayApintments && todayApintments.length === 0 ? (
+        <div>
+          <NoDataImage text={"No Apointments"} />
+        </div>
+      ) : (
+        ""
       )}
+      <div className="mt-1">
+        {page > 1 && (
+          <ReactPaginate
+            pageCount={page} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+          />
+        )}
+      </div>
     </div>
   );
 }

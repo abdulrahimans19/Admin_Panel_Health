@@ -122,14 +122,27 @@ const ForgotPassword = () => {
             </div>
             <form onSubmit={resetPassword}>
               <div className="flex flex-col justify-center items-center gap-[20px]">
-                <div className="flex flex-col items-center justify-center space-y-4 w-full">
+                <div className="relative w-full rounded-full border-2 p-1 focus-within:ring-2 focus-within:ring-blue-300">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    {/* SVG icon for email */}
+                    <svg
+                      class="w-4 h-4  text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 20 16"
+                    >
+                      <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
+                      <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
+                    </svg>
+                  </div>
                   <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    className={inputStyle}
-                    onChange={handleEmailChange}
                     value={email}
+                    onChange={handleEmailChange}
+                    name="email"
+                    type="email"
+                    className="appearance-none rounded-full w-full p-2 pl-10 focus:outline-none"
+                    placeholder="Email Address"
                   />
                   {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
                 </div>
@@ -140,7 +153,7 @@ const ForgotPassword = () => {
                     disabled={isLoading}
                   >
                     <span className="text-white font-semibold">
-                    {isLoading ? "Loading...." : "Reset Password"}
+                      {isLoading ? "Loading...." : "Reset Password"}
                     </span>
                   </button>
                 </div>

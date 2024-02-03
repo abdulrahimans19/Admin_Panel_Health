@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { motion } from "framer-motion";
 import { addWithdrawRequest, countryCodesApi } from "../../../../API/ApiCall";
+import "./Slotmodal.css";
 
 function WithdrawModal({ showModal, isShowModal, profile }) {
   const [country, setCountry] = useState([]);
@@ -196,7 +197,7 @@ function WithdrawModal({ showModal, isShowModal, profile }) {
                               })
                             }
                           />
-                          c
+
                           {/* <select
                             name="country"
                             className="w-[200px] outline-none border border-gray-400 rounded-lg h-10"

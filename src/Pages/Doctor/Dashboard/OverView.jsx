@@ -15,6 +15,8 @@ import {
   getTodayApointments,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
+import NoDataImage from "../../../components/NoDataImage";
+import { getApointmentByDate } from "../../../API/DoctorApi";
 
 export default function OverView() {
   const [showModal, setShowModal] = useState(false);
@@ -31,8 +33,7 @@ export default function OverView() {
     getToatalApointments();
     getAvalabeSlots();
     getTodayApointment();
-    setInterval(time, 60000);
-    // setInterval(sameTime, 60000);
+    setInterval(time, 6000);
   }, []);
 
   function convertTo24HourFormat(timeString) {
@@ -78,19 +79,39 @@ export default function OverView() {
       .catch((err) => console.log(err));
   }
   function getToatalApointments() {
-    getApointments()
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = String(today.getFullYear()).slice(-2); // Get the last two digits of the year
+
+    const formattedDate = `${day}/${month}/${year}`;
+    getApointments(formattedDate)
       .then((data) => {
         setTotalApointment(data?.data?.data);
       })
       .then((err) => console.log(err));
   }
   function getTodayApointment() {
-    getTodayApointments()
+    const currentDate = new Date();
+    let targetDate;
+
+    targetDate = currentDate;
+    console.log(targetDate, " this target date");
+
+    const formattedDate = `${
+      targetDate.getMonth() + 1
+    }/${targetDate.getDate()}/${targetDate.getFullYear()}`;
+
+    console.log(formattedDate);
+
+    getApointmentByDate(formattedDate)
       .then((data) => {
+        console.log(data?.data?.data?.appointments);
         setApointments(data?.data?.data?.appointments);
-        setDocument(data?.data?.data?.total_document);
       })
-      .then((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   }
   function getAvalabeSlots() {
     getAvailableSlot()
@@ -108,6 +129,7 @@ export default function OverView() {
   const handlePageChange = (selectedPage) => {
     getTodayApointments(selectedPage.selected + 1)
       .then((data) => {
+        console.log(data?.data?.data?.appointments);
         setApointments(data?.data?.data?.appointments);
       })
       .then((err) => console.log(err));
@@ -117,7 +139,7 @@ export default function OverView() {
   page = page + (remainder > 0 ? 1 : 0);
   return (
     <div className="container ">
-      <div className="flex justify-between p-1">
+      <div className="flex justify-between p-1 flex-col sm:flex-row">
         <div>
           <h1 className="text-xl font-bold">
             Welcome , {Profile && Profile?.name}
@@ -271,13 +293,8 @@ export default function OverView() {
           );
         })
       ) : (
-        <div className="">
-          <div className="flex justify-center items-center text-red-300 text-lg fond-bold mt-10">
-            <img src={noDAta} alt="" className="w-[50px]" />
-          </div>
-          <div className="flex justify-center items-center text-red-300 text-lg fond-bold ">
-            <h1>No data found!</h1>
-          </div>
+        <div className="mt-10">
+          <NoDataImage text={"No Data Available"} />
         </div>
       )}
       {/* next card */}
@@ -292,16 +309,18 @@ export default function OverView() {
         showModal={showModal}
         profile={Profile}
       />{" "}
-      {page > 1 && (
-        <ReactPaginate
-          pageCount={page} // Replace with the total number of pages
-          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-          marginPagesDisplayed={1} // Number of pages to display for margin pages
-          onPageChange={handlePageChange}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
-      )}
+      <div className="mt-10">
+        {page > 1 && (
+          <ReactPaginate
+            pageCount={page} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+          />
+        )}
+      </div>
     </div>
   );
 }

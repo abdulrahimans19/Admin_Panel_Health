@@ -60,6 +60,7 @@ export const getTransactionForFood = async (startDate, endDate) => {
 export const addFoodCategory = async (data) => {
   return await Instance.post("/main-categories/food/create", data);
 };
+
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -105,7 +106,7 @@ export const DoctorForgotdata = async (email) => {
 };
 
 export const MainDoctorCategories = async (data) => {
-  return await Instance.get("/main-categories/doctor");
+  return await Instance.get("/main-categories/doctor", data); 
 };
 export const DoctorRequests = async () => {
   return await Instance.get("/doctor/admin/pending-doctor");
@@ -352,12 +353,9 @@ export const addResultApi = async (data) => {
 export const getDoctorProfileAndWallet = async () => {
   return await Instance.get("/doctor/doctor-profile");
 };
-export const getApointments = async (
-  startDate = "01/25/2023",
-  endDate = "01/26/2024"
-) => {
+export const getApointments = async (endDate) => {
   return await Instance.get(
-    `/appointment/total-appoinments?startDate=${startDate}&endDate=${endDate}`
+    `/appointment/total-appoinments?startDate=01/25/2023&endDate=${endDate}`
   ).catch((err) => {
     console.log(err);
   });
@@ -375,7 +373,7 @@ export const addAvailableSlot = async (data) => {
 
 export const getTodayApointments = async (page = 1) => {
   return await Instance.get(
-    `/appointment/doctor-appointments?status=upcoming${page}`
+    `/appointment/doctor-appointments?status=upcoming&&page=${page}`
   );
 };
 export const getNotificationApi = async () => {
@@ -392,5 +390,8 @@ export const updateFcmApi = async (data) => {
   return await Instance.post(`/user/update-fcm-token`, data);
 };
 export const sendNotification = async (data) => {
-  return await Instance.post(`/notification/send-notification`,data);
+  return await Instance.post(`/notification/send-notification`, data);
+};
+export const updatesubcat = async (data) => {
+  return await Instance.put(`/sub-categories/update`, data);
 };
