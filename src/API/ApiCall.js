@@ -106,7 +106,7 @@ export const DoctorForgotdata = async (email) => {
 };
 
 export const MainDoctorCategories = async (data) => {
-  return await Instance.get("/main-categories/doctor", data); 
+  return await Instance.get("/main-categories/doctor", data);
 };
 export const DoctorRequests = async () => {
   return await Instance.get("/doctor/admin/pending-doctor");
