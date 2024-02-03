@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import searchimg from "../../../assets/images/searchimg1.png";
 
+import NoDataImage from "../../../components/NoDataImage";
+
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
 import {
   AprovetDoctor,
@@ -291,7 +293,13 @@ export default function DoctorRequstTable({
           </tbody>
         </table>
       </div>
-
+      {datas && datas.length == 0 && data && data.length == 0 ? (
+        <div className="mt-10">
+          <NoDataImage />
+        </div>
+      ) : (
+        ""
+      )}
       {page > 1 && (
         <ReactPaginate
           pageCount={page} // Replace with the total number of pages

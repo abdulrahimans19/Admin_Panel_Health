@@ -184,7 +184,7 @@ export default function Doctor() {
           </li>
         </ul>
       </div>
-
+      <div></div>
       {renderTabContent()}
     </div>
   );

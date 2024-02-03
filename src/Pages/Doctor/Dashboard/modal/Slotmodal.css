@@ -2,3 +2,22 @@
   background-color: rgba(193, 174, 151, 1);
   color: white;
 }
+.css-b62m3t-container {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 195px;
+  border-radius: 100%;
+  outline: none;
+}
+.css-13cymwt-control :hover {
+  border: none;
+  outline: none;
+}
+.css-13cymwt-control ::before,
+::after {
+  border: none;
+  outline: none;
+}
+.css-13cymwt-control {
+  outline: none;
+}

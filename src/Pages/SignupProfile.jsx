@@ -151,6 +151,7 @@ const SignupProfile = ({ email, password, onClose }) => {
           certificate: GetDocumenet,
           image: profileImage,
           experience: parseInt(formData.experience, 10),
+          category_id: formData.category_id,
         };
 
         console.log("Data to be sent:", userData);
@@ -163,17 +164,19 @@ const SignupProfile = ({ email, password, onClose }) => {
       console.error("Error registering user:", error);
     }
   };
-
-  const getDocCategory = () => {
-    MainDoctorCategories()
-      .then((data) => {
-        console.log(data);
-        setDocCateogries();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const getDocCategory = async () => {
+    try {
+      const response = await MainDoctorCategories();
+      console.log(response);
+      if (response && response.data && response.data.data) {
+        const categories = response.data.data.mainCategories || [];
+        setDocCateogries(categories);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   useEffect(() => {
     getDocCategory();
   }, []);
@@ -331,14 +334,22 @@ const SignupProfile = ({ email, password, onClose }) => {
                         )}
                       </div>
                       <select
-                        id="countries"
-                        class="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray border-opacity-10 p-2 px-3 placeholder-white my-2"
+                        id="categories"
+                        className="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray border-opacity-10 p-2 px-3 placeholder-white my-2"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            category_id: e.target.value,
+                          })
+                        }
+                        value={formData.category_id}
                       >
-                        <option selected>Choose a country</option>
-                        <option value="US">United States</option>
-                        <option value="CA">Canada</option>
-                        <option value="FR">France</option>
-                        <option value="DE">Germany</option>
+                        <option value="">Choose a Category</option>
+                        {docCateogries.map((category) => (
+                          <option key={category._id} value={category._id}>
+                            {category.title}
+                          </option>
+                        ))}
                       </select>
 
                       <div className="label"></div>

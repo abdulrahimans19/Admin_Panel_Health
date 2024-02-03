@@ -13,6 +13,7 @@ const Login = () => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
 
   const handleToggle = (option) => {
     setSelectedOption(option);
@@ -104,24 +105,103 @@ const Login = () => {
             onSubmit={LoginUser}
             className="w-full flex flex-col items-center space-y-4"
           >
-            <input
-              value={email}
-              onChange={handleEmailChange}
-              name="email"
-              type="email"
-              className="w-full lg:w-[400px] appearance-none rounded-full border-2 p-3 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
-              placeholder="Email Address"
-            />
+            {/* Email Input Box with SVG */}
+            <div className="w-full lg:w-[400px] flex items-center rounded-full border-2 p-1 focus-within:ring-2 focus-within:ring-blue-300 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  class="w-4 h-4  text-gray-500 dark:text-gray-400"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 16"
+                >
+                  <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
+                  <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
+                </svg>
+              </div>
+              <input
+                value={email}
+                onChange={handleEmailChange}
+                name="email"
+                type="email"
+                className="flex-1 appearance-none rounded-full p-2 focus:bg-slate-150 focus:outline-none pl-10"
+                placeholder="Email Address"
+              />
+            </div>
             {!isValidEmail && (
               <p className="text-red-500">Invalid email address</p>
             )}
 
-            <input
-              name="password"
-              type="password"
-              className="w-full lg:w-[400px] appearance-none rounded-full border-2 p-3 focus:bg-slate-150 focus:ring-2 focus:ring-blue-300"
-              placeholder="Password"
-            />
+            {/* Password Input Box with SVG */}
+            <div className="w-full lg:w-[400px] flex items-center rounded-full border-2 p-1 focus-within:ring-2 focus-within:ring-blue-300 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                {/* SVG icon here */}
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              </div>
+              <input
+                name="password"
+                type={isPasswordShown ? "text" : "password"}
+                className="flex-1 appearance-none rounded-full p-2 focus:bg-slate-150 focus:outline-none pl-10"
+                placeholder="Password"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordShown(!isPasswordShown)}
+                  className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                >
+                  {isPasswordShown ? (
+                    // Icon when password is shown
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                      ></path>
+                    </svg>
+                  ) : (
+                    // Icon when password is hidden
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      ></path>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      ></path>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
             {errmsg && <p className="text-red-500">{errmsg}</p>}
 
             {selectedOption === "Doctor" ? (
