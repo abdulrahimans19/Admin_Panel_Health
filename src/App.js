@@ -57,9 +57,7 @@ function App() {
         requestForToken();
       }
     }
-
   }, []);
-
 
   return (
     <Routes>
@@ -74,11 +72,8 @@ function App() {
             element={<WithdrawalPannel />}
             path="/telemedicine/Withdrawalpannal"
           />
-          {/* <Route element={<Homecare />} path="/homecare" /> */}
 
           <Route element={<Doctor />} path="/telemedicine/doctor" />
-
-          {/* <Route element={<Pharmacy />} path="/pharmacy" /> */}
 
           <Route element={<PharmaCategory />} path="/pharmacy/category" />
           <Route element={<PharmaProduct />} path="/pharmacy/product" />
