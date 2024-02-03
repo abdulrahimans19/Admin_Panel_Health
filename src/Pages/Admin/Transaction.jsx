@@ -96,21 +96,21 @@ const Transactions = () => {
         setTransactions(
           data.data.transaction.map((item) => ({
             ...item,
-            _id: item._id || "No Data Available",
+            _id: item._id || "No Id Available",
             profile_id: item.profile_id
-              ? `${item.profile_id.first_name || "No Data"} ${
-                  item.profile_id.last_name || "Available"
-                }`
+              ? `${item.profile_id.first_name || ""} ${
+                  item.profile_id.middle_name || ""
+                } ${item.profile_id.last_name || ""}`.trim()
               : "No Data Available",
-            payment_type: item.payment_type || "No Data Available",
-            payment_id: item.payment_id || "No Data Available",
+            payment_type: item.payment_type || "No Payment Available",
+            payment_id: item.payment_id || "No Payment Id Available",
             created_at: item.created_at || new Date(), // Assuming date is required, else "No Data Available"
             payable_amount:
               item.payable_amount !== undefined
                 ? item.payable_amount
-                : "No Data Available",
-            order_status: item.order_status || "No Data Available",
-            invoice: item.invoice || "No Data Available",
+                : "No Payment Available",
+            order_status: item.order_status || "No Status Available",
+            invoice: item.invoice || "No Invoice Available",
           }))
         );
         setTotalAmountForSelectedCategory(data.data.total_income || 0);
