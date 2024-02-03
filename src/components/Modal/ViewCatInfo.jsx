@@ -1,51 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
-import { PencilIcon, CheckIcon } from '@heroicons/react/solid';
+import { PencilIcon, CheckIcon } from "@heroicons/react/solid";
 import { updatesubcat } from "../../API/ApiCall";
-const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData,viewCatInfo }) => {
+const CatInfoModal = ({
+  setViewCatInfoModal,
+  catInfo,
+  subCatData,
+  viewCatInfo,
+}) => {
   const modalClasses = "fixed inset-0 flex items-center  justify-center";
   const modalContentClasses = "bg-white p-4 rounded-lg flex";
   // console.log(catInfo, "===== lifnawiervf");
   const [editItemId, setEditItemId] = useState(null);
   const [inputValue, setInputValue] = useState("");
-const [whoolevalue, setWhoolevalue] = useState()
+  const [whoolevalue, setWhoolevalue] = useState();
   // Handler to enable editing mode
-  const handleEdit = (id, title,data) => {
+  const handleEdit = (id, title, data) => {
     setEditItemId(id);
     setInputValue(title);
-    setWhoolevalue(data)
+    setWhoolevalue(data);
   };
 
   // Handler to save the edited value
   const handleSave = (id) => {
+    const wholedata = {
+      category_id: whoolevalue._id,
+      title: inputValue,
+      main_category_id: whoolevalue.main_category_id,
+    };
 
-const wholedata={
-  category_id:whoolevalue._id,
-  title:inputValue,
-  main_category_id:whoolevalue.main_category_id
-}
-
-
-    updatesubcat(wholedata).then((data)=>
-    {
-      setEditItemId(null);
-      setWhoolevalue(null)
-      console.log(viewCatInfo);
-      viewCatInfo(catInfo)
-    }).catch((err)=>
-    {
-      console.log(err);
-      setEditItemId(null);
-      setWhoolevalue(null)
-    })
+    updatesubcat(wholedata)
+      .then((data) => {
+        setEditItemId(null);
+        setWhoolevalue(null);
+        console.log(viewCatInfo);
+        viewCatInfo(catInfo);
+      })
+      .catch((err) => {
+        console.log(err);
+        setEditItemId(null);
+        setWhoolevalue(null);
+      });
 
     console.log(`Saving ${inputValue} for item ${id}`);
     console.log(whoolevalue);
     // Here you should update the actual data, for example, by lifting state up or using a state management library
     setEditItemId(null);
-    setWhoolevalue(null)
-
+    setWhoolevalue(null);
   };
-
 
   const inputRef = useRef(null);
 
@@ -55,13 +56,7 @@ const wholedata={
       inputRef.current?.focus();
     }
   }, [editItemId]);
-useEffect(()=>
-{
-
-},[])
-
-
-
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -123,38 +118,45 @@ useEffect(()=>
                           </p>
                         ) : (
                           <div>
-                          {subCatData?.map((data, index) => {
-                            const isEditing = editItemId === index; // Check if this item is being edited
-                            return (
-                              <div key={index} className="p-3 border border-1 rounded-md mb-4 flex items-center justify-between">
-                                {isEditing ? (
-                                  <input
-                                   ref={inputRef}
-                                    type="text"
-                                    value={inputValue}
-                                    onChange={(e) => setInputValue(e.target.value)}
-                                    className="flex-1"
-                                  />
-                                ) : (
-                                  <span>{data?.title}</span>
-                                )}
-                                {isEditing ? (
-
-                                  <div onClick={() => handleSave(index)}  >
-save
-                                  </div>
-                                  // <CheckIcon className="h-5 w-5 cursor-pointer"  />
-                                ) : (
-                                  <div onClick={() => handleEdit(index, data?.title,data)}>
-
-edit
-                                  </div>
-                                  // <PencilIcon className="h-5 w-5 cursor-pointer"  />
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
+                            {subCatData?.map((data, index) => {
+                              const isEditing = editItemId === index; // Check if this item is being edited
+                              return (
+                                <div
+                                  key={index}
+                                  className="p-3 border border-1 rounded-md mb-4 flex items-center justify-between"
+                                >
+                                  {isEditing ? (
+                                    <input
+                                      ref={inputRef}
+                                      type="text"
+                                      value={inputValue}
+                                      onChange={(e) =>
+                                        setInputValue(e.target.value)
+                                      }
+                                      className="flex-1"
+                                    />
+                                  ) : (
+                                    <span>{data?.title}</span>
+                                  )}
+                                  {isEditing ? (
+                                    <div onClick={() => handleSave(index)}>
+                                      save
+                                    </div>
+                                  ) : (
+                                    // <CheckIcon className="h-5 w-5 cursor-pointer"  />
+                                    <div
+                                      onClick={() =>
+                                        handleEdit(index, data?.title, data)
+                                      }
+                                    >
+                                      edit
+                                    </div>
+                                    // <PencilIcon className="h-5 w-5 cursor-pointer"  />
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
                         )}
                       </div>
                       {/*footer*/}
