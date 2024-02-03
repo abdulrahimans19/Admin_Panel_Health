@@ -196,7 +196,7 @@ export default function FoodProduct() {
             {categoryMenu ? "Categories" : "sub Categories"}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
-            {categoryMenu.length}
+            {/* {categoryMenu.length} */}
           </p>
         </div>
         <div>
@@ -234,15 +234,31 @@ export default function FoodProduct() {
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-          {FoodProductsData?.map((data) => {
-            return (
-              <ProductCard
-                data={data}
-                callback={editCat}
-                disableCall={CallBackDisable}
-              />
-            );
+        {FoodProductsData?.map((data) => {
+            if (categoryMenu) {
+              return (
+                <ProductCard
+                  type="enable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            } else {
+              return (
+                <ProductCard
+                  type="disable"
+                  data={data}
+                  callback={editCat}
+                  disableCall={CallBackDisable}
+                />
+              );
+            }
           })}
+          
+          
+          
+      
         </div>
       </div>
       {AddProductModal && (
