@@ -1,8 +1,6 @@
 import React from "react";
 
-function EditMessageModal({callback,setEditMessageModal}) {
-
-    
+function EditMessageModal({ callback, setEditMessageModal }) {
   return (
     <div>
       {/* <!-- Modal backdrop --> */}
@@ -17,10 +15,11 @@ function EditMessageModal({callback,setEditMessageModal}) {
         <div class="flex justify-between items-center pb-3">
           <p class="text-2xl font-bold">Send this notification?</p>
           <div
-          onClick={()=>{
-            setEditMessageModal(false)
-          }}
-           class="modal-close cursor-pointer z-50">
+            onClick={() => {
+              setEditMessageModal(false);
+            }}
+            class="modal-close cursor-pointer z-50"
+          >
             <svg
               class="fill-current text-black"
               xmlns="http://www.w3.org/2000/svg"
@@ -43,14 +42,21 @@ function EditMessageModal({callback,setEditMessageModal}) {
 
         {/* <!-- Modal footer --> */}
         <div class="flex justify-end pt-2">
-          <button 
-          onClick={()=>{setEditMessageModal(false)}} class="px-4 bg-transparent p-3 rounded-lg text-blue-500 hover:bg-gray-100 hover:text-blue-400 mr-2">
+          <button
+            onClick={() => {
+              setEditMessageModal(false);
+            }}
+            class="px-4 bg-transparent p-3 rounded-lg text-blue-500 hover:bg-gray-100 hover:text-blue-400 mr-2"
+          >
             Edit
           </button>
           <button
-          type="submit"
-          onClick={()=>{callback()}} 
-          class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400">
+            type="submit"
+            onClick={() => {
+              callback();
+            }}
+            class="px-4 bg-blue-500 p-3 rounded-lg text-white hover:bg-blue-400"
+          >
             Confirm
           </button>
         </div>
