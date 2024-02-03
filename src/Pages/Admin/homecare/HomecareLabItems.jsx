@@ -83,7 +83,7 @@ export function HomecareLabItems() {
       </div>
       <div className=" justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-          <ul className="flex -mb-px">
+          <ul className="flex overflow-auto -mb-px">
             <li className="me-2">
               <a
                 href="#"

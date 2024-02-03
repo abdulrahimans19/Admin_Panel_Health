@@ -58,18 +58,29 @@ export default function FoodCategory() {
     GetFoodCat();
   }, []);
 
+  const getsubCatData=(data)=>
+  {
+    getFoodSubCategory(data._id).then(({ data }) => {
+      console.log(data.data.subCategories);
+      setSubCatData(data.data.subCategories);
+    }).catch((err)=>
+    {
+      console.log(err);
+    })
+  }
+
   const viewCatInfo = (data) => {
     console.log(data);
     setEditData(data);
-
-    getFoodSubCategory(data._id)
-      .then(({ data }) => {
-        console.log(data.data.subCategories);
-        setSubCatData(data.data.subCategories);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getsubCatData(data)
+    // getFoodSubCategory(data._id)
+    //   .then(({ data }) => {
+    //     console.log(data.data.subCategories);
+    //     setSubCatData(data.data.subCategories);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     setViewCatInfoModal(true);
   };
 
@@ -169,6 +180,7 @@ export default function FoodCategory() {
           catInfo={EditData}
           subCatData={subCatData}
           setViewCatInfoModal={setViewCatInfoModal}
+          viewCatInfo={getsubCatData}
         />
       )}
     </div>

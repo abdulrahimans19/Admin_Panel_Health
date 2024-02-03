@@ -1,9 +1,68 @@
-import React from "react";
-
-const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
+import React, { useEffect, useRef, useState } from "react";
+import { PencilIcon, CheckIcon } from '@heroicons/react/solid';
+import { updatesubcat } from "../../API/ApiCall";
+const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData,viewCatInfo }) => {
   const modalClasses = "fixed inset-0 flex items-center  justify-center";
   const modalContentClasses = "bg-white p-4 rounded-lg flex";
-  console.log(catInfo, "===== lifnawiervf");
+  // console.log(catInfo, "===== lifnawiervf");
+  const [editItemId, setEditItemId] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+const [whoolevalue, setWhoolevalue] = useState()
+  // Handler to enable editing mode
+  const handleEdit = (id, title,data) => {
+    setEditItemId(id);
+    setInputValue(title);
+    setWhoolevalue(data)
+  };
+
+  // Handler to save the edited value
+  const handleSave = (id) => {
+
+const wholedata={
+  category_id:whoolevalue._id,
+  title:inputValue,
+  main_category_id:whoolevalue.main_category_id
+}
+
+
+    updatesubcat(wholedata).then((data)=>
+    {
+      setEditItemId(null);
+      setWhoolevalue(null)
+      console.log(viewCatInfo);
+      viewCatInfo(catInfo)
+    }).catch((err)=>
+    {
+      console.log(err);
+      setEditItemId(null);
+      setWhoolevalue(null)
+    })
+
+    console.log(`Saving ${inputValue} for item ${id}`);
+    console.log(whoolevalue);
+    // Here you should update the actual data, for example, by lifting state up or using a state management library
+    setEditItemId(null);
+    setWhoolevalue(null)
+
+  };
+
+
+  const inputRef = useRef(null);
+
+  // Effect to focus on the input field when it's shown
+  useEffect(() => {
+    if (editItemId !== null) {
+      inputRef.current?.focus();
+    }
+  }, [editItemId]);
+useEffect(()=>
+{
+
+},[])
+
+
+
+
   return (
     <div>
       <div className="container">
@@ -36,7 +95,7 @@ const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
                             >
                               <img
                                 height={100}
-                                src={catInfo.image}
+                                src={catInfo?.image}
                                 alt="Your Image"
                                 sx={{ width: "100%" }}
                               />
@@ -56,20 +115,46 @@ const CatInfoModal = ({ setViewCatInfoModal, catInfo, subCatData }) => {
                       <div className="heding flex flex-col pt-5 pr-3">
                         <h6 className="mb-4 text-xl font-bold">overview</h6>
                         <p className="text-xs mb-1">category Name</p>
-                        <p className="text-xl font-bold">{catInfo.title}</p>
+                        <p className="text-xl font-bold">{catInfo?.title}</p>
                         <p className="text-xs mb-1 mt-4 ">sub categories</p>
                         {!subCatData || !subCatData[0] ? (
                           <p className="p-3 border border-1 rounded-md mb-4">
                             No subcategory available
                           </p>
                         ) : (
-                          subCatData?.map((data) => {
+                          <div>
+                          {subCatData?.map((data, index) => {
+                            const isEditing = editItemId === index; // Check if this item is being edited
                             return (
-                              <p className="p-3 border border-1 rounded-md mb-4">
-                                {data?.title}
-                              </p>
+                              <div key={index} className="p-3 border border-1 rounded-md mb-4 flex items-center justify-between">
+                                {isEditing ? (
+                                  <input
+                                   ref={inputRef}
+                                    type="text"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    className="flex-1"
+                                  />
+                                ) : (
+                                  <span>{data?.title}</span>
+                                )}
+                                {isEditing ? (
+
+                                  <div onClick={() => handleSave(index)}  >
+save
+                                  </div>
+                                  // <CheckIcon className="h-5 w-5 cursor-pointer"  />
+                                ) : (
+                                  <div onClick={() => handleEdit(index, data?.title,data)}>
+
+edit
+                                  </div>
+                                  // <PencilIcon className="h-5 w-5 cursor-pointer"  />
+                                )}
+                              </div>
                             );
-                          })
+                          })}
+                        </div>
                         )}
                       </div>
                       {/*footer*/}
