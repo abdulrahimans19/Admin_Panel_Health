@@ -72,7 +72,9 @@ function SideBar() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
-                  window.location.pathname === "/dashboard" ? "svg-icon-active" : ""
+                  window.location.pathname === "/dashboard"
+                    ? "svg-icon-active"
+                    : ""
                 }`}
               >
                 <path
@@ -167,7 +169,7 @@ function SideBar() {
               className={`flex items-center p-2 pl-12 rounded-lg group ${
                 window.location.pathname === "/homecare/categories" ||
                 window.location.pathname === "/homecare/lab-items" ||
-                window.location.pathname   === "/homecare/appoinment-details"
+                window.location.pathname === "/homecare/appoinment-details"
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -176,7 +178,7 @@ function SideBar() {
                 fill={
                   window.location.pathname === "/homecare/categories" ||
                   window.location.pathname === "/homecare/lab-items" ||
-                  window.location.pathname   === "/homecare/appoinment-details"
+                  window.location.pathname === "/homecare/appoinment-details"
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -608,13 +610,13 @@ function SideBar() {
               } `}
             >
               <svg
-                fill={
-                  window.location.pathname === "/push-notification"
-                    ? "#your-active-color"
-                    : "#ede8e8"
-                }
-                width="20"
-                height="25"
+              fill={
+                window.location.pathname === "/push-notification"
+                  ? "#your-active-color"
+                  : "#ede8e8"
+              }
+                width="23px"
+                height="23px"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
                 className={`svg-icon ${
@@ -623,14 +625,22 @@ function SideBar() {
                     : ""
                 }`}
               >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
-                  <path d="M9.426,6.3,7.57,8.156l2.137,2.137a1,1,0,0,1-1.414,1.414L6.156,9.57,4.3,11.425a4.437,4.437,0,0,0,4.413,7.388,1,1,0,0,1,.574,1.916,6.437,6.437,0,0,1-6.4-10.718L8.012,4.885a6.442,6.442,0,0,1,9.8.829,1,1,0,1,1-1.63,1.159A4.44,4.44,0,0,0,9.426,6.3ZM23,15a6,6,0,1,1-6-6A6.008,6.008,0,0,1,23,15Zm-6-4a3.947,3.947,0,0,0-2.019.567l5.452,5.452A3.957,3.957,0,0,0,21,15,4,4,0,0,0,17,11Zm0,8a3.947,3.947,0,0,0,2.019-.567l-5.452-5.452A3.957,3.957,0,0,0,13,15,4,4,0,0,0,17,19Z"></path>
+                  {" "}
+                  <path
+                    d="M9 11H15M12 8V14M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z"
+                    stroke="#000000"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="#FFFFFF"
+                  ></path>{" "}
                 </g>
               </svg>
 
@@ -642,7 +652,7 @@ function SideBar() {
               onClick={() => {
                 localStorage.removeItem("sophwe_token");
                 localStorage.removeItem("sophwe_fcm");
-                dispatch(cleartopNav())
+                dispatch(cleartopNav());
 
                 navigate("/login");
               }}

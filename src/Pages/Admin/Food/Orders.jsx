@@ -33,7 +33,7 @@ export default function FoodOrder() {
   return (
     <div>
       <div>
-        <h1 className="p-3 text-xl font-semibold">Order </h1>
+        <h1 className="p-3 text-xl font-semibold">Orders </h1>
       </div>
       {/* <div>
         <div className="flex justify-center ">
