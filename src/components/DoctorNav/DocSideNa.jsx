@@ -8,6 +8,7 @@ import {
   pharmacyNav,
   telemedicine,
   homecare,
+  openSidebar,
 } from "../../Redux/Features/NavbarSlice";
 
 function DocSideBar() {
@@ -56,6 +57,8 @@ function DocSideBar() {
               onClick={() => {
                 setCurrentRoute("/doctor/overview");
                 navigate("/doctor/overview");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
@@ -109,6 +112,8 @@ function DocSideBar() {
               onClick={() => {
                 setCurrentRoute("/doctor/appointments");
                 navigate("/doctor/appointments");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
@@ -156,6 +161,8 @@ function DocSideBar() {
               onClick={() => {
                 setCurrentRoute("/doctor/history");
                 navigate("/doctor/history");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
@@ -203,6 +210,8 @@ function DocSideBar() {
               onClick={() => {
                 setCurrentRoute("/doctor/transaction");
                 navigate("/doctor/transaction");
+                dispatch(openSidebar())
+
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
