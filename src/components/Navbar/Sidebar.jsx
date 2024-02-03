@@ -9,6 +9,7 @@ import {
   telemedicine,
   homecare,
   cleartopNav,
+  openSidebar,
 } from "../../Redux/Features/NavbarSlice";
 
 function SideBar() {
@@ -57,6 +58,8 @@ function SideBar() {
               onClick={() => {
                 setCurrentRoute("/dashboard");
                 navigate("/dashboard");
+                dispatch(openSidebar());
+
               }}
               href="#"
               className={`flex pl-12 items-center p-2 rounded-lg group ${
