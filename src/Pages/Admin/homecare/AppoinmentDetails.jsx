@@ -285,7 +285,7 @@ console.log("else working");
                         <td class="px-6 py-4">${data.test_id.price}</td>
                         <td class="px-6 py-4 text-right">
                           {data?.result_url[0] ? (
-                            <div class="text-green-700 border border-green-700  focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm py-1 text-center dark:border-green-500 dark:text-green-500 ">
+                            <div class=" p-4 text-green-700 border border-green-700  focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm py-1 text-center dark:border-green-500 dark:text-green-500 ">
                               Result added
                             </div>
                           ) : (
@@ -294,14 +294,14 @@ console.log("else working");
                               onClick={() => {
                                 openModal(data);
                               }}
-                              class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-1 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
+                              class="text-red-700 p-4 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-1 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
                             >
                               Result not Added{" "}
                             </button>
                           )}
                           {showModal ? (
                             <>
-                              <div className="fixed inset-0 z-50 overflow-hidden">
+                              <div className="fixed inset-0 z-50 overflow-auto">
                                 <div className="flex items-center justify-center min-h-screen">
                               
                                     <div className="bg-white rounded-lg shadow-lg p-8 w-96 relative">

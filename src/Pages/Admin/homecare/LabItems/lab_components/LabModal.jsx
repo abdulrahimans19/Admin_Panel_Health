@@ -186,14 +186,11 @@ function LabModal({ callback, setShowModal, getAllTests }) {
       <>
         <div className="fixed inset-0 z-50 overflow-auto">
           <form onSubmit={addLabModal} id="addmodal">
-            
             <div className="flex items-center justify-center min-h-screen ">
-              
               <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
-              <h2 class="text-2xl mb-4 font-semibold">Create test</h2>
+                <h2 class="text-2xl mb-4 font-semibold">Create test</h2>
 
                 <div className="lg:flex md:flex flex-row gap-3.5">
-
                   <div
                     {...getRootProps()}
                     className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
@@ -281,10 +278,13 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                               placeholder="Ex: Blood test"
                             ></input>
 
-<button  onClick={handleAddSample} class="bg-pink-500  sm:mt-0   text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1  ease-linear transition-all duration-150" type="button"
-      >
-   +
-</button>
+                            <button
+                              onClick={handleAddSample}
+                              class="bg-pink-500  sm:mt-0   text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1  ease-linear transition-all duration-150"
+                              type="button"
+                            >
+                              +
+                            </button>
                           </div>
                           {errors.typeSample && (
                             <p className="text-red-500 text-xs">
@@ -393,41 +393,38 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                                 setnumberofField={setnumberofField}
                               />
                               <div>
-                              {setsaveTestDat.map((data, index) => {
-                                    return (
-                                      <div
-                                
-                                        className="p-4 m-2 border-2"
-                                      >
-                                        <div className="font-semibold ">
-                                          test Name
-                                        </div>
-                                        <div className=" text-left list-disc border-dotted border-2 rounded-sm p-2">
-                                          {data.name}
-                                        </div>
+                                {setsaveTestDat.map((data, index) => {
+                                  return (
+                                    <div className="p-4 m-2 border-2">
+                                      <div className="font-semibold ">
+                                        test Name
+                                      </div>
+                                      <div className=" text-left list-disc border-dotted border-2 rounded-sm p-2">
+                                        {data.name}
+                                      </div>
 
-                                        <div className="font-semibold">
-                                          sub test
-                                        </div>
-                                        <div>
-                                          {/* {data?.sub_tests?.map((name) => {
+                                      <div className="font-semibold">
+                                        sub test
+                                      </div>
+                                      <div>
+                                        {/* {data?.sub_tests?.map((name) => {
                                             return <div>{name?.name}</div>;
                                           })} */}
-                                          <ul className=" list-disc p-2">
-                                            {data?.sub_tests?.map(
-                                              (sample, index) => {
-                                                return (
-                                                  <li key={index}>
-                                                    {sample?.name}
-                                                  </li>
-                                                );
-                                              }
-                                            )}
-                                          </ul>
-                                        </div>
+                                        <ul className=" list-disc p-2">
+                                          {data?.sub_tests?.map(
+                                            (sample, index) => {
+                                              return (
+                                                <li key={index}>
+                                                  {sample?.name}
+                                                </li>
+                                              );
+                                            }
+                                          )}
+                                        </ul>
                                       </div>
-                                    );
-                                  })}
+                                    </div>
+                                  );
+                                })}
                                 <div className="w-52 bg-red-500"></div>
                               </div>
                             </div>
@@ -495,50 +492,48 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                         </div>
                       </div>
                       <div class=" sm:flex  space-x-4">
-                          <div class="flex flex-col">
-                            <label
-                              for="rate"
-                              class="text-sm font-medium text-gray-700 mt-2"
-                            >
-                              Rate & offer rate
-                            </label>
-                            <input
-                              placeholder="Set rate"
-                              type="number"
-                             
-                              name="rate"
-                              id="rate"
-                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
-                            ></input>
-                            {errors.rate && (
-                              <p className="text-red-500 text-xs">
-                                {errors.rate}
-                              </p>
-                            )}
-                          </div>
-
-                          <div class="flex flex-col">
-                            <label
-                              for="rate"
-                              class="text-sm font-medium text-gray-700 mt-2"
-                            >
-                              daily text limit
-                            </label>
-                            <input
-                              type="number"
-                              id="rate"
-                             
-                              name="daily_test_limit"
-                              className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
-                              placeholder="Daily test limit"
-                            />
-                            {errors.daily_test_limit && (
-                              <p className="text-red-500 text-xs">
-                                {errors.daily_test_limit}
-                              </p>
-                            )}
-                          </div>
+                        <div class="flex flex-col">
+                          <label
+                            for="rate"
+                            class="text-sm font-medium text-gray-700 mt-2"
+                          >
+                            Rate & offer rate
+                          </label>
+                          <input
+                            placeholder="Set rate"
+                            type="number"
+                            name="rate"
+                            id="rate"
+                            class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
+                          ></input>
+                          {errors.rate && (
+                            <p className="text-red-500 text-xs">
+                              {errors.rate}
+                            </p>
+                          )}
                         </div>
+
+                        <div class="flex flex-col">
+                          <label
+                            for="rate"
+                            class="text-sm font-medium text-gray-700 mt-2"
+                          >
+                            daily text limit
+                          </label>
+                          <input
+                            type="number"
+                            id="rate"
+                            name="daily_test_limit"
+                            className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
+                            placeholder="Daily test limit"
+                          />
+                          {errors.daily_test_limit && (
+                            <p className="text-red-500 text-xs">
+                              {errors.daily_test_limit}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                       <div className="flex justify-end p-3">
                         <button
                           className="mr-2 text-red-500 bg-red-200  px-4 py-2 rounded-md"
