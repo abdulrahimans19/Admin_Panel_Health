@@ -6,6 +6,7 @@ import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast";
+import "../../assets/style/navbar.css"
 import {
   Button,
   Card,
@@ -133,7 +134,7 @@ function NavBar() {
   useEffect(() => {
     getNotificationData();
   }, []);
-
+  
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -168,7 +169,7 @@ function NavBar() {
                 </svg>
               </button>
 
-              <div className="flex ms-2 sm:ms-16  md:me-24">
+              <div className="flex justify-end ms-2 sm:ms-16  md:me-24">
                 {/* <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> */}
                 {/* <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   SOPHWE
@@ -180,7 +181,7 @@ function NavBar() {
               <div
                 className={`${
                   topnavData[0] && "p-1"
-                } rounded-md flex justify-start gap-5 bg-gray-900 overflow-x-auto`}
+                } rounded-md flex justify-start gap-5 bg-zinc-900 overflow-x-auto`}
                 style={{
                   scrollbarWidth: "none",
                   WebkitOverflowScrolling: "touch",
@@ -201,7 +202,7 @@ function NavBar() {
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}
                       >
                         {data.logo}
-                        <span class="text-white">{data.name}</span>
+                        <span  class="text-white text_hidden">{data.name}</span>
                       </div>
                     );
                   })}

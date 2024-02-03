@@ -156,8 +156,8 @@ export default function Appointments() {
 
   return (
     <div>
-      <div className="container p-3">
-        <div className="flex justify-between p-1 flex-col sm:flex-row ">
+      <div className=" p-3">
+        <div className=" sm:flex justify-between p-1 ">
           <div>
             <h1 className="text-xl font-extrabold mb-3">
               See what you got here!!
@@ -166,7 +166,7 @@ export default function Appointments() {
               There are new appointments awaits you
             </p>
           </div>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center mt-4  sm:mt-0">
             <select
               className="border border-blue-300 border-thin 
             p-1 pt-3 pb-3 rounded-full flex  justify-center items-center outline-none "

@@ -28,14 +28,25 @@ const Login = () => {
     const apiCall = selectedOption === "Admin" ? LoginUserdata : DoctorLogInApi;
     apiCall(UserData)
       .then((data) => {
-        localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+console.log(data);
 
-        if (selectedOption === "Admin") {
-          requestForToken();
-        }
-        const redirectPath =
-          selectedOption === "Admin" ? "/" : "/doctor/overview";
-        navigate(redirectPath);
+if(data.data.data.user_role==="Admin"||data.data.data.user_role==="DOCTOR"){
+
+  localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+  if (selectedOption === "Admin") {
+    requestForToken();
+  }
+
+  const redirectPath =
+    selectedOption === "Admin" ? "/" : "/doctor/overview";
+  navigate(redirectPath);
+}
+else{
+  setErrmsg("Email or password is incorrect");
+ 
+}
+
+      
       })
       .catch((err) => {
         setErrmsg("Email or password is incorrect");

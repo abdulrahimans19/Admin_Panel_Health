@@ -111,11 +111,11 @@ export default function FoodCategory() {
       <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
-            {categoryMenu ? "Categories" : "sub Categories"}
+            {categoryMenu ? " " : "sub Categories"}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {" "}
-            {categoryMenu.length} categories
+            {categoryMenu.length} Available Categories 
           </p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
@@ -126,7 +126,7 @@ export default function FoodCategory() {
               setAddCategoryModal(true);
             }}
           >
-            <AddItemButton text={"Add new categories"} img={buttonImage} />
+            <AddItemButton text={"Add Categories"} img={buttonImage} />
           </div>
           <div
             className="mt-4  md:mt-0"
@@ -134,7 +134,7 @@ export default function FoodCategory() {
               setAddSubCategoryModal(true);
             }}
           >
-            <AddItemButton text={"Add sub Categories"} img={buttonImage} />
+            <AddItemButton text={"Add Sub Categories"} img={buttonImage} />
           </div>
         </div>
       </div>
