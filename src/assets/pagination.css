@@ -19,11 +19,44 @@
   }
   
   .pagination li a:hover {
-    background-color: #f2f2f2;
+    background-color: #4caf50;
   }
   
   .pagination .active a {
     background-color: #4caf50;
     color: white;
   }
-  
+  /* pagination.css */
+
+/* Default styles for pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  /* Adjust styles for smaller screens here */
+  .pagination {
+   
+    align-items: center;
+  }
+  .pagination li a {
+    text-decoration: none;
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .pagination li {
+    /* width: 30px; */
+   padding: 4px;
+    margin: 5px 0;
+  }
+}

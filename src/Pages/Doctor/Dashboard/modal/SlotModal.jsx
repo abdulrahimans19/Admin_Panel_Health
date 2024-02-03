@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import noData from "../../../../assets/images/noData.png";
 import "./Slotmodal.css";
 import { addAvailableSlot } from "../../../../API/ApiCall";
+import NoDataImage from "../../../../components/NoDataImage";
 
 function SlotModal({ isSlotModal, showSlot, slots }) {
   const [id, setId] = useState([]);
@@ -102,17 +104,31 @@ function SlotModal({ isSlotModal, showSlot, slots }) {
                             );
                           })}
                       </div>
-
+                      {slots && slots.length == 0 ? (
+                        <div className="">
+                          <div className="flex justify-center items-center text-red-300 text-lg fond-bold mt-10">
+                            <img src={noData} alt="" className="w-[50px]" />
+                          </div>
+                          <div className="flex justify-center items-center text-red-300 text-lg fond-bold ">
+                            <h1>No Slots Available!</h1>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                       <div className="relative mt-10 p-5">
                         <button
                           onClick={() => {
+                            if (slots && slots.length == 0) {
+                              isSlotModal();
+                            }
                             handleSubmit();
                           }}
                           className="absolute right-3 rounded-lg h-10 w-[100px] text-white text-sm"
                           style={{ backgroundColor: "rgba(36, 168, 250, 1)" }}
                           type="submit"
                         >
-                          Save && Exit
+                          Save
                         </button>
                       </div>
                     </div>

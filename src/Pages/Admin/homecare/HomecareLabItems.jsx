@@ -9,7 +9,7 @@ import AllTests from "./LabItems/AllTests";
 import Recommended from "./LabItems/Recommended";
 import Disabled from "./LabItems/Disabled";
 import LabModal from "./LabItems/lab_components/LabModal";
-import { GetHomecareCategoriesApi, createTests } from "../../../API/ApiCall";
+import { GetHomecareCategoriesApi, createTests, getAllCategoryTests } from "../../../API/ApiCall";
 import { setFilter } from "../../../Redux/Features/AdminSlice";
 
 export function HomecareLabItems() {
@@ -28,7 +28,9 @@ export function HomecareLabItems() {
     GetHomecareCategoriesApi().then((data) => {
       setTestCategories(data.data.data.mainCategories);
       // console.log(data.data.data.mainCategories);
-    });
+    }).catch((error)=>{
+      console.log(error);
+    })
   }, []);
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -36,6 +38,21 @@ export function HomecareLabItems() {
   const handleEvent = (data) => {
     dispatch(setFilter(data));
   };
+  const getAllTests=()=>{
+    GetHomecareCategoriesApi().then((data) => {
+      setTestCategories(data.data.data.mainCategories);
+      // console.log(data.data.data.mainCategories);
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+//   const getAllTestsCard=()=>{
+//     getAllCategoryTests().then((data)=>{
+// console.log("allcater",data.data);
+//     }).catch((err)=>{
+//       console.log(err);
+//     })
+//   }
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
@@ -66,7 +83,7 @@ export function HomecareLabItems() {
       </div>
       <div className=" justify-between mt-2">
         <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-          <ul className="flex -mb-px">
+          <ul className="flex overflow-auto -mb-px">
             <li className="me-2">
               <a
                 href="#"
@@ -112,15 +129,18 @@ export function HomecareLabItems() {
           <div>
             <select
               onChange={(e) => {
-                setFilterCategory(e.target.value);
-
-                handleEvent(e.target.value);
+                
+                  setFilterCategory(e.target.value);
+                  handleEvent(e.target.value);
+                
               }}
               id="category"
               class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
             >
-              <option disabled selected value="Filter by category">
-                Filter Category
+              <option 
+              // onClick={dispatch(setFilter(""))}
+                value=" " >
+              All category
               </option>
 
               {testCategories[0] &&

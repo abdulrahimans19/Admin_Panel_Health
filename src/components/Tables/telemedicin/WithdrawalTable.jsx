@@ -5,6 +5,7 @@ import {
   GetDoctorWithdrawalRequsts,
   GetDrAprovedWithdrawalRequsts,
 } from "../../../API/ApiCall";
+import NoDataImage from "../../NoDataImage";
 
 function WithdrawalTable({
   data,
@@ -213,6 +214,13 @@ function WithdrawalTable({
           </tbody>
         </table>
       </div>
+      {table && table.length === 0 ? (
+        <div className="mt-10">
+          <NoDataImage text={"no data available"} />
+        </div>
+      ) : (
+        ""
+      )}
       {page > 1 && (
         <div className="mt-5">
           <ReactPaginate

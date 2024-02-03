@@ -43,6 +43,8 @@ export default function Homecare() {
     getHomecareCategories().then((data)=>{
       console.log("data is ",data);
       setHomeCareCategory(data?.data?.data?.mainCategories)
+    }).catch((error)=>{
+      console.log(error);
     })
   }
   function addCategory() {
@@ -61,11 +63,13 @@ export default function Homecare() {
   const getHomecareCategories = () => {
     GetHomecareCategoriesApi().then((data) => {
       setHomeCareCategory(data.data.data.mainCategories);
-    });
+    }).catch((error)=>{
+      console.log(error);
+    })
   };
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h2 className="font-bold text-lg">Categories</h2>
           <p>{homeCareCategories.length} available categories</p>
@@ -75,10 +79,13 @@ export default function Homecare() {
             setAddCategoryModal(true);
           }}
         >
+          <div className="mt-5 sm:mt-0">
           <AddNewCategoryButton
             text={"Add new categories"}
             callback={addCategory}
           />
+          </div>
+        
         </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6"></div>

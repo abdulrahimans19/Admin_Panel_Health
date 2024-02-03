@@ -36,7 +36,7 @@ export default function AddCategory({
     console.log(reader);
     reader.readAsDataURL(acceptedFiles[0]);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
     accept: "image/*",

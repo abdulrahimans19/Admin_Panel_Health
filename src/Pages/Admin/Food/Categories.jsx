@@ -58,10 +58,7 @@ export default function FoodCategory() {
     GetFoodCat();
   }, []);
 
-  const viewCatInfo = (data) => {
-    console.log(data);
-    setEditData(data);
-
+  const getsubCatData = (data) => {
     getFoodSubCategory(data._id)
       .then(({ data }) => {
         console.log(data.data.subCategories);
@@ -70,6 +67,20 @@ export default function FoodCategory() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const viewCatInfo = (data) => {
+    console.log(data);
+    setEditData(data);
+    getsubCatData(data);
+    // getFoodSubCategory(data._id)
+    //   .then(({ data }) => {
+    //     console.log(data.data.subCategories);
+    //     setSubCatData(data.data.subCategories);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     setViewCatInfoModal(true);
   };
 
@@ -97,7 +108,7 @@ export default function FoodCategory() {
           SubCategory
         </p> */}
       </div>
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
@@ -109,7 +120,7 @@ export default function FoodCategory() {
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
-        <div className="flex gap-3">
+        <div className="md:flex gap-3">
           <div
             onClick={() => {
               setAddCategoryModal(true);
@@ -118,6 +129,7 @@ export default function FoodCategory() {
             <AddItemButton text={"Add new categories"} img={buttonImage} />
           </div>
           <div
+            className="mt-4  md:mt-0"
             onClick={() => {
               setAddSubCategoryModal(true);
             }}
@@ -169,6 +181,7 @@ export default function FoodCategory() {
           catInfo={EditData}
           subCatData={subCatData}
           setViewCatInfoModal={setViewCatInfoModal}
+          viewCatInfo={getsubCatData}
         />
       )}
     </div>

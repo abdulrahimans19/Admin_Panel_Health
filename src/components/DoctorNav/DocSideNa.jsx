@@ -235,7 +235,7 @@ function DocSideBar() {
             </a>
           </li>
 
-          <li className=" pt-36">
+          <li className=" pt-28">
             <a
               onClick={() => {
                 localStorage.removeItem("sophwe_token");
