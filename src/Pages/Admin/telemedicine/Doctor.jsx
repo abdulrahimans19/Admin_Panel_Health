@@ -76,7 +76,7 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        getDoctorRequests();
+        // getDoctorRequests();
         return (
           <DoctorRequstTable
             isRequsted={true}
@@ -90,7 +90,7 @@ export default function Doctor() {
         );
 
       case 2:
-        getAllDoctors();
+        // getAllDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -105,7 +105,7 @@ export default function Doctor() {
         );
 
       case 3:
-        getBlockedDoctors();
+        // getBlockedDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -124,7 +124,7 @@ export default function Doctor() {
   return (
     <div className="container mt-5">
       <div className="text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-        <ul className="flex ">
+        <ul className="flex overflow-auto ">
           <li className="me-2">
             <a
               className={`inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer ${
@@ -184,7 +184,7 @@ export default function Doctor() {
           </li>
         </ul>
       </div>
-
+      <div></div>
       {renderTabContent()}
     </div>
   );

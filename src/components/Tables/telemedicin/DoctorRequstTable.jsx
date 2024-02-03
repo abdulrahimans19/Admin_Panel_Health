@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import searchimg from "../../../assets/images/searchimg1.png";
 
+import NoDataImage from "../../../components/NoDataImage";
+
 import Promodal from "../../../Pages/Admin/telemedicine/profilemodal/Promodal";
 import {
   AprovetDoctor,
@@ -92,7 +94,7 @@ export default function DoctorRequstTable({
         isCancel={isCancel}
       />
       {/* searchHandler */}
-      <div className="flex justify-between items-center w-full">
+      <div className="sm:flex justify-between items-center w-full">
         <div>
           {" "}
           <h1 className="font-bold mt-5 text-lg">Doctor</h1>
@@ -108,14 +110,10 @@ export default function DoctorRequstTable({
                 name="search"
                 id=""
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-full h- border-none bg-none outline-none p-1"
+                className=" h-  sm:w-full w-8 border-none bg-none outline-none p-1"
               />
               <button type="submit">
-                <img
-                  src={searchimg}
-                  alt=""
-                  className="w-8 bg-gray-200 h-8 p-1"
-                />
+                <img src={searchimg} alt="" className=" bg-gray-200 h-8 p-1" />
               </button>
             </div>
           </form>
@@ -295,7 +293,13 @@ export default function DoctorRequstTable({
           </tbody>
         </table>
       </div>
-
+      {datas && datas.length == 0 && data && data.length == 0 ? (
+        <div className="mt-10">
+          <NoDataImage />
+        </div>
+      ) : (
+        ""
+      )}
       {page > 1 && (
         <ReactPaginate
           pageCount={page} // Replace with the total number of pages

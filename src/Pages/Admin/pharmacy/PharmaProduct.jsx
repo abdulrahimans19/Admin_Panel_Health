@@ -43,47 +43,51 @@ export default function PharmaProduct() {
   };
 
   const getFarmaCategories = () => {
-    getPharmaCategory().then(({ data }) => {
-      console.log(data, "maincat");
-      setCategories(data.data.mainCategories);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    getPharmaCategory()
+      .then(({ data }) => {
+        console.log(data, "maincat");
+        setCategories(data.data.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const PharmaProduct = () => {
     if (filterId) {
       setCurrentPage(0);
-      filterPharmaAPi(filterId, 1).then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        setPharmaProductsData(data.data.products);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
+      filterPharmaAPi(filterId, 1)
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          setPharmaProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (categoryMenu) {
-      getPharmaProductApi(pageNumber).then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        console.log(data.data.products);
+      getPharmaProductApi(pageNumber)
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          console.log(data.data.products);
 
-        setPharmaProductsData(data.data.products);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
+          setPharmaProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      disabledFarmaProductApi().then(({ data }) => {
-        const totalPages = Math.ceil(data.data.total_document / 10);
-        setTotalPagecount(totalPages);
-        console.log(data.data);
-        setPharmaProductsData(data.data.products);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
+      disabledFarmaProductApi()
+        .then(({ data }) => {
+          const totalPages = Math.ceil(data.data.total_document / 10);
+          setTotalPagecount(totalPages);
+          console.log(data.data);
+          setPharmaProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -99,33 +103,36 @@ export default function PharmaProduct() {
     setCurrentPage(selectedPage.selected);
 
     if (filterId) {
-      filterPharmaAPi(filterId, selectedPage.selected + 1).then(({ data }) => {
-        setPageNumber(selectedPage.selected + 1)
+      filterPharmaAPi(filterId, selectedPage.selected + 1)
+        .then(({ data }) => {
+          setPageNumber(selectedPage.selected + 1);
 
-        setPharmaProductsData(data.data.products);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
+          setPharmaProductsData(data.data.products);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       if (categoryMenu) {
-        getPharmaProductApi(selectedPage.selected + 1).then(({ data }) => {
-          console.log(data.data.products);
-          setPageNumber(selectedPage.selected + 1);
-          setPharmaProductsData(data.data.products);
-        }).catch((err)=>
-        {
-          console.log(err);
-        })
+        getPharmaProductApi(selectedPage.selected + 1)
+          .then(({ data }) => {
+            console.log(data.data.products);
+            setPageNumber(selectedPage.selected + 1);
+            setPharmaProductsData(data.data.products);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
-        disabledFarmaProductApi(selectedPage.selected + 1).then(({ data }) => {
-          console.log(data.data.products);
-          setPageNumber(selectedPage.selected + 1);
-          setPharmaProductsData(data.data.products);
-        }).catch((err)=>
-        {
-          console.log(err);
-        })
+        disabledFarmaProductApi(selectedPage.selected + 1)
+          .then(({ data }) => {
+            console.log(data.data.products);
+            setPageNumber(selectedPage.selected + 1);
+            setPharmaProductsData(data.data.products);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };
@@ -144,16 +151,16 @@ export default function PharmaProduct() {
   const disableProduct = () => {
     console.log("confirm working");
     console.log(editProductData);
-    disablePharmaProduct(editProductData._id).then((data) => {
-      console.log(data);
-      PharmaProduct();
-      setDisableProducts(false);
-    }).catch((err)=>
-    {
-      console.log(err);
-      setDisableProducts(false);
-
-    })
+    disablePharmaProduct(editProductData._id)
+      .then((data) => {
+        console.log(data);
+        PharmaProduct();
+        setDisableProducts(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setDisableProducts(false);
+      });
   };
 
   return (
@@ -184,7 +191,7 @@ export default function PharmaProduct() {
         </p>
       </div>
 
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? " " : ""}
@@ -227,7 +234,7 @@ export default function PharmaProduct() {
         </div>
       </div>
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
+        <div className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
           {PharmaProductsData?.map((data) => {
             if (categoryMenu) {
               return (
@@ -267,15 +274,20 @@ export default function PharmaProduct() {
           getProducts={PharmaProduct}
         />
       )}
-      <ReactPaginate
-        pageCount={totalPagecount} // Replace with the total number of pages
-        pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-        marginPagesDisplayed={1} // Number of pages to display for margin pages
-        onPageChange={handlePageChange}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-        forcePage={currentPage}
-      />
+      <div className="">
+        <div className=" flex justify-center">
+          <ReactPaginate
+            pageCount={totalPagecount} // Replace with the total number of pages
+            pageRangeDisplayed={2} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            forcePage={currentPage}
+          />
+        </div>
+      </div>
+
       {disableProducts && (
         <ConfirmationModal
           text={"are you sure you want to disable this product"}

@@ -100,7 +100,7 @@ export default function PharmaCategory() {
           SubCategory
         </p> */}
       </div>
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
@@ -111,7 +111,7 @@ export default function PharmaCategory() {
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
 
-        <div className="flex gap-3">
+        <div className="md:flex gap-3 ">
           <div
             onClick={() => {
               setAddCategoryModal(true);
@@ -120,6 +120,7 @@ export default function PharmaCategory() {
             <AddItemButton text={"Add Category"} img={buttonImage} />
           </div>
           <div
+            className="mt-3 md:mt-0"
             onClick={() => {
               setAddSubCategoryModal(true);
             }}

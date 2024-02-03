@@ -164,7 +164,7 @@ function NotificationPage() {
               <div class="mb-6">
                 <label
                   for="title"
-                  class="block mb-2 text-sm font-medium text-gray-900"
+                  class="block mb-2 text-sm font-medium text-gray-900 mt-4"
                 >
                   Enter Push Notification to send to all users
                 </label>
@@ -180,7 +180,7 @@ function NotificationPage() {
                 />
                 <label
                   for="message"
-                  class="block mb-2 text-sm font-medium text-gray-900"
+                  class="block mb-2 text-sm font-medium text-gray-900 mt-4"
                 >
                   Message
                 </label>
