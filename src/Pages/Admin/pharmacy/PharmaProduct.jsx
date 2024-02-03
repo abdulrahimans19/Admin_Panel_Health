@@ -175,7 +175,7 @@ export default function PharmaProduct() {
             categoryMenu && "font-bold underline"
           }  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
         >
-          products
+        Products
         </p>
         <p
           onClick={() => {
@@ -194,7 +194,7 @@ export default function PharmaProduct() {
       <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
-            {categoryMenu ? "Categories" : ""}
+            {categoryMenu ? " " : ""}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {/* {PharmaProductsData.length} categories */}

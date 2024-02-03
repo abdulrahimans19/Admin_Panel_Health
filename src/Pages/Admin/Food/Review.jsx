@@ -79,7 +79,7 @@ export default function PharmaReview() {
 
         <div className="flex justify-between">
           <div>
-            <p className=" pl-3 text-gray-600 font-semibold">Review</p>
+            <p className=" pl-3 text-gray-600 font-semibold">Reviews</p>
           </div>
           <div>
             {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}

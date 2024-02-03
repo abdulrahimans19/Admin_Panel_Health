@@ -36,13 +36,14 @@ export default function Coupons() {
   }, []);
   return (
     <div className="container">
+      <div className="text-lg font-medium">Added Coupons</div>
       <div className="flex justify-end">
         <div
           onClick={() => {
             setOpenCouponModal(true);
           }}
         >
-          <AddItemButton img={offerIcon} text={"add coupon"} />
+          <AddItemButton img={offerIcon} text={"Add Coupon"} />
         </div>
       </div>
 
