@@ -392,5 +392,8 @@ export const updateFcmApi = async (data) => {
   return await Instance.post(`/user/update-fcm-token`, data);
 };
 export const sendNotification = async (data) => {
-  return await Instance.post(`/notification/send-notification`,data);
+  return await Instance.post(`/notification/send-notification`, data);
+};
+export const updatesubcat = async (data) => {
+  return await Instance.put(`/sub-categories/update`, data);
 };

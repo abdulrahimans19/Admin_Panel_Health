@@ -156,46 +156,48 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
 
     if (!isEditImage) {
       if (fileToUpload) {
-        UploadImageUrl().then((datas) => {
-          const presignedUrl = datas.data.presignedUrl;
-          const publicUrl = datas.data.publicUrl;
+        UploadImageUrl()
+          .then((datas) => {
+            const presignedUrl = datas.data.presignedUrl;
+            const publicUrl = datas.data.publicUrl;
 
-          uploadToAws(presignedUrl, fileToUpload)
-            .then(() => {
-              console.log("Image uploaded to AWS");
-              // Now publicUrl is available here
-              console.log("Uploaded image URL:", publicUrl);
-              const joinedSamples = samples.join(",");
-              const wholeData = {
-                test_id: valdata._id,
-                name: UserData.testName,
-                image: publicUrl,
-                category_id: UserData.categoryName,
-                testing_time: parseInt(UserData.report_time),
-                samples: joinedSamples.split(","),
-                price: parseInt(UserData.rate),
-                daily_test_limit: parseInt(UserData.daily_test_limit),
-                tests: setsaveTestDat,
-                is_recommended: isRecommended,
-              };
+            uploadToAws(presignedUrl, fileToUpload)
+              .then(() => {
+                console.log("Image uploaded to AWS");
+                // Now publicUrl is available here
+                console.log("Uploaded image URL:", publicUrl);
+                const joinedSamples = samples.join(",");
+                const wholeData = {
+                  test_id: valdata._id,
+                  name: UserData.testName,
+                  image: publicUrl,
+                  category_id: UserData.categoryName,
+                  testing_time: parseInt(UserData.report_time),
+                  samples: joinedSamples.split(","),
+                  price: parseInt(UserData.rate),
+                  daily_test_limit: parseInt(UserData.daily_test_limit),
+                  tests: setsaveTestDat,
+                  is_recommended: isRecommended,
+                };
 
-              console.log("Data to be sent:", wholeData);
-              editTests(wholeData)
-                .then((data) => {
-                  getAllTests();
-                  setEditShowModal1(false);
-                })
-                .catch((err) => {
-                  getAllTests();
-                  setEditShowModal1(false);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })  .catch((err) => {
-          console.log(err);
-        });
+                console.log("Data to be sent:", wholeData);
+                editTests(wholeData)
+                  .then((data) => {
+                    getAllTests();
+                    setEditShowModal1(false);
+                  })
+                  .catch((err) => {
+                    getAllTests();
+                    setEditShowModal1(false);
+                  });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } else {
       const joinedSamples = samples.join(",");
@@ -374,7 +376,7 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
             <form className="p-4" onSubmit={editLabModal} id="addmodal">
               <div className="flex items-center justify-center">
                 <div className="flex flex-col bg-white rounded-lg shadow-md  sm:p-6 max-w-full sm:max-w-7xl mx-2">
-                  <h2 class="text-xl mb-4 text-center">update test</h2>
+                  <h2 class="text-xl mb-4 text-center p-3">update test</h2>
 
                   <div className="md:flex p-1 gap-3.5">
                     <div
@@ -457,24 +459,22 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                             >
                               Type of samples
                             </label>
-                            <div className="flex gap-3">
-                              <input
-                                type="text"
-                                onChange={handleInputChange}
-                                value={sampleInput}
-                                name="sampleType"
-                                id="type_of_samples"
-                                class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
-                                placeholder="Ex: Blood test"
-                              ></input>
-                              <button
-                                type="button"
-                                className="border-4"
-                                onClick={handleAddSample}
-                              >
-                                +
-                              </button>
-                            </div>
+                            <div className="flex align-baseline justify-start gap-3">
+                            <input
+                              type="text"
+                              onChange={handleInputChange}
+                              value={sampleInput}
+                              name="sampleType"
+                              id="type_of_samples"
+                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-1"
+                              placeholder="Ex: Blood test"
+                            ></input>
+
+<button  onClick={handleAddSample} class="bg-pink-500  sm:mt-0   text-white active:bg-pink-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1  ease-linear transition-all duration-150" type="button"
+      >
+   +
+</button>
+                          </div>
                             <div
                               onClick={() => {
                                 setForModalSampleData(samples);
@@ -613,35 +613,23 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                                           {/* {data?.sub_tests?.map((name) => {
                                             return <div>{name?.name}</div>;
                                           })} */}
-                                                 <ul className=" list-disc p-2">
-                                {data?.sub_tests?.map((sample, index) => {
-                                return (<li key={index}>{sample?.name}</li>)
-                                } 
-                                )}
-                              </ul>
+                                          <ul className=" list-disc p-2">
+                                            {data?.sub_tests?.map(
+                                              (sample, index) => {
+                                                return (
+                                                  <li key={index}>
+                                                    {sample?.name}
+                                                  </li>
+                                                );
+                                              }
+                                            )}
+                                          </ul>
                                         </div>
                                       </div>
                                     );
                                   })}
                                 </div>
-                                {/* {editTestSubata && editTestSubata.map((data)=>{
-                                return (
-                                  <div
-                                    onClick={() => {
-                                      // setSubTestModal(true);
-                                      // setForModalTestData(data);
-                                    }}
-                                    className="p-4 border-2"
-                                  >
-                                    {data.name}
-                                    <div>
-                                      {data?.sub_tests?.map((name) => {
-                                        return <div>{name?.name}</div>;
-                                      })}
-                                    </div>
-                                  </div>
-                                );
-                              })} */}
+                            
                               </div>
                             )}
                           </div>
@@ -709,49 +697,49 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                             )}
                           </div>
                         </div>
-                        <div class="flex flex-col space-x-4">
+                        <div class=" sm:flex  space-x-4">
                           <div class="flex flex-col">
                             <label
                               for="rate"
-                              class="text-sm font-medium text-gray-700 mb-2"
+                              class="text-sm font-medium text-gray-700 mt-2"
                             >
                               Rate & offer rate
                             </label>
-                            <div class="flex flex-row space-x-2">
-                              <div>
-                                <input
-                                  placeholder="Set rate"
-                                  type="number"
-                                  defaultValue={valdata.price}
-                                  name="rate"
-                                  id="rate"
-                                  class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
-                                ></input>
-                                {errors.rate && (
-                                  <p className="text-red-500 text-xs">
-                                    {errors.rate}
-                                  </p>
-                                )}
-                              </div>
-                              <div>
-                                <div className="flex flex-col">
-                                  <input
-                                    type="number"
-                                    id="rate"
-                                    defaultValue={valdata.daily_test_limit}
-                                    name="daily_test_limit"
-                                    className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
-                                    placeholder="Daily test limit"
-                                  />
-                                </div>
+                            <input
+                              placeholder="Set rate"
+                              type="number"
+                              defaultValue={valdata.price}
+                              name="rate"
+                              id="rate"
+                              class="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
+                            ></input>
+                            {errors.rate && (
+                              <p className="text-red-500 text-xs">
+                                {errors.rate}
+                              </p>
+                            )}
+                          </div>
 
-                                {errors.daily_test_limit && (
-                                  <p className="text-red-500 text-xs">
-                                    {errors.daily_test_limit}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
+                          <div class="flex flex-col">
+                            <label
+                              for="rate"
+                              class="text-sm font-medium text-gray-700 mt-2"
+                            >
+                              daily text limit
+                            </label>
+                            <input
+                              type="number"
+                              id="rate"
+                              defaultValue={valdata.daily_test_limit}
+                              name="daily_test_limit"
+                              className="rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-indigo-500 p-1"
+                              placeholder="Daily test limit"
+                            />
+                            {errors.daily_test_limit && (
+                              <p className="text-red-500 text-xs">
+                                {errors.daily_test_limit}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="flex justify-end p-3">

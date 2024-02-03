@@ -41,13 +41,14 @@ export default function PharmaCategory() {
   };
 
   const GetPharmacyCat = () => {
-    getPharmaCategory().then(({ data }) => {
-      console.log(data.data.mainCategories);
-      setCategoryData(data.data.mainCategories);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    getPharmaCategory()
+      .then(({ data }) => {
+        console.log(data.data.mainCategories);
+        setCategoryData(data.data.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -55,17 +56,23 @@ export default function PharmaCategory() {
     GetPharmacyCat();
   }, []);
 
+  const getsubCatData = (data) => {
+    getSubCatData(data._id)
+      .then(({ data }) => {
+        console.log(data.data.subCategories);
+        setSubCatData(data.data.subCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const viewCatInfo = (data) => {
+    console.log("workng");
     console.log(data);
     setEditData(data);
+    getsubCatData(data);
 
-    getSubCatData(data._id).then(({ data }) => {
-      console.log(data.data.subCategories);
-      setSubCatData(data.data.subCategories);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
     setViewCatInfoModal(true);
   };
 
@@ -164,6 +171,7 @@ export default function PharmaCategory() {
           catInfo={EditData}
           subCatData={subCatData}
           setViewCatInfoModal={setViewCatInfoModal}
+          viewCatInfo={getsubCatData}
         />
       )}
     </div>
