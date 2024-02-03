@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ViewPatient from "../Dashboard/modal/ViewPatient";
 import { getAllApointment } from "../../../API/DoctorApi";
 import ReactPaginate from "react-paginate";
+import NoDataImage from "../../../components/NoDataImage";
 
 export default function AppointmentHistory() {
   const [showModal, setShowModal] = useState(false);
@@ -153,7 +154,11 @@ export default function AppointmentHistory() {
                 <div className="p-3 border  border-blue-300 border-thin rounded-lg">
                   <div className=" w-[60px] h-[60px] rounded-full border border-blue-300 border-thin">
                     <img
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                      src={
+                        data?.patientId.profile_image
+                          ? data?.patientId.profile_image
+                          : `https://flowbite.com/docs/images/people/profile-picture-5.jpg`
+                      }
                       className="w-[60px] h-[60px] rounded-full"
                       alt=""
                     />
@@ -202,6 +207,15 @@ export default function AppointmentHistory() {
 
           {/* card */}
         </div>
+
+        {data && data.length === 0 ? (
+          <div>
+            <NoDataImage text={"No Apointments"} />
+          </div>
+        ) : (
+          ""
+        )}
+
         <ViewPatient
           setShowModal={setShowModal}
           data={patient}
@@ -212,14 +226,16 @@ export default function AppointmentHistory() {
         />
       </div>
       {page > 1 && (
-        <ReactPaginate
-          pageCount={page} // Replace with the total number of pages
-          pageRangeDisplayed={3} // Number of pages to display in the pagination bar
-          marginPagesDisplayed={1} // Number of pages to display for margin pages
-          onPageChange={handlePageChange}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
+        <div className="mt-10">
+          <ReactPaginate
+            pageCount={page} // Replace with the total number of pages
+            pageRangeDisplayed={3} // Number of pages to display in the pagination bar
+            marginPagesDisplayed={1} // Number of pages to display for margin pages
+            onPageChange={handlePageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+          />
+        </div>
       )}
     </div>
   );

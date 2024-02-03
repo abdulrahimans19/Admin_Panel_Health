@@ -76,7 +76,6 @@ export default function Doctor() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
-        getDoctorRequests();
         return (
           <DoctorRequstTable
             isRequsted={true}
@@ -90,7 +89,6 @@ export default function Doctor() {
         );
 
       case 2:
-        getAllDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -105,7 +103,6 @@ export default function Doctor() {
         );
 
       case 3:
-        getBlockedDoctors();
         return (
           <DoctorRequstTable
             btImg={blockimg}
@@ -184,7 +181,7 @@ export default function Doctor() {
           </li>
         </ul>
       </div>
-
+      <div></div>
       {renderTabContent()}
     </div>
   );

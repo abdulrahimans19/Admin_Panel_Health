@@ -13,6 +13,7 @@ import {
 } from "../../../API/ApiCall";
 import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 import AddCategory from "../../../components/Modal/AddCategory";
+import NoDataImage from "../../../components/NoDataImage";
 
 export default function TeleMedicine() {
   const [categories, setCategories] = useState([]);
@@ -22,12 +23,13 @@ export default function TeleMedicine() {
   const [editData, setEditData] = useState();
 
   const getCategory = () => {
-    MainDoctorCategories().then((data) => {
-      setCategories(data?.data?.data?.mainCategories);
-    }).catch((err)=>
-    {
-      console.log(err);
-    })
+    MainDoctorCategories()
+      .then((data) => {
+        setCategories(data?.data?.data?.mainCategories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const isShowModal = () => {
     setShowModal(!showModal);
@@ -84,6 +86,14 @@ export default function TeleMedicine() {
           setShowModal={setShowModal}
           GetPharmacyCat={getCategory}
         />
+      )}
+      {categories && categories.length === 0 ? (
+        <div className="mt-10">
+          {" "}
+          <NoDataImage text={"No Categories available"} />{" "}
+        </div>
+      ) : (
+        ""
       )}
       {editShowModal && (
         <AddCategory

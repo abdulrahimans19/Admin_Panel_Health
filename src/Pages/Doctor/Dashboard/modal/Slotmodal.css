@@ -9,3 +9,15 @@
   border-radius: 100%;
   outline: none;
 }
+.css-13cymwt-control :hover {
+  border: none;
+  outline: none;
+}
+.css-13cymwt-control ::before,
+::after {
+  border: none;
+  outline: none;
+}
+.css-13cymwt-control {
+  outline: none;
+}
