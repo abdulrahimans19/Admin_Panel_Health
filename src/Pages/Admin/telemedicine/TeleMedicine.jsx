@@ -56,7 +56,7 @@ export default function TeleMedicine() {
 
   return (
     <div className="container mt-5">
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h2 className="font-bold text-500" style={{ fontSize: "20px" }}>
             Categories
@@ -65,7 +65,9 @@ export default function TeleMedicine() {
             {categories.length} available categories
           </p>
         </div>
-        <ComunButton text={"Add new categories"} callback={isShowModal} />
+        <div className="mt-5 sm:mt-0">
+          <ComunButton text={"Add new categories"} callback={isShowModal} />
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
         {categories[0] &&

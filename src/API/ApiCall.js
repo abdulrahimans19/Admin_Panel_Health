@@ -391,3 +391,6 @@ export const updateFcmApi = async (data) => {
 export const sendNotification = async (data) => {
   return await Instance.post(`/notification/send-notification`, data);
 };
+export const updatesubcat = async (data) => {
+  return await Instance.put(`/sub-categories/update`, data);
+};

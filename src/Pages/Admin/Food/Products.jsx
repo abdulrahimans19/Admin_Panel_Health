@@ -190,7 +190,7 @@ export default function FoodProduct() {
           Disabled
         </p>
       </div>
-      <div className="flex justify-between">
+      <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
             {categoryMenu ? "Categories" : "sub Categories"}
@@ -234,7 +234,7 @@ export default function FoodProduct() {
       </div>
       <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-        {FoodProductsData?.map((data) => {
+          {FoodProductsData?.map((data) => {
             if (categoryMenu) {
               return (
                 <ProductCard
@@ -255,10 +255,6 @@ export default function FoodProduct() {
               );
             }
           })}
-          
-          
-          
-      
         </div>
       </div>
       {AddProductModal && (
