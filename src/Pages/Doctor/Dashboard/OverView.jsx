@@ -75,6 +75,7 @@ export default function OverView() {
     getDoctorProfileAndWallet()
       .then((data) => {
         setProfile(data?.data?.data);
+        console.log("doc prof",data?.data?.data);
       })
       .catch((err) => console.log(err));
   }
@@ -116,6 +117,7 @@ export default function OverView() {
   function getAvalabeSlots() {
     getAvailableSlot()
       .then((data) => {
+        console.log("doctor slots",data.data.data);
         setAvailableslots(data.data.data);
       })
       .catch((err) => console.log(err));
@@ -303,6 +305,9 @@ export default function OverView() {
         isSlotModal={isSlotModal}
         showSlot={showSlot}
         slots={availableSlots}
+        docData={Profile}
+        getAvalabeSlots={getDoctor}
+
       />
       <WithdrawModal
         isShowModal={isShowModal}

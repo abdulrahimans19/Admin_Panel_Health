@@ -229,7 +229,8 @@ const ProductModal = ({
               <div className="w-2/5">
                 <div class="flex  items-center justify-center bg-grey-lighter">
                   <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
-                    <div {...getRootProps()}>
+                    <div {...getRootProps()}  onClick={e=>e.stopPropagation}>
+                    <input {...getInputProps()} />
                       {!showImage ? (
                         <div>
                           <p>

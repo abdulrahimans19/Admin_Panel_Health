@@ -151,7 +151,9 @@ export default function AddCategory({
                 {/*header*/}
 
                 <form onSubmit={SubmitCat} action="">
-                  <div className=" flex justify-center items-center">
+                <h6 className="mb-4 font-bold p-5">Category</h6>
+
+                  <div className=" sm:flex justify-center items-center">
                     {/* leftDive */}
                     <div
                       className="flex justify-center items-center p-5 pt-3 "
@@ -161,8 +163,8 @@ export default function AddCategory({
                     >
                       <div class="flex w-full items-center justify-center bg-grey-lighter">
                         <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
-                          <div {...getRootProps()}>
-                            {/* <input {...getInputProps()} /> */}
+                          <div {...getRootProps()} onClick={e=>e.stopPropagation}>
+                            <input {...getInputProps()} />
 
                             {!showImage ? (
                               <div>
@@ -204,8 +206,7 @@ export default function AddCategory({
                         width: "300px",
                       }}
                     >
-                      <div className="heding flex flex-col pt-5 pr-3">
-                        <h6 className="mb-4 font-bold">Category</h6>
+                      <div className=" flex flex-col pt-5 pr-3">
                         <p className="text-xs mb-1">Type Category name </p>
                         <input
                           onChange={(e) => {
@@ -214,7 +215,7 @@ export default function AddCategory({
                           value={categoryName}
                           type="text"
                           placeholder="Type name"
-                          className="rounded-[10px] pl-3 p-1 border border-gray-300 outline-none "
+                          className="rounded-[10px] pl-3 p-1 border border-gray-300 outline-none w-4/5"
                         />
                         {errors.categoryName && (
                           <p className="text-red-500 text-xs">
@@ -235,7 +236,7 @@ export default function AddCategory({
                           value={description}
                           id="message"
                           rows="4"
-                          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                          class="block p-2.5 w-4/5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                           placeholder="Write your thoughts here..."
                         ></textarea>
                         {errors.description && (
@@ -245,7 +246,7 @@ export default function AddCategory({
                         )}
                       </div>
                       {/*footer*/}
-                      <div className=" flex items-center justify-end pt-4 pb-6 pr-5  rounded-b ">
+                      <div className=" flex items-center gap-5 pt-4 pb-6 pr-5  rounded-b ">
                         <button
                           style={{
                             backgroundColor: "#FF8888",
@@ -275,6 +276,8 @@ export default function AddCategory({
                         </button>
                       </div>
                     </div>
+
+
                   </div>
                 </form>
               </div>
