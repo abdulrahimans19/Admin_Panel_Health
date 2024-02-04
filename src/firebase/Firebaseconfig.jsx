@@ -6,10 +6,10 @@ import wavFile from "../assets/short-success-sound-glockenspiel-treasure-video-g
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId:  process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket:  process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId:  process.env.REACT_APP_FIREBASE_APP_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 initializeApp(firebaseConfig);
@@ -19,7 +19,7 @@ const messaging = getMessaging();
 export const requestForToken = async () => {
   console.log("requsting fcm");
   return getToken(messaging, {
-    vapidKey:process.env.REACT_APP_VAPID_ID,
+    vapidKey: process.env.REACT_APP_VAPID_ID,
   })
     .then((currentToken) => {
       if (currentToken) {
@@ -49,9 +49,10 @@ export const requestForToken = async () => {
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
+      console.log("recived a bg mesahe");
       // const audio = new Audio(wavFile);
 
-      // console.log("payload", payload)
+      // console.log("payload is here", payload)
       // audio.play().catch((err)=>
       // {
       //   console.log(err);
