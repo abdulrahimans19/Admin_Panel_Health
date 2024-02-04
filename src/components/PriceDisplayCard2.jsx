@@ -2,6 +2,10 @@ import React from "react";
 
 function PriceDisplayCard2({ data }) {
   console.log(data, "fwef");
+  const difference = data?.currentMonthDoctorCount - data?.lastMonthDoctorCount;
+
+  const color = difference > 0 ? "green" : difference < 0 ? "red" : "black";
+
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
       <svg
@@ -26,11 +30,8 @@ function PriceDisplayCard2({ data }) {
       </a>
       <div className="flex items-center space-x-4">
         <span className="font-semibold text-3xl">{data?.doctor_count}</span>
-        <span className="font-semibold text-green-500">
-          +
-          {data?.currentMonthDoctorCount - data?.lastMonthDoctorCount > 0
-            ? data?.currentMonthDoctorCount - data?.lastMonthDoctorCount
-            : 0}
+        <span className={`font-semibold text-${color}-500`}>
+          {difference !== 0 ? (difference > 0 ? "+" : "") + difference : ""}
         </span>
       </div>
     </div>

@@ -45,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { requestForToken, onMessageListener } from "./firebase/Firebaseconfig";
 import NotificationPage from "./Pages/Admin/Notification/NotificationPage";
 import NotFound from "./Pages/NotFound";
+import Invoice from "./components/Invoice";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -66,6 +67,8 @@ function App() {
         <Route element={<Home />} path="">
           {/* <Route element={<Notification />} path="/notification" /> */}
           <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
+          <Route element={<Invoice />} path="/invoice/:orderId/details" />
+
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
           <Route
