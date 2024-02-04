@@ -92,7 +92,7 @@ export default function TeleMedicine() {
       {categories && categories.length === 0 ? (
         <div className="mt-10">
           {" "}
-          <NoDataImage text={"No Categories available"} />{" "}
+          {/* <NoDataImage text={"No Categories available"} />{" "} */}
         </div>
       ) : (
         ""

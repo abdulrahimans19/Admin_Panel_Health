@@ -26,38 +26,40 @@ export default function Dashboard() {
 
   const monthlErnings = () => {
     if (foodChart) {
-      monthlyEarningApi("FOOD").then(({ data }) => {
-        console.log(data.data, "food monthly");
+      monthlyEarningApi("FOOD")
+        .then(({ data }) => {
+          console.log(data.data, "food monthly");
 
-        const currentDate = new Date();
-        const currentMonth = currentDate.toLocaleString("default", {
-          month: "long",
+          const currentDate = new Date();
+          const currentMonth = currentDate.toLocaleString("default", {
+            month: "long",
+          });
+
+          setChartData(data.data.earnings);
+          console.log(data.data.earnings[currentMonth], "current month");
+          setCardDifference(data.data.incomeDifference);
+          setearningCard();
+          setMonthlyEarning(data.data.earnings[currentMonth]);
         })
-
-        setChartData(data.data.earnings);
-        console.log(data.data.earnings[currentMonth], "current month");
-        setCardDifference(data.data.incomeDifference);
-        setearningCard();
-        setMonthlyEarning(data.data.earnings[currentMonth]);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       console.log("else worog");
-      monthlyEarningApi("PHARMA").then(({ data }) => {
-        console.log(data.data.earnings);
-        setChartData(data.data.earnings);
-        const currentDate = new Date();
-        const currentMonth = currentDate.toLocaleString("default", {
-          month: "long",
+      monthlyEarningApi("PHARMA")
+        .then(({ data }) => {
+          console.log(data.data.earnings);
+          setChartData(data.data.earnings);
+          const currentDate = new Date();
+          const currentMonth = currentDate.toLocaleString("default", {
+            month: "long",
+          });
+          console.log(data.data[currentMonth]);
+          setMonthlyEarning(data.data[currentMonth]);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        console.log(data.data[currentMonth]);
-        setMonthlyEarning(data.data[currentMonth]);
-      }).catch((err)=>
-      {
-        console.log(err);
-      })
     }
   };
 
@@ -156,7 +158,6 @@ export default function Dashboard() {
                   </button>
                 </div>
                 <AppoimentTable />
-
               </div>
             </div>
           </div>
