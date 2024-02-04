@@ -61,6 +61,15 @@ export const addFoodCategory = async (data) => {
   return await Instance.post("/main-categories/food/create", data);
 };
 
+// Import your Axios instance
+
+export const GetOrderDetails = async (data) => {
+  return await Instance.get(`order/get-details?id=${data}`);
+};
+export const GetHomeCareOrder = async (data) => {
+  return await Instance.get(`admin/single/home-care-details?id=${data}`);
+};
+
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };

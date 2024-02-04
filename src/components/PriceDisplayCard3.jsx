@@ -1,6 +1,9 @@
 import React from "react";
 
 function PriceDisplayCard3({ data }) {
+  const difference = data?.todaysAppointments - data?.yesterdaysAppointments;
+
+  const color = difference > 0 ? "green" : difference < 0 ? "red" : "black";
   return (
     <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
       <svg
@@ -29,11 +32,8 @@ function PriceDisplayCard3({ data }) {
         <span className="font-semibold text-3xl">
           {data?.todaysAppointments}
         </span>
-        <span className="font-semibold text-green-500">
-          +
-          {data?.yesterdaysAppointments - data?.todaysAppointments > 0
-            ? data?.yesterdaysAppointments - data?.todaysAppointments
-            : 0}
+        <span className={`font-semibold text-${color}-500`}>
+          {difference !== 0 ? (difference > 0 ? "+" : "") + difference : ""}
         </span>
       </div>
     </div>
