@@ -193,8 +193,10 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                 <div className="lg:flex md:flex flex-row gap-3.5">
                   <div
                     {...getRootProps()}
+                    onClick={(e) => e.stopPropagation}
                     className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
                   >
+                    <input {...getInputProps()} />
                     {!showImage ? (
                       <div>
                         <p className="p-4 sm:p-0 mb-4 sm:mb-0">

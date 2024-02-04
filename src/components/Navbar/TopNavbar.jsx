@@ -6,6 +6,7 @@ import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast";
+import "../../assets/style/navbar.css"
 import {
   Button,
   Card,
@@ -51,7 +52,6 @@ function NavBar() {
     hidden: { opacity: 0, x: -100 },
   };
   const controls = useAnimationControls();
-
   //   const DatatopNav=()=>
   //   {
   //     const {topnavData}=useSelector((state) => {
@@ -69,57 +69,65 @@ function NavBar() {
   useEffect(() => {}, []);
 
   useEffect(() => {
-    onMessageListener()
-      .then((payload) => {
-        setNotificationnew(payload);
-        console.log(payload, "its coming here");
-        getNotificationData();
-        const audio = new Audio(wavFile);
-        console.log(document.hasFocus());
-        if (!document.hasFocus()) {
-          console.log("ifworking");
-          audio.play().catch((err) => {
-            console.log(err);
-          });
-        } else {
-          console.log("else working");
-          audio.play().catch((err) => {
-            console.log(err);
-          });
-        }
-        toast.custom((t) => (
-          <div
-            className={`${
-              t.visible ? "animate-enter" : "animate-leave"
-            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-          >
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 pt-0.5"></div>
-                <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-900">
-                    {payload?.notification?.title}
-                  </p>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {payload.notification?.body}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
-              <button
-                onClick={() => toast.dismiss(t.id)}
-                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Close
-              </button>
+
+    const user = JSON.parse(localStorage.getItem("sophwe_token"));
+
+if(user?.user_role=="Admin"){
+  onMessageListener().then((payload) => {
+    console.log(payload, "its coming here");
+    getNotificationData();
+    const audio = new Audio(wavFile);
+    console.log(document.hasFocus());
+    if (!document.hasFocus()) {
+      console.log("ifworking");
+      audio.play().catch((err) => {
+        console.log(err);
+      });
+    } else {
+      console.log("else working");
+      audio.play().catch((err) => {
+        console.log(err);
+      });
+    }
+
+  setNotificationnew(payload);
+
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5"></div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                {payload?.notification?.title}
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                {payload.notification?.body}
+              </p>
             </div>
           </div>
-        ));
+        </div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    ));
 
-        // setNotification({title: payload?.notification?.title, body: payload?.notification?.body});
-      })
-      .catch((err) => console.log("failed: ", err));
+  })
+  .catch((err) => console.log("failed: ", err));
+}
+
+ 
+
   }, [notificationnew]);
 
   const [getNotData, setGetNotData] = useState(0);
@@ -133,7 +141,7 @@ function NavBar() {
   useEffect(() => {
     getNotificationData();
   }, []);
-
+  
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -168,7 +176,7 @@ function NavBar() {
                 </svg>
               </button>
 
-              <div className="flex ms-2 sm:ms-16  md:me-24">
+              <div className="flex justify-end ms-2 sm:ms-16  md:me-24">
                 {/* <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> */}
                 {/* <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                   SOPHWE
@@ -180,7 +188,7 @@ function NavBar() {
               <div
                 className={`${
                   topnavData[0] && "p-1"
-                } rounded-md flex justify-start gap-5 bg-gray-900 overflow-x-auto`}
+                } rounded-md flex justify-start gap-5 bg-zinc-900 overflow-x-auto`}
                 style={{
                   scrollbarWidth: "none",
                   WebkitOverflowScrolling: "touch",
@@ -201,7 +209,7 @@ function NavBar() {
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}
                       >
                         {data.logo}
-                        <span class="text-white">{data.name}</span>
+                        <span  class="text-white text_hidden">{data.name}</span>
                       </div>
                     );
                   })}

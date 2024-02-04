@@ -60,6 +60,16 @@ export const getTransactionForFood = async (startDate, endDate) => {
 export const addFoodCategory = async (data) => {
   return await Instance.post("/main-categories/food/create", data);
 };
+
+// Import your Axios instance
+
+export const GetOrderDetails = async (data) => {
+  return await Instance.get(`order/get-details?id=${data}`);
+};
+export const GetHomeCareOrder = async (data) => {
+  return await Instance.get(`admin/single/home-care-details?id=${data}`);
+};
+
 export const getFoodCategory = async () => {
   return await Instance.get("/main-categories/food");
 };
@@ -105,7 +115,7 @@ export const DoctorForgotdata = async (email) => {
 };
 
 export const MainDoctorCategories = async (data) => {
-  return await Instance.get("/main-categories/doctor");
+  return await Instance.get("/main-categories/doctor", data);
 };
 export const DoctorRequests = async () => {
   return await Instance.get("/doctor/admin/pending-doctor");

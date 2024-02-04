@@ -33,7 +33,7 @@ export default function FoodOrder() {
   return (
     <div>
       <div>
-        <h1 className="p-3 text-xl font-semibold">Order </h1>
+        <h1 className="p-3 text-xl font-semibold">Orders </h1>
       </div>
       {/* <div>
         <div className="flex justify-center ">
@@ -123,7 +123,7 @@ export default function FoodOrder() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <Link to={`/order/${order._id}/details`}>{order._id}</Link>
+                    {order._id}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {order.address_id ? order.full_name : "No Name Available"}
@@ -144,7 +144,21 @@ export default function FoodOrder() {
                     {order.order_status}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.invoice}
+                    <Link to={`/order/${order._id}/details`}>
+                      {" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        id="download"
+                      >
+                        <path
+                          fill="#000"
+                          d="M12 4a1 1 0 0 0-1 1v9.529l-4.218-4.223a1.043 1.043 0 0 0-1.476 0 1.046 1.046 0 0 0 0 1.478l5.904 5.91c.217.217.506.319.79.305.284.014.573-.088.79-.305l5.904-5.91a1.046 1.046 0 0 0 0-1.478 1.043 1.043 0 0 0-1.476 0L13 14.529V5a1 1 0 0 0-1-1zM5 21a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"
+                        ></path>
+                      </svg>{" "}
+                    </Link>
                   </td>
                 </tr>
               ))}

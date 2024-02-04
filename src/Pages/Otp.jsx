@@ -46,9 +46,7 @@ const Otp = () => {
           ) {
             const messageState = { message: response.data.message };
             console.log("Navigating to /login with state:", messageState);
-            setTimeout(() => {
-              navigate("/login", { state: messageState });
-            }, 5000);
+            navigate("/login", { state: messageState });
           }
         } else {
           setVerificationError(
