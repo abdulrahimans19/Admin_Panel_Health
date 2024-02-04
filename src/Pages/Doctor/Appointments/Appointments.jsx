@@ -8,6 +8,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactPaginate from "react-paginate";
 import NoDataImage from "../../../components/NoDataImage";
+
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
   const [todayApintments, setApointments] = useState([]);
@@ -218,15 +219,8 @@ export default function Appointments() {
 
               let formattedTime2 = convertTo24HourFormat(
                 data?.slotId?.start_time
-                // data?._id === "65b156f8276d32609b4e08ae" ? "6:15pm" : "6:17pm"
               );
-              //
-              // if (data._id == "65b9ce2e518e7f283a6a631d") {
-              //   formattedTime2 = convertTo24HourFormat("8:29pm");
-              // } else {
 
-              // }
-              //time Updatein start
               let updatedFormattedTime1;
               if (currentime) {
                 const time1Parts = formattedTime2?.split(":");
