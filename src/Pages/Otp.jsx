@@ -18,13 +18,11 @@ const Otp = () => {
 
   const handleVerification = () => {
     const otpString = otp.join("");
-    console.log("Request Payload:", { email, otp: otpString });
 
     const apiFunction = flow === "forgot" ? forgotOtp : VerifyEmail;
 
     apiFunction(email, otpString)
       .then((response) => {
-        console.log(response, "OTP verification success");
         if (response.data.statusCode === 200 && response.data.status) {
           if (response.data.message === "Valid OTP") {
             if (response.data.data && response.data.data.reset_password_token) {
@@ -32,7 +30,7 @@ const Otp = () => {
                 email,
                 reset_password_token: response.data.data.reset_password_token,
               };
-              console.log("Navigating to /set-password with state:", nextState); // Log to confirm data
+
               navigate("/set-password", { state: nextState });
             } else {
               console.error("No reset password token provided in response.");
@@ -45,7 +43,7 @@ const Otp = () => {
             "Email successfully verified, waiting for admin confirmation"
           ) {
             const messageState = { message: response.data.message };
-            console.log("Navigating to /login with state:", messageState);
+
             navigate("/login", { state: messageState });
           }
         } else {

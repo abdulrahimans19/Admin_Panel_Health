@@ -22,9 +22,7 @@ const AddSubCategoryModal = ({ onClose, displayData }) => {
   };
   const handleSubmit = () => {
     // Handle the form submission logic here
-    console.log(subCatName);
-    console.log("SubCategories:", subCategories);
-    console.log();
+
     if (!validate()) return;
     // Close the modal
     const wholedata = {

@@ -32,10 +32,9 @@ function DocNavBar() {
   //     const {topnavData}=useSelector((state) => {
   //       return state.navbar;
   //     })
-  //     console.log(topnavData);
+  //
   //   }
   useEffect(() => {
-    console.log(window.location.pathname);
     // setCurrentRoute(useLocation().pathname)
   }, [useLocation().pathname]);
 
@@ -87,7 +86,6 @@ function DocNavBar() {
               >
                 {topnavData[0] &&
                   topnavData.map((data) => {
-                    console.log(data);
                     return (
                       <div
                         onClick={() => {

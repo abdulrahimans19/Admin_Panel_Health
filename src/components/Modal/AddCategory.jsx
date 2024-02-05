@@ -25,7 +25,7 @@ export default function AddCategory({
   const [editImage, seteditImage] = useState(true);
   const onDrop = useCallback((acceptedFiles) => {
     seteditImage(false);
-    console.log(acceptedFiles[0]);
+
     setFileToUpload(acceptedFiles[0]);
     setShowImage(true);
 
@@ -33,7 +33,7 @@ export default function AddCategory({
     reader.onload = () => {
       setImage(reader.result);
     };
-    console.log(reader);
+
     reader.readAsDataURL(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({
@@ -54,8 +54,7 @@ export default function AddCategory({
     return Object.values(tempErrors).every((x) => x === "");
   };
   const SubmitCat = (e) => {
-    console.log(dataToUpload, "testig");
-    // console.log(Image);
+    //
     e.preventDefault();
     if (!validate()) return;
 
@@ -63,15 +62,13 @@ export default function AddCategory({
 
     if (editImage) {
       imageUrl = dataToUpload.image;
-      console.log("updateimage working ");
-      console.log(dataToUpload);
+
       const WholeData = {
         category_id: dataToUpload._id,
         title: categoryName,
         description: description,
         image: imageUrl,
       };
-      console.log(WholeData);
 
       catFunction(WholeData)
         .then((data) => {
@@ -84,17 +81,14 @@ export default function AddCategory({
         });
     } else {
       if (Image) {
-        console.log("this working wretryyhj");
         UploadImageUrl()
           .then((data) => {
-            console.log(data.data);
-
-            uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-              console.log(data, "uploaded");
-            });
+            uploadToAws(data.data.presignedUrl, fileToUpload).then(
+              (data) => {}
+            );
             imageUrl = data.data.publicUrl;
             let WholeData;
-            console.log(data);
+
             if (dataToUpload) {
               WholeData = {
                 category_id: dataToUpload._id,
@@ -110,28 +104,20 @@ export default function AddCategory({
               };
             }
 
-            console.log(WholeData);
-
             catFunction(WholeData)
               .then((data) => {
                 GetPharmacyCat();
 
                 setShowModal(false);
               })
-              .catch((err) => {
-                console.log(err);
-              });
-            console.log(imageUrl, "public url");
+              .catch((err) => {});
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     }
   };
 
   useEffect(() => {
-    console.log(dataToUpload);
     if (dataToUpload) {
       setImage(dataToUpload.image);
       setCategoryName(dataToUpload.title);
@@ -151,7 +137,7 @@ export default function AddCategory({
                 {/*header*/}
 
                 <form onSubmit={SubmitCat} action="">
-                <h6 className="mb-4 font-bold p-5">Category</h6>
+                  <h6 className="mb-4 font-bold p-5">Category</h6>
 
                   <div className=" sm:flex justify-center items-center">
                     {/* leftDive */}
@@ -163,7 +149,10 @@ export default function AddCategory({
                     >
                       <div class="flex w-full items-center justify-center bg-grey-lighter">
                         <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
-                          <div {...getRootProps()} onClick={e=>e.stopPropagation}>
+                          <div
+                            {...getRootProps()}
+                            onClick={(e) => e.stopPropagation}
+                          >
                             <input {...getInputProps()} />
 
                             {!showImage ? (
@@ -276,8 +265,6 @@ export default function AddCategory({
                         </button>
                       </div>
                     </div>
-
-
                   </div>
                 </form>
               </div>

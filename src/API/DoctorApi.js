@@ -29,3 +29,17 @@ export const getMyWithdrawelHisoty = async (page = 1) => {
     console.log(err);
   });
 };
+export const updateAppointmentApi = async (data) => {
+  return await Instance.post(
+    `/appointment/update-appointment-status`,{appoinment_id:data}
+  ).catch((err) => {
+    console.log(err);
+  });
+};
+export const addPrescription = async (data) => {
+  return await Instance.post(
+    `appointment/add-prescription`,data
+  ).catch((err) => {
+    console.log(err);
+  });
+};

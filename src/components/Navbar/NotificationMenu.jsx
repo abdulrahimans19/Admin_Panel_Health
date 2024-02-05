@@ -24,7 +24,7 @@ const NotificationBar = ({
         setNavbardata(data.data.notifications);
       })
       .catch((err) => {
-        console.log("its not happening");
+        console.log(err);
       });
   };
 
@@ -33,9 +33,7 @@ const NotificationBar = ({
   }, []);
 
   // Callback function to be called when scrolled to bottom
-  const handleScrollToBottom = () => {
-    console.log("Scrolled to bottom!"); // Replace with your callback logic
-  };
+  const handleScrollToBottom = () => {};
 
   // Scroll event listener
   const handleScroll = (e) => {
@@ -76,7 +74,6 @@ const NotificationBar = ({
                 .catch((err) => {
                   console.log(err);
                 });
-
             }}
             key={index}
             className={`border-b last:border-b-0 p-2 ${

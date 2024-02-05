@@ -12,9 +12,7 @@ function Home() {
     return state.doctor;
   });
 
-  useEffect(() => {
-    console.log(number);
-  }, []);
+
 
   return (
     <>

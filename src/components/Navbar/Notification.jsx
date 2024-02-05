@@ -5,7 +5,6 @@
 // const Notification = () => {
 //   const [notification, setNotification] = useState({title: '', body: ''});
 
-
 //   useEffect(() => {
 //     if (notification?.title ){
 //       toast.success(
@@ -15,12 +14,10 @@
 //           position:"top-right"
 //         }
 //       )
-   
-//     }
- 
-//   }, [notification])
 
-  
+//     }
+
+//   }, [notification])
 
 //   onMessageListener()
 //     .then((payload) => {
@@ -56,15 +53,6 @@
 //         </div>
 //       ))
 
-
-
-
-
-
-
-
-
-
 //       toast.success(
 //         `${payload?.notification?.title}:${payload.notification?.body}`,
 //         {
@@ -73,7 +61,7 @@
 //         }
 //       )
 //     })
-//     .catch((err) => console.log('failed: ', err));
+//     .catch((err) =>
 
 //   return (
 //      <></>

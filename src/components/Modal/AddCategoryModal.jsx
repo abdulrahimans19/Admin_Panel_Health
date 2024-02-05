@@ -32,8 +32,6 @@ export default function AddCategoryModal({ showModal, isShowModal, callback }) {
 
   function AddCat(e) {
     e.preventDefault();
-    console.log("$$$$$$$$444");
-    console.log(formData.catName, " == === =", formData.dscrtion);
   }
 
   return (

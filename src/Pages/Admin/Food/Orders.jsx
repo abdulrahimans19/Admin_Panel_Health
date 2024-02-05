@@ -13,7 +13,6 @@ export default function FoodOrder() {
     dispatch(foodNavdata());
     getFoodOrders()
       .then(({ data }) => {
-        console.log(data.data.orders);
         setOrders(data.data.orders || []);
       })
       .catch((error) => {

@@ -7,17 +7,21 @@ import NoDataImage from "../../../components/NoDataImage";
 export default function DocTransaction() {
   const [data, setdata] = useState([]);
   const [document, setDocument] = useState();
+  const [showNoDAta, setShowNoCategories] = useState(false);
   useEffect(() => {
     getHistory();
+    const delay = setTimeout(() => {
+      setShowNoCategories(true);
+    }, 8000);
   }, []);
 
   function getHistory() {
-    getMyWithdrawelHisoty();
-    // .then((data) => {
-    //   setDocument(data.data.data?.total_document);
-    //   setdata(data?.data?.data?.withdrawals);
-    // })
-    // .catch((err) => console.log(err));
+    getMyWithdrawelHisoty()
+      .then((data) => {
+        setDocument(data.data.data?.total_document);
+        setdata(data?.data?.data?.withdrawals);
+      })
+      .catch((err) => console.log(err));
   }
   const handlePageChange = (selectedPage) => {
     getMyWithdrawelHisoty(selectedPage.selected + 1)
@@ -100,13 +104,13 @@ export default function DocTransaction() {
           </tbody>
         </table>
       </div>
-      {data && data.length == 0 ? (
-        <div className="mt-10">
-          <NoDataImage text={"No Data Available"} />
-        </div>
-      ) : (
-        ""
-      )}
+      {data && data.length == 0
+        ? showNoDAta && (
+            <div className="mt-10">
+              <NoDataImage text={"No Data Available"} />
+            </div>
+          )
+        : ""}
       {page > 1 && (
         <div className="mt-5">
           <ReactPaginate

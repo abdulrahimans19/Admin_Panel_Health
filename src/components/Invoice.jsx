@@ -153,38 +153,53 @@ const Invoice = () => {
         </div>
         <div style={{ padding: "20px" }}>
           {/* Order Details */}
-          <table style={styles.tableStyle}>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Item</th>
-                <th>Payment Type</th>
-                <th>Date</th>
-                <th>Qty</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.test_id &&
-              order.test_id.tests &&
-              order.test_id.tests.length > 0 ? (
-                order.test_id.tests.map((test, index) => (
-                  <tr>
-                    <td>{index + 1}</td>
-                    <td>{test.name}</td>
-                    <td>{test.payment_type}</td>
-                    <td>{test.date}</td>
-                    <td>${parseFloat(order.total_price).toFixed(2)}</td>
-                  </tr>
-                ))
-              ) : (
+          <div className="relative overflow-x-auto">
+            <table
+              className="w-full text-sm text-left text-gray-500 custom-table"
+              style={{ borderCollapse: "collapse" }}
+            >
+              <thead className="text-xs text-gray-400 uppercase bg-gray-50">
                 <tr>
-                  <td colSpan="6">No tests found</td>
+                  <th scope="col" className="px-6 py-3">
+                    Item
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Payment Type
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Qty
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Price
+                  </th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {order.test_id &&
+                order.test_id.tests &&
+                order.test_id.tests.length > 0 ? (
+                  order.test_id.tests.map((test, index) => (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{test.name}</td>
+                      <td>{test.payment_type}</td>
+                      <td>{test.date}</td>
+                      <td>${parseFloat(order.total_price).toFixed(2)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">No tests found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
+        {/* billing */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <table style={{ ...styles.tableStyle, width: "auto" }}>
             <tbody>
@@ -226,6 +241,32 @@ const Invoice = () => {
             }
           }
         `}
+      </style>
+      <style>
+        {`
+  .custom-table th, .custom-table td {
+    padding: 12px 15px; /* Adjust padding as needed */
+    text-align: left; /* Ensure consistent text alignment */
+    border-bottom: 1px solid #ddd; /* Consistent border styling */
+  }
+
+  /* Optional: Specify widths for each column for better control */
+  .custom-table th:nth-child(1), .custom-table td:nth-child(1) { width: 20%; }
+  .custom-table th:nth-child(2), .custom-table td:nth-child(2) { width: 30%; }
+  .custom-table th:nth-child(3), .custom-table td:nth-child(3) { width: 25%; }
+  .custom-table th:nth-child(4), .custom-table td:nth-child(4) { width: 15%; }
+  .custom-table th:nth-child(5), .custom-table td:nth-child(5) { width: 10%; }
+
+  @media print {
+    .printHide {
+      display: none;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  }
+`}
       </style>
     </div>
   );

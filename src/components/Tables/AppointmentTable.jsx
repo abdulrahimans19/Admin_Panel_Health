@@ -9,7 +9,6 @@ export default function AppointmentTable() {
 
   useEffect(() => {
     getTodayAppoinments();
-    console.log("appoinmnens", appoinments);
   }, []);
   const getTodayAppoinments = () => {
     const today = new Date();
@@ -17,7 +16,6 @@ export default function AppointmentTable() {
     const month = today.getMonth() + 1;
     const day = today.getDate();
     getCurrentAppoinmentsApi(year, month, day).then((data) => {
-      console.log(data.data.data.total_count);
       const totalPages = Math.ceil(data.data.data.total_count / 10);
       setTotalPagecount(totalPages);
       setAppoinments(data.data.data.bookings);

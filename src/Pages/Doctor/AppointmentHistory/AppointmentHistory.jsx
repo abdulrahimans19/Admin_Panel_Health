@@ -12,9 +12,15 @@ export default function AppointmentHistory() {
   const [age, setAge] = useState();
   const [duration, setDuration] = useState();
   const [passingdate, setPassingDate] = useState();
+  const [showNodata, setShowNoCategories] = useState(false);
 
   useEffect(() => {
     getApointmentHistory();
+    const delay = setTimeout(() => {
+      setShowNoCategories(true);
+    }, 5000);
+
+    return () => clearTimeout(delay);
   }, []);
   function calculateDuration(startTimeStr, endTimeStr) {
     // Assuming the time format is 'h:mmam/pm'
@@ -192,14 +198,23 @@ export default function AppointmentHistory() {
                   </div>
 
                   <div className="">
-                    <button
-                      onClick={() =>
-                        setDatas(duration, age, data, formattedDate)
-                      }
-                      className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
-                    >
-                      View detail patient
-                    </button>
+{
+data.prescription_url?<><button
+disabled
+className="w-full bg-green-300 text-green-800 p-3 rounded-lg mt-6 disabled:"
+>
+prescription added
+</button></>:    <button
+onClick={() =>
+  setDatas(duration, age, data, formattedDate)
+}
+className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
+>
+upload prescription
+</button>
+}
+                
+
                   </div>
                 </div>
               );
@@ -208,21 +223,23 @@ export default function AppointmentHistory() {
           {/* card */}
         </div>
 
-        {data && data.length === 0 ? (
-          <div>
-            <NoDataImage text={"No Apointments"} />
-          </div>
-        ) : (
-          ""
-        )}
+        {data && data.length === 0
+          ? showNodata && (
+              <div>
+                <NoDataImage text={"No Apointments"} />
+              </div>
+            )
+          : ""}
 
         <ViewPatient
+        getApointmentHistory={getApointmentHistory}
           setShowModal={setShowModal}
           data={patient}
           ShowModal={showModal}
           age={age}
           duration={duration}
           date={passingdate}
+          prescription={true}
         />
       </div>
       {page > 1 && (
