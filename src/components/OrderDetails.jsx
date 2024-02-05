@@ -102,8 +102,8 @@ export default function OrderDetails() {
   };
   return (
     <>
-        <style>
-    {`
+      <style>
+        {`
       @media print {
         .no-print {
           display: none;
@@ -117,8 +117,8 @@ export default function OrderDetails() {
         }
       }
     `}
-  </style>
-  <div className="print-container" ref={componentRef}>
+      </style>
+      <div className="print-container" ref={componentRef}>
         <div
           style={{
             display: "flex",
