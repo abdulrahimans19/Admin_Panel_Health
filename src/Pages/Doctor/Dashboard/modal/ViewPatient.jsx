@@ -97,7 +97,7 @@ function ViewPatient({ ShowModal, setShowModal, data, age, duration, date }) {
                             {data?.patientId?.first_name}
                           </h1>
                           <p className="mt-3 text-gray-400 text-sm">
-                            Booking ID :{data._id}
+                            Booking ID : {data._id}
                           </p>
                         </div>
                       </div>
@@ -129,28 +129,30 @@ function ViewPatient({ ShowModal, setShowModal, data, age, duration, date }) {
                           {data?.description}
                         </p>
                       </div>
-                      <div className="flex justify-between items-center border border-gray-300 border-thin p-2 mt-10 rounded-lg">
-                        <div className="flex items-center">
-                          <img
-                            src={pdf}
-                            className=" w-5 h-5 boder boder-gray-300"
-                          />
+                      {data.image ? (
+                        <div className="flex justify-between items-center border border-gray-300 border-thin p-2 mt-10 rounded-lg">
+                          <div className="flex items-center">
+                            <img
+                              src={pdf}
+                              className=" w-5 h-5 boder boder-gray-300"
+                            />
 
-                          <p className="text-black text-xs ml-3">
-                            download prescription
-                          </p>
+                            <p className="text-black text-xs ml-3">
+                              download Image
+                            </p>
+                          </div>
+                          <button
+                            onClick={() =>
+                              downloadFile(
+                                data?.image,
+                                `${data?.patientId?.first_name}.jpg`
+                              )
+                            }
+                          >
+                            <img src={download} className="w-5 h-4.5" alt="" />
+                          </button>
                         </div>
-                        <button
-                          onClick={() =>
-                            downloadFile(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAY0GcwNBL7sai0QNDz43SxPA1v8tLmkvLealZoQoNupZtWB17",
-                              `${data?.patientId?.first_name}_prescription.jpg`
-                            )
-                          }
-                        >
-                          <img src={download} className="w-5 h-4.5" alt="" />
-                        </button>
-                      </div>
+                      ) : null}
                     </div>
                   </div>
                 </motion.div>

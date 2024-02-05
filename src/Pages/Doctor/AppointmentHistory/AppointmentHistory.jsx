@@ -12,9 +12,15 @@ export default function AppointmentHistory() {
   const [age, setAge] = useState();
   const [duration, setDuration] = useState();
   const [passingdate, setPassingDate] = useState();
+  const [showNodata, setShowNoCategories] = useState(false);
 
   useEffect(() => {
     getApointmentHistory();
+    const delay = setTimeout(() => {
+      setShowNoCategories(true);
+    }, 5000);
+
+    return () => clearTimeout(delay);
   }, []);
   function calculateDuration(startTimeStr, endTimeStr) {
     // Assuming the time format is 'h:mmam/pm'
@@ -208,13 +214,13 @@ export default function AppointmentHistory() {
           {/* card */}
         </div>
 
-        {data && data.length === 0 ? (
-          <div>
-            <NoDataImage text={"No Apointments"} />
-          </div>
-        ) : (
-          ""
-        )}
+        {data && data.length === 0
+          ? showNodata && (
+              <div>
+                <NoDataImage text={"No Apointments"} />
+              </div>
+            )
+          : ""}
 
         <ViewPatient
           setShowModal={setShowModal}
