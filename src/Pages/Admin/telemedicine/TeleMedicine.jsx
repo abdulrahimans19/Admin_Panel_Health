@@ -21,14 +21,18 @@ export default function TeleMedicine() {
   const [showModal, setShowModal] = useState(false);
   const [editShowModal, setEditShowModal] = useState(false);
   const [editData, setEditData] = useState();
+  const [isLoding, setIsLoding] = useState(true);
+  const [showNoCategories, setShowNoCategories] = useState(false);
 
   const getCategory = () => {
     MainDoctorCategories()
       .then((data) => {
         setCategories(data?.data?.data?.mainCategories);
+        setIsLoding(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoding(false);
       });
   };
   const isShowModal = () => {
@@ -43,16 +47,18 @@ export default function TeleMedicine() {
   useEffect(() => {
     dispatch(telemedicine());
     getCategory();
+
+    const delay = setTimeout(() => {
+      setShowNoCategories(true);
+    }, 10000);
+
+    return () => clearTimeout(delay);
   }, []);
   const viewCatInfo = (data) => {
     setEditData(data);
 
     setViewCatInfoModal(true);
   };
-
-  function addCategory() {
-    console.log("Add category in telimedicin");
-  }
 
   return (
     <div className="container mt-5">
@@ -70,7 +76,10 @@ export default function TeleMedicine() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-4 mt-6">
-        {categories[0] &&
+        {isLoding ? (
+          <div>Loding.....</div>
+        ) : (
+          categories[0] &&
           categories.map((data) => {
             return (
               <CatCard
@@ -79,7 +88,8 @@ export default function TeleMedicine() {
                 callback={editCat}
               />
             );
-          })}
+          })
+        )}
       </div>
 
       {showModal && (
@@ -89,14 +99,13 @@ export default function TeleMedicine() {
           GetPharmacyCat={getCategory}
         />
       )}
-      {categories && categories.length === 0 ? (
-        <div className="mt-10">
-          {" "}
-          {/* <NoDataImage text={"No Categories available"} />{" "} */}
-        </div>
-      ) : (
-        ""
-      )}
+      {categories && categories.length === 0
+        ? showNoCategories && (
+            <div className="mt-10">
+              <NoDataImage text={"No Categories available"} />{" "}
+            </div>
+          )
+        : ""}
       {editShowModal && (
         <AddCategory
           catFunction={teliUpadateCate}

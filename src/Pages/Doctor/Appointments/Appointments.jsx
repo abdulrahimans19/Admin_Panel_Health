@@ -220,22 +220,24 @@ export default function Appointments() {
               let formattedTime2 = convertTo24HourFormat(
                 data?.slotId?.start_time
               );
+              let formattedTimeEnd = convertTo24HourFormat(
+                data?.slotId?.end_time
+              );
+              // let updatedFormattedTime1;
+              // if (currentime) {
+              //   const time1Parts = formattedTime2?.split(":");
+              //   const date1 = new Date();
+              //   date1?.setHours(parseInt(time1Parts[0], 10));
+              //   date1?.setMinutes(parseInt(time1Parts[1], 10));
 
-              let updatedFormattedTime1;
-              if (currentime) {
-                const time1Parts = formattedTime2?.split(":");
-                const date1 = new Date();
-                date1?.setHours(parseInt(time1Parts[0], 10));
-                date1?.setMinutes(parseInt(time1Parts[1], 10));
+              //   date1?.setMinutes(date1.getMinutes() + 15);
 
-                date1?.setMinutes(date1.getMinutes() + 15);
-
-                updatedFormattedTime1 =
-                  String(date1.getHours()).padStart(2, "0") +
-                  ":" +
-                  String(date1.getMinutes()).padStart(2, "0");
-              }
-              /// time updating end
+              //   updatedFormattedTime1 =
+              //     String(date1.getHours()).padStart(2, "0") +
+              //     ":" +
+              //     String(date1.getMinutes()).padStart(2, "0");
+              // }
+              // /// time updating end
 
               return (
                 <div className="p-3 border  border-blue-300 border-thin rounded-lg">
@@ -268,7 +270,7 @@ export default function Appointments() {
                       onClick={() => {
                         if (
                           formattedTime1 >= formattedTime2 &&
-                          formattedTime1 <= updatedFormattedTime1 &&
+                          formattedTime1 <= formattedTimeEnd &&
                           result
                         ) {
                           window.open(data?.meeting_url, "_blank");
@@ -276,7 +278,7 @@ export default function Appointments() {
                       }}
                       className={`${
                         formattedTime1 >= formattedTime2 &&
-                        formattedTime1 <= updatedFormattedTime1 &&
+                        formattedTime1 <= formattedTimeEnd &&
                         result
                           ? //
                             //
