@@ -66,7 +66,9 @@ function NavBar() {
   // }, [useLocation().pathname]);
 
   // const [audio] = useState(new Audio('../../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3'));
-  useEffect(() => {}, []);
+
+
+  
 
   useEffect(() => {
 
@@ -77,18 +79,21 @@ if(user?.user_role=="Admin"){
     console.log(payload, "its coming here");
     getNotificationData();
     const audio = new Audio(wavFile);
-    console.log(document.hasFocus());
-    if (!document.hasFocus()) {
-      console.log("ifworking");
-      audio.play().catch((err) => {
-        console.log(err);
-      });
-    } else {
-      console.log("else working");
-      audio.play().catch((err) => {
-        console.log(err);
-      });
-    }
+    audio.play().catch((err) => {
+      console.log(err);
+    });
+    // console.log(document.hasFocus());
+    // if (!document.hasFocus()) {
+    //   console.log("ifworking");
+    //   audio.play().catch((err) => {
+    //     console.log(err);
+    //   });
+    // } else {
+    //   console.log("else working");
+    //   audio.play().catch((err) => {
+    //     console.log(err);
+    //   });
+    // }
 
   setNotificationnew(payload);
 
