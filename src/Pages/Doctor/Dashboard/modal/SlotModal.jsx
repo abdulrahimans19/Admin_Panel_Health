@@ -3,25 +3,20 @@ import { motion } from "framer-motion";
 import noData from "../../../../assets/images/noData.png";
 import "./Slotmodal.css";
 import { addAvailableSlot } from "../../../../API/ApiCall";
-import NoDataImage from "../../../../components/NoDataImage";
 
-function SlotModal({ isSlotModal, showSlot, slots,docData ,getAvalabeSlots}) {
+function SlotModal({ isSlotModal, showSlot, slots, docData, getAvalabeSlots }) {
   const [id, setId] = useState([]);
-  const [savedSlots,setSavedSlots]=useState([]);
-  useEffect(()=>{
-
-    setSavedSlots(docData?.availability)
-    console.log("saved slots",savedSlots);
-    if(showSlot && slots && slots.length >0){
-      const initialSelectedSlots=docData?.availability.filter((slotId)=>{
-        slots.some((slot=> slot._id ==slotId))
-      }
-      
-      )
-        // setSavedSlots(initialSelectedSlots);
-
+  const [savedSlots, setSavedSlots] = useState([]);
+  useEffect(() => {
+    setSavedSlots(docData?.availability);
+    console.log("saved slots", savedSlots);
+    if (showSlot && slots && slots.length > 0) {
+      const initialSelectedSlots = docData?.availability.filter((slotId) => {
+        slots.some((slot) => slot._id == slotId);
+      });
+      // setSavedSlots(initialSelectedSlots);
     }
-  },[showSlot,slots,docData?.availability])
+  }, [showSlot, slots, docData?.availability]);
   const handleSubmit = () => {
     // const availability = [...id];
     // setSavedSlots((prevSelectedSlots)=>{
@@ -29,20 +24,21 @@ function SlotModal({ isSlotModal, showSlot, slots,docData ,getAvalabeSlots}) {
     //   ? prevSelectedSlots.filter((id)=>id !==slotId)
     //   :[...prevSelectedSlots,slotId]
     // })
-const wholeData={
-  availability:savedSlots
-}
-    console.log(savedSlots,"saved");
-    console.log("doc data",docData.availability);
-    addAvailableSlot(wholeData).then((data) => {
-      console.log("this is working");
-      getAvalabeSlots()
-      isSlotModal();
-    })
-    .catch((err) => {
-      console.log(err);
-      isSlotModal();
-    });
+    const wholeData = {
+      availability: savedSlots,
+    };
+    console.log(savedSlots, "saved");
+    console.log("doc data", docData.availability);
+    addAvailableSlot(wholeData)
+      .then((data) => {
+        console.log("this is working");
+        getAvalabeSlots();
+        isSlotModal();
+      })
+      .catch((err) => {
+        console.log(err);
+        isSlotModal();
+      });
     setId([""]);
   };
   const animationVariants = {
@@ -56,9 +52,8 @@ const wholeData={
     stiffness: 100,
   };
   const handleSelect = (slotId) => {
-    
     console.log(slotId, "selected id printing");
-    setSavedSlots((prevSelectedSlots)=>{
+    setSavedSlots((prevSelectedSlots) => {
       if (prevSelectedSlots?.includes(slotId)) {
         // Remove the slotId from selectedSlots
         return prevSelectedSlots?.filter((id) => id !== slotId);
@@ -66,7 +61,7 @@ const wholeData={
         // Add the slotId to selectedSlots
         return [...prevSelectedSlots, slotId];
       }
-    })
+    });
     // if (id.includes(Id)) {
     //   setId(id.filter((id) => id !== Id)); // Corrected this line
     // } else {
@@ -76,7 +71,7 @@ const wholeData={
 
   return (
     <div>
-      <div >
+      <div>
         {showSlot ? (
           <div className="container ">
             <div className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -125,15 +120,13 @@ const wholeData={
                         {slots &&
                           slots[0] &&
                           slots.map((data) => {
-                            const isSelected=savedSlots.includes(data._id);
+                            const isSelected = savedSlots.includes(data._id);
                             return (
                               <div
                                 onClick={() => handleSelect(data._id)}
                                 key={data?._id}
                                 className={`${
-                                  isSelected
-                                    ? "selected"
-                                    : "bg-default-color"
+                                  isSelected ? "selected" : "bg-default-color"
                                 } border border-gray-400 rounded-lg cursor-pointer items-center flex justify-center`}
                               >
                                 <p key={data?._id} className="p-2 text-sm">
