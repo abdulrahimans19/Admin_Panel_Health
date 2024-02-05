@@ -37,7 +37,6 @@ export default function OrderDetails() {
           pharmaOrders.find((order) => order._id === orderId);
 
         if (!matchedOrder) {
-          console.log("No matching order found");
           return;
         }
 

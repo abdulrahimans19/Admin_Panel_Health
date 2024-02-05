@@ -66,7 +66,6 @@ const SetNewPass = () => {
     if (isFormFilled()) {
       SetPassword(email, reset_password_token, password)
         .then((response) => {
-          console.log("Password reset successful", response);
           navigate("/success");
         })
         .catch((error) => {

@@ -198,14 +198,23 @@ export default function AppointmentHistory() {
                   </div>
 
                   <div className="">
-                    <button
-                      onClick={() =>
-                        setDatas(duration, age, data, formattedDate)
-                      }
-                      className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
-                    >
-                      View detail patient
-                    </button>
+{
+data.prescription_url?<><button
+disabled
+className="w-full bg-green-300 text-green-800 p-3 rounded-lg mt-6 disabled:"
+>
+prescription added
+</button></>:    <button
+onClick={() =>
+  setDatas(duration, age, data, formattedDate)
+}
+className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
+>
+upload prescription
+</button>
+}
+                
+
                   </div>
                 </div>
               );
@@ -223,12 +232,14 @@ export default function AppointmentHistory() {
           : ""}
 
         <ViewPatient
+        getApointmentHistory={getApointmentHistory}
           setShowModal={setShowModal}
           data={patient}
           ShowModal={showModal}
           age={age}
           duration={duration}
           date={passingdate}
+          prescription={true}
         />
       </div>
       {page > 1 && (

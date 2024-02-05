@@ -27,7 +27,6 @@ const MyChart = ({ data, earnings }) => {
   };
 
   const lineChartDataChange = () => {
-    console.log("line chart changes");
     setFoodChart(!foodChart);
   };
 

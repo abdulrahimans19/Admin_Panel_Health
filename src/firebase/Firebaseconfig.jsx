@@ -46,17 +46,27 @@ export const requestForToken = async () => {
     });
 };
 
+
+
+
+
+
+
+
+
+
+
 export const onMessageListener = () =>
+
+
+
   new Promise((resolve) => {
+
     onMessage(messaging, (payload) => {
       console.log("recived a bg mesahe");
-      // const audio = new Audio(wavFile);
 
-      // console.log("payload is here", payload)
-      // audio.play().catch((err)=>
-      // {
-      //   console.log(err);
-      // })
       resolve(payload);
     });
   });
+
+

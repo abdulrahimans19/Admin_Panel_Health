@@ -50,12 +50,12 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [profileImagedata, setProfileImage] = useState();
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
-    console.log(file, "fie");
+
     setProfileImage(file);
-    console.log("roshigergerg");
+
     if (file) {
       const reader = new FileReader();
-      console.log(reader);
+
       reader.onloadend = () => {
         setSelectedImage(reader.result);
       };
@@ -115,30 +115,23 @@ const SignupProfile = ({ email, password, onClose }) => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      console.log(selectedImage, "asdfg");
-      console.log(formData.certificate);
-
       const imageUrl = await uploadImageToAws();
 
       let profileImage;
       let GetDocumenet;
       await UploadImageUrl().then((data) => {
-        uploadToAws(data.data.presignedUrl, profileImagedata).then((data) => {
-          console.log(data, "uploaded");
-        });
+        uploadToAws(data.data.presignedUrl, profileImagedata).then(
+          (data) => {}
+        );
         profileImage = data.data.publicUrl;
       });
 
       await UploadImageUrl().then((data) => {
         uploadToAws(data.data.presignedUrl, formData.certificate).then(
-          (data) => {
-            console.log(data, "uploaded");
-          }
+          (data) => {}
         );
         GetDocumenet = data.data.publicUrl;
       });
-
-      console.log(profileImage);
 
       if (profileImage && GetDocumenet) {
         const userData = {
@@ -154,10 +147,8 @@ const SignupProfile = ({ email, password, onClose }) => {
           category_id: formData.category_id,
         };
 
-        console.log("Data to be sent:", userData);
-
         const response = await SignupUserdata(userData);
-        console.log("User registered successfully:", response.data);
+
         navigate("/otp", { state: { email } });
       }
     } catch (error) {
@@ -167,14 +158,12 @@ const SignupProfile = ({ email, password, onClose }) => {
   const getDocCategory = async () => {
     try {
       const response = await MainDoctorCategories();
-      console.log(response);
+
       if (response && response.data && response.data.data) {
         const categories = response.data.data.mainCategories || [];
         setDocCateogries(categories);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {

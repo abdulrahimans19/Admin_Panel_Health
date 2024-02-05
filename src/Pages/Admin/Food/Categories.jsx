@@ -34,9 +34,7 @@ export default function FoodCategory() {
   const abc = { name: "Pulmonology", image: lungsimg };
   const ab = { name: "Hepatology", image: heartimg };
 
-  const addcategory = async () => {
-    console.log("add category modal");
-  };
+  const addcategory = async () => {};
   const editCat = (data) => {
     setEditCatModal(true);
     setEditData(data);
@@ -45,7 +43,6 @@ export default function FoodCategory() {
   const GetFoodCat = () => {
     getFoodCategory()
       .then(({ data }) => {
-        console.log(data.data.mainCategories);
         setCategoryMenu(data.data.mainCategories);
       })
       .catch((err) => {
@@ -61,7 +58,6 @@ export default function FoodCategory() {
   const getsubCatData = (data) => {
     getFoodSubCategory(data._id)
       .then(({ data }) => {
-        console.log(data.data.subCategories);
         setSubCatData(data.data.subCategories);
       })
       .catch((err) => {
@@ -70,16 +66,15 @@ export default function FoodCategory() {
   };
 
   const viewCatInfo = (data) => {
-    console.log(data);
     setEditData(data);
     getsubCatData(data);
     // getFoodSubCategory(data._id)
     //   .then(({ data }) => {
-    //     console.log(data.data.subCategories);
+    //
     //     setSubCatData(data.data.subCategories);
     //   })
     //   .catch((err) => {
-    //     console.log(err);
+    //
     //   });
     setViewCatInfoModal(true);
   };
@@ -115,7 +110,7 @@ export default function FoodCategory() {
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {" "}
-            {categoryMenu.length} Available Categories 
+            {categoryMenu.length} Available Categories
           </p>
         </div>
         {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}

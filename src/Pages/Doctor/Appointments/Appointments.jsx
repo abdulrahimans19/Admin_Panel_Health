@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import downArrow from "../../../assets/images/arrowDown.png";
 import calender from "../../../assets/images/solar_calendar-outline.png";
 import { getTodayApointments } from "../../../API/ApiCall";
-import { getApointmentByDate } from "../../../API/DoctorApi";
+import {
+  getApointmentByDate,
+  updateAppointmentApi,
+} from "../../../API/DoctorApi";
 import ReactDatePicker from "react-datepicker";
 import { motion, useAnimationControls } from "framer-motion";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactPaginate from "react-paginate";
 import NoDataImage from "../../../components/NoDataImage";
 import ViewPatient from "../Dashboard/modal/ViewPatient";
+import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
 
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
@@ -128,6 +132,7 @@ export default function Appointments() {
 
     getApointmentByDate(formattedDate)
       .then((data) => {
+        console.log(data);
         setDocument(data?.data?.data?.total_document);
         setApointments(data?.data?.data?.appointments);
       })
@@ -241,6 +246,15 @@ export default function Appointments() {
 
     return duration.trim();
   }
+  console.log("osihfesfnfanoGergv");
+  const [openModal, setOpenModal] = useState(false);
+  const [dataTosend, setDataTosend] = useState();
+  const meetingDone = () => {
+    console.log("here", dataTosend);
+    updateAppointmentApi(dataTosend._id).then((data) => {
+      selectedDate("today");
+    });
+  };
 
   return (
     <div>
@@ -306,7 +320,7 @@ export default function Appointments() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 mb-4 mt-6">
           {todayApintments &&
             todayApintments[0] &&
-            todayApintments.map((data) => {
+            todayApintments?.map((data) => {
               const formattedTime1 = convertTo24HourFormat(currentime);
               const result = isSameDate(data?.created_at);
 
@@ -358,6 +372,14 @@ export default function Appointments() {
                           <p className="text-gray-400 text-xs mt-4">
                             Duration: 30 min
                           </p>
+                          <div className="text-center text-sm text-gray-400 mt-5">
+                            <p className="font-semibold text-black">
+                              appointment
+                            </p>
+                            <span>{data.slotId.start_time}-</span>
+
+                            <span>{data.slotId.end_time}</span>
+                          </div>
                         </div>
                       </div>
                       <div className="text-center text-sm text-gray-400 mt-5">
@@ -371,6 +393,9 @@ export default function Appointments() {
                           formattedTime1 <= formattedTimeEnd &&
                           result
                         ) {
+                          setTimeout(() => {}, 5000);
+                          setOpenModal(true);
+                          setDataTosend(data);
                           window.open(data?.meeting_url, "_blank");
                         }
                       }}
@@ -378,12 +403,9 @@ export default function Appointments() {
                         formattedTime1 >= formattedTime2 &&
                         formattedTime1 <= formattedTimeEnd &&
                         result
-                          ? //
-                            //
-                            //
-                            "bg-green-900"
-                          : "bg-green-200"
-                      } w-full  text-white p-3 rounded-lg mt-6`}
+                          ? "bg-green-900 text-white "
+                          : "bg-green-200 text-green-600 disabled:"
+                      } w-full  p-3 rounded-lg mt-6`}
                     >
                       join now
                     </button>
@@ -410,6 +432,13 @@ export default function Appointments() {
           />
         )}
       </div>
+      {openModal && (
+        <ConfirmationModal
+          text={"is the meeting over?"}
+          onConfirm={meetingDone}
+          onClose={setOpenModal}
+        />
+      )}
     </div>
   );
 }

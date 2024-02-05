@@ -9,7 +9,7 @@ const CatInfoModal = ({
 }) => {
   const modalClasses = "fixed inset-0 flex items-center  justify-center";
   const modalContentClasses = "bg-white p-4 rounded-lg flex";
-  // console.log(catInfo, "===== lifnawiervf");
+  //
   const [editItemId, setEditItemId] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [whoolevalue, setWhoolevalue] = useState();
@@ -32,17 +32,14 @@ const CatInfoModal = ({
       .then((data) => {
         setEditItemId(null);
         setWhoolevalue(null);
-        console.log(viewCatInfo);
+
         viewCatInfo(catInfo);
       })
       .catch((err) => {
-        console.log(err);
         setEditItemId(null);
         setWhoolevalue(null);
       });
 
-    console.log(`Saving ${inputValue} for item ${id}`);
-    console.log(whoolevalue);
     // Here you should update the actual data, for example, by lifting state up or using a state management library
     setEditItemId(null);
     setWhoolevalue(null);
@@ -140,8 +137,9 @@ const CatInfoModal = ({
                                   )}
                                   {isEditing ? (
                                     <div
-                                    className="ml-1 cursor-pointer"
-                                    onClick={() => handleSave(index)}>
+                                      className="ml-1 cursor-pointer"
+                                      onClick={() => handleSave(index)}
+                                    >
                                       <svg
                                         width="24px"
                                         height="24px"
