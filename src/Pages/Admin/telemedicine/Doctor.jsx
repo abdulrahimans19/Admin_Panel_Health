@@ -22,6 +22,7 @@ export default function Doctor() {
   const [document1, setDocument1] = useState(0);
   const [document2, setDocument2] = useState(0);
   const [activeTab, setActiveTab] = useState(1);
+  const [isLoding, setIsLoding] = useState(true);
 
   useEffect(() => {
     getDoctorRequests();
@@ -40,9 +41,11 @@ export default function Doctor() {
       .then((data) => {
         setDocument(data?.data?.data?.total_document);
         setRequests(data?.data?.data?.doctors);
+        setIsLoding(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoding(false);
       });
   }
 
@@ -52,9 +55,11 @@ export default function Doctor() {
         console.log(data?.data?.data);
         setDocument1(data?.data?.data?.total_document);
         setApproved(data?.data?.data?.doctors);
+        setIsLoding(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoding(false);
       });
   }
 
@@ -64,9 +69,12 @@ export default function Doctor() {
         //console.log(data?.data?.data);
         setDocument2(data?.data?.data?.total_document);
         setBlocked(data?.data?.data?.doctor);
+        setIsLoding(false);
       })
       .catch((err) => {
         console.log(err);
+
+        setIsLoding(false);
       });
   }
   //console.log(Blocked);
@@ -86,6 +94,8 @@ export default function Doctor() {
             myfunction={getDoctorRequests}
             callBack={AprovetDoctor}
             document={document}
+            isLoding={isLoding}
+            setLOding={setIsLoding}
           />
         );
 
@@ -101,6 +111,8 @@ export default function Doctor() {
             document={document1}
             availabe={"available"}
             callBack={BlockOrUnBlockDoctor}
+            isLoding={isLoding}
+            setLOding={setIsLoding}
           />
         );
 
@@ -116,6 +128,8 @@ export default function Doctor() {
             data={Blocked}
             myfunction={getBlockedDoctors}
             callBack={BlockOrUnBlockDoctor}
+            isLoding={isLoding}
+            setLOding={setIsLoding}
           />
         );
       // Return null for cases not handled
