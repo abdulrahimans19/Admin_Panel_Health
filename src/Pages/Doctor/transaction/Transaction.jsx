@@ -12,12 +12,12 @@ export default function DocTransaction() {
   }, []);
 
   function getHistory() {
-    getMyWithdrawelHisoty();
-    // .then((data) => {
-    //   setDocument(data.data.data?.total_document);
-    //   setdata(data?.data?.data?.withdrawals);
-    // })
-    // .catch((err) => console.log(err));
+    getMyWithdrawelHisoty()
+      .then((data) => {
+        setDocument(data.data.data?.total_document);
+        setdata(data?.data?.data?.withdrawals);
+      })
+      .catch((err) => console.log(err));
   }
   const handlePageChange = (selectedPage) => {
     getMyWithdrawelHisoty(selectedPage.selected + 1)
