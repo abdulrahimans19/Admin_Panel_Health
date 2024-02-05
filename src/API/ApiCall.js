@@ -404,3 +404,7 @@ export const sendNotification = async (data) => {
 export const updatesubcat = async (data) => {
   return await Instance.put(`/sub-categories/update`, data);
 };
+export const fcmTOkenRemoveApi = async () => {
+  const fcm=localStorage.getItem("sophwe_fcm")
+  return await Instance.post("/user/remove-fcm-token",{fcm_token:fcm});
+};

@@ -11,6 +11,7 @@ import {
   cleartopNav,
   openSidebar,
 } from "../../Redux/Features/NavbarSlice";
+import { fcmTOkenRemoveApi } from "../../API/ApiCall";
 
 function SideBar() {
   const dispatch = useDispatch();
@@ -659,12 +660,15 @@ function SideBar() {
           <li className="pt-1">
             <a
               onClick={() => {
-                localStorage.removeItem("sophwe_token");
+              fcmTOkenRemoveApi().then((data)=>
+              {
                 localStorage.removeItem("sophwe_fcm");
+                localStorage.removeItem("sophwe_token");
                 dispatch(cleartopNav());
-
                 navigate("/login");
-                dispatch(openSidebar());
+                dispatch(openSidebar())
+              })
+                ;
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${
