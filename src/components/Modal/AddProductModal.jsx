@@ -36,7 +36,7 @@ const ProductModal = ({
 
   const validate = (UserData) => {
     let tempErrors = {};
-    console.log(UserData);
+
     tempErrors.name = UserData?.name != "" ? "" : "Name is required";
     tempErrors.description =
       UserData?.description != "" ? "" : "description is required";
@@ -60,7 +60,7 @@ const ProductModal = ({
 
   const onDrop = useCallback((acceptedFiles) => {
     seteditImage(false);
-    console.log(acceptedFiles[0]);
+
     setFileToUpload(acceptedFiles[0]);
     setShowImage(true);
 
@@ -68,7 +68,7 @@ const ProductModal = ({
     reader.onload = () => {
       setImage(reader.result);
     };
-    console.log(reader);
+
     reader.readAsDataURL(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -83,8 +83,7 @@ const ProductModal = ({
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
     if (!validate(UserData)) return;
-    console.log(UserData);
-    console.log(fileToUpload);
+
     let publicUrl;
 
     if (editImage) {
@@ -114,12 +113,9 @@ const ProductModal = ({
     } else {
       UploadImageUrl()
         .then((data) => {
-          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {
-            console.log(data, "uploaded");
-          });
-          console.log(data.data.publicUrl, "uploadedssssss");
+          uploadToAws(data.data.presignedUrl, fileToUpload).then((data) => {});
+
           publicUrl = data.data.publicUrl;
-          console.log(publicUrl);
 
           let wholeData;
           if (incomingType == "edit") {
@@ -157,9 +153,7 @@ const ProductModal = ({
               getProducts();
             });
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 

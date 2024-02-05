@@ -18,13 +18,11 @@ export default function Coupons() {
   const editCoupon = (data) => {
     setCardData(data);
     setEditCouponModal(true);
-    console.log(data);
   };
 
   const getAllCoupons = () => {
     getAllCouponsApi(1)
       .then(({ data }) => {
-        console.log(data.data.coupons);
         setCouponData(data.data.coupons);
       })
       .catch((err) => {

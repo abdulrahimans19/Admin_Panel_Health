@@ -44,14 +44,11 @@ export default function FoodProduct() {
   const editCat = (data) => {
     setEditProductData(data);
     setEditProduct(true);
-
-    console.log(data);
   };
 
   const getFoodCategories = () => {
     getFoodCategory()
       .then(({ data }) => {
-        console.log(data, "maincat");
         setCategories(data.data.mainCategories);
       })
       .catch((err) => {
@@ -75,7 +72,6 @@ export default function FoodProduct() {
         .then(({ data }) => {
           const totalPages = Math.ceil(data.data.total_document / 10);
           setTotalPagecount(totalPages);
-          console.log(data.data.products);
 
           setFoodProductsData(data.data.products);
         })
@@ -87,7 +83,7 @@ export default function FoodProduct() {
         .then(({ data }) => {
           const totalPages = Math.ceil(data.data.total_document / 10);
           setTotalPagecount(totalPages);
-          console.log(data.data);
+
           setFoodProductsData(data.data.products);
         })
         .catch((err) => {
@@ -96,9 +92,7 @@ export default function FoodProduct() {
     }
   };
 
-  const addcategory = () => {
-    console.log("add category modal");
-  };
+  const addcategory = () => {};
 
   useEffect(() => {
     dispatch(foodNavdata());
@@ -125,7 +119,6 @@ export default function FoodProduct() {
       if (categoryMenu) {
         getFoodProductApi(selectedPage.selected + 1)
           .then(({ data }) => {
-            console.log(data.data.products);
             setPageNumber(selectedPage.selected + 1);
             setFoodProductsData(data.data.products);
           })
@@ -135,7 +128,6 @@ export default function FoodProduct() {
       } else {
         disabledFoodProductApi(selectedPage.selected + 1)
           .then(({ data }) => {
-            console.log(data.data.products);
             setPageNumber(selectedPage.selected + 1);
             setFoodProductsData(data.data.products);
           })
@@ -149,15 +141,12 @@ export default function FoodProduct() {
   const CallBackDisable = (data) => {
     setEditProductData(data);
     setDisableProducts(true);
-    console.log(data, "disble working");
   };
 
   const disableProduct = () => {
-    console.log("confirm working");
-    console.log(editProductData);
     disableFoodProduct(editProductData._id)
       .then((data) => {
-        console.log(data);
+        
       })
       .catch((err) => {
         console.log(err);

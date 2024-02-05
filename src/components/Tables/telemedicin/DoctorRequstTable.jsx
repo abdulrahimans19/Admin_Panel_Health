@@ -70,7 +70,6 @@ export default function DoctorRequstTable({
             setLOding(false);
           })
           .catch((err) => {
-            console.log(err);
             setLOding(false);
           });
       }
@@ -84,8 +83,6 @@ export default function DoctorRequstTable({
     e.preventDefault();
     GetSearchAllDoctors(search)
       .then((data) => {
-        console.log(data?.data?.data);
-
         setData(data?.data?.data?.doctors);
         setLOding(false);
       })
@@ -97,7 +94,7 @@ export default function DoctorRequstTable({
   var page = Math.floor(document / 10);
   var remainder = document % 10;
   page = page + (remainder > 0 ? 1 : 0);
-  // console.log(page, "       page num");
+  //
 
   return (
     <div className="container">

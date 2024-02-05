@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { addCouponApi, createSubCategory } from "../../API/ApiCall";
 import DateInput from "../../Pages/Admin/homecare/appoinments/DateInput";
 
-const CouponModal = ({ onClose, displayData, getAllCoupons,apicall }) => {
+const CouponModal = ({ onClose, displayData, getAllCoupons, apicall }) => {
   const [errors, setErrors] = useState({});
   const [subCategories, setSubCategories] = useState();
   const [subCatName, setSubCatName] = useState("");
@@ -40,59 +40,51 @@ const CouponModal = ({ onClose, displayData, getAllCoupons,apicall }) => {
     return "";
   };
 
-
   const addCoupon = (e) => {
     e.preventDefault();
 
-
-
     const form = new FormData(e.target);
     const UserData = Object.fromEntries(form);
-
-
 
     const couponCodeError = validateCouponCode(UserData.coupon_code);
     const discountError = validateDiscount(UserData.discount);
     const amountError = validateAmount(UserData.amount);
     const selectedDateError = validateSelectedDate(selectedDate);
-console.log(selectedDateError);
-    if (couponCodeError || discountError || amountError ||selectedDateError) {
-      console.log("errpr");
-      setErrors({ couponCodeError, discountError, amountError,selectedDateError });
+
+    if (couponCodeError || discountError || amountError || selectedDateError) {
+      setErrors({
+        couponCodeError,
+        discountError,
+        amountError,
+        selectedDateError,
+      });
       return; // Stop submission if there are errors
     }
 
-    console.log(UserData);
-    console.log(selectedDate);
     const myDate = new Date(selectedDate);
     const isoString = myDate.toISOString();
-let wholeData
-if(displayData){
-    wholeData = {
-        coupon_id:displayData._id,
+    let wholeData;
+    if (displayData) {
+      wholeData = {
+        coupon_id: displayData._id,
         code: UserData.coupon_code,
         discount_percentage: parseInt(UserData.discount),
         min_amount: parseInt(UserData.amount),
         expiry_date: isoString,
       };
-}else
-{
-    wholeData = {
+    } else {
+      wholeData = {
         code: UserData.coupon_code,
         discount_percentage: parseInt(UserData.discount),
         min_amount: parseInt(UserData.amount),
         expiry_date: isoString,
       };
-}
-
-  
-
+    }
 
     apicall(wholeData)
       .then((data) => {
         getAllCoupons(1);
         onClose(false);
-        console.log(data);
       })
       .catch((err) => {
         getAllCoupons(1);
@@ -102,7 +94,6 @@ if(displayData){
 
   useEffect(() => {
     if (displayData) {
-      console.log(new Date(displayData?.expiry_date));
       setSelectedDate(new Date(displayData?.expiry_date));
     }
   }, []);
@@ -132,7 +123,7 @@ if(displayData){
             className="mt-1 p-2 border rounded-md w-full"
             defaultValue={displayData?.code}
           />
-           {errors.couponCodeError && (
+          {errors.couponCodeError && (
             <p className="text-red-500 text-xs">{errors.couponCodeError}</p>
           )}
           <label className="block text-sm font-medium text-gray-700 mt-2">
@@ -146,7 +137,7 @@ if(displayData){
             defaultValue={displayData?.discount_percentage}
             // onChange={(e) => handleInputChange(index, e)}
           />
-   {errors.discountError && (
+          {errors.discountError && (
             <p className="text-red-500 text-xs">{errors.discountError}</p>
           )}
 
@@ -161,7 +152,7 @@ if(displayData){
             className="mt-1 p-2 border rounded-md w-full"
             // onChange={(e) => handleInputChange(index, e)}
           />
-              {errors.amountError && (
+          {errors.amountError && (
             <p className="text-red-500 text-xs">{errors.amountError}</p>
           )}
           <label className="block text-sm font-medium text-gray-700 mt-2">
@@ -172,11 +163,10 @@ if(displayData){
             selectedDate={selectedDate}
             onChange={DateChange}
           />
-              {errors.selectedDateError && (
+          {errors.selectedDateError && (
             <p className="text-red-500 text-xs">{errors.selectedDateError}</p>
           )}
           <div className="flex justify-end mt-3">
-      
             <button
               type="submit"
               className="bg-green-200 text-green-500 px-4 py-2 rounded-md hover:bg-green-300"

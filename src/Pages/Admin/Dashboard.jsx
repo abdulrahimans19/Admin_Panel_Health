@@ -28,33 +28,27 @@ export default function Dashboard() {
     if (foodChart) {
       monthlyEarningApi("FOOD")
         .then(({ data }) => {
-          console.log(data.data, "food monthly");
-
           const currentDate = new Date();
           const currentMonth = currentDate.toLocaleString("default", {
             month: "long",
           });
 
           setChartData(data.data.earnings);
-          console.log(data.data.earnings[currentMonth], "current month");
+
           setCardDifference(data.data.incomeDifference);
           setearningCard();
           setMonthlyEarning(data.data.earnings[currentMonth]);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     } else {
-      console.log("else worog");
       monthlyEarningApi("PHARMA")
         .then(({ data }) => {
-          console.log(data.data.earnings);
           setChartData(data.data.earnings);
           const currentDate = new Date();
           const currentMonth = currentDate.toLocaleString("default", {
             month: "long",
           });
-          console.log(data.data[currentMonth]);
+
           setMonthlyEarning(data.data[currentMonth]);
         })
         .catch((err) => {
@@ -67,13 +61,11 @@ export default function Dashboard() {
     dispatch(cleartopNav());
 
     totalDoctorApi().then(({ data }) => {
-      console.log(data.data, "docy");
       setTotalDoctors(data.data);
     });
 
     TotalAppointmentApi().then(({ data }) => {
       setTotalAppointment(data.data);
-      console.log(data.data, "appoimt");
     });
   }, []);
 

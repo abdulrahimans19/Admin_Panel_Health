@@ -34,18 +34,18 @@ function WithdrawalTable({
   //         setTable(data.data.data.withdrawals);
   //       })
   //       .catch((err) => {
-  //         console.log(err);
+  //
   //       });
   //   } else {
   //     GetDoctorWithdrawalRequsts(selectedPage.selected + 1)
   //       .then((data) => {
-  //         console.log(" this is working");
+  //
   //         setSelectPage(selectedPage.selected + 1);
 
   //         setTable(data.data.data.withdrawals);
   //       })
   //       .catch((err) => {
-  //         console.log(err);
+  //
   //       });
   //   }
   // };
@@ -79,7 +79,7 @@ function WithdrawalTable({
   var page = Math.floor(document / 10);
   var remainder = document % 10;
   page = page + (remainder > 0 ? 1 : 0);
-  console.log(page, "       page num");
+
   return (
     <div className="container">
       <Promodal
@@ -122,7 +122,6 @@ function WithdrawalTable({
             <tbody class="text-xs text-center">
               {table && table[0]
                 ? table.map((data) => {
-                    console.log(data, " im table");
                     return (
                       <tr class="bg-card rounded text-black text-xs text-center ">
                         <td class="p-1">{data._id}</td>
@@ -184,7 +183,6 @@ function WithdrawalTable({
                 : data &&
                   data[0] &&
                   data.map((data) => {
-                    console.log(data, "in data");
                     return (
                       <tr class="bg-card rounded text-black text-xs text-center ">
                         <td class="p-1">{data._id}</td>

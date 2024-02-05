@@ -9,7 +9,7 @@ export default function CatCard({
   viewCatInfo,
 }) {
   const cardHeight = isHomecareCategory ? 260 : 240;
-  console.log("data image is",data.image);
+
   return (
     <div className="w-44  mx-auto bg-white shadow-lg rounded-md overflow-hidden relative ">
       <div

@@ -51,8 +51,7 @@ function App() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
     const SowphweeFcm = localStorage.getItem("sophwe_fcm");
-    console.log(SowphweeFcm, "token");
-    console.log(user);
+
     if (user?.user_role == "Admin") {
       if (!SowphweeFcm) {
         requestForToken();

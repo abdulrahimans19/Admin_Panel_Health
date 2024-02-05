@@ -28,15 +28,12 @@ export default function PharmaReview() {
         setTotalPagecount(totalPages);
         setCategoryData(data.data.products);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const editCat = () => {};
 
   const viewCatInfo = (data) => {
-    console.log(data);
     setReviewdata(data);
     collectData(data);
 
@@ -46,12 +43,9 @@ export default function PharmaReview() {
   const collectData = (data) => {
     getFoodReview(data._id)
       .then(({ data }) => {
-        console.log(data);
         setReviews(data.reviews);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -69,7 +63,6 @@ export default function PharmaReview() {
     }${month}-${year}`;
   };
   const handlePageChange = (selectedPage) => {
-    console.log(selectedPage);
     setCurrentPage(selectedPage.selected + 1);
   };
   return (

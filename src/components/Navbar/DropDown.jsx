@@ -28,7 +28,6 @@ function DropDown({ title, dropdowndata, currentRoute, setCurrentRoute }) {
     <li className="">
       <p
         onClick={async () => {
-          console.log(droping);
           //   var dropdownDelayElement = document.getElementById("Kanban");
           if (!droping) {
             setDroping(!droping);

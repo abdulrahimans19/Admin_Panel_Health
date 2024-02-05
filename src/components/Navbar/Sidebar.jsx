@@ -41,7 +41,7 @@ function SideBar() {
       opacity: 1,
     },
   };
-  console.log(window.location.pathname, "path name");
+
   const [droping, setDroping] = useState(false);
 
   return (
@@ -660,15 +660,13 @@ function SideBar() {
           <li className="pt-1">
             <a
               onClick={() => {
-              fcmTOkenRemoveApi().then((data)=>
-              {
-                localStorage.removeItem("sophwe_fcm");
-                localStorage.removeItem("sophwe_token");
-                dispatch(cleartopNav());
-                navigate("/login");
-                dispatch(openSidebar())
-              })
-                ;
+                fcmTOkenRemoveApi().then((data) => {
+                  localStorage.removeItem("sophwe_fcm");
+                  localStorage.removeItem("sophwe_token");
+                  dispatch(cleartopNav());
+                  navigate("/login");
+                  dispatch(openSidebar());
+                });
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${

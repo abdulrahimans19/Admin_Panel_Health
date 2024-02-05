@@ -1,7 +1,6 @@
 import React from "react";
 
 function PriceDisplayCard2({ data }) {
-  console.log(data, "fwef");
   const difference = data?.currentMonthDoctorCount - data?.lastMonthDoctorCount;
 
   const color = difference > 0 ? "green" : difference < 0 ? "red" : "black";
