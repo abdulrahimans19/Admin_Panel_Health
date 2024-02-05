@@ -27,13 +27,18 @@ export default function OverView() {
   const [todayApintments, setApointments] = useState([]);
   const [currentime, setCurrenTime] = useState();
   const [document, setDocument] = useState();
-
+  const [showNoData, setShowNoCategories] = useState(false);
   useEffect(() => {
     getDoctor();
     getToatalApointments();
     getAvalabeSlots();
     getTodayApointment();
     setInterval(time, 6000);
+    const delay = setTimeout(() => {
+      setShowNoCategories(true);
+    }, 10000);
+
+    return () => clearTimeout(delay);
   }, []);
 
   function convertTo24HourFormat(timeString) {
@@ -75,7 +80,7 @@ export default function OverView() {
     getDoctorProfileAndWallet()
       .then((data) => {
         setProfile(data?.data?.data);
-        console.log("doc prof",data?.data?.data);
+        console.log("doc prof", data?.data?.data);
       })
       .catch((err) => console.log(err));
   }
@@ -117,7 +122,7 @@ export default function OverView() {
   function getAvalabeSlots() {
     getAvailableSlot()
       .then((data) => {
-        console.log("doctor slots",data.data.data);
+        console.log("doctor slots", data.data.data);
         setAvailableslots(data.data.data);
       })
       .catch((err) => console.log(err));
@@ -243,62 +248,62 @@ export default function OverView() {
         </div>
       </div>
       {/* AppointmentTable Start */}
-      {todayApintments && todayApintments[0] ? (
-        todayApintments.map((data) => {
-          const formattedTime1 = convertTo24HourFormat(currentime);
+      {todayApintments && todayApintments[0]
+        ? todayApintments.map((data) => {
+            const formattedTime1 = convertTo24HourFormat(currentime);
 
-          const formattedTime2 = convertTo24HourFormat(
-            data?.slotId?.start_time
-          );
+            const formattedTime2 = convertTo24HourFormat(
+              data?.slotId?.start_time
+            );
 
-          return (
-            <div className="border-b border-gray-300 mt-2 flex justify-between p-1 justify-center items-center pl-5 pr-5">
-              <div className="flex items-center justify-center">
-                <div
-                  className=" rounded-full mr-3"
-                  style={{ width: "60px", height: "60px" }}
-                >
-                  <img
+            return (
+              <div className="border-b border-gray-300 mt-2 flex justify-between p-1 justify-center items-center pl-5 pr-5">
+                <div className="flex items-center justify-center">
+                  <div
+                    className=" rounded-full mr-3"
                     style={{ width: "60px", height: "60px" }}
-                    className="rounded-full"
-                    src={
-                      data?.patientId?.profile_image
-                        ? data?.patientId?.profile_image
-                        : "https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                    }
-                    alt=""
-                  />
+                  >
+                    <img
+                      style={{ width: "60px", height: "60px" }}
+                      className="rounded-full"
+                      src={
+                        data?.patientId?.profile_image
+                          ? data?.patientId?.profile_image
+                          : "https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <div>
+                    <h1 className="fond-bold mb-2.5">
+                      {data?.patientId?.first_name}
+                    </h1>
+                    <p className="text-xs text-gray-400">Duration: 30 min</p>
+                  </div>
                 </div>
-                <div>
-                  <h1 className="fond-bold mb-2.5">
-                    {data?.patientId?.first_name}
-                  </h1>
-                  <p className="text-xs text-gray-400">Duration: 30 min</p>
-                </div>
+                {formattedTime1 &&
+                formattedTime2 &&
+                formattedTime1 === formattedTime2 ? (
+                  <button
+                    style={{
+                      backgroundColor: "rgba(51, 112, 91, 1)",
+                      width: "70px",
+                    }}
+                    className=" h-8 text-white text-center rounded-lg flex justify-center items-center mr-3"
+                  >
+                    <p>join</p>
+                  </button>
+                ) : (
+                  <p>{data?.slotId?.start_time}</p>
+                )}
               </div>
-              {formattedTime1 &&
-              formattedTime2 &&
-              formattedTime1 === formattedTime2 ? (
-                <button
-                  style={{
-                    backgroundColor: "rgba(51, 112, 91, 1)",
-                    width: "70px",
-                  }}
-                  className=" h-8 text-white text-center rounded-lg flex justify-center items-center mr-3"
-                >
-                  <p>join</p>
-                </button>
-              ) : (
-                <p>{data?.slotId?.start_time}</p>
-              )}
+            );
+          })
+        : showNoData && (
+            <div className="mt-10">
+              <NoDataImage text={"No Data Available"} />
             </div>
-          );
-        })
-      ) : (
-        <div className="mt-10">
-          <NoDataImage text={"No Data Available"} />
-        </div>
-      )}
+          )}
       {/* next card */}
       {/* TableEnd */}
       <SlotModal
@@ -307,7 +312,6 @@ export default function OverView() {
         slots={availableSlots}
         docData={Profile}
         getAvalabeSlots={getDoctor}
-
       />
       <WithdrawModal
         isShowModal={isShowModal}

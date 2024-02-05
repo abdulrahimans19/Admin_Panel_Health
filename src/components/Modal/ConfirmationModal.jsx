@@ -3,26 +3,32 @@ import React from "react";
 
 const ConfirmationModal = ({ onClose, onConfirm, text }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
-      <div className="bg-white p-6 rounded-md z-50">
-        <p className="mb-4">{text}</p>
-        <div className="flex justify-end">
+    <div
+      id="confirmationModal"
+      class="fixed inset-0 flex items-center justify-center z-50"
+    >
+      <div class="bg-white  border-2 w-80 rounded-lg p-4 shadow-lg">
+        <div class="text-center">
+          <h2 class="text-2xl font-semibold mb-4">Confirmation</h2>
+          <p class="text-gray-600 mb-6">{text}</p>
+        </div>
+        <div class="flex justify-center space-x-4">
           <button
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 mr-2 rounded"
+            id="confirmButton"
+            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
             onClick={() => {
+              onConfirm();
               onClose(false);
             }}
           >
-            Cancel
+            Confirm
           </button>
           <button
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              onConfirm();
-            }}
+            id="cancelButton"
+            class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none"
+            onClick={() => onClose(false)}
           >
-            Confirm
+            Cancel
           </button>
         </div>
       </div>
