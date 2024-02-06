@@ -222,7 +222,7 @@ function SideBar() {
                 window.location.pathname === "/pharmacy/product" ||
                 window.location.pathname === "/pharmacy/review" ||
                 window.location.pathname === "/pharmacy/order"||
-                window.location.pathname === "/order/*/details"
+                /^\/order\/\d+\/details$/.test(window.location.pathname)
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -232,7 +232,9 @@ function SideBar() {
                   window.location.pathname === "/pharmacy/category" ||
                   window.location.pathname === "/pharmacy/product" ||
                   window.location.pathname === "/pharmacy/review" ||
-                  window.location.pathname === "/pharmacy/order"
+                  window.location.pathname === "/pharmacy/order"||
+                /^\/order\/\d+\/details$/.test(window.location.pathname)
+
                     ? "#your-active-color"
                     : "#ede8e8"
                 }

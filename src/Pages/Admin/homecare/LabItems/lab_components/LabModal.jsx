@@ -271,6 +271,7 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                           </label>
                           <div className="flex align-baseline justify-start gap-3">
                             <input
+                            maxLength={60}
                               type="text"
                               onChange={handleInputChange}
                               value={sampleInput}
@@ -294,7 +295,7 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                             </p>
                           )}
 
-                          <div className="flex p-4">
+                          <div className="flex p-4 text-ellipsis overflow-hidden">
                             <ul className="mt- list-disc">
                               {samples.map((sample, index) => (
                                 <li key={index}>{sample}</li>
@@ -313,6 +314,7 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                             Name of Test
                           </label>
                           <input
+                               maxLength={60}
                             type="text"
                             name="testName"
                             id="name_of_test"
@@ -520,7 +522,7 @@ function LabModal({ callback, setShowModal, getAllTests }) {
                             for="rate"
                             class="text-sm font-medium text-gray-700 mt-2"
                           >
-                            daily text limit
+                            daily test limit
                           </label>
                           <input
                             type="number"

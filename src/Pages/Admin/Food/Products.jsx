@@ -185,7 +185,7 @@ const [addBulModal, setAddBulModal] = useState(false)
       <div className="sm:flex justify-between">
         <div>
           <h4 className="text-4xl font-semibold p-4 ">
-            {categoryMenu ? " " : "sub Categories"}
+            {categoryMenu ? " " : ""}
           </h4>
           <p className="p-2 pl-3 text-gray-600 font-semibold">
             {/* {categoryMenu.length} */}
