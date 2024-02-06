@@ -9,6 +9,7 @@ import {
   getPharmaCategory,
   getSubCatData,
   uploadToAws,
+  
 } from "../../API/ApiCall";
 
 const ProductModal = ({
@@ -17,6 +18,7 @@ const ProductModal = ({
   editProductData,
   incomingType,
   getProducts,
+  getPharmaCategorydata
 }) => {
   // const [image, setImage] = useState(null);
 
@@ -163,7 +165,7 @@ console.log(UserData);
   };
 
   const mainCategory = () => {
-    getPharmaCategory()
+    getPharmaCategorydata()
       .then(({ data }) => {
         setMainCategoyData(data?.data?.mainCategories);
       })
@@ -182,20 +184,20 @@ console.log(UserData);
       });
   };
 
-  useEffect(() => {
-    if (editProductData && editProductData.sub_category_id) {
-      getCategoryDetailsById(editProductData.sub_category_id)
-        .then((response) => {
-          const categoryData = response.data.data.subcategory.main_category_id;
-          const subCategoryData = response.data.data.subcategory;
-          setMainCategoyData([categoryData]);
-          setSubcategoryData([subCategoryData]);
-        })
-        .catch((err) =>
-          console.error("Fetching category details failed:", err)
-        );
-    }
-  }, [editProductData]);
+  // useEffect(() => {
+  //   if (editProductData && editProductData.sub_category_id) {
+  //     getCategoryDetailsById(editProductData.sub_category_id)
+  //       .then((response) => {
+  //         const categoryData = response.data.data.subcategory.main_category_id;
+  //         const subCategoryData = response.data.data.subcategory;
+  //         setMainCategoyData([categoryData]);
+  //         setSubcategoryData([subCategoryData]);
+  //       })
+  //       .catch((err) =>
+  //         console.error("Fetching category details failed:", err)
+  //       );
+  //   }
+  // }, [editProductData]);
 
   useEffect(() => {
     mainCategory();

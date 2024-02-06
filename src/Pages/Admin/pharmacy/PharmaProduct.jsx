@@ -263,10 +263,13 @@ export default function PharmaProduct() {
           setAddProductModal={setAddProductModal}
           apiCall={addProductApi}
           getProducts={PharmaProduct}
+        getPharmaCategorydata={getPharmaCategory}
+
         />
       )}
       {editProduct && (
         <ProductModal
+        getPharmaCategorydata={getPharmaCategory}
           setAddProductModal={setEditProduct}
           editProductData={editProductData}
           apiCall={editPharmaProduct}
