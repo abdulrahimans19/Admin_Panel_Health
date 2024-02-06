@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { BulkUploadApi } from "../../API/ApiCall";
-export default function AddBulk({ onClose, type }) {
+export default function AddBulk({ onClose, type ,FoodProduct}) {
   const [jsonFile, setJsonFile] = useState("");
+  const [filetoUpload, setfileToUpload] = useState();
 
   const onDrop = (acceptedFiles) => {
+    setfileToUpload(acceptedFiles)
     setJsonFile(acceptedFiles[0]);
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -19,11 +21,18 @@ export default function AddBulk({ onClose, type }) {
     const UserData = Object.fromEntries(form);
     console.log(UserData);
     console.log(jsonFile);
+console.log(filetoUpload);
+const wholeData={file:jsonFile}
+BulkUploadApi({wholeData,type}).then((data)=>
+{
+    console.log(data);
+    onClose(false)
+    FoodProduct()
+})
 
-    BulkUploadApi(jsonFile).then((data)=>
-    {
-        console.log(data);
-    })
+
+
+
   };
 
   return (
@@ -38,7 +47,7 @@ export default function AddBulk({ onClose, type }) {
                   {...getRootProps()}
                   className="cursor-pointer border-2 border-dashed border-gray-300 p-2 mb-2"
                 >
-                  <input {...getInputProps()} />
+                  <input type="file" name="file" {...getInputProps()} />
                   {isDragActive ? (
                     <p>Drop the JSON file here ...</p>
                   ) : (
