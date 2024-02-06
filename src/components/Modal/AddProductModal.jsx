@@ -285,6 +285,7 @@ console.log(UserData);
                     name="category"
                     className="mt-1 p-2 border rounded-md w-full"
                   >
+                    <option selected className="disabled:" value="null">select s choice</option>
                     {mainCategoyData.map((data) => {
                       return <option value={data._id}>{data.title}</option>;
                     })}
