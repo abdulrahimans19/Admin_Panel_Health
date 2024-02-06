@@ -397,3 +397,7 @@ export const fcmTOkenRemoveApi = async () => {
   const fcm = localStorage.getItem("sophwe_fcm");
   return await Instance.post("/user/remove-fcm-token", { fcm_token: fcm });
 };
+export const BulkUploadApi = async (data,type) => {
+ 
+  return await Instance.post("/product/food/create/multiple",data);
+};

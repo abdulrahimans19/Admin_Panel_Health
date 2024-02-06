@@ -119,7 +119,7 @@ function DocNavBar() {
               </div>
             </div>
 
-            {/* <div className="flex items-center">
+            <div className="flex items-center">
             
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
@@ -131,96 +131,8 @@ function DocNavBar() {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
-              <div class="flex items-center ms-3">
-                <div>
-                  <button
-                    onClick={() => {
-                      setOpenMenu((e) => !e);
-                    }}
-                    type="button"
-                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-expanded="false"
-                    data-dropdown-toggle="dropdown-user"
-                  >
-                    <span class="sr-only">Open user menu</span>
-                    <img
-                      class="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                      alt="user photo"
-                    />
-                  </button>
-                </div>
-                {openMenu && (
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={list}
-                    class="z-50 fixed my-4 right-7 top-6 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-                    id="dropdown-user"
-                  >
-                    <div class="px-4 py-3" role="none">
-                      <p
-                        class="text-sm text-gray-900 dark:text-white"
-                        role="none"
-                      >
-                        Neil Sims
-                      </p>
-                      <p
-                        class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                        role="none"
-                      >
-                        neil.sims@flowbite.com
-                      </p>
-                    </div>
-                    <motion.ul
-                      initial="hidden"
-                      animate="visible"
-                      variants={list}
-                      class="py-1"
-                      role="none"
-                    >
-                      <motion.li variants={item}>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Dashboard
-                        </a>
-                      </motion.li>
-                      <motion.li variants={item}>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Settings
-                        </a>
-                      </motion.li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Earnings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          onClick={() => {}}
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                          role="menuitem"
-                        >
-                          Sign out
-                        </a>
-                      </li>
-                    </motion.ul>
-                  </motion.div>
-                )}
-              </div>
-            </div> */}
+           
+            </div>
           </div>
         </div>
       </nav>
