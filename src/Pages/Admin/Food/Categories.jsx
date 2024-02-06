@@ -14,6 +14,7 @@ import {
   addFoodCategory,
   UpadateFoodCategory,
   getFoodSubCategory,
+  getPharmaCategory,
 } from "../../../API/ApiCall";
 import CatInfoModal from "../../../components/Modal/ViewCatInfo";
 
@@ -152,6 +153,8 @@ export default function FoodCategory() {
           catFunction={addFoodCategory}
           setShowModal={setAddCategoryModal}
           GetPharmacyCat={GetFoodCat}
+     
+
         />
       )}
       {editCatModal && (
@@ -161,6 +164,8 @@ export default function FoodCategory() {
           dataToUpload={EditData}
           setShowModal={setEditCatModal}
           GetPharmacyCat={GetFoodCat}
+       
+        
         />
       )}
 
