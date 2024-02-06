@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { updateFcmApi } from "../API/ApiCall";
 import wavFile from "../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3";
+import { updateDoctorFcmApi } from "../API/DoctorApi";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -16,7 +17,7 @@ initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
 
-export const requestForToken = async () => {
+export const requestForToken = async (TokenFor) => {
   console.log("requsting fcm");
   return getToken(messaging, {
     vapidKey: process.env.REACT_APP_VAPID_ID,
@@ -25,14 +26,27 @@ export const requestForToken = async () => {
       if (currentToken) {
         console.log("current token for client:", currentToken);
         console.log(currentToken);
-        localStorage.setItem("sophwe_fcm", currentToken);
-        updateFcmApi({ fcm_token: currentToken })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+        if (TokenFor == "Admin") {
+          localStorage.setItem("sophwe_fcm", currentToken);
+          updateFcmApi({ fcm_token: currentToken })
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          localStorage.setItem("sophwe_fcm", currentToken);
+          updateDoctorFcmApi({ fcm_token: currentToken })
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+
         // Perform any other neccessary action with the token
       } else {
         // Show permission request UI
@@ -46,27 +60,11 @@ export const requestForToken = async () => {
     });
 };
 
-
-
-
-
-
-
-
-
-
-
 export const onMessageListener = () =>
-
-
-
   new Promise((resolve) => {
-
     onMessage(messaging, (payload) => {
       console.log("recived a bg mesahe");
 
       resolve(payload);
     });
   });
-
-

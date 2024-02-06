@@ -5,6 +5,9 @@ import { motion, useAnimationControls } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
+import { onMessageListener } from "../../firebase/Firebaseconfig";
+import wavFile from "../../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3";
+import toast, { Toaster } from "react-hot-toast";
 
 function DocNavBar() {
   const dispatch = useDispatch();
@@ -38,9 +41,77 @@ function DocNavBar() {
     // setCurrentRoute(useLocation().pathname)
   }, [useLocation().pathname]);
 
+
+  const [notificationnew, setNotificationnew] = useState();
+  const [openNotification, setOpenNotification] = useState(false);
+
+  useEffect(() => {
+
+    const user = JSON.parse(localStorage.getItem("sophwe_token"));
+
+if(user?.user_role=="Admin"){
+  onMessageListener().then((payload) => {
+    console.log(payload, "its coming here");
+    const audio = new Audio(wavFile);
+    audio.play().catch((err) => {
+      console.log(err);
+    });
+
+
+
+  setNotificationnew(payload);
+
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 w-0 p-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 pt-0.5"></div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm font-medium text-gray-900">
+                {payload?.notification?.title}
+              </p>
+              <p className="mt-1 text-sm text-gray-500">
+                {payload.notification?.body}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex border-l border-gray-200">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    ));
+
+  })
+  .catch((err) => console.log("failed: ", err));
+}
+
+ 
+
+  }, [notificationnew]);
+
+
+
+
+
+
+
+
+
   return (
     <>
       <nav className="fixed top-0 z-50 w-full  border-b  bg-black border-gray-700">
+      <Toaster position="bottom-right" reverseOrder={false} />
+
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">

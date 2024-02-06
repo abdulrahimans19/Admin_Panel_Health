@@ -221,7 +221,8 @@ function SideBar() {
                 window.location.pathname === "/pharmacy/category" ||
                 window.location.pathname === "/pharmacy/product" ||
                 window.location.pathname === "/pharmacy/review" ||
-                window.location.pathname === "/pharmacy/order"
+                window.location.pathname === "/pharmacy/order"||
+                window.location.pathname === "/order/*/details"
                   ? "bg-white text-black "
                   : "text-white"
               } `}

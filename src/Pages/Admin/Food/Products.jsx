@@ -280,7 +280,7 @@ const [addBulModal, setAddBulModal] = useState(false)
         />
       )}
 
-{addBulModal&&<AddBulk onClose={setAddBulModal} type={"food"}  />}
+{addBulModal&&<AddBulk onClose={setAddBulModal} type={"food"} FoodProduct={FoodProduct} />}
 
 
       <ReactPaginate

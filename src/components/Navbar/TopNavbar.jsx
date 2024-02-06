@@ -82,18 +82,8 @@ if(user?.user_role=="Admin"){
     audio.play().catch((err) => {
       console.log(err);
     });
-    // console.log(document.hasFocus());
-    // if (!document.hasFocus()) {
-    //   console.log("ifworking");
-    //   audio.play().catch((err) => {
-    //     console.log(err);
-    //   });
-    // } else {
-    //   console.log("else working");
-    //   audio.play().catch((err) => {
-    //     console.log(err);
-    //   });
-    // }
+
+
 
   setNotificationnew(payload);
 

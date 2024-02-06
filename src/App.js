@@ -54,7 +54,11 @@ function App() {
 
     if (user?.user_role == "Admin") {
       if (!SowphweeFcm) {
-        requestForToken();
+        requestForToken("Admin");
+      }
+    } else {
+      if (!SowphweeFcm) {
+        requestForToken("DOCTOR");
       }
     }
   }, []);
