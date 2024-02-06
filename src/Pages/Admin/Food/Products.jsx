@@ -23,6 +23,8 @@ import {
 import ReactPaginate from "react-paginate";
 import "../../../assets/pagination.css";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+import AddBulk from "../../../components/Modal/AddBulk";
+// import AddBulk from "../../../components/Modal/AddBulk";
 
 export default function FoodProduct() {
   const [categoryMenu, setCategoryMenu] = useState([]);
@@ -36,7 +38,7 @@ export default function FoodProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-
+const [addBulModal, setAddBulModal] = useState(false)
   const changeCategory = () => {
     setCategoryMenu(!categoryMenu);
   };
@@ -190,15 +192,26 @@ export default function FoodProduct() {
           </p>
         </div>
         <div>
-          {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
+          <div className="sm:flex gap-4 ">
           <div
             className=""
+            onClick={() => {
+              setAddBulModal(true);
+            }}
+          >
+            <AddItemButton text={"Add bulk Products"} img={buttonImage} />
+          </div>
+          <div
+            className="  mt-2 sm:mt-0"
             onClick={() => {
               setAddProductModal(true);
             }}
           >
             <AddItemButton text={"Add Products"} img={buttonImage} />
           </div>
+          </div>
+          {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
+     
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
             {categoryMenu ? (
@@ -266,6 +279,10 @@ export default function FoodProduct() {
 
         />
       )}
+
+{addBulModal&&<AddBulk onClose={setAddBulModal} type={"food"}  />}
+
+
       <ReactPaginate
         pageCount={totalPagecount} // Replace with the total number of pages
         pageRangeDisplayed={3} // Number of pages to display in the pagination bar
