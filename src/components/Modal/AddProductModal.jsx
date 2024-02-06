@@ -81,9 +81,11 @@ const ProductModal = ({
     e.preventDefault();
 
     const form = new FormData(e.target);
+    
     const UserData = Object.fromEntries(form);
-    if (!validate(UserData)) return;
+console.log(UserData);
 
+    if (!validate(UserData)) return;
     let publicUrl;
 
     if (editImage) {
@@ -97,7 +99,8 @@ const ProductModal = ({
         image: publicUrl,
         quantity: parseInt(UserData.quantity),
         price: parseInt(UserData.price),
-        sub_category_id: UserData.dropdown2,
+        sub_category_id: UserData.subcategory
+        ,
         country_codes: selectedCountries,
       };
 
@@ -127,7 +130,8 @@ const ProductModal = ({
               image: publicUrl,
               quantity: parseInt(UserData.quantity),
               price: parseInt(UserData.price),
-              sub_category_id: UserData.dropdown2,
+              sub_category_id: UserData.subcategory
+              ,
               country_codes: selectedCountries,
             };
           } else {
@@ -138,7 +142,8 @@ const ProductModal = ({
               image: publicUrl,
               quantity: parseInt(UserData.quantity),
               price: parseInt(UserData.price),
-              sub_category_id: UserData.dropdown2,
+              sub_category_id: UserData.subcategory
+              ,
               country_codes: selectedCountries,
             };
           }
@@ -299,8 +304,8 @@ const ProductModal = ({
                     // onChange={handleOptionChange}
                   >
                     {/* Display the default option based on editProductData */}
-                    {editProductData?.sub_category_id &&
-                    subcategoryData.length > 0 ? (
+                    {
+                   subcategoryData[0]?
                       subcategoryData.map((data) => {
                         // Check if this is the subcategory to be displayed as selected
                         if (data._id === editProductData?.sub_category_id) {
@@ -317,7 +322,7 @@ const ProductModal = ({
                           );
                         }
                       })
-                    ) : (
+                     : (
                       // Fallback or initial option
                       <option value="" disabled selected>
                         Select Choice

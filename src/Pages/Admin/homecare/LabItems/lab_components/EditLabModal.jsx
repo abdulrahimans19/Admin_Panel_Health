@@ -382,7 +382,7 @@ function EditLabModal({ valdata, callback, setEditShowModal1, getAllTests }) {
                     <div
                       {...getRootProps()}
                       className="flex flex-col w-52 mt-24 md:mt-0 h-16 justify-center items-center border border-dotted border-gray-300 rounded-[15px] "
-                      onClick={(e) => e.stopPropagation}
+                      // onClick={(e) => e.stopPropagation}
                     >
                       <input {...getInputProps()} />
 
