@@ -47,9 +47,20 @@ export default function Coupons() {
 
       <div className="mt-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {couponData.map((data) => {
-            return <MovieTicketCard data={data} callback={editCoupon} />;
-          })}
+          {couponData[0] ? (
+            couponData.map((data) => {
+              return <MovieTicketCard data={data} callback={editCoupon} />;
+            })
+          ) : (
+            <>
+              <div>
+                <h1 className=" col-span-2 font-bold text-xl p-20">
+                  {" "}
+                  No Coupons Available
+                </h1>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
