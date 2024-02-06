@@ -112,15 +112,16 @@ const [error, seterror] = useState()
         <div class="w-full md:w-1/2 md:pl-4 xl:pl-10 pr-4">
           <div
             {...getRootProps() }
-            onClick={e=>e.stopPropagation}
+            // onClick={e=>e.stopPropagation}
             class="w-full md:w-fit p-10 bg-slate-200 rounded-md"
           >
-            <input {...getInputProps()} />
 
             <label
               for="file_input"
               class=" mb-2 text-sm font-medium text-gray-900 flex items-center"
             >
+            <input {...getInputProps()} />
+
               {" "}
               {!showImage ? (
                 <div className="flex ">

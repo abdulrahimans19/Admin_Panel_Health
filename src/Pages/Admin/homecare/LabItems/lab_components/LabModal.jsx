@@ -190,11 +190,11 @@ function LabModal({ callback, setShowModal, getAllTests }) {
               <div class="flex flex-col bg-white rounded-lg shadow-md p-6 ">
                 <h2 class="text-2xl mb-4 font-semibold">Create test</h2>
 
-                <div className="lg:flex md:flex flex-row gap-3.5">
+                <div className="lg:flex md:flex flex-row gap-3.5 ">
                   <div
                     {...getRootProps()}
-                    onClick={(e) => e.stopPropagation}
-                    className="flex flex-col justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
+                    // onClick={(e) => e.stopPropagation}
+                    className="flex flex-col cursor-pointer justify-center items-center border border-dotted border-gray-300 rounded-[15px] h-400"
                   >
                     <input {...getInputProps()} />
                     {!showImage ? (
