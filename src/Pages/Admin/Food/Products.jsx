@@ -18,6 +18,7 @@ import {
   filterFoodAPi,
   getFoodCategory,
   getFoodProductApi,
+  getPharmaCategory,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
 import "../../../assets/pagination.css";
@@ -251,6 +252,7 @@ export default function FoodProduct() {
           setAddProductModal={setAddProductModal}
           apiCall={addFoodProductApi}
           getProducts={FoodProduct}
+          getPharmaCategorydata={getFoodCategory}
         />
       )}
       {editProduct && (
@@ -260,6 +262,8 @@ export default function FoodProduct() {
           apiCall={editFoodProduct}
           incomingType={"edit"}
           getProducts={FoodProduct}
+          getPharmaCategorydata={getFoodCategory}
+
         />
       )}
       <ReactPaginate
