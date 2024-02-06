@@ -251,6 +251,22 @@ export const countryCodesApi = async (data) => {
     .catch((error) => console.error("Error fetching country data:", error));
 };
 
+export const AllCountry = async (data) => {
+  const apiUrl = "https://trial.mobiscroll.com/content/countries.json";
+
+  return await fetch(apiUrl)
+    .then((response) => response.json())
+    // .then((data) => {
+    //   const countriesArray = data.map((country) => ({
+    //     name: country.name.common,
+    //     code: country.cca2,
+    //   }));
+    //   return countriesArray;
+    //   // Now 'countriesArray' contains information about all countries
+    // })
+    .catch((error) => console.error("Error fetching country data:", error));
+};
+
 export const editPharmaProduct = async (data) => {
   return await Instance.put(`/product/pharma/update`, data);
 };
@@ -355,7 +371,6 @@ export const getApointments = async (endDate) => {
     `/appointment/total-appoinments?startDate=01/25/2023&endDate=${endDate}`
   ).catch((err) => {
     console.log(err);
-
   });
 };
 export const addWithdrawRequest = async (data) => {

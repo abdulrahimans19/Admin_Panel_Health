@@ -143,12 +143,13 @@ const Invoice = () => {
               To:
             </h5>
             <h3 style={{ margin: "0", color: styles.textStyle.color }}>
-              {order.profile_id.first_name} {order.profile_id.last_name}
+              {order.profile_id?.first_name || "No data"}{" "}
+              {order.profile_id?.last_name || "No data"}
             </h3>
-            <div>{order.address_id.street_address}k</div>
-            <div>{order.address_id.city} </div>
-            <div>{order.address_id.zip_code}</div>
-            <div>{order.address_id.phone_number}</div>
+            <div>{order.address_id?.street_address || "No data"}</div>
+            <div>{order.address_id?.city || "No data"}</div>
+            <div>{order.address_id?.zip_code || "No data"}</div>
+            <div>{order.address_id?.phone_number || "No data"}</div>
           </div>
         </div>
         <div style={{ padding: "20px" }}>
@@ -182,17 +183,19 @@ const Invoice = () => {
                 order.test_id.tests &&
                 order.test_id.tests.length > 0 ? (
                   order.test_id.tests.map((test, index) => (
-                    <tr>
+                    <tr key={index}>
+                      {" "}
+                      {/* Make sure to use a unique key for list items */}
                       <td>{index + 1}</td>
-                      <td>{test.name}</td>
-                      <td>{test.payment_type}</td>
-                      <td>{test.date}</td>
+                      <td>{test.name || "No data"}</td>
+                      <td>{test.payment_type || "No data"}</td>
+                      <td>{test.date || "No data"}</td>
                       <td>${parseFloat(order.total_price).toFixed(2)}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6">No tests found</td>
+                    <td colSpan="5">No tests found</td>
                   </tr>
                 )}
               </tbody>
@@ -205,11 +208,21 @@ const Invoice = () => {
             <tbody>
               <tr>
                 <td>Subtotal</td>
-                <td>${parseFloat(order.total_price).toFixed(2)}</td>
+                <td>
+                  $
+                  {order.total_price
+                    ? parseFloat(order.total_price).toFixed(2)
+                    : "No data"}
+                </td>
               </tr>
               <tr>
                 <td>Discount</td>
-                <td>${parseFloat(order.discount_price).toFixed(2)}</td>
+                <td>
+                  $
+                  {order.discount_price
+                    ? parseFloat(order.discount_price).toFixed(2)
+                    : "No data"}
+                </td>
               </tr>
               <tr>
                 <td>
@@ -217,7 +230,10 @@ const Invoice = () => {
                 </td>
                 <td>
                   <strong>
-                    ${parseFloat(order.payable_amount).toFixed(2)}
+                    $
+                    {order.payable_amount
+                      ? parseFloat(order.payable_amount).toFixed(2)
+                      : "No data"}
                   </strong>
                 </td>
               </tr>
