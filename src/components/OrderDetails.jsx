@@ -381,7 +381,7 @@ export default function OrderDetails() {
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {order.product_id && order.product_id.name
-                        ? order.product_id.name 
+                        ? order.product_id.name
                         : "No Product"}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
