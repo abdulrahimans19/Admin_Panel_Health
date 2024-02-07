@@ -28,6 +28,10 @@ export default function FoodOrder() {
     );
     return formattedDate;
   }
+  function formatPrice(price) {
+    const number = parseFloat(price);
+    return !isNaN(number) ? number.toFixed(2) : "No Price Available";
+  }
 
   return (
     <div>
@@ -125,22 +129,28 @@ export default function FoodOrder() {
                     {order._id}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.address_id ? order.full_name : "No Name Available"}
+                    {order.address_id
+                      ? order.address_id.full_name
+                      : "No Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.product_id.name : "No Product"}
+                    {order.product_id
+                      ? order.product_id.name
+                      : "No Product Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.quantity : "0"}
+                    {order.quantity || "0"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {formatDate(order.product_id ? order.created_at : "0/0/0")}
+                    {order.created_at
+                      ? formatDate(order.created_at)
+                      : "Date Unavailable"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.price : "0"}
+                    ${formatPrice(order.product_id ? order.price : "0")}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.order_status}
+                    {order.order_status || "Status Unavailable"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     <Link to={`/order/${order._id}/food/details`}>
