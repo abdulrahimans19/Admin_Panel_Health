@@ -10,6 +10,10 @@ import {
   DoctorRequests,
   GetAllBlockd,
   GetAllDoctors,
+  MainDoctorCategories,
+  blockedfilterCategoryByIdApi,
+  filterCategoryByIdApi,
+  pendingfilterCategoryByIdApi,
 } from "../../../API/ApiCall";
 
 export default function Doctor() {
@@ -23,11 +27,16 @@ export default function Doctor() {
   const [document2, setDocument2] = useState(0);
   const [activeTab, setActiveTab] = useState(1);
   const [isLoding, setIsLoding] = useState(true);
+  const [docCateogries, setDocCateogries] = useState([]);
+  const [datas, setData] = useState([]);
+  const [selectedCategory, setSlect] = useState("");
+  const [catId, setCategoryId] = useState("");
 
   useEffect(() => {
     getDoctorRequests();
     getAllDoctors();
     getBlockedDoctors();
+    getDocCategory();
     const storedActiveTab = localStorage.getItem("STORAGE_KEY");
 
     if (storedActiveTab) {
@@ -35,6 +44,17 @@ export default function Doctor() {
     }
     dispatch(telemedicine());
   }, []);
+
+  const getDocCategory = async () => {
+    try {
+      const response = await MainDoctorCategories();
+
+      if (response && response.data && response.data.data) {
+        const categories = response.data.data.mainCategories || [];
+        setDocCateogries(categories);
+      }
+    } catch (err) {}
+  };
 
   function getDoctorRequests() {
     DoctorRequests()
@@ -69,6 +89,7 @@ export default function Doctor() {
         //console.log(data?.data?.data);
         setDocument2(data?.data?.data?.total_document);
         setBlocked(data?.data?.data?.doctor);
+        console.log(data?.data?.data?.doctor);
         setIsLoding(false);
       })
       .catch((err) => {
@@ -96,6 +117,9 @@ export default function Doctor() {
             document={document}
             isLoding={isLoding}
             setLOding={setIsLoding}
+            setData={setData}
+            datas={datas}
+            catId={catId}
           />
         );
 
@@ -113,6 +137,9 @@ export default function Doctor() {
             callBack={BlockOrUnBlockDoctor}
             isLoding={isLoding}
             setLOding={setIsLoding}
+            setData={setData}
+            datas={datas}
+            catId={catId}
           />
         );
 
@@ -130,6 +157,9 @@ export default function Doctor() {
             callBack={BlockOrUnBlockDoctor}
             isLoding={isLoding}
             setLOding={setIsLoding}
+            setData={setData}
+            datas={datas}
+            catId={catId}
           />
         );
       // Return null for cases not handled
@@ -148,7 +178,10 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "1");
+                getDoctorRequests();
+                setData([]);
                 handleTabClick(1);
+                setSlect("");
               }}
             >
               Requests
@@ -163,7 +196,10 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "2");
+                getAllDoctors();
+                setData([]);
                 handleTabClick(2);
+                setSlect("");
               }}
             >
               Approved
@@ -190,7 +226,10 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "3");
+                getBlockedDoctors();
+                setData([]);
                 handleTabClick(3);
+                setSlect("");
               }}
             >
               Blocked
@@ -198,7 +237,47 @@ export default function Doctor() {
           </li>
         </ul>
       </div>
+
       <div></div>
+      <div className="flex justify-end mt-2">
+        <select
+          id="categories"
+          className="w-full sm:w-[250px] bg-blue-100 rounded-[10px] border-gray border-opacity-10 p-2 px-3 placeholder-white my-2"
+          onChange={(e) => {
+            const categoryTitle = e.target.options[e.target.selectedIndex].text;
+            setSlect(categoryTitle);
+            setCategoryId(e.target.value);
+            filterCategoryByIdApi(e.target.value).then((data) => {
+              setDocument1(data?.data?.total_document);
+              setApproved(data?.data?.doctors);
+            });
+            blockedfilterCategoryByIdApi(e.target.value).then((data) => {
+              console.log(data?.data?.doctor, "blocked");
+              setDocument2(data?.data?.total_document);
+              setBlocked(data?.data?.doctor);
+            });
+            pendingfilterCategoryByIdApi(e.target.value)
+              .then((data) => {
+                setDocument(data?.data?.total_document);
+                setRequests(data?.data?.doctor);
+              })
+              .catch((err) => {
+                console.log(err);
+                setIsLoding(false);
+              });
+          }}
+          value={selectedCategory}
+        >
+          <option value="" disabled selected>
+            Choose a Category
+          </option>
+          {docCateogries.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.title}
+            </option>
+          ))}
+        </select>
+      </div>
       {renderTabContent()}
     </div>
   );

@@ -31,16 +31,17 @@ export default function Appointments() {
   const [duration, setDuration] = useState();
   const [passingdate, setPassingDate] = useState();
   const [showNoDAta, setShowNoCategories] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     selectedDate();
     const delay = setTimeout(() => {
       setShowNoCategories(true);
-    }, 10000);
+    }, 1000);
 
     return () => clearTimeout(delay);
   }, []);
-  setInterval(time, 6000);
+  setInterval(time, 1000);
   const list = {
     visible: { opacity: 50, scale: 1 },
     hidden: { opacity: 0, scale: 0 },
@@ -136,6 +137,7 @@ export default function Appointments() {
         console.log(data);
         setDocument(data?.data?.data?.total_document);
         setApointments(data?.data?.data?.appointments);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -329,8 +331,9 @@ export default function Appointments() {
           </h1>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5 mb-4 mt-6">
-          {todayApintments &&
-            todayApintments[0] &&
+          {isLoading ? (
+            <div>Loding....</div>
+          ) : todayApintments && todayApintments[0] ? (
             todayApintments?.map((data) => {
               const formattedTime1 = convertTo24HourFormat(currentime);
               const result = isSameDate(data?.created_at);
@@ -423,14 +426,15 @@ export default function Appointments() {
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div>
+              <NoDataImage text={"No Apointments"} />
+            </div>
+          )}
         </div>
       </div>
-      {todayApintments && todayApintments.length === 0 && showNoDAta && (
-        <div>
-          <NoDataImage text={"No Apointments"} />
-        </div>
-      )}
+
       <div className="mt-1">
         {page > 1 && (
           <ReactPaginate
