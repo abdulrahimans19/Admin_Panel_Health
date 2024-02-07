@@ -213,7 +213,7 @@ function NavBar() {
                           navigate(data.link);
                         }}
                         className={`${
-                          window.location.pathname == data.link
+                          window.location.pathname == data.link 
                             ? "bg-black "
                             : ""
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}

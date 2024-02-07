@@ -34,8 +34,8 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-const [addBulModal, setAddBulModal] = useState(false)
-const [enableProduct, setEnableProduct] = useState(false);
+  const [addBulModal, setAddBulModal] = useState(false);
+  const [enableProduct, setEnableProduct] = useState(false);
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -177,7 +177,7 @@ const [enableProduct, setEnableProduct] = useState(false);
             categoryMenu && "font-bold underline"
           }  text-xl  underline-offset-8 decoration-4 cursor-pointer`}
         >
-        Products
+          Products
         </p>
         <p
           onClick={() => {
@@ -205,22 +205,22 @@ const [enableProduct, setEnableProduct] = useState(false);
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
           <div className="sm:flex gap-4 ">
-          <div
-            className=""
-            onClick={() => {
-              setAddBulModal(true);
-            }}
-          >
-            <AddItemButton text={"Add bulk Products"} img={buttonImage} />
-          </div>
-          <div
-            className="  mt-2 sm:mt-0"
-            onClick={() => {
-              setAddProductModal(true);
-            }}
-          >
-            <AddItemButton text={"Add Products"} img={buttonImage} />
-          </div>
+            <div
+              className=""
+              onClick={() => {
+                setAddBulModal(true);
+              }}
+            >
+              <AddItemButton text={"Add bulk Products"} img={buttonImage} />
+            </div>
+            <div
+              className="  mt-2 sm:mt-0"
+              onClick={() => {
+                setAddProductModal(true);
+              }}
+            >
+              <AddItemButton text={"Add Products"} img={buttonImage} />
+            </div>
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
@@ -275,13 +275,12 @@ const [enableProduct, setEnableProduct] = useState(false);
           setAddProductModal={setAddProductModal}
           apiCall={addProductApi}
           getProducts={PharmaProduct}
-        getPharmaCategorydata={getPharmaCategory}
-
+          getPharmaCategorydata={getPharmaCategory}
         />
       )}
       {editProduct && (
         <ProductModal
-        getPharmaCategorydata={getPharmaCategory}
+          getPharmaCategorydata={getPharmaCategory}
           setAddProductModal={setEditProduct}
           editProductData={editProductData}
           apiCall={editPharmaProduct}
@@ -302,7 +301,13 @@ const [enableProduct, setEnableProduct] = useState(false);
           />
         </div>
       </div>
-      {addBulModal&&<AddBulk onClose={setAddBulModal} type={"pharma"} FoodProduct={PharmaProduct} />}
+      {addBulModal && (
+        <AddBulk
+          onClose={setAddBulModal}
+          type={"pharma"}
+          FoodProduct={PharmaProduct}
+        />
+      )}
 
       {disableProducts && (
         <ConfirmationModal
