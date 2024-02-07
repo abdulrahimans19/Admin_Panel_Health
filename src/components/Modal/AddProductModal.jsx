@@ -9,7 +9,6 @@ import {
   getPharmaCategory,
   getSubCatData,
   uploadToAws,
-  
 } from "../../API/ApiCall";
 
 const ProductModal = ({
@@ -18,7 +17,7 @@ const ProductModal = ({
   editProductData,
   incomingType,
   getProducts,
-  getPharmaCategorydata
+  getPharmaCategorydata,
 }) => {
   // const [image, setImage] = useState(null);
 
@@ -83,9 +82,9 @@ const ProductModal = ({
     e.preventDefault();
 
     const form = new FormData(e.target);
-    
+
     const UserData = Object.fromEntries(form);
-console.log(UserData);
+    console.log(UserData);
 
     if (!validate(UserData)) return;
     let publicUrl;
@@ -101,8 +100,7 @@ console.log(UserData);
         image: publicUrl,
         quantity: parseInt(UserData.quantity),
         price: parseInt(UserData.price),
-        sub_category_id: UserData.subcategory
-        ,
+        sub_category_id: UserData.subcategory,
         country_codes: selectedCountries,
       };
 
@@ -132,8 +130,7 @@ console.log(UserData);
               image: publicUrl,
               quantity: parseInt(UserData.quantity),
               price: parseInt(UserData.price),
-              sub_category_id: UserData.subcategory
-              ,
+              sub_category_id: UserData.subcategory,
               country_codes: selectedCountries,
             };
           } else {
@@ -144,8 +141,7 @@ console.log(UserData);
               image: publicUrl,
               quantity: parseInt(UserData.quantity),
               price: parseInt(UserData.price),
-              sub_category_id: UserData.subcategory
-              ,
+              sub_category_id: UserData.subcategory,
               country_codes: selectedCountries,
             };
           }
@@ -184,20 +180,24 @@ console.log(UserData);
       });
   };
 
-  // useEffect(() => {
-  //   if (editProductData && editProductData.sub_category_id) {
-  //     getCategoryDetailsById(editProductData.sub_category_id)
-  //       .then((response) => {
-  //         const categoryData = response.data.data.subcategory.main_category_id;
-  //         const subCategoryData = response.data.data.subcategory;
-  //         setMainCategoyData([categoryData]);
-  //         setSubcategoryData([subCategoryData]);
-  //       })
-  //       .catch((err) =>
-  //         console.error("Fetching category details failed:", err)
-  //       );
-  //   }
-  // }, [editProductData]);
+  useEffect(() => {
+    if (editProductData && editProductData.sub_category_id) {
+      getCategoryDetailsById(editProductData.sub_category_id)
+        .then((response) => {
+          const categoryData = response.data.data.subcategory.main_category_id;
+          const subCategoryData = response.data.data.subcategory;
+          setMainCategoyData([categoryData]);
+          setSubcategoryData([subCategoryData]);
+          setCategoryDetails({
+            mainCategory: categoryData._id,
+            subCategory: editProductData.sub_category_id,
+          });
+        })
+        .catch((err) =>
+          console.error("Fetching category details failed:", err)
+        );
+    }
+  }, [editProductData]);
 
   useEffect(() => {
     mainCategory();
@@ -285,7 +285,9 @@ console.log(UserData);
                     name="category"
                     className="mt-1 p-2 border rounded-md w-full"
                   >
-                    <option selected className="disabled:" value="null">select s choice</option>
+                    <option selected className="disabled:" value="null">
+                      select s choice
+                    </option>
                     {mainCategoyData.map((data) => {
                       return <option value={data._id}>{data.title}</option>;
                     })}
@@ -307,8 +309,7 @@ console.log(UserData);
                     // onChange={handleOptionChange}
                   >
                     {/* Display the default option based on editProductData */}
-                    {
-                   subcategoryData[0]?
+                    {subcategoryData[0] ? (
                       subcategoryData.map((data) => {
                         // Check if this is the subcategory to be displayed as selected
                         if (data._id === editProductData?.sub_category_id) {
@@ -325,7 +326,7 @@ console.log(UserData);
                           );
                         }
                       })
-                     : (
+                    ) : (
                       // Fallback or initial option
                       <option value="" disabled selected>
                         Select Choice

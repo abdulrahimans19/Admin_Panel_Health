@@ -215,24 +215,29 @@ const Transactions = () => {
                     index % 2 === 0 ? "bg-gray-100" : "bg-white"
                   } border-b`}
                 >
-                  <td className="py-2 text-sm px-4">{item._id}</td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.profile_id.first_name} {item.profile_id.last_name}
+                  <td className="py-2 text-sm px-4">
+                    {item._id || "No Id Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.payment_type}
+                    {item.profile_id || "No Data Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.payment_id}
+                    {item.payment_type || "No Payment Type Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {formatDate(item.created_at)}
+                    {item.payment_id || "No Payment ID Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.payable_amount}
+                    {formatDate(item.created_at) || "No Date Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.order_status}
+                    $
+                    {!isNaN(parseFloat(item.payable_amount))
+                      ? parseFloat(item.payable_amount).toFixed(2)
+                      : "No Amount Available"}
+                  </td>
+                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                    {item.order_status || "No Status Available"}
                   </td>
                   <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
                     <Link to={`/invoice/${item._id}/details`}>

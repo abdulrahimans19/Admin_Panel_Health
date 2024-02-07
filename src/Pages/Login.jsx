@@ -237,12 +237,13 @@ const Login = () => {
             </button>
 
             {selectedOption === "Doctor" && (
-              <div className="flex justify-center lg:justify-start w-full lg:w-[400px] mt-4">
-                <span>Don't have an account? </span>
-                <a href="/register" className="text-cyan-900 ml-2 font-medium">
-                  Signup
-                </a>
-              </div>
+              <div className="flex justify-center w-full lg:w-[400px] mt-4 ">
+              <span>Don't have an account? </span>
+              <a href="/register" className="text-cyan-900 ml-2 font-medium">
+                Signup
+              </a>
+            </div>
+            
             )}
           </form>
         </div>
