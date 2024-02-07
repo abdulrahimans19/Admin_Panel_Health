@@ -148,6 +148,7 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "1");
+                getDoctorRequests();
                 handleTabClick(1);
               }}
             >
@@ -163,6 +164,7 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "2");
+                getAllDoctors();
                 handleTabClick(2);
               }}
             >
@@ -190,6 +192,7 @@ export default function Doctor() {
               }`}
               onClick={() => {
                 localStorage.setItem("STORAGE_KEY", "3");
+                getBlockedDoctors();
                 handleTabClick(3);
               }}
             >

@@ -75,6 +75,44 @@ export default function DoctorRequstTable({
       }
     }
   };
+  const reFresh = () => {
+    console.log("in reFresh");
+    if (status === "approved") {
+      console.log("in reFresh 1");
+      GetAllDoctors()
+        .then((data) => {
+          setData(data?.data?.data?.doctors);
+          setLOding(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLOding(false);
+        });
+      if (status === "requests") {
+        console.log("in reFresh 2");
+        DoctorRequests()
+          .then((data) => {
+            setData();
+            setLOding(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLOding(false);
+          });
+      }
+      if (status === "unBlock") {
+        console.log("in reFresh 3");
+        GetAllBlockd()
+          .then((data) => {
+            setData(data?.data?.data?.doctors);
+            setLOding(false);
+          })
+          .catch((err) => {
+            setLOding(false);
+          });
+      }
+    }
+  };
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -106,8 +144,10 @@ export default function DoctorRequstTable({
         btImg={btImg}
         btText={btText}
         callback={callBack}
-        myfunction={myfunction}
+        isFunction={myfunction}
+        myfunction={reFresh}
         isCancel={isCancel}
+        // selectpage={}
       />
       {/* searchHandler */}
       <div className="sm:flex justify-between items-center w-full">
@@ -193,6 +233,8 @@ export default function DoctorRequstTable({
                               type="button"
                               onClick={() => {
                                 setUser(data);
+                                console.log(data, "this is user");
+                                console.log(data, "this is user");
                                 setShowModal(true);
                               }}
                             >
@@ -209,7 +251,8 @@ export default function DoctorRequstTable({
                               className="text-xs background-transparent p-1 pl-3 pr-3 mt-1 outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 rounded"
                               type="button"
                               onClick={() => {
-                                setUser(data._id);
+                                setUser(data);
+                                console.log(user, "this is user");
                                 setShowModal(true);
                               }}
                             >
@@ -271,6 +314,7 @@ export default function DoctorRequstTable({
                               type="button"
                               onClick={() => {
                                 setUser(data);
+                                console.log(data, "this is user");
                                 setShowModal(true);
                               }}
                             >
@@ -288,6 +332,7 @@ export default function DoctorRequstTable({
                               type="button"
                               onClick={() => {
                                 setUser(data);
+                                console.log(data, "this is user");
                                 setShowModal(true);
                               }}
                             >

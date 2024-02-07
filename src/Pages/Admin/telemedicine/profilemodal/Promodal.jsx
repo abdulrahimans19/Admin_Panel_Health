@@ -11,7 +11,8 @@ export default function ({
   btText,
   id,
   myfunction,
-  sectpage,
+  isFunction,
+  selectpage,
   getWithdrawalRequsts,
   isCancel,
 }) {
@@ -27,20 +28,20 @@ export default function ({
       console.log(filePath);
       const response = await axios({
         url: filePath, // Your file URL
-        method: 'GET',
-        responseType: 'blob', // Important
+        method: "GET",
+        responseType: "blob", // Important
       });
 
       // Create a URL for the blob
       const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = fileURL;
-      link.setAttribute('download', 'CustomFileName.jpg'); // Any custom file name
+      link.setAttribute("download", "CustomFileName.jpg"); // Any custom file name
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error downloading the file', error);
+      console.error("Error downloading the file", error);
     }
   };
 
@@ -188,7 +189,11 @@ export default function ({
                             onClick={async () => {
                               callback(id ? id : user?._id);
                               status === "aprove" && getWithdrawalRequsts();
-                              sectpage ? myfunction(sectpage) : myfunction();
+
+                              myfunction();
+
+                              isFunction();
+
                               toggleModal();
                             }}
                           >
@@ -215,6 +220,7 @@ export default function ({
                               const test = await callback(user?._id);
                               console.log(test, "this my testing");
                               myfunction();
+                              isFunction();
                               toggleModal();
                             }}
                           >
