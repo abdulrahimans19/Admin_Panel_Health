@@ -13,6 +13,7 @@ import ReactPaginate from "react-paginate";
 import NoDataImage from "../../../components/NoDataImage";
 import ViewPatient from "../Dashboard/modal/ViewPatient";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+import { onMessageListener } from "../../../firebase/Firebaseconfig";
 
 export default function Appointments() {
   const [currentime, setCurrenTime] = useState();
@@ -248,15 +249,25 @@ export default function Appointments() {
 
     return duration.trim();
   }
-  console.log("osihfesfnfanoGergv");
+
   const [openModal, setOpenModal] = useState(false);
   const [dataTosend, setDataTosend] = useState();
   const meetingDone = () => {
-    console.log("here", dataTosend);
     updateAppointmentApi(dataTosend._id).then((data) => {
       selectedDate("today");
     });
   };
+  const [notification, setNotification] = useState();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("sophwe_token"));
+
+    if (user?.user_role == "DOCTOR") {
+      onMessageListener().then((data) => {
+        setNotification(data);
+        selectedDate();
+      });
+    }
+  }, [notification]);
 
   return (
     <div>

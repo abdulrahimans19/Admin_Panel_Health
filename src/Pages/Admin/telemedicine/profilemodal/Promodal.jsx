@@ -26,6 +26,21 @@ export default function ({
 
   const downloadImage = async (filePath, fileName = "Example.jpg") => {
     try {
+
+
+      // const image = document.getElementById('myImage'); // Get the image
+      // const imageUrl = image.src; // Get the image's src
+      // const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1); // Extract filename
+    
+      // // Use the direct download approach
+      // const anchor = document.createElement('a');
+      // anchor.href = imageUrl;
+      // anchor.download = filename;
+      // document.body.appendChild(anchor);
+      // anchor.click();
+      // document.body.removeChild(anchor);
+
+
       console.log(filePath);
       const response = await axios({
         url: filePath, // Your file URL
@@ -75,7 +90,7 @@ export default function ({
                   >
                     <h1 className="mb-3">Profile</h1>
                     <div className="rounded-lg">
-                      <img
+                      <img id="myImage"
                         src={user?.image}
                         alt=""
                         className="w-40 h-50 mb-2 p-2"

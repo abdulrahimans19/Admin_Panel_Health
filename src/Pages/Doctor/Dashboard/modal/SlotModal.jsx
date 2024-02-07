@@ -24,9 +24,21 @@ function SlotModal({ isSlotModal, showSlot, slots, docData, getAvalabeSlots }) {
     //   ? prevSelectedSlots.filter((id)=>id !==slotId)
     //   :[...prevSelectedSlots,slotId]
     // })
-    const wholeData = {
+
+    console.log(savedSlots);
+
+if(!savedSlots)return
+
+
+    
+    const wholeData = { 
       availability: savedSlots,
     };
+
+
+
+
+
     console.log(savedSlots, "saved");
     console.log("doc data", docData.availability);
     addAvailableSlot(wholeData)

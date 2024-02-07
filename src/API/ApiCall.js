@@ -31,16 +31,16 @@ export const SetPassword = async (email, reset_password_token, password) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
-export const getTransactionForHomeCare = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/home-care", {
+export const getTransactionForHomeCare = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/home-care?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
     },
   });
 };
-export const getTransactionForPharmacy = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/pharma", {
+export const getTransactionForPharmacy = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/pharma?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
@@ -48,8 +48,8 @@ export const getTransactionForPharmacy = async (startDate, endDate) => {
   });
 };
 
-export const getTransactionForFood = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/food", {
+export const getTransactionForFood = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/food?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
@@ -75,8 +75,8 @@ export const getFoodCategory = async () => {
 export const getFoodProducts = async () => {
   return await Instance.get("/product/food");
 };
-export const getFoodOrders = async () => {
-  return await Instance.get("/order/food/all-orders");
+export const getFoodOrders = async (page) => {
+  return await Instance.get(`/order/food/all-orders?page=${page}`);
 };
 
 export const editFoodProduct = async (data) => {
@@ -370,8 +370,8 @@ export const getFoodSubCategory = async (data) => {
 export const UpadateFoodCategory = async (data) => {
   return await Instance.put(`/main-categories/food/update`, data);
 };
-export const getPharmaOrders = async () => {
-  return await Instance.get("/order/pharma/all-orders");
+export const getPharmaOrders = async (page) => {
+  return await Instance.get(`/order/pharma/all-orders?page=${page}`);
 };
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
@@ -403,6 +403,7 @@ export const getDisbledTestByCatApi = async (cat_id) => {
   );
 };
 export const getCurrentAppoinmentsApi = async (year, month, date, page) => {
+  console.log(year, month, date);
   return await Instance.get(
     `/bookings/all?date=${year}-${month}-${date}&page=${page}`
   );

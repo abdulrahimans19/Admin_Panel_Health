@@ -3,21 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
 import { getFoodOrders } from "../../../API/ApiCall";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 export default function FoodOrder() {
   const [orders, setOrders] = useState([]);
+  const [totalPagecount, setTotalPagecount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(foodNavdata());
-    getFoodOrders()
-      .then(({ data }) => {
-        setOrders(data.data.orders || []);
-      })
-      .catch((error) => {
-        console.error("Error fetching orders:", error);
-      });
+    GetORder();
   }, [dispatch]);
 
   function formatDate(dateTimeString) {
@@ -28,6 +25,32 @@ export default function FoodOrder() {
     );
     return formattedDate;
   }
+  function formatPrice(price) {
+    const number = parseFloat(price);
+    return !isNaN(number) ? number.toFixed(2) : "No Price Available";
+  }
+
+  const GetORder = (data) => {
+    console.log(currentPage);
+    getFoodOrders(data || 1)
+      .then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+
+        console.log(data.data.orders, "my pharma data");
+        setOrders(data.data.orders || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error);
+      });
+  };
+
+  const handlePageChange = (selectedPage) => {
+    console.log(selectedPage);
+    setCurrentPage(selectedPage.selected + 1);
+
+    GetORder(selectedPage.selected + 1);
+  };
 
   return (
     <div>
@@ -125,25 +148,31 @@ export default function FoodOrder() {
                     {order._id}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.address_id ? order.full_name : "No Name Available"}
+                    {order.address_id
+                      ? order.address_id.full_name
+                      : "No Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.product_id.name : "No Product"}
+                    {order.product_id
+                      ? order.product_id.name
+                      : "No Product Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.quantity : "0"}
+                    {order.quantity || "0"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {formatDate(order.product_id ? order.created_at : "0/0/0")}
+                    {order.created_at
+                      ? formatDate(order.created_at)
+                      : "Date Unavailable"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.product_id ? order.price : "0"}
+                    ${formatPrice(order.product_id ? order.price : "0")}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.order_status}
+                    {order.order_status || "Status Unavailable"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <Link to={`/order/${order._id}/details`}>
+                    <Link to={`/order/${order._id}/food/details`}>
                       {" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -163,6 +192,19 @@ export default function FoodOrder() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-3">
+          <div className=" flex justify-center">
+            <ReactPaginate
+              pageCount={totalPagecount} // Replace with the total number of pages
+              pageRangeDisplayed={2} // Number of pages to display in the pagination bar
+              marginPagesDisplayed={1} // Number of pages to display for margin pages
+              onPageChange={handlePageChange}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+              // forcePage={currentPage}
+            />
+          </div>
         </div>
       </div>
     </div>
