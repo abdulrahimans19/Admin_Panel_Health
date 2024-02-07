@@ -6,7 +6,7 @@ import { useReactToPrint } from "react-to-print";
 import cx from "../assets/images/Customer.png";
 import or from "../assets/images/orderInfo.png";
 import ad from "../assets/images/address.png";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import { getFoodOrders, getPharmaOrders } from "../API/ApiCall";
@@ -56,6 +56,21 @@ export default function OrderDetails() {
 
     fetchFunction();
   }, [dispatch, orderId]);
+
+  // Utility function to format price
+  function formatPrice(price) {
+    const number = parseFloat(price);
+    return !isNaN(number) ? number.toFixed(2) : "No Price Available";
+  }
+
+  function formatDate(dateTimeString) {
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const formattedDate = new Date(dateTimeString).toLocaleDateString(
+      undefined,
+      options
+    );
+    return formattedDate;
+  }
 
   const handleChangeStatus = (newStatus) => {
     setStatus(newStatus);
@@ -129,7 +144,7 @@ export default function OrderDetails() {
             <div>
               <strong>Order Id:</strong> {orderId}
             </div>
-            <div
+            {/* <div
               style={{
                 marginRight: "10px",
                 color:
@@ -141,12 +156,22 @@ export default function OrderDetails() {
               }}
             >
               {status}
-            </div>
+            </div> */}
           </div>
           <div style={{ position: "relative" }}>
-            <div onClick={() => setDropdownVisible(!isDropdownVisible)}>
+            {/* <div onClick={() => setDropdownVisible(!isDropdownVisible)}>
               Change Status &#9660;
-            </div>
+            </div> */}
+
+            {matchedOrder.order_status === "Created" ? null : ( // If order status is "Created," do not render the refund button
+              // Render the refund button for other order statuses
+              <button
+                type="button"
+                class="text-white bg-green-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+              >
+                Refund
+              </button>
+            )}
             {isDropdownVisible && (
               <div
                 style={{
@@ -201,9 +226,14 @@ export default function OrderDetails() {
               </strong>
               {matchedOrder ? (
                 <>
-                  <p>Full Name: {matchedOrder.address_id.full_name}</p>
-                  <p>Email: {matchedOrder.address_id.email}</p>
-                  <p>Phone: {matchedOrder.address_id.phone_number}</p>
+                  <p>
+                    Full Name:{" "}
+                    {matchedOrder?.address_id?.full_name || "No data"}
+                  </p>
+                  <p>Email: {matchedOrder?.address_id?.email || "No data"}</p>
+                  <p>
+                    Phone: {matchedOrder?.address_id?.phone_number || "No data"}
+                  </p>
                 </>
               ) : (
                 <p>No matching order found</p>
@@ -233,10 +263,12 @@ export default function OrderDetails() {
               </strong>
               {matchedOrder ? (
                 <>
-                  <p>Shipping: {matchedOrder.address_id.shipping}</p>
-                  <p>Payment Type: {matchedOrder.payment_type}</p>
-                  <p>Transaction ID: {matchedOrder.payment_id}</p>
-                  <p>Status: {matchedOrder.order_status}</p>
+                  <p>
+                    Shipping: {matchedOrder?.address_id?.shipping || "No data"}
+                  </p>
+                  <p>Payment Type: {matchedOrder?.payment_type || "No data"}</p>
+                  <p>Transaction ID: {matchedOrder?.payment_id || "No data"}</p>
+                  <p>Status: {matchedOrder?.order_status || "No data"}</p>
                 </>
               ) : (
                 <p>No matching order found</p>
@@ -267,10 +299,10 @@ export default function OrderDetails() {
               </strong>
               {matchedOrder ? (
                 <>
-                  <p>Address: {matchedOrder.address_id.state}</p>
-                  <p>{matchedOrder.address_id.city}</p>
-                  <p>{matchedOrder.address_id.street_address}</p>
-                  <p>{matchedOrder.address_id.zip_code}</p>
+                  <p>Address: {matchedOrder?.address_id?.state || "No data"}</p>
+                  <p>{matchedOrder?.address_id?.city || "No data"}</p>
+                  <p>{matchedOrder?.address_id?.street_address || "No data"}</p>
+                  <p>{matchedOrder?.address_id?.zip_code || "No data"}</p>
                 </>
               ) : (
                 <p>No matching order found</p>
@@ -286,42 +318,61 @@ export default function OrderDetails() {
               <thead className="text-xs text-gray-400 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3">
+                    Order Id
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Customer
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Products
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Qty
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Date
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Amount
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Status
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {matchedOrder ? (
-                  <tr
-                    key={matchedOrder.product_id._id}
-                    className="bg-white border-b"
-                  >
+                {orders.map((order) => (
+                  <tr key={order._id} className="bg-white border-b">
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {matchedOrder.product_id.name}
+                      {order._id}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {matchedOrder.quantity}
+                      {order.address_id ? order.full_name : "No Name Available"}
                     </td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {matchedOrder.total_amount.toFixed(2)}
+                      {order.product_id && order.product_id.name
+                        ? order.product_id.name
+                        : "No Product"}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {order.quantity || "0"}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {order.created_at
+                        ? formatDate(order.created_at)
+                        : "Date Unavailable"}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      ${formatPrice(order.product_id ? order.price : "0")}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {order.order_status || "Status Unavailable"}
                     </td>
                   </tr>
-                ) : (
-                  <tr>
-                    <td colSpan="3">
-                      No matching order found or products are not available
-                    </td>
-                  </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>
@@ -345,7 +396,7 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.real_total_amount.toFixed(2)}
+              ${matchedOrder?.real_total_amount?.toFixed(2) || "No data"}
             </span>
           </div>
           <div>
@@ -357,7 +408,8 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.real_total_amount.toFixed(2)}
+              $
+              {(matchedOrder?.real_total_amount * 0.1)?.toFixed(2) || "No data"}
             </span>
           </div>
           <div>
@@ -369,7 +421,7 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.discounted_amount.toFixed(2)}
+              ${matchedOrder?.discounted_amount?.toFixed(2) || "No data"}{" "}
             </span>
           </div>
           <div>
@@ -381,7 +433,8 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.real_total_amount.toFixed(2)}
+              ${matchedOrder?.shipping_amount?.toFixed(2) || "No data"}{" "}
+              {/* Assuming shipping_amount exists */}{" "}
             </span>
           </div>
           <div>
@@ -393,7 +446,7 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.total_amount.toFixed(2)}
+              ${matchedOrder?.total_amount?.toFixed(2) || "No data"}{" "}
             </span>
           </div>
           <div>
@@ -405,7 +458,7 @@ export default function OrderDetails() {
                 textAlign: "left",
               }}
             >
-              {matchedOrder.order_status}
+              {matchedOrder?.order_status || "No data"}{" "}
             </span>
           </div>
 

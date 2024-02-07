@@ -188,6 +188,27 @@ export const GetSearchAllDoctors = async (search) => {
   return await Instance.get(`/doctor/admin/all?search=${search}`);
 };
 
+
+export const filterCategoryByIdApi = async (categoryId, page, search) => {
+  try {
+    const response = await Instance.get(`/doctor/admin/all`, {
+      params: {
+        page: page,
+        category_id: categoryId,
+        search: search,
+      },
+    });
+
+    return response.data; // You can also return the data if needed
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    throw error; // You can throw the error again if needed
+  }
+};
+
+
+
 export const CanclationDoctor = async (id) => {
   return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
 };
@@ -249,6 +270,22 @@ export const countryCodesApi = async (data) => {
       return countriesArray;
       // Now 'countriesArray' contains information about all countries
     })
+    .catch((error) => console.error("Error fetching country data:", error));
+};
+
+export const AllCountry = async (data) => {
+  const apiUrl = "https://trial.mobiscroll.com/content/countries.json";
+
+  return await fetch(apiUrl)
+    .then((response) => response.json())
+    // .then((data) => {
+    //   const countriesArray = data.map((country) => ({
+    //     name: country.name.common,
+    //     code: country.cca2,
+    //   }));
+    //   return countriesArray;
+    //   // Now 'countriesArray' contains information about all countries
+    // })
     .catch((error) => console.error("Error fetching country data:", error));
 };
 
@@ -356,7 +393,6 @@ export const getApointments = async (endDate) => {
     `/appointment/total-appoinments?startDate=01/25/2023&endDate=${endDate}`
   ).catch((err) => {
     console.log(err);
-
   });
 };
 export const addWithdrawRequest = async (data) => {
