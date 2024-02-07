@@ -29,9 +29,9 @@ function AppoinmentDetails() {
   const [showImage, setShowImage] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPagecount, setTotalPagecount] = useState(0);
-  const [day, setDay] = useState(today.getFullYear());
+  const [day, setDay] = useState(today.getDate());
   const [month, setMonth] = useState(today.getMonth() + 1);
-  const [year, setYear] = useState(today.getDate());
+  const [year, setYear] = useState(today.getFullYear());
   const [Image, setImage] = useState("");
   const [fileInputs, setFileInputs] = useState([{ file: null }]);
 const [error, seterror] = useState()
@@ -357,7 +357,7 @@ console.log("else working");
                                             >
                                               <input
                                                 multiple
-                                                className="flex-grow text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600"
+                                                className="flex-grow text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                                                 type="file"
                                                 onChange={(e) =>
                                                   handleFileChange(e, index)
