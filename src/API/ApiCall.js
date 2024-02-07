@@ -31,16 +31,16 @@ export const SetPassword = async (email, reset_password_token, password) => {
 export const getPharmaCategory = async () => {
   return await Instance.get("/main-categories/pharma");
 };
-export const getTransactionForHomeCare = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/home-care", {
+export const getTransactionForHomeCare = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/home-care?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
     },
   });
 };
-export const getTransactionForPharmacy = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/pharma", {
+export const getTransactionForPharmacy = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/pharma?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
@@ -48,8 +48,8 @@ export const getTransactionForPharmacy = async (startDate, endDate) => {
   });
 };
 
-export const getTransactionForFood = async (startDate, endDate) => {
-  return await Instance.get("/admin/transaction/food", {
+export const getTransactionForFood = async (startDate, endDate, page) => {
+  return await Instance.get(`/admin/transaction/food?page=${page}`, {
     params: {
       startDate: startDate,
       endDate: endDate,
