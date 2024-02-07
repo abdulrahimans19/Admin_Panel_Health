@@ -118,18 +118,43 @@ export default function OrderDetails() {
     <>
       <style>
         {`
-      @media print {
-        .no-print {
-          display: none;
-        }
-        body {
-          margin: 0;
-          padding: 0;
-        }
-        .print-container {
-          margin: 20mm; 
-        }
+     @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: visible; /* Ensures content is not clipped */
+        justify-content: center;    display: flex;
+        flex-direction: column;
       }
+      .no-print {
+        display: none; /* This will hide any elements with the 'no-print' class during printing */
+      }
+      .print-container {
+        margin: 20mm 30mm; /* Adds more margin on the top and bottom, and even more on the left and right */
+        overflow: visible; /* Allows the table to fully expand */
+        width: auto; /* Adjusts width to account for new margins */
+      }
+    
+      .relative.overflow-x-auto {
+        overflow: visible !important; /* Important might be necessary to override inline styles */
+      }
+    
+      table {
+        width: 100%; /* Ensure table width fits within the print page */
+        table-layout: auto; /* Allows table cells to adjust */
+      }
+    
+      /* Adjust font sizes, padding, and margins as necessary */
+      table, th, td {
+        font-size: 10pt; /* Smaller font size for printing */
+        padding: 2px; /* Reduce padding */
+      }
+
+      .refund-button-class {
+        display: none; /* Hide refund button */
+      }
+    }
+    
     `}
       </style>
       <div className="print-container" ref={componentRef}>
@@ -167,7 +192,7 @@ export default function OrderDetails() {
               // Render the refund button for other order statuses
               <button
                 type="button"
-                class="text-white bg-green-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                class="no-print text-white bg-green-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
               >
                 Refund
               </button>
