@@ -221,8 +221,10 @@ function SideBar() {
                 window.location.pathname === "/pharmacy/category" ||
                 window.location.pathname === "/pharmacy/product" ||
                 window.location.pathname === "/pharmacy/review" ||
-                window.location.pathname === "/pharmacy/order"||
-                /^\/order\/\d+\/details$/.test(window.location.pathname)
+                window.location.pathname === "/pharmacy/order" ||
+                /^\/order\/[a-f0-9]{24}\/pharma\/details$/.test(
+                  window.location.pathname
+                )
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -232,9 +234,10 @@ function SideBar() {
                   window.location.pathname === "/pharmacy/category" ||
                   window.location.pathname === "/pharmacy/product" ||
                   window.location.pathname === "/pharmacy/review" ||
-                  window.location.pathname === "/pharmacy/order"||
-                /^\/order\/\d+\/details$/.test(window.location.pathname)
-
+                  window.location.pathname === "/pharmacy/order" ||
+                  /^\/order\/[a-f0-9]{24}\/pharma\/details$/.test(
+                    window.location.pathname
+                  )
                     ? "#your-active-color"
                     : "#ede8e8"
                 }
@@ -246,7 +249,10 @@ function SideBar() {
                   window.location.pathname === "/pharmacy/category" ||
                   window.location.pathname === "/pharmacy/product" ||
                   window.location.pathname === "/pharmacy/review" ||
-                  window.location.pathname === "/pharmacy/order"
+                  window.location.pathname === "/pharmacy/order" ||
+                  /^\/order\/[a-f0-9]{24}\/pharma\/details$/.test(
+                    window.location.pathname
+                  )
                     ? "svg-icon-active"
                     : ""
                 }`}
@@ -278,7 +284,10 @@ function SideBar() {
                 window.location.pathname === "/food/categories" ||
                 window.location.pathname === "/food/product" ||
                 window.location.pathname === "/food/review" ||
-                window.location.pathname === "/food/order"
+                window.location.pathname === "/food/order"||
+                /^\/order\/[a-f0-9]{24}\/food\/details$/.test(
+                  window.location.pathname
+                )
                   ? "bg-white text-black "
                   : "text-white"
               } `}
@@ -308,7 +317,10 @@ function SideBar() {
                 window.location.pathname === "/food/categories" ||
                 window.location.pathname === "/food/product" ||
                 window.location.pathname === "/food/review" ||
-                window.location.pathname === "/food/order"
+                window.location.pathname === "/food/order"||
+                /^\/order\/[a-f0-9]{24}\/food\/details$/.test(
+                  window.location.pathname
+                )
                   ? "stroke:#202124; "
                   : "  stroke:#ede8e8;"
               }

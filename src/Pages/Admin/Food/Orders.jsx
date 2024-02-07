@@ -143,7 +143,7 @@ export default function FoodOrder() {
                     {order.order_status}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <Link to={`/order/${order._id}/details`}>
+                    <Link to={`/order/${order._id}/food/details`}>
                       {" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
