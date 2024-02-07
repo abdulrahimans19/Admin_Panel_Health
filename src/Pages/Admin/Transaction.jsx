@@ -4,14 +4,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
 import { cleartopNav } from "../../Redux/Features/NavbarSlice";
 import { Link } from "react-router-dom";
-
 import {
   getTransactionForHomeCare,
   getTransactionForPharmacy,
   getTransactionForFood,
 } from "../../API/ApiCall";
 
-// Updated DateInput component for better responsiveness
 const DateInput = ({ label, selectedDate, onChange }) => (
   <div className="text-gray-500 text-base font-normal leading-tight tracking-tight relative w-full">
     {label}
@@ -25,7 +23,6 @@ const DateInput = ({ label, selectedDate, onChange }) => (
   </div>
 );
 
-// Updated CategoryFilter for better responsiveness
 const CategoryFilter = ({ selectedCategory, onSelect }) => (
   <div className="w-full overflow-x-auto">
     <div className="flex gap-4 justify-center sm:justify-start">
@@ -45,7 +42,6 @@ const CategoryFilter = ({ selectedCategory, onSelect }) => (
     </div>
   </div>
 );
-// Component for transactions
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -55,17 +51,17 @@ const Transactions = () => {
     useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Homecare");
   const [noDataAvailable, setNoDataAvailable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
-  // useEffect for fetching transactions
   useEffect(() => {
     dispatch(cleartopNav());
     fetchTransactions();
-  }, [dispatch, startDate, endDate, selectedCategory]);
+  }, [startDate, endDate, selectedCategory]);
 
-  // Function to fetch transactions based on selected category and date range
-  const fetchTransactions = () => {
+  const fetchTransactions = async () => {
+    setIsLoading(true);
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
 
@@ -84,7 +80,11 @@ const Transactions = () => {
         fetchFunction = getTransactionForHomeCare;
     }
 
-    fetchFunction(formattedStartDate, formattedEndDate).then(({ data }) => {
+    try {
+      const { data } = await fetchFunction(
+        formattedStartDate,
+        formattedEndDate
+      );
       if (
         !data ||
         !data.data.transaction ||
@@ -106,7 +106,7 @@ const Transactions = () => {
               : "No Data Available",
             payment_type: item.payment_type || "No Payment Available",
             payment_id: item.payment_id || "No Payment Id Available",
-            created_at: item.created_at || new Date(), // Assuming date is required, else "No Data Available"
+            created_at: item.created_at || new Date(),
             payable_amount:
               item.payable_amount !== undefined
                 ? item.payable_amount
@@ -117,7 +117,11 @@ const Transactions = () => {
         );
         setTotalAmountForSelectedCategory(data.data.total_income || 0);
       }
-    });
+    } catch (error) {
+      console.error("Failed to fetch transactions:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -126,7 +130,6 @@ const Transactions = () => {
     return date.toLocaleDateString("en-US", options);
   };
 
-  // Event handler for start date change
   const handleStartDateChange = (date) => {
     setStartDate(date);
     if (endDate < date) {
@@ -134,17 +137,14 @@ const Transactions = () => {
     }
   };
 
-  // Event handler for end date change
   const handleEndDateChange = (date) => {
     if (date >= startDate) {
       setEndDate(date);
     }
   };
 
-  // Event handler for category selection
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    fetchTransactions();
   };
 
   return (
@@ -168,109 +168,114 @@ const Transactions = () => {
         </div>
       </div>
 
-      {/* Table Section */}
-      <div className="mt-4 overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          {" "}
-          <thead className="bg-gray-50 border-b">
-            <tr>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Order ID
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Customer
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Payment Type
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Transaction ID
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Date
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Amount
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Status
-              </th>
-              <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
-                Invoice
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {noDataAvailable ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="mt-4 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 border-b">
               <tr>
-                <td colSpan="8" className="text-center py-4">
-                  No Data Available
-                </td>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Order ID
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Customer
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Payment Type
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Transaction ID
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Date
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Amount
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Status
+                </th>
+                <th className="py-2 text-xs md:text-sm font-semibold text-gray-500 px-2 md:px-4">
+                  Invoice
+                </th>
               </tr>
-            ) : (
-              transactions.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  } border-b`}
-                >
-                  <td className="py-2 text-sm px-4">
-                    {item._id || "No Id Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.profile_id || "No Data Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.payment_type || "No Payment Type Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.payment_id || "No Payment ID Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {formatDate(item.created_at) || "No Date Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    $
-                    {!isNaN(parseFloat(item.payable_amount))
-                      ? parseFloat(item.payable_amount).toFixed(2)
-                      : "No Amount Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    {item.order_status || "No Status Available"}
-                  </td>
-                  <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                    <Link to={`/invoice/${item._id}/details`}>
-                      {" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        id="download"
-                      >
-                        <path
-                          fill="#000"
-                          d="M12 4a1 1 0 0 0-1 1v9.529l-4.218-4.223a1.043 1.043 0 0 0-1.476 0 1.046 1.046 0 0 0 0 1.478l5.904 5.91c.217.217.506.319.79.305.284.014.573-.088.79-.305l5.904-5.91a1.046 1.046 0 0 0 0-1.478 1.043 1.043 0 0 0-1.476 0L13 14.529V5a1 1 0 0 0-1-1zM5 21a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"
-                        ></path>
-                      </svg>{" "}
-                    </Link>
+            </thead>
+            <tbody>
+              {noDataAvailable ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-4">
+                    No Data Available
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-between items-center mt-4">
-        <div>Total Amount:</div>
-        <div className="text-lg font-bold">
-          $
-          {totalAmountForSelectedCategory
-            ? totalAmountForSelectedCategory.toFixed(2)
-            : "0.00"}
+              ) : (
+                transactions.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={`${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                    } border-b`}
+                  >
+                    <td className="py-2 text-sm px-4">
+                      {item._id || "No Id Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      {item.profile_id || "No Data Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      {item.payment_type || "No Payment Type Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      {item.payment_id || "No Payment ID Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      {formatDate(item.created_at) || "No Date Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      $
+                      {!isNaN(parseFloat(item.payable_amount))
+                        ? parseFloat(item.payable_amount).toFixed(2)
+                        : "No Amount Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      {item.order_status || "No Status Available"}
+                    </td>
+                    <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
+                      <Link to={`/invoice/${item._id}/details`}>
+                        {" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          id="download"
+                        >
+                          <path
+                            fill="#000"
+                            d="M12 4a1 1 0 0 0-1 1v9.529l-4.218-4.223a1.043 1.043 0 0 0-1.476 0 1.046 1.046 0 0 0 0 1.478l5.904 5.91c.217.217.506.319.79.305.284.014.573-.088.79-.305l5.904-5.91a1.046 1.046 0 0 0 0-1.478 1.043 1.043 0 0 0-1.476 0L13 14.529V5a1 1 0 0 0-1-1zM5 21a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"
+                          ></path>
+                        </svg>{" "}
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
+      )}
+
+      {!isLoading && (
+        <div className="flex justify-between items-center mt-4">
+          <div>Total Amount:</div>
+          <div className="text-lg font-bold">
+            $
+            {totalAmountForSelectedCategory
+              ? totalAmountForSelectedCategory.toFixed(2)
+              : "0.00"}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

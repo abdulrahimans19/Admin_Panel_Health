@@ -131,12 +131,12 @@ export default function PharmaOrder() {
                     {order._id}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.address_id ? order.full_name : "No Name Available"}
+                  {order.address_id ? order.address_id.full_name : "No Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    {order.profile_id
-                      ? `${order.profile_id.first_name} ${order.profile_id.last_name}`
-                      : "No Name Available"}
+                    {order.product_id
+                      ? order.product_id.name
+                      : "No Product Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {order.quantity || "0"}
