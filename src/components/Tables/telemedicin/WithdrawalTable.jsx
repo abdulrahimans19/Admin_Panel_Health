@@ -14,6 +14,8 @@ function WithdrawalTable({
   callBack,
   btText,
   getWithdrawalRequsts,
+  isLoading,
+  setIsLoading,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
@@ -21,7 +23,7 @@ function WithdrawalTable({
   const [table, setTable] = useState([]);
   const [myfunction, setFunction] = useState();
   const [selectPage, setSelectPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [] = useState(true);
 
   // const toggleModal = () => {
   //   setShowModal(!showModal);
@@ -49,9 +51,10 @@ function WithdrawalTable({
   //       });
   //   }
   // };
-  useEffect(() => {
-    fetchWithdrawalRequests(selectPage);
-  }, [selectPage]);
+  // useEffect(() => {
+  //   fetchWithdrawalRequests(selectPage);
+  //   console.log(data);
+  // }, [selectPage]);
 
   const fetchWithdrawalRequests = (page) => {
     setIsLoading(true);
@@ -79,7 +82,7 @@ function WithdrawalTable({
   var page = Math.floor(document / 10);
   var remainder = document % 10;
   page = page + (remainder > 0 ? 1 : 0);
-
+  console.log(data, " @@@@@@@@@@");
   return (
     <div className="container">
       <Promodal
@@ -100,7 +103,7 @@ function WithdrawalTable({
       <div className="overflow-x-auto ">
         {isLoading ? (
           <div>Loading...</div> // Loading state
-        ) : table.length > 0 ? (
+        ) : table.length > 0 || data.length > 0 ? (
           <table class="table-auto w-full mt-5 rounded mt-2">
             {/* //tracking-wider */}
             <thead class="text-center rounded-lg  text-gray-500  text-xs">

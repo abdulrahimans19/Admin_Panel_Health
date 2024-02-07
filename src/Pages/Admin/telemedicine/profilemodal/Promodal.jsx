@@ -15,6 +15,7 @@ export default function ({
   selectpage,
   getWithdrawalRequsts,
   isCancel,
+  isSet,
 }) {
   const [showMoreText, setShowMoreText] = useState(false);
 
@@ -192,7 +193,7 @@ export default function ({
 
                               myfunction();
 
-                              isFunction();
+                              isSet === "true" && isFunction();
 
                               toggleModal();
                             }}
@@ -220,7 +221,7 @@ export default function ({
                               const test = await callback(user?._id);
                               console.log(test, "this my testing");
                               myfunction();
-                              isFunction();
+                              isSet && isFunction();
                               toggleModal();
                             }}
                           >

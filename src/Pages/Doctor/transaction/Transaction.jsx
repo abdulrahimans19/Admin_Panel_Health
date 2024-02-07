@@ -8,11 +8,12 @@ export default function DocTransaction() {
   const [data, setdata] = useState([]);
   const [document, setDocument] = useState();
   const [showNoDAta, setShowNoCategories] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     getHistory();
     const delay = setTimeout(() => {
       setShowNoCategories(true);
-    }, 8000);
+    }, 2000);
   }, []);
 
   function getHistory() {
@@ -20,8 +21,10 @@ export default function DocTransaction() {
       .then((data) => {
         setDocument(data.data.data?.total_document);
         setdata(data?.data?.data?.withdrawals);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
+    setLoading(false);
   }
   const handlePageChange = (selectedPage) => {
     getMyWithdrawelHisoty(selectedPage.selected + 1)
@@ -40,28 +43,29 @@ export default function DocTransaction() {
         All history of your transactions
       </p>
       <div className="overflow-x-auto ">
-        <table class="table-auto w-full mt-5 rounded mt-2">
-          {/* //tracking-wider */}
-          <thead class="text-center rounded-lg  text-gray-500  text-xs">
-            <tr>
-              <th class="p-1">ID</th>
-              <th class="p-1">Date/time</th>
-              <th class="p-1">Profile</th>
-              <th class="p-1 text-xs">Name</th>
-              <th class="p-1 text-xs">Country</th>
-              <th class="p-1">Bank</th>
-              <th class="p-1">Account Number</th>
-              <th class="p-1">Swift Code</th>
-              <th class="p-1">Balance</th>
-              <th class="p-1">Request Amount</th>
+        {isLoading ? (
+          <div>loding....</div>
+        ) : data && data.length > 0 ? (
+          <table class="table-auto w-full mt-5 rounded mt-2">
+            {/* //tracking-wider */}
+            <thead class="text-center rounded-lg  text-gray-500  text-xs">
+              <tr>
+                <th class="p-1">ID</th>
+                <th class="p-1">Date/time</th>
+                <th class="p-1">Profile</th>
+                <th class="p-1 text-xs">Name</th>
+                <th class="p-1 text-xs">Country</th>
+                <th class="p-1">Bank</th>
+                <th class="p-1">Account Number</th>
+                <th class="p-1">Swift Code</th>
+                <th class="p-1">Balance</th>
+                <th class="p-1">Request Amount</th>
 
-              <th class="p-1">Status</th>
-            </tr>
-          </thead>
-          <tbody class="text-xs text-center">
-            {data &&
-              data[0] &&
-              data.map((data) => {
+                <th class="p-1">Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-xs text-center">
+              {data.map((data) => {
                 return (
                   <tr class="bg-card rounded text-black text-xs text-center ">
                     <td class="p-1">{data._id}</td>
@@ -101,16 +105,19 @@ export default function DocTransaction() {
                   </tr>
                 );
               })}
-          </tbody>
-        </table>
-      </div>
-      {data && data.length == 0
-        ? showNoDAta && (
-            <div className="mt-10">
+            </tbody>
+          </table>
+        ) : (
+          showNoDAta && (
+            <div className="mt-10 flex justify-center w-full">
               <NoDataImage text={"No Data Available"} />
             </div>
           )
-        : ""}
+        )}
+      </div>
+
+      {/*  */}
+
       {page > 1 && (
         <div className="mt-5">
           <ReactPaginate

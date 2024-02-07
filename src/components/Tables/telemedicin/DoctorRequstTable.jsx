@@ -11,6 +11,9 @@ import {
   GetAllBlockd,
   GetAllDoctors,
   GetSearchAllDoctors,
+  blockedfilterCategoryByIdApi,
+  filterCategoryByIdApi,
+  pendingfilterCategoryByIdApi,
 } from "../../../API/ApiCall";
 import ReactPaginate from "react-paginate";
 
@@ -26,10 +29,13 @@ export default function DoctorRequstTable({
   myfunction,
   isLoding,
   setLOding,
+  datas,
+  setData,
+  catId,
 }) {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState();
-  const [datas, setData] = useState([]);
+  console.log(data, " this is my checking");
   const [isCancel, setIsCancel] = useState(false);
   const [showNoCategories, setShowNoCategories] = useState(false);
 
@@ -37,13 +43,14 @@ export default function DoctorRequstTable({
   useEffect(() => {
     const delay = setTimeout(() => {
       setShowNoCategories(true);
-    }, 10000);
+    }, 3000);
 
     return () => clearTimeout(delay);
   });
+
   const handlePageChange = (selectedPage) => {
     if (status === "approved") {
-      GetAllDoctors(selectedPage.selected + 1)
+      filterCategoryByIdApi(selectedPage.selected + 1, catId)
         .then((data) => {
           setData(data?.data?.data?.doctors);
           setLOding(false);
@@ -53,9 +60,10 @@ export default function DoctorRequstTable({
           setLOding(false);
         });
       if (status === "requests") {
-        DoctorRequests(selectedPage.selected + 1)
+        pendingfilterCategoryByIdApi(selectedPage.selected + 1, catId)
           .then((data) => {
             setData(data?.data?.data?.doctors);
+
             setLOding(false);
           })
           .catch((err) => {
@@ -64,9 +72,10 @@ export default function DoctorRequstTable({
           });
       }
       if (status === "unBlock") {
-        GetAllBlockd(selectedPage.selected + 1)
+        blockedfilterCategoryByIdApi(selectedPage.selected + 1, catId)
           .then((data) => {
             setData(data?.data?.data?.doctors);
+
             setLOding(false);
           })
           .catch((err) => {
@@ -79,7 +88,7 @@ export default function DoctorRequstTable({
     console.log("in reFresh");
     if (status === "approved") {
       console.log("in reFresh 1");
-      GetAllDoctors()
+      filterCategoryByIdApi()
         .then((data) => {
           setData(data?.data?.data?.doctors);
           setLOding(false);
@@ -90,7 +99,7 @@ export default function DoctorRequstTable({
         });
       if (status === "requests") {
         console.log("in reFresh 2");
-        DoctorRequests()
+        pendingfilterCategoryByIdApi()
           .then((data) => {
             setData();
             setLOding(false);
@@ -102,7 +111,7 @@ export default function DoctorRequstTable({
       }
       if (status === "unBlock") {
         console.log("in reFresh 3");
-        GetAllBlockd()
+        blockedfilterCategoryByIdApi()
           .then((data) => {
             setData(data?.data?.data?.doctors);
             setLOding(false);
@@ -144,6 +153,7 @@ export default function DoctorRequstTable({
         btImg={btImg}
         btText={btText}
         callback={callBack}
+        isSet={true}
         isFunction={myfunction}
         myfunction={reFresh}
         isCancel={isCancel}
@@ -158,7 +168,7 @@ export default function DoctorRequstTable({
             {document} doctors {availabe}
           </p>
         </div>
-        {status === "approved" && (
+        {/* {status === "approved" && (
           <form onSubmit={searchHandler}>
             <div className="flex p-0 border brder-gray-300 items-center justify-center mr-2">
               <input
@@ -173,12 +183,12 @@ export default function DoctorRequstTable({
               </button>
             </div>
           </form>
-        )}
+        )} */}
       </div>
       <div className="overflow-x-auto ">
         {isLoding ? (
           <div>Loding....</div>
-        ) : datas.length > 0 || data.length > 0 ? (
+        ) : (datas && datas.length > 0) || (data && data.length > 0) ? (
           <table class="table  w-full mt-10 rounded ">
             {/* //tracking-wider */}
             <thead class="text-center rounded-lg  text-gray-500  text-xs">
