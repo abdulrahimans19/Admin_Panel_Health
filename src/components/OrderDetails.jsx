@@ -20,7 +20,7 @@ export default function OrderDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { orderId } = useParams();
+  const { orderId,type } = useParams();
 
   useEffect(() => {
     const fetchFunction = async () => {

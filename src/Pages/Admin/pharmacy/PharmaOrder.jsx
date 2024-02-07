@@ -3,23 +3,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { foodNavdata, pharmacyNav } from "../../../Redux/Features/NavbarSlice";
 import { getPharmaOrders } from "../../../API/ApiCall";
 import { Link } from "react-router-dom";
-
+import ReactPaginate from "react-paginate";
 export default function PharmaOrder() {
   const [orders, setOrders] = useState([]);
-
+  const [totalPagecount, setTotalPagecount] = useState(1);
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dispatch(pharmacyNav());
-    getPharmaOrders()
+    GetORder();
+  }, [dispatch]);
+
+  const GetORder = (data) => {
+    console.log(currentPage);
+    getPharmaOrders(data || 1)
       .then(({ data }) => {
+        const totalPages = Math.ceil(data.data.total_document / 10);
+        setTotalPagecount(totalPages);
+
         console.log(data.data.orders, "my pharma data");
         setOrders(data.data.orders || []);
       })
       .catch((error) => {
         console.error("Error fetching orders:", error);
       });
-  }, [dispatch]);
+  };
+  const handlePageChange = (selectedPage) => {
+    console.log(selectedPage);
+    setCurrentPage(selectedPage.selected + 1);
+
+    GetORder(selectedPage.selected + 1);
+  };
 
   function formatDate(dateTimeString) {
     const options = { year: "numeric", month: "numeric", day: "numeric" };
@@ -131,7 +146,9 @@ export default function PharmaOrder() {
                     {order._id}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                  {order.address_id ? order.address_id.full_name : "No Name Available"}
+                    {order.address_id
+                      ? order.address_id.full_name
+                      : "No Name Available"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     {order.product_id
@@ -153,7 +170,7 @@ export default function PharmaOrder() {
                     {order.order_status || "Status Unavailable"}
                   </td>
                   <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <Link to={`/order/${order._id}/details`}>
+                    <Link to={`/order/${order._id}/pharma/details`}>
                       {" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -173,6 +190,20 @@ export default function PharmaOrder() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="mt-3">
+          <div className=" flex justify-center">
+            <ReactPaginate
+              pageCount={totalPagecount} // Replace with the total number of pages
+              pageRangeDisplayed={2} // Number of pages to display in the pagination bar
+              marginPagesDisplayed={1} // Number of pages to display for margin pages
+              onPageChange={handlePageChange}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+              // forcePage={currentPage}
+            />
+          </div>
         </div>
       </div>
     </div>

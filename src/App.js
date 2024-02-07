@@ -55,10 +55,15 @@ function App() {
       if (!SowphweeFcm) {
         requestForToken("Admin");
       }
-    } else {
+    } else if(user?.user_role == "DOCTOR") {
+
+
+
       if (!SowphweeFcm) {
         requestForToken("DOCTOR");
       }
+
+
     }
   }, []);
 
@@ -68,7 +73,7 @@ function App() {
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route element={<Home />} path="">
           {/* <Route element={<Notification />} path="/notification" /> */}
-          <Route element={<OrdeeDetails />} path="/order/:orderId/details" />
+          <Route element={<OrdeeDetails />} path="/order/:orderId/:type/details" />
           <Route element={<Invoice />} path="/invoice/:orderId/details" />
 
           <Route element={<Dashboard />} path="/dashboard" />

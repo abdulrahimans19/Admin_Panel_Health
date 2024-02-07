@@ -18,7 +18,9 @@ initializeApp(firebaseConfig);
 const messaging = getMessaging();
 
 export const requestForToken = async (TokenFor) => {
-  console.log("requsting fcm");
+
+
+  
   return getToken(messaging, {
     vapidKey: process.env.REACT_APP_VAPID_ID,
   })
@@ -36,7 +38,8 @@ export const requestForToken = async (TokenFor) => {
             .catch((err) => {
               console.log(err);
             });
-        } else {
+        } else  if(TokenFor == "DOCTOR") {
+          console.log("this is working");
           localStorage.setItem("sophwe_fcm", currentToken);
           updateDoctorFcmApi({ fcm_token: currentToken })
             .then((data) => {

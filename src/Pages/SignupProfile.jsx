@@ -7,6 +7,7 @@ import {
   AllCountry,
 } from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
+import languages from "../assets/language";
 
 const SignupProfile = ({ email, password, onClose }) => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const SignupProfile = ({ email, password, onClose }) => {
     category_id: "",
     experience: "",
     image: "",
+    language:[]
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -28,8 +30,8 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
+const [language, setLanguage] = useState([])
+const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -38,6 +40,8 @@ const SignupProfile = ({ email, password, onClose }) => {
     if (!formData.country) newErrors.country = "Please add your country.";
     if (!formData.category_id) newErrors.category_id = "Choose your category.";
     if (!formData.experience) newErrors.experience = "Add your experience.";
+    if (!language[0]) newErrors.language = "Add your language.";
+
     if (!formData.certificate)
       newErrors.certificate = "Upload your certificate.";
     if (!formData.consulting_fee)
@@ -115,6 +119,8 @@ const SignupProfile = ({ email, password, onClose }) => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData,"next,");
+    console.log(language);
     e.preventDefault();
     setIsLoading(true);
     if (!validateForm()) {
@@ -152,8 +158,9 @@ const SignupProfile = ({ email, password, onClose }) => {
           image: profileImage,
           experience: parseInt(formData.experience, 10),
           category_id: formData.category_id,
+          languages:language
         };
-
+console.log(userData);
         const response = await SignupUserdata(userData);
         console.log(response);
         console.log("Form Data:", formData);
@@ -193,6 +200,22 @@ const SignupProfile = ({ email, password, onClose }) => {
 
     fetchCountries();
   }, []);
+
+//   const [languagesArray, setLanguagesArray] = useState([])
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+// console.log(name,"name", value);
+//     // Update the formData state
+//     setFormData(prevFormData => ({
+//         ...prevFormData,
+//         [name]: value,
+//     }));
+
+//     // Add the new language to languagesArray if it's not already included
+//     if (name === 'language' && !languagesArray.includes(value)) {
+//         setLanguagesArray(prevLanguagesArray => [...prevLanguagesArray, value]);
+//     }
+// };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -440,6 +463,53 @@ const SignupProfile = ({ email, password, onClose }) => {
 
                       <div className="label"></div>
                     </label>
+
+                    <label className="text-[13px] font-normal font-['Roboto Flex'] ">
+                      <div className="label">
+                        <span className="label-text">Language</span>
+                        {errors.language && (
+                          <p className="text-red-500">{errors.language}</p>
+                        )}
+                      </div>
+                      <select
+                        className="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray-400 p-2 px-3 my-2"
+                        // onChange={(e) =>
+                        //   setFormData({ ...formData, language: e.target.value })
+                        // }
+                        onChange={(data) => {
+                          setLanguage((prevArray) => {
+                            const newValue = data.target.value;
+    
+                            // Check if the value is already in the array
+                            if (!prevArray.includes(newValue)) {
+                              // If not, update the array
+                              return [...prevArray, newValue];
+                            }
+    
+                            // If the value is already in the array, return the unchanged array
+                            return prevArray;
+                          });
+                        }}
+                      >
+                        <option value="">Select Language</option>{" "}
+                        {/* Default option */}
+
+                        {languages.map((data)=>
+                        {
+                       
+return(
+  <option value={data.name}>{data.name}</option>
+
+
+)
+                        })}
+        
+                      </select>
+                    </label>
+
+
+
+
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">Description</span>

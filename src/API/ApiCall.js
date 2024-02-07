@@ -75,8 +75,8 @@ export const getFoodCategory = async () => {
 export const getFoodProducts = async () => {
   return await Instance.get("/product/food");
 };
-export const getFoodOrders = async () => {
-  return await Instance.get("/order/food/all-orders");
+export const getFoodOrders = async (page) => {
+  return await Instance.get(`/order/food/all-orders?page=${page}`);
 };
 
 export const editFoodProduct = async (data) => {
@@ -188,7 +188,6 @@ export const GetSearchAllDoctors = async (search) => {
   return await Instance.get(`/doctor/admin/all?search=${search}`);
 };
 
-
 export const filterCategoryByIdApi = async (categoryId, page, search) => {
   try {
     const response = await Instance.get(`/doctor/admin/all`, {
@@ -206,8 +205,6 @@ export const filterCategoryByIdApi = async (categoryId, page, search) => {
     throw error; // You can throw the error again if needed
   }
 };
-
-
 
 export const CanclationDoctor = async (id) => {
   return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
@@ -323,8 +320,8 @@ export const getFoodSubCategory = async (data) => {
 export const UpadateFoodCategory = async (data) => {
   return await Instance.put(`/main-categories/food/update`, data);
 };
-export const getPharmaOrders = async () => {
-  return await Instance.get("/order/pharma/all-orders");
+export const getPharmaOrders = async (page) => {
+  return await Instance.get(`/order/pharma/all-orders?page=${page}`);
 };
 export const disablePharmaProduct = async (data) => {
   return await Instance.delete(`/product/${data}`);
@@ -356,6 +353,7 @@ export const getDisbledTestByCatApi = async (cat_id) => {
   );
 };
 export const getCurrentAppoinmentsApi = async (year, month, date, page) => {
+  console.log(year, month, date);
   return await Instance.get(
     `/bookings/all?date=${year}-${month}-${date}&page=${page}`
   );
@@ -435,7 +433,6 @@ export const fcmTOkenRemoveApi = async () => {
   const fcm = localStorage.getItem("sophwe_fcm");
   return await Instance.post("/user/remove-fcm-token", { fcm_token: fcm });
 };
-export const BulkUploadApi = async ({wholeData,type}) => {
- 
-  return await BulkInstance.post(`/product/${type}/create/multiple`,wholeData);
+export const BulkUploadApi = async ({ wholeData, type }) => {
+  return await BulkInstance.post(`/product/${type}/create/multiple`, wholeData);
 };
