@@ -21,6 +21,7 @@ import {
 import ReactPaginate from "react-paginate";
 import "../../../assets/pagination.css";
 import ConfirmationModal from "../../../components/Modal/ConfirmationModal";
+import AddBulk from "../../../components/Modal/AddBulk";
 export default function PharmaProduct() {
   const [categoryMenu, setCategoryMenu] = useState(true);
   const [AddProductModal, setAddProductModal] = useState(false);
@@ -33,7 +34,8 @@ export default function PharmaProduct() {
   const [Categories, setCategories] = useState([]);
   const [filterId, setFilterId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [enableProduct, setEnableProduct] = useState(false);
+const [addBulModal, setAddBulModal] = useState(false)
+const [enableProduct, setEnableProduct] = useState(false);
   const dispatch = useDispatch();
   const editCat = (data) => {
     setEditProductData(data);
@@ -202,13 +204,23 @@ export default function PharmaProduct() {
         </div>
         <div>
           {/* <ComunButton text={"Add new categories"} callback={addcategory} /> */}
+          <div className="sm:flex gap-4 ">
           <div
             className=""
+            onClick={() => {
+              setAddBulModal(true);
+            }}
+          >
+            <AddItemButton text={"Add bulk Products"} img={buttonImage} />
+          </div>
+          <div
+            className="  mt-2 sm:mt-0"
             onClick={() => {
               setAddProductModal(true);
             }}
           >
             <AddItemButton text={"Add Products"} img={buttonImage} />
+          </div>
           </div>
 
           <div className="flex items-center px-2.5 mt-4 py-0.5 text-base font-semibold text-green-500 text-center">
@@ -290,6 +302,7 @@ export default function PharmaProduct() {
           />
         </div>
       </div>
+      {addBulModal&&<AddBulk onClose={setAddBulModal} type={"pharma"} FoodProduct={PharmaProduct} />}
 
       {disableProducts && (
         <ConfirmationModal

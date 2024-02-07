@@ -33,8 +33,11 @@ const Login = () => {
           data.data.data.user_role === "DOCTOR"
         ) {
           localStorage.setItem("sophwe_token", JSON.stringify(data.data.data));
+
           if (selectedOption === "Admin") {
-            requestForToken();
+            requestForToken("Admin");
+          } else {
+            requestForToken("DOCTOR");
           }
 
           const redirectPath =

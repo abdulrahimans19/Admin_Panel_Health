@@ -1,17 +1,16 @@
 import axios from "axios";
-
 const baseURL = process.env.REACT_APP_BASEURL;
 
-const Instance = axios.create({ baseURL });
+const BulkInstance = axios.create({ baseURL });
 
-Instance.interceptors.request.use(
+BulkInstance.interceptors.request.use(
   (config) => {
     const token = JSON.parse(localStorage.getItem("sophwe_token"));
 
     if (token?.tokens?.access_token) {
       config.headers["Authorization"] = "Bearer " + token?.tokens?.access_token;
     }
-    config.headers["Content-Type"] = "application/json";
+    config.headers["Content-Type"] = "multipart/form-data";
     return config;
   },
   (error) => {
@@ -19,7 +18,4 @@ Instance.interceptors.request.use(
     console.log(error);
   }
 );
-
-
-
-export default Instance
+export default BulkInstance;

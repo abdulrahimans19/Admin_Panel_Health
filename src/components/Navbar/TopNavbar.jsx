@@ -6,7 +6,7 @@ import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BellIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast";
-import "../../assets/style/navbar.css"
+import "../../assets/style/navbar.css";
 import {
   Button,
   Card,
@@ -67,72 +67,53 @@ function NavBar() {
 
   // const [audio] = useState(new Audio('../../assets/short-success-sound-glockenspiel-treasure-video-game-6346.mp3'));
 
-
-  
-
   useEffect(() => {
-
     const user = JSON.parse(localStorage.getItem("sophwe_token"));
 
-if(user?.user_role=="Admin"){
-  onMessageListener().then((payload) => {
-    console.log(payload, "its coming here");
-    getNotificationData();
-    const audio = new Audio(wavFile);
-    audio.play().catch((err) => {
-      console.log(err);
-    });
-    // console.log(document.hasFocus());
-    // if (!document.hasFocus()) {
-    //   console.log("ifworking");
-    //   audio.play().catch((err) => {
-    //     console.log(err);
-    //   });
-    // } else {
-    //   console.log("else working");
-    //   audio.play().catch((err) => {
-    //     console.log(err);
-    //   });
-    // }
+    if (user?.user_role == "Admin") {
+      onMessageListener()
+        .then((payload) => {
+          console.log(payload, "its coming here");
+          getNotificationData();
+          const audio = new Audio(wavFile);
+          audio.play().catch((err) => {
+            console.log(err);
+          });
 
-  setNotificationnew(payload);
+          setNotificationnew(payload);
 
-    toast.custom((t) => (
-      <div
-        className={`${
-          t.visible ? "animate-enter" : "animate-leave"
-        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-      >
-        <div className="flex-1 w-0 p-4">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 pt-0.5"></div>
-            <div className="ml-3 flex-1">
-              <p className="text-sm font-medium text-gray-900">
-                {payload?.notification?.title}
-              </p>
-              <p className="mt-1 text-sm text-gray-500">
-                {payload.notification?.body}
-              </p>
+          toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? "animate-enter" : "animate-leave"
+              } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+              <div className="flex-1 w-0 p-4">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 pt-0.5"></div>
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-gray-900">
+                      {payload?.notification?.title}
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {payload.notification?.body}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex border-l border-gray-200">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Close
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="flex border-l border-gray-200">
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    ));
-
-  })
-  .catch((err) => console.log("failed: ", err));
-}
-
- 
-
+          ));
+        })
+        .catch((err) => console.log("failed: ", err));
+    }
   }, [notificationnew]);
 
   const [getNotData, setGetNotData] = useState(0);
@@ -146,7 +127,31 @@ if(user?.user_role=="Admin"){
   useEffect(() => {
     getNotificationData();
   }, []);
-  
+
+  // const [openNotification, setOpenNotification] = useState(false);
+  useEffect(() => {
+    const closeNotificationOnClickAnywhere = (event) => {
+      if (openNotification) {
+        console.log("rsdoigreg");
+        // Check if the click occurred outside of the notification bar
+        const notificationBar = document.getElementById("notification-bar");
+        console.log(notificationBar);
+
+        if (notificationBar && !notificationBar.contains(event.target)) {
+          console.log("rsdoibgreg");
+
+          setOpenNotification(false);
+        }
+      }
+    };
+
+    document.addEventListener("click", closeNotificationOnClickAnywhere);
+
+    return () => {
+      document.removeEventListener("click", closeNotificationOnClickAnywhere);
+    };
+  }, [openNotification]);
+
   return (
     <>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -214,7 +219,7 @@ if(user?.user_role=="Admin"){
                         }flex gap-1 p-2 rounded-md text-white cursor-pointer `}
                       >
                         {data.logo}
-                        <span  class="text-white text_hidden">{data.name}</span>
+                        <span class="text-white text_hidden">{data.name}</span>
                       </div>
                     );
                   })}
@@ -237,7 +242,7 @@ if(user?.user_role=="Admin"){
 
             <div className="flex items-center">
               {/* Notification and Profile */}
-              <div class="flex items-center ms-3">
+              <div id="notification-bar" class="flex items-center ms-3">
                 <div className="relative inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <button
                     type="button"
@@ -262,11 +267,13 @@ if(user?.user_role=="Admin"){
                   </div>
                 </div>
                 {openNotification && (
-                  <NotificationBar
-                    getNotificationData={getNotificationData}
-                    notifications={notification}
-                    setOpenNotification={setOpenNotification}
-                  />
+                  <div>
+                    <NotificationBar
+                      getNotificationData={getNotificationData}
+                      notifications={notification}
+                      setOpenNotification={setOpenNotification}
+                    />
+                  </div>
                 )}
               </div>
               <div class="flex items-center ms-3">

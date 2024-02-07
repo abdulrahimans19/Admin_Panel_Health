@@ -36,7 +36,6 @@ import DocTransaction from "./Pages/Doctor/transaction/Transaction";
 import AppointmentHistory from "./Pages/Doctor/AppointmentHistory/AppointmentHistory";
 import Appointments from "./Pages/Doctor/Appointments/Appointments";
 import WithdrawalPannel from "./Pages/Admin/telemedicine/Withdrawal";
-import Notification from "./components/Navbar/Notification";
 import SignupProfile from "./Pages/SignupProfile";
 import Coupons from "./Pages/Admin/coupons/Coupons";
 import { useState, useEffect } from "react";
@@ -54,7 +53,11 @@ function App() {
 
     if (user?.user_role == "Admin") {
       if (!SowphweeFcm) {
-        requestForToken();
+        requestForToken("Admin");
+      }
+    } else {
+      if (!SowphweeFcm) {
+        requestForToken("DOCTOR");
       }
     }
   }, []);

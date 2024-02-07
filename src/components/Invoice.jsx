@@ -2,14 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GetOrderDetails, GetHomeCareOrder } from "../API/ApiCall";
 import { useReactToPrint } from "react-to-print"; // Import useReactToPrint
+import { useDispatch, useSelector } from "react-redux";
+import { pharmacyNav } from "../Redux/Features/NavbarSlice";
 
 const Invoice = () => {
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { orderId } = useParams();
   const componentRef = useRef(); // Ref for the component to print
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    // dispatch(pharmacyNav());
     const fetchTransaction = async () => {
       setIsLoading(true);
 

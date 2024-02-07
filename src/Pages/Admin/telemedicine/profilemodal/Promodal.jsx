@@ -1,5 +1,6 @@
 import { useState } from "react";
 import download from "../../../../assets/images/downloadimg.png";
+import axios from "axios";
 export default function ({
   status,
   showModal,
@@ -21,25 +22,26 @@ export default function ({
     return urlPattern.test(str);
   }
 
-  const downloadImage = (filePath, fileName = "Example.jpg") => {
-    fetch(filePath)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName;
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        link.parentNode.removeChild(link);
-      })
-      .catch((error) => {
-        console.error("Failed to download the file:", error);
+  const downloadImage = async (filePath, fileName = "Example.jpg") => {
+    try {
+      console.log(filePath);
+      const response = await axios({
+        url: filePath, // Your file URL
+        method: 'GET',
+        responseType: 'blob', // Important
       });
+
+      // Create a URL for the blob
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'CustomFileName.jpg'); // Any custom file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading the file', error);
+    }
   };
 
   // Extract text until the position of "i"

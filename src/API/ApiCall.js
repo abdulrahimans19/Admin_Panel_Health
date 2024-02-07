@@ -1,5 +1,6 @@
 import Instance from "./Axios";
 import axios from "axios";
+import BulkInstance from "./BultAxios";
 export const RegisterDatacall = async (data) => {
   return await Instance.post("/userregister", data);
 };
@@ -423,6 +424,7 @@ export const unreadNotification = async () => {
 export const updateFcmApi = async (data) => {
   return await Instance.post(`/user/update-fcm-token`, data);
 };
+
 export const sendNotification = async (data) => {
   return await Instance.post(`/notification/send-notification`, data);
 };
@@ -433,7 +435,7 @@ export const fcmTOkenRemoveApi = async () => {
   const fcm = localStorage.getItem("sophwe_fcm");
   return await Instance.post("/user/remove-fcm-token", { fcm_token: fcm });
 };
-export const BulkUploadApi = async (data,type) => {
+export const BulkUploadApi = async ({wholeData,type}) => {
  
-  return await Instance.post("/product/food/create/multiple",data);
+  return await BulkInstance.post(`/product/${type}/create/multiple`,wholeData);
 };
