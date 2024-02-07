@@ -13,7 +13,7 @@ export default function AppointmentHistory() {
   const [duration, setDuration] = useState();
   const [passingdate, setPassingDate] = useState();
   const [showNodata, setShowNoCategories] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getApointmentHistory();
     const delay = setTimeout(() => {
@@ -101,6 +101,7 @@ export default function AppointmentHistory() {
         setData(data?.data?.data?.appointments);
 
         setDocument(data?.data?.data?.total_document);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -139,8 +140,9 @@ export default function AppointmentHistory() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 mb-4 mt-10">
           {/* card */}
-          {data &&
-            data[0] &&
+          {isLoading ? (
+            <>loading</>
+          ) : data && data[0] ? (
             data.map((data) => {
               const age = calculateAge(data?.patientId?.date_of_birth);
 
@@ -198,41 +200,40 @@ export default function AppointmentHistory() {
                   </div>
 
                   <div className="">
-{
-data.prescription_url?<><button
-disabled
-className="w-full bg-green-300 text-green-800 p-3 rounded-lg mt-6 disabled:"
->
-prescription added
-</button></>:    <button
-onClick={() =>
-  setDatas(duration, age, data, formattedDate)
-}
-className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
->
-upload prescription
-</button>
-}
-                
-
+                    {data.prescription_url ? (
+                      <>
+                        <button
+                          disabled
+                          className="w-full bg-green-300 text-green-800 p-3 rounded-lg mt-6 disabled:"
+                        >
+                          prescription added
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          setDatas(duration, age, data, formattedDate)
+                        }
+                        className="w-full bg-green-600 text-white p-3 rounded-lg mt-6"
+                      >
+                        upload prescription
+                      </button>
+                    )}
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div>
+              <NoDataImage text={"No Apointments"} />
+            </div>
+          )}
 
           {/* card */}
         </div>
 
-        {data && data.length === 0
-          ? showNodata && (
-              <div>
-                <NoDataImage text={"No Apointments"} />
-              </div>
-            )
-          : ""}
-
         <ViewPatient
-        getApointmentHistory={getApointmentHistory}
+          getApointmentHistory={getApointmentHistory}
           setShowModal={setShowModal}
           data={patient}
           ShowModal={showModal}

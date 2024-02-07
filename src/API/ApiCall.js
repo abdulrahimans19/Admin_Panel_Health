@@ -206,8 +206,58 @@ export const filterCategoryByIdApi = async (categoryId, page, search) => {
   }
 };
 
+export const blockedfilterCategoryByIdApi = async (
+  categoryId,
+  page,
+  search
+) => {
+  console.log("api thias");
+  try {
+    //pending-doctor
+    const response = await Instance.get(`/doctor/admin/blocked-doctor`, {
+      params: {
+        page: page,
+        category_id: categoryId,
+        search: search,
+      },
+    });
+
+    return response.data; // You can also return the data if needed
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    throw error; // You can throw the error again if needed
+  }
+};
+
+export const pendingfilterCategoryByIdApi = async (
+  categoryId,
+  page,
+  search
+) => {
+  console.log("api thias");
+  try {
+    //pending-doctor
+    const response = await Instance.get(`/doctor/admin/pending-doctor`, {
+      params: {
+        page: page,
+        category_id: categoryId,
+        search: search,
+      },
+    });
+
+    return response.data; // You can also return the data if needed
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    throw error; // You can throw the error again if needed
+  }
+};
+
 export const CanclationDoctor = async (id) => {
-  return await Instance.get(`/doctor/admin/decline-doctor?doctor_id=${id}`);
+  return await Instance.get(
+    `/doctor/admin/decline-doctor?doctor_id=${id}`
+  ).then((err) => console.log(err));
 };
 export const getPharmaProductApi = async (pageNumber) => {
   return await Instance.get(`/product/pharma?page=${pageNumber}`);

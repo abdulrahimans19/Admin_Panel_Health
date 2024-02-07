@@ -9,8 +9,9 @@ import { useDispatch } from "react-redux";
 import { telemedicine } from "../../../Redux/Features/NavbarSlice";
 
 function WithdrawalPannel() {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, SetData] = useState([]);
-  const [aproveddata, SetAprovedData] = useState([]);
+  const [aproveddata1, SetAprovedData1] = useState([]);
   const [document, SetDocument] = useState(0);
   const [document1, SetDocument1] = useState(0);
   const dispatch = useDispatch();
@@ -21,23 +22,31 @@ function WithdrawalPannel() {
   }, []);
   console.log(data);
   function getWithdrawalRequsts() {
+    console.log("in there");
     GetDoctorWithdrawalRequsts()
       .then((data) => {
         SetData(data.data.data.withdrawals);
         SetDocument(data.data.data?.total_document);
+
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   }
   function GetAprovedWithdrawalRequsts() {
     GetDrAprovedWithdrawalRequsts()
       .then((data) => {
-        SetAprovedData(data.data.data.withdrawals);
+        console.log(data.data.data.withdrawals, " kfkl this out");
+        SetAprovedData1(data.data.data.withdrawals);
         SetDocument1(data.data.data?.total_document);
+
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   }
   const [activeTab, setActiveTab] = useState(1);
@@ -48,6 +57,7 @@ function WithdrawalPannel() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 1:
+        console.log(data, "1");
         return (
           <WithdrawalTable
             availabe={"Requested"}
@@ -57,16 +67,21 @@ function WithdrawalPannel() {
             getWithdrawalRequsts={getWithdrawalRequsts}
             document={document}
             setData={SetData}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
           />
         );
       case 2:
+        console.log(aproveddata1, "2");
         return (
           <WithdrawalTable
-            data={aproveddata}
+            data={aproveddata1}
             availabe={"Request Approved"}
             btText={"Approved"}
             document={document1}
-            setData={SetAprovedData}
+            isLoading={isLoading}
+            setData={SetAprovedData1}
+            setIsLoading={setIsLoading}
           />
         );
     }
@@ -98,6 +113,7 @@ function WithdrawalPannel() {
               }`}
               onClick={() => {
                 handleTabClick(2);
+                GetAprovedWithdrawalRequsts();
               }}
             >
               Approved
