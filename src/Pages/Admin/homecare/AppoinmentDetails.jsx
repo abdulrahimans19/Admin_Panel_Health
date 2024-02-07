@@ -34,7 +34,7 @@ function AppoinmentDetails() {
   const [year, setYear] = useState(today.getFullYear());
   const [Image, setImage] = useState("");
   const [fileInputs, setFileInputs] = useState([{ file: null }]);
-const [error, seterror] = useState()
+  const [error, seterror] = useState();
   useEffect(() => {
     dispatch(homecare());
 
@@ -42,7 +42,7 @@ const [error, seterror] = useState()
     // console.log("currnt", currentPage);
   }, [currentPage]);
   const handleFileChange = (e, index) => {
-    const files = e.target.files[0]
+    const files = e.target.files[0];
     const updatedFileInputs = [...fileInputs];
     updatedFileInputs[index].file = files;
     setFileInputs(updatedFileInputs);
@@ -65,26 +65,30 @@ const [error, seterror] = useState()
     // console.log("page is",currentPage);
   };
   const getTodayAppoinments = () => {
-    getCurrentAppoinmentsApi(year, month, day, currentPage).then((data) => {
-      console.log("apppoiii", data);
-      // console.log(data.data.data.total_count);
-      const totalPages = Math.ceil(data.data.data.total_count / 10);
-      setTotalPagecount(totalPages);
-      setAppoinments(data.data.data.bookings);
-    }).catch((error)=>{
-      console.log(error);
-    })
+    getCurrentAppoinmentsApi(year, month, day, currentPage)
+      .then((data) => {
+        console.log("apppoiii", data);
+        // console.log(data.data.data.total_count);
+        const totalPages = Math.ceil(data?.data?.data?.total_count / 10);
+        setTotalPagecount(totalPages);
+        setAppoinments(data?.data?.data?.bookings);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const getTableData = () => {
-    getAppoinmentsApi(year, month, day, currentPage).then((data) => {
-      const totalPages = Math.ceil(data.data.data.total_count / 10);
-      setTotalPagecount(totalPages);
-      setAppoinments(data.data.data.bookings);
-      console.log("appoinmsansnsnn", appoinments);
-    }).catch((error)=>{
-      console.log(error);
-    })
+    getAppoinmentsApi(year, month, day, currentPage)
+      .then((data) => {
+        const totalPages = Math.ceil(data.data.data.total_count / 10);
+        setTotalPagecount(totalPages);
+        setAppoinments(data.data.data.bookings);
+        console.log("appoinmsansnsnn", appoinments);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   useEffect(() => {
     getTableData();
@@ -108,7 +112,7 @@ const [error, seterror] = useState()
     console.log("on drop");
     const updatedFiles = acceptedFiles.map((file) => ({ file }));
     setFileInputs((prevInputs) => [...prevInputs, ...updatedFiles]);
-console.log("files rere",fileInputs);
+    console.log("files rere", fileInputs);
     // Optionally, if you want to show previews for multiple files:
     const filePreviews = acceptedFiles.map((file) =>
       Object.assign(file, {
@@ -124,75 +128,71 @@ console.log("files rere",fileInputs);
   });
 
   const addResult = async () => {
-  
     // e.preventDefault(); // Prevent the form from submitting the traditional way
-    
+
     // Assuming 'fileToUpload' is the name attribute of your file input
     // const filesToUpload = form.getAll("fileToUpload");
-    console.log("files to upload ",fileToUpload);
+    console.log("files to upload ", fileToUpload);
     const uploadedUrls = [];
-console.log(fileInputs,"fileinput here");
-if (fileInputs.some(obj => obj.hasOwnProperty("file") && obj["file"] === null)) {
-  console.log("add files");
-  seterror("input files")
-}
-else{
-  seterror("")
-console.log("else working");
-  for (const input of fileInputs) {
-    const file = input.file;
-    console.log("uolpoiu",file); // Directly accessing the file object
-    if(file==null){
-      return ;
+    console.log(fileInputs, "fileinput here");
+    if (
+      fileInputs.some(
+        (obj) => obj.hasOwnProperty("file") && obj["file"] === null
+      )
+    ) {
+      console.log("add files");
+      seterror("input files");
+    } else {
+      seterror("");
+      console.log("else working");
+      for (const input of fileInputs) {
+        const file = input.file;
+        console.log("uolpoiu", file); // Directly accessing the file object
+        if (file == null) {
+          return;
+        }
+        try {
+          const datas = await UploadImageUrl();
+          console.log("iuhhhhhhh", datas?.data); // Get a presigned URL for each file
+          const presignedUrl = datas?.data?.presignedUrl;
+          const publicUrl = datas?.data?.publicUrl;
+
+          await uploadToAws(presignedUrl, file);
+          // .then((data)=>{
+          //   console.log("uploadinfdfd",data);
+          // }); // Upload the file to AWS
+          uploadedUrls.push(publicUrl); // Collect the public URL after successful upload
+
+          console.log("Uploaded image URL:", publicUrl);
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          // Handle any errors here, such as breaking the loop or showing a message
+        }
+        setFileInputs([{ file: null }]);
+      }
+
+      console.log("All uploaded URLs:", uploadedUrls);
+      if (uploadedUrls.length > 0) {
+        // After all files are uploaded, you might want to do something with the URLs
+        const resultData = {
+          booking_id: selectedUser?._id,
+          result_urls: uploadedUrls, // Store all URLs in resultData
+        };
+
+        console.log("Result data with URLs:", resultData);
+        // Call your API with the result data
+        try {
+          await addResultApi(resultData);
+          // console.log("Result API response:", data);
+          getTodayAppoinments();
+          setShowModal(false);
+          // Refresh appointments or handle the next steps
+        } catch (apiError) {
+          console.error("Error calling addResultApi:", apiError);
+          // Handle API call error here
+        }
+      }
     }
-    try {
-      const datas = await UploadImageUrl(); 
-      console.log("iuhhhhhhh",datas.data);// Get a presigned URL for each file
-      const presignedUrl = datas.data.presignedUrl;
-      const publicUrl = datas.data.publicUrl;
-
-      await uploadToAws(presignedUrl, file)
-      // .then((data)=>{
-      //   console.log("uploadinfdfd",data);
-      // }); // Upload the file to AWS
-      uploadedUrls.push(publicUrl); // Collect the public URL after successful upload
-
-      console.log("Uploaded image URL:", publicUrl);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      // Handle any errors here, such as breaking the loop or showing a message
-    }
-    setFileInputs([{file:null}])
-  }
-
-  console.log("All uploaded URLs:", uploadedUrls);
-  if (uploadedUrls.length > 0) {
-    // After all files are uploaded, you might want to do something with the URLs
-    const resultData = {
-      booking_id: selectedUser._id,
-      result_urls: uploadedUrls, // Store all URLs in resultData
-    };
-
-    console.log("Result data with URLs:", resultData);
-    // Call your API with the result data
-    try {
-      await addResultApi(resultData);
-      // console.log("Result API response:", data);
-      getTodayAppoinments();
-      setShowModal(false)
-      // Refresh appointments or handle the next steps
-    } catch (apiError) {
-      console.error("Error calling addResultApi:", apiError);
-      // Handle API call error here
-    }
-  }
-
-}
-
-
-    
-
-    
   };
   return (
     <div>
@@ -273,16 +273,16 @@ console.log("else working");
                           {/* {data.middle_name} { data.last_name} */}
                         </th>
 
-                        <td class="px-6 py-4">{data._id}</td>
-                        <td class="px-6 py-4">{data.test_id.name}</td>
+                        <td class="px-6 py-4">{data?._id}</td>
+                        <td class="px-6 py-4">{data?.test_id?.name}</td>
                         <td class="px-6 py-4">
-                          {data.address_id.street_address}{" "}
-                          {data.address_id.state} {data.address_id.city}{" "}
-                          {data.address_id.zip_code} ph:{" "}
-                          {data.address_id.phone_number}
+                          {data.address_id?.street_address}{" "}
+                          {data.address_id?.state} {data?.address_id?.city}{" "}
+                          {data.address_id?.zip_code} ph:{" "}
+                          {data.address_id?.phone_number}
                         </td>
-                        <td class="px-6 py-4">{data.created_at}</td>
-                        <td class="px-6 py-4">${data.test_id.price}</td>
+                        <td class="px-6 py-4">{data?.created_at}</td>
+                        <td class="px-6 py-4">${data?.test_id?.price}</td>
                         <td class="px-6 py-4 text-right">
                           {data?.result_url[0] ? (
                             <div class=" p-4 text-green-700 border border-green-700  focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm py-1 text-center dark:border-green-500 dark:text-green-500 ">
@@ -303,126 +303,122 @@ console.log("else working");
                             <>
                               <div className="fixed inset-0 z-50 overflow-auto">
                                 <div className="flex items-center justify-center min-h-screen">
-                              
-                                    <div className="bg-white rounded-lg shadow-lg p-8 w-96 relative">
-                                      {/* Close button */}
-                                      <div className="absolute top-4 right-4 w-7 h-7 bg-stone-300 bg-opacity-20 rounded-3xl flex items-center justify-center">
-                                        <div className="w-5 h-5"></div>
-                                      </div>
+                                  <div className="bg-white rounded-lg shadow-lg p-8 w-96 relative">
+                                    {/* Close button */}
+                                    <div className="absolute top-4 right-4 w-7 h-7 bg-stone-300 bg-opacity-20 rounded-3xl flex items-center justify-center">
+                                      <div className="w-5 h-5"></div>
+                                    </div>
 
-                                      <div className="flex flex-col gap-4 text-left ">
-                                        <KeyValuePairResultModal
-                                          label={"Name"}
-                                          value={`${
-                                            selectedUser?.profile_id?.first_name
-                                          } ${
-                                            data?.profile_id?.middle_name ==
-                                            null
-                                              ? data?.profile_id?.middle_name
-                                              : " "
-                                          } ${data?.profile_id?.last_name}`}
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="ID"
-                                          value={`${selectedUser?._id}`}
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="Member"
-                                          value="1"
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="Testname"
-                                          value={`${selectedUser?.test_id.name}`}
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="Address"
-                                          value={`${selectedUser?.address_id?.street_address} ${selectedUser?.address_id?.state} ${selectedUser.address_id.city} ${selectedUser.address_id.zip_code} ph: ${selectedUser.address_id.phone_number}`}
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="Date & Time"
-                                          value={`${selectedUser?.created_at}`}
-                                        />
-                                        <KeyValuePairResultModal
-                                          label="Total price"
-                                          value={`${selectedUser?.test_id?.price}`}
-                                        />
-                                        <p>  Add Result</p> 
-                                {error && <p className="text-red-500 text-xs">{error}</p>}
+                                    <div className="flex flex-col gap-4 text-left ">
+                                      <KeyValuePairResultModal
+                                        label={"Name"}
+                                        value={`${
+                                          selectedUser?.profile_id?.first_name
+                                        } ${
+                                          data?.profile_id?.middle_name == null
+                                            ? data?.profile_id?.middle_name
+                                            : " "
+                                        } ${data?.profile_id?.last_name}`}
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="ID"
+                                        value={`${selectedUser?._id}`}
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="Member"
+                                        value="1"
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="Testname"
+                                        value={`${selectedUser?.test_id.name}`}
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="Address"
+                                        value={`${selectedUser?.address_id?.street_address} ${selectedUser?.address_id?.state} ${selectedUser?.address_id?.city} ${selectedUser?.address_id?.zip_code} ph: ${selectedUser?.address_id?.phone_number}`}
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="Date & Time"
+                                        value={`${selectedUser?.created_at}`}
+                                      />
+                                      <KeyValuePairResultModal
+                                        label="Total price"
+                                        value={`${selectedUser?.test_id?.price}`}
+                                      />
+                                      <p> Add Result</p>
+                                      {error && (
+                                        <p className="text-red-500 text-xs">
+                                          {error}
+                                        </p>
+                                      )}
 
-                                        <div className="justify-end">
-                                          {fileInputs.map((input, index) => (
-                                            <div
-                                              key={index}
-                                              className="flex items-center justify-between mb-2"
-                                            >
-                                              <input
-                                                multiple
-                                                className="flex-grow text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                                                type="file"
-                                                onChange={(e) =>
-                                                  handleFileChange(e, index)
-                                                }
-                                              />
-                                              {fileInputs.length > 1 && (
-                                                <button
-                                                  type="button"
-                                                  onClick={() =>
-                                                    deleteFileInput(index)
-                                                  }
-                                                  className="ml-2 text-red-500 hover:text-white hover:bg-red-500 border border-red-500 focus:outline-none font-medium rounded-lg text-sm p-1"
-                                                  aria-label="Delete file input"
-                                                >
-                                                  <svg
-                                                    class="fill-current text-red-700"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="18"
-                                                    height="18"
-                                                    viewBox="0 0 18 18"
-                                                  >
-                                                    <path d="M12.45 11.75L11.25 12.95L9 10.7L6.75 12.95L5.55 11.75L7.8 9.5L5.55 7.25L6.75 6.05L9 8.3L11.25 6.05L12.45 7.25L10.2 9.5L12.45 11.75Z" />
-                                                  </svg>
-                                                </button>
-                                              )}
-                                            </div>
-                                          ))}
-
-                                          {/* Button to add more file inputs */}
-                                          <button
-                                            type="button"
-                                            onClick={addFileInput}
-                                            className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+                                      <div className="justify-end">
+                                        {fileInputs.map((input, index) => (
+                                          <div
+                                            key={index}
+                                            className="flex items-center justify-between mb-2"
                                           >
-                                            +
+                                            <input
+                                              multiple
+                                              className="flex-grow text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                                              type="file"
+                                              onChange={(e) =>
+                                                handleFileChange(e, index)
+                                              }
+                                            />
+                                            {fileInputs.length > 1 && (
+                                              <button
+                                                type="button"
+                                                onClick={() =>
+                                                  deleteFileInput(index)
+                                                }
+                                                className="ml-2 text-red-500 hover:text-white hover:bg-red-500 border border-red-500 focus:outline-none font-medium rounded-lg text-sm p-1"
+                                                aria-label="Delete file input"
+                                              >
+                                                <svg
+                                                  class="fill-current text-red-700"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  width="18"
+                                                  height="18"
+                                                  viewBox="0 0 18 18"
+                                                >
+                                                  <path d="M12.45 11.75L11.25 12.95L9 10.7L6.75 12.95L5.55 11.75L7.8 9.5L5.55 7.25L6.75 6.05L9 8.3L11.25 6.05L12.45 7.25L10.2 9.5L12.45 11.75Z" />
+                                                </svg>
+                                              </button>
+                                            )}
+                                          </div>
+                                        ))}
+
+                                        {/* Button to add more file inputs */}
+                                        <button
+                                          type="button"
+                                          onClick={addFileInput}
+                                          className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+                                        >
+                                          +
+                                        </button>
+                                      </div>
+                                      <div className="flex justify-end items-center gap-1">
+                                        <div className="">
+                                          <button
+                                            onClick={() => {
+                                              addResult();
+                                            }}
+                                            className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                                          >
+                                            Done
                                           </button>
                                         </div>
-                                        <div
-                                         
-                                          className="flex justify-end items-center gap-1"
-                                        >
-                                          <div className="">
-                                            <button
-                                              onClick={() => {
-                                                addResult();
-                                              }}
-                                              className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-1 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                                            >
-                                              Done
-                                            </button>
-                                          </div>
-                                          <div className="">
-                                            <button
-                                              onClick={() =>
-                                                setShowModal(false)
-                                              }
-                                              className="text-green-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-1 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
-                                            >
-                                              Cancel
-                                            </button>
-                                          </div>
+                                        <div className="">
+                                          <button
+                                            onClick={() => setShowModal(false)}
+                                            className="text-green-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-1 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-8 py-1.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
+                                          >
+                                            Cancel
+                                          </button>
                                         </div>
                                       </div>
                                     </div>
-                               
+                                  </div>
                                 </div>
                               </div>
 
@@ -438,7 +434,6 @@ console.log("else working");
             </div>
           ) : (
             <div className="flex justify-center">
-
               <NoDataImage text={"No Appoinments For this Date"} />
             </div>
           )}
