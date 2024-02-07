@@ -4,6 +4,7 @@ import {
   SignupUserdata,
   UploadImageUrl,
   uploadToAws,
+  AllCountry,
 } from "../API/ApiCall";
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +26,8 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [docCateogries, setDocCateogries] = useState([]);
   const [errors, setErrors] = useState({});
+  const [countries, setCountries] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -113,7 +116,11 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    setIsLoading(true);
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
+    }
     try {
       const imageUrl = await uploadImageToAws();
 
@@ -148,11 +155,15 @@ const SignupProfile = ({ email, password, onClose }) => {
         };
 
         const response = await SignupUserdata(userData);
+        console.log(response);
+        console.log("Form Data:", formData);
 
         navigate("/otp", { state: { email } });
       }
     } catch (error) {
       console.error("Error registering user:", error);
+    } finally {
+      setIsLoading(false); // Ensure loading is set to false when operation is complete
     }
   };
   const getDocCategory = async () => {
@@ -168,6 +179,19 @@ const SignupProfile = ({ email, password, onClose }) => {
 
   useEffect(() => {
     getDocCategory();
+  }, []);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countriesData = await AllCountry();
+        setCountries(countriesData);
+      } catch (error) {
+        console.error("Failed to fetch countries", error);
+      }
+    };
+
+    fetchCountries();
   }, []);
 
   return (
@@ -302,17 +326,22 @@ const SignupProfile = ({ email, password, onClose }) => {
                           <p className="text-red-500">{errors.country}</p>
                         )}
                       </div>
-                      <input
-                        type="text"
-                        placeholder="Enter your country"
-                        className="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray border-opacity-10 p-2 px-3 placeholder-white my-2" // Add my-2 to add margin on top and bottom
+                      <select
+                        className="w-full sm:w-[250px] bg-gray-400 rounded-[10px] border-gray-400 p-2 px-3 my-2"
                         onChange={(e) =>
                           setFormData({ ...formData, country: e.target.value })
                         }
-                      />
-
-                      <div className="label"></div>
+                        value={formData.country}
+                      >
+                        <option value="">Select Country</option>
+                        {countries.map((country) => (
+                          <option key={country.value} value={country.value}>
+                            {country.text}
+                          </option>
+                        ))}
+                      </select>
                     </label>
+
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
                         <span className="label-text">
@@ -456,7 +485,7 @@ const SignupProfile = ({ email, password, onClose }) => {
                     className="text-black w-full text-center flex bg-white focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-20 py-2.5  justify-center items-center dark:focus:ring-[#3b5998]/55 me-2 mb-2"
                     disabled={!isAgreed} // Disable button based on isAgreed state
                   >
-                    Register
+                    {isLoading ? "Loading...." : "Register"}
                   </button>
                 </div>
               </div>
