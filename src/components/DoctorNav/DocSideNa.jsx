@@ -10,6 +10,7 @@ import {
   homecare,
   openSidebar,
 } from "../../Redux/Features/NavbarSlice";
+import { removeFcmDoctorApi } from "../../API/DoctorApi";
 
 function DocSideBar() {
   const dispatch = useDispatch();
@@ -256,10 +257,14 @@ function DocSideBar() {
           <li className=" pt-28">
             <a
               onClick={() => {
-                localStorage.removeItem("sophwe_token");
-                localStorage.removeItem("sophwe_fcm");
+                removeFcmDoctorApi().then((data) => {
+                  localStorage.removeItem("sophwe_fcm");
+                  localStorage.removeItem("sophwe_token");       
+                  navigate("/login");
+                  // dispatch(openSidebar());
+                });
                 
-                navigate("/login");
+                
               }}
               href="#"
               class={`flex items-center p-2 pl-12   rounded-lg       group ${

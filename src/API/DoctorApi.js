@@ -46,3 +46,7 @@ export const addPrescription = async (data) => {
 export const updateDoctorFcmApi = async (data) => {
   return await Instance.post(`/doctor/add-fcm`, data);
 };
+
+export const removeFcmDoctorApi = async (data) => {
+  return await Instance.post(`/doctor/remove-fcm`, data);
+};

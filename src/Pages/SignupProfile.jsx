@@ -20,7 +20,7 @@ const SignupProfile = ({ email, password, onClose }) => {
     category_id: "",
     experience: "",
     image: "",
-    language:[]
+    language: [],
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -30,8 +30,8 @@ const SignupProfile = ({ email, password, onClose }) => {
   const [errors, setErrors] = useState({});
   const [countries, setCountries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-const [language, setLanguage] = useState([])
-const navigate = useNavigate();
+  const [language, setLanguage] = useState([]);
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -119,7 +119,7 @@ const navigate = useNavigate();
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData,"next,");
+    console.log(formData, "next,");
     console.log(language);
     e.preventDefault();
     setIsLoading(true);
@@ -158,9 +158,9 @@ const navigate = useNavigate();
           image: profileImage,
           experience: parseInt(formData.experience, 10),
           category_id: formData.category_id,
-          languages:language
+          languages: language,
         };
-console.log(userData);
+        console.log(userData);
         const response = await SignupUserdata(userData);
         console.log(response);
         console.log("Form Data:", formData);
@@ -201,21 +201,21 @@ console.log(userData);
     fetchCountries();
   }, []);
 
-//   const [languagesArray, setLanguagesArray] = useState([])
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-// console.log(name,"name", value);
-//     // Update the formData state
-//     setFormData(prevFormData => ({
-//         ...prevFormData,
-//         [name]: value,
-//     }));
+  //   const [languagesArray, setLanguagesArray] = useState([])
+  //   const handleChange = (e) => {
+  //     const { name, value } = e.target;
+  // console.log(name,"name", value);
+  //     // Update the formData state
+  //     setFormData(prevFormData => ({
+  //         ...prevFormData,
+  //         [name]: value,
+  //     }));
 
-//     // Add the new language to languagesArray if it's not already included
-//     if (name === 'language' && !languagesArray.includes(value)) {
-//         setLanguagesArray(prevLanguagesArray => [...prevLanguagesArray, value]);
-//     }
-// };
+  //     // Add the new language to languagesArray if it's not already included
+  //     if (name === 'language' && !languagesArray.includes(value)) {
+  //         setLanguagesArray(prevLanguagesArray => [...prevLanguagesArray, value]);
+  //     }
+  // };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -466,7 +466,7 @@ console.log(userData);
 
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">
-                        <span className="label-text">Language</span>
+                        <span className="label-text">Known Languages</span>
                         {errors.language && (
                           <p className="text-red-500">{errors.language}</p>
                         )}
@@ -479,13 +479,13 @@ console.log(userData);
                         onChange={(data) => {
                           setLanguage((prevArray) => {
                             const newValue = data.target.value;
-    
+
                             // Check if the value is already in the array
                             if (!prevArray.includes(newValue)) {
                               // If not, update the array
                               return [...prevArray, newValue];
                             }
-    
+
                             // If the value is already in the array, return the unchanged array
                             return prevArray;
                           });
@@ -493,22 +493,19 @@ console.log(userData);
                       >
                         <option value="">Select Language</option>{" "}
                         {/* Default option */}
-
-                        {languages.map((data)=>
-                        {
-                       
-return(
-  <option value={data.name}>{data.name}</option>
-
-
-)
+                        {languages.map((data) => {
+                          return <option value={data.name}>{data.name}</option>;
                         })}
-        
                       </select>
                     </label>
-
-
-
+                    {
+                      <label
+                        htmlFor="message"
+                        className="block text-xs  white mb-3"
+                      >
+                        {language.join(" , ")}
+                      </label>
+                    }
 
                     <label className="text-[13px] font-normal font-['Roboto Flex'] ">
                       <div className="label">

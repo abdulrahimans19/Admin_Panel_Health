@@ -53,9 +53,15 @@ const Transactions = () => {
   const [selectedCategory, setSelectedCategory] = useState("Homecare");
   const [noDataAvailable, setNoDataAvailable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  
-  
+  const [totalPagecount, setTotalPagecount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (selectedPage) => {
+    console.log(selectedPage);
+    setCurrentPage(selectedPage.selected + 1);
+
+    fetchTransactions(selectedPage.selected + 1);
+  };
 
   const dispatch = useDispatch();
 
@@ -64,7 +70,7 @@ const Transactions = () => {
     fetchTransactions();
   }, [startDate, endDate, selectedCategory]);
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (pages) => {
     setIsLoading(true);
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
@@ -87,8 +93,12 @@ const Transactions = () => {
     try {
       const { data } = await fetchFunction(
         formattedStartDate,
-        formattedEndDate
+        formattedEndDate,
+        pages || 1
       );
+      const totalPages = Math.ceil(data?.data?.totalOrderDocuments / 10);
+      setTotalPagecount(totalPages);
+
       if (
         !data ||
         !data.data.transaction ||
@@ -273,13 +283,21 @@ const Transactions = () => {
         <div className="flex justify-between items-center mt-4">
           <div>Total Amount:</div>
           <div className="text-lg font-bold">
-            $
             {totalAmountForSelectedCategory
               ? totalAmountForSelectedCategory.toFixed(2)
               : "0.00"}
           </div>
         </div>
       )}
+      <ReactPaginate
+        pageCount={totalPagecount} // Replace with the total number of pages
+        pageRangeDisplayed={2} // Number of pages to display in the pagination bar
+        marginPagesDisplayed={1} // Number of pages to display for margin pages
+        onPageChange={handlePageChange}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+        // forcePage={currentPage}
+      />
     </div>
   );
 };
