@@ -250,44 +250,40 @@ const Invoice = () => {
         Print/Download PDF
       </button>
       <style>
-        {`
-          @media print {
-            .printHide {
-              display: none;
-            }
-            body {
-              margin: 0;
-              padding: 0;
-            }
-          }
-        `}
-      </style>
-      <style>
-        {`
-  .custom-table th, .custom-table td {
-    padding: 12px 15px; /* Adjust padding as needed */
-    text-align: left; /* Ensure consistent text alignment */
-    border-bottom: 1px solid #ddd; /* Consistent border styling */
-  }
-
-  /* Optional: Specify widths for each column for better control */
-  .custom-table th:nth-child(1), .custom-table td:nth-child(1) { width: 20%; }
-  .custom-table th:nth-child(2), .custom-table td:nth-child(2) { width: 30%; }
-  .custom-table th:nth-child(3), .custom-table td:nth-child(3) { width: 25%; }
-  .custom-table th:nth-child(4), .custom-table td:nth-child(4) { width: 15%; }
-  .custom-table th:nth-child(5), .custom-table td:nth-child(5) { width: 10%; }
-
+{`
   @media print {
+    body, html {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+    .custom-table {
+      width: 100% !important;
+      table-layout: fixed; /* Change layout to fixed to manage column widths */
+    }
+    .custom-table th, .custom-table td {
+      padding: 6px; /* Slightly reduce padding */
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      word-wrap: break-word; /* Ensure content wraps */
+      overflow: hidden; /* Hide overflow */
+      text-overflow: ellipsis; /* Show ellipsis for overflowed content */
+      max-width: 0; /* Ensure wrapping applies */
+      font-size: 10pt; /* Slightly reduce font size */
+    }
+    /* Target specific columns for width adjustments, if necessary */
+    .custom-table th:nth-child(2), .custom-table td:nth-child(2) {
+      max-width: 100px; /* Adjust based on your content and needs */
+    }
     .printHide {
       display: none;
     }
-    body {
-      margin: 0;
-      padding: 0;
-    }
   }
 `}
-      </style>
+</style>
+
+
     </div>
   );
 };
