@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { GetOrderDetails, GetHomeCareOrder } from "../API/ApiCall";
-import { useReactToPrint } from "react-to-print"; // Import useReactToPrint
+import { useReactToPrint } from "react-to-print";
 import { useDispatch, useSelector } from "react-redux";
 import { pharmacyNav } from "../Redux/Features/NavbarSlice";
 import { useLocation } from "react-router-dom";
@@ -10,7 +10,7 @@ const Invoice = () => {
   const [isLoading, setIsLoading] = useState(true);
   const componentRef = useRef();
   const location = useLocation();
-  const { orderId, orderType } = location.state; // Ref for the component to print
+  const { orderId, orderType } = location.state;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,56 +52,59 @@ const Invoice = () => {
 
   const normalizeOrderData = (data, orderType) => {
     const address = data.address_id
-        ? `${data.address_id.street_address}, ${data.address_id.city}, ${data.address_id.zip_code}`
-        : "No address data";
+      ? `${data.address_id.street_address}, ${data.address_id.city}, ${data.address_id.zip_code}`
+      : "No address data";
 
     const customerName = data.profile_id
-        ? `${data.profile_id.first_name} ${data.profile_id.last_name}`
-        : "No customer data";
+      ? `${data.profile_id.first_name} ${data.profile_id.last_name}`
+      : "No customer data";
 
     let items = [];
     let subtotal = 0;
+    let discount = 0;
+    let totalAmount = 0;
 
     if (orderType === "Homecare") {
-        items = data.test_id.tests.map(test => ({
-            name: test.name || "No test name",
-            paymentType: data.payment_type || "No payment type",
-            date: data.date ? new Date(data.date).toLocaleDateString() : "No date",
-            qty: 1, // Assuming 1 for simplicity
-            price: data.total_price / data.test_id.tests.length, // Assuming you want to split evenly
-        }));
-        subtotal = data.total_price; // Directly use total_price as subtotal for HomeCare
+      items = data.test_id.tests.map((test) => ({
+        name: test.name || "No test name",
+        paymentType: data.payment_type || "No payment type",
+        date: data.date ? new Date(data.date).toLocaleDateString() : "No date",
+        qty: data.number_of_test || "quantity not available",
+        price: data.test_id.price || 0,
+      }));
+      subtotal = data.total_price || 0;
+      discount = data.discount_price || 0;
+      totalAmount = data.payable_amount || 0;
     } else {
-        // Assuming Food and Pharma share a similar structure
-        items.push({
-            name: data.product_id.name || "No product name",
-            paymentType: data.payment_type || "No payment type",
-            date: data.created_at ? new Date(data.created_at).toLocaleDateString() : "No date",
-            qty: data.quantity,
-            price: data.product_id.price,
-        });
-        subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0); // Calculate subtotal for Food/Pharma
+      items.push({
+        name: data.product_id.name || "No product name",
+        paymentType: data.payment_type || "No payment type",
+        date: data.created_at
+          ? new Date(data.created_at).toLocaleDateString()
+          : "No date",
+        qty: data.quantity || "quantity not available",
+        price: data.product_id.price || 0,
+      });
+      subtotal = data.total_amount || 0;
+      discount = data.discounted_amount || 0;
+      totalAmount = data.real_total_amount || 0;
     }
 
-    // Assuming no discounts for simplicity, but adjust as needed
-    const totalAmount = subtotal; // For HomeCare, totalAmount mirrors subtotal
-
     return {
-        id: data._id,
-        customerName,
-        items,
-        address,
-        subtotal, // Added subtotal
-        discount: 0, // Assuming no discount for now
-        totalAmount,
-        paymentId: data.payment_id,
-        orderStatus: data.order_status,
+      id: data._id,
+      customerName,
+      items,
+      address,
+      subtotal,
+      discount,
+      totalAmount,
+      paymentId: data.payment_id,
+      orderStatus: data.order_status,
     };
-};
-
+  };
 
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current, // Use the ref for printing
+    content: () => componentRef.current,
   });
 
   if (isLoading) {
