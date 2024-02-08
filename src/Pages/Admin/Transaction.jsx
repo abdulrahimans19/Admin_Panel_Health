@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ReactPaginate from "react-paginate";
 import { useDispatch } from "react-redux";
 import { cleartopNav } from "../../Redux/Features/NavbarSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getTransactionForHomeCare,
   getTransactionForPharmacy,
@@ -56,8 +56,9 @@ const Transactions = () => {
   const [totalPagecount, setTotalPagecount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const navigate = useNavigate();
+
   const handlePageChange = (selectedPage) => {
-    console.log(selectedPage);
     setCurrentPage(selectedPage.selected + 1);
 
     fetchTransactions(selectedPage.selected + 1);
@@ -91,45 +92,54 @@ const Transactions = () => {
     }
 
     try {
-      const { data } = await fetchFunction(
+      const response = await fetchFunction(
         formattedStartDate,
         formattedEndDate,
         pages || 1
       );
-      const totalPages = Math.ceil(data?.data?.totalOrderDocuments / 10);
+      const data = response.data.data; // Assuming this is the consistent path to the data object
+      const transactions = data.transaction || [];
+      const totalIncome = data.totalIncome || data.total_income || 0;
+      const totalDocuments = data.total_document || 1; // Assuming default to 1 if not provided
+
+      const totalPages = Math.ceil(totalDocuments / 10);
       setTotalPagecount(totalPages);
 
-      if (
-        !data ||
-        !data.data.transaction ||
-        data.data.transaction.length === 0
-      ) {
+      if (transactions.length === 0) {
         setNoDataAvailable(true);
         setTransactions([]);
         setTotalAmountForSelectedCategory(0);
       } else {
         setNoDataAvailable(false);
-        setTransactions(
-          data.data.transaction.map((item) => ({
-            ...item,
+        const normalizedTransactions = transactions.map((item) => {
+          const profileName = item.profile_id
+            ? `${item.profile_id.first_name || ""} ${
+                item.profile_id.middle_name || ""
+              } ${item.profile_id.last_name || ""}`.trim()
+            : "No Data Available";
+          const totalAmount =
+            item.total_price || item.total_amount || "No Amount Available";
+          const createdAt = item.date || item.created_at || new Date();
+          const payment_id =
+            selectedCategory === "Homecare" ? item.test_id : item.payment_id;
+          const orderStatus =
+            selectedCategory === "Homecare"
+              ? "Success"
+              : item.order_status || "No Status Available";
+
+          return {
             _id: item._id || "No Id Available",
-            profile_id: item.profile_id
-              ? `${item.profile_id.first_name || ""} ${
-                  item.profile_id.middle_name || ""
-                } ${item.profile_id.last_name || ""}`.trim()
-              : "No Data Available",
+            profile_id: profileName,
             payment_type: item.payment_type || "No Payment Available",
-            payment_id: item.payment_id || "No Payment Id Available",
-            created_at: item.created_at || new Date(),
-            payable_amount:
-              item.payable_amount !== undefined
-                ? item.payable_amount
-                : "No Payment Available",
-            order_status: item.order_status || "No Status Available",
-            invoice: item.invoice || "No Invoice Available",
-          }))
-        );
-        setTotalAmountForSelectedCategory(data.data.total_income || 0);
+            payment_id: payment_id || "No Payment Id Available",
+            created_at: createdAt,
+            payable_amount: totalAmount,
+            order_status: orderStatus,
+            invoice: "No Invoice Available", // Assuming invoices are not directly available in all responses
+          };
+        });
+        setTransactions(normalizedTransactions);
+        setTotalAmountForSelectedCategory(totalIncome);
       }
     } catch (error) {
       console.error("Failed to fetch transactions:", error);
@@ -159,6 +169,15 @@ const Transactions = () => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
+  };
+
+  const handleNavigate = (item) => {
+    navigate("/invoice/details", {
+      state: {
+        orderId: item._id,
+        orderType: selectedCategory,
+      },
+    });
   };
 
   return (
@@ -255,7 +274,7 @@ const Transactions = () => {
                       {item.order_status || "No Status Available"}
                     </td>
                     <td className="whitespace-no-wrap py-2 sm:py-4 text-xs sm:text-sm font-['Roboto Flex'] leading-tight px-2 sm:px-4">
-                      <Link to={`/invoice/${item._id}/details`}>
+                      <button onClick={() => handleNavigate(item)}>
                         {" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +288,7 @@ const Transactions = () => {
                             d="M12 4a1 1 0 0 0-1 1v9.529l-4.218-4.223a1.043 1.043 0 0 0-1.476 0 1.046 1.046 0 0 0 0 1.478l5.904 5.91c.217.217.506.319.79.305.284.014.573-.088.79-.305l5.904-5.91a1.046 1.046 0 0 0 0-1.478 1.043 1.043 0 0 0-1.476 0L13 14.529V5a1 1 0 0 0-1-1zM5 21a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"
                           ></path>
                         </svg>{" "}
-                      </Link>
+                      </button>
                     </td>
                   </tr>
                 ))

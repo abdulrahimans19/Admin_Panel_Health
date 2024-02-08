@@ -1,31 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { GetOrderDetails, GetHomeCareOrder } from "../API/ApiCall";
 import { useReactToPrint } from "react-to-print"; // Import useReactToPrint
 import { useDispatch, useSelector } from "react-redux";
 import { pharmacyNav } from "../Redux/Features/NavbarSlice";
+import { useLocation } from "react-router-dom";
 
 const Invoice = () => {
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { orderId } = useParams();
-  const componentRef = useRef(); // Ref for the component to print
+  const componentRef = useRef();
+  const location = useLocation();
+  const { orderId, orderType } = location.state; // Ref for the component to print
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(pharmacyNav());
-    const fetchTransaction = async () => {
+    const fetchOrderData = async () => {
       setIsLoading(true);
 
       try {
-        let response = await GetOrderDetails(orderId);
-        if (
-          !response.data ||
-          !response.data.data ||
-          !response.data.data.order ||
-          !response.data.data.order.product_type
-        ) {
+        let response;
+        if (orderType === "Homecare") {
           response = await GetHomeCareOrder(orderId);
+        } else {
+          // Handles both Food and Pharma
+          response = await GetOrderDetails(orderId);
         }
 
         if (
@@ -34,19 +32,73 @@ const Invoice = () => {
           response.data.data &&
           response.data.data.order
         ) {
-          setOrder(response.data.data.order);
+          const normalizedData = normalizeOrderData(
+            response.data.data.order,
+            orderType
+          );
+          setOrder(normalizedData);
         } else {
-          console.log("No order found or error in response structure.");
+          console.error("No order data found");
         }
       } catch (error) {
-        console.error("Error fetching order details:", error);
+        console.error("Failed to fetch order details:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchTransaction();
-  }, [orderId]);
+    fetchOrderData();
+  }, [orderId, orderType]);
+
+  const normalizeOrderData = (data, orderType) => {
+    const address = data.address_id
+        ? `${data.address_id.street_address}, ${data.address_id.city}, ${data.address_id.zip_code}`
+        : "No address data";
+
+    const customerName = data.profile_id
+        ? `${data.profile_id.first_name} ${data.profile_id.last_name}`
+        : "No customer data";
+
+    let items = [];
+    let subtotal = 0;
+
+    if (orderType === "Homecare") {
+        items = data.test_id.tests.map(test => ({
+            name: test.name || "No test name",
+            paymentType: data.payment_type || "No payment type",
+            date: data.date ? new Date(data.date).toLocaleDateString() : "No date",
+            qty: 1, // Assuming 1 for simplicity
+            price: data.total_price / data.test_id.tests.length, // Assuming you want to split evenly
+        }));
+        subtotal = data.total_price; // Directly use total_price as subtotal for HomeCare
+    } else {
+        // Assuming Food and Pharma share a similar structure
+        items.push({
+            name: data.product_id.name || "No product name",
+            paymentType: data.payment_type || "No payment type",
+            date: data.created_at ? new Date(data.created_at).toLocaleDateString() : "No date",
+            qty: data.quantity,
+            price: data.product_id.price,
+        });
+        subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0); // Calculate subtotal for Food/Pharma
+    }
+
+    // Assuming no discounts for simplicity, but adjust as needed
+    const totalAmount = subtotal; // For HomeCare, totalAmount mirrors subtotal
+
+    return {
+        id: data._id,
+        customerName,
+        items,
+        address,
+        subtotal, // Added subtotal
+        discount: 0, // Assuming no discount for now
+        totalAmount,
+        paymentId: data.payment_id,
+        orderStatus: data.order_status,
+    };
+};
+
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current, // Use the ref for printing
@@ -137,23 +189,21 @@ const Invoice = () => {
             <div>Phone: +91 9897 989 989</div>
           </div>
           <div>
-            <h5
-              style={{
-                fontSize: "15px",
-                marginBottom: "15px",
-                color: styles.textStyle.color,
-              }}
-            >
-              To:
-            </h5>
-            <h3 style={{ margin: "0", color: styles.textStyle.color }}>
-              {order.profile_id?.first_name || "No data"}{" "}
-              {order.profile_id?.last_name || "No data"}
-            </h3>
-            <div>{order.address_id?.street_address || "No data"}</div>
-            <div>{order.address_id?.city || "No data"}</div>
-            <div>{order.address_id?.zip_code || "No data"}</div>
-            <div>{order.address_id?.phone_number || "No data"}</div>
+            <div>
+              <h5
+                style={{
+                  fontSize: "15px",
+                  marginBottom: "15px",
+                  color: styles.textStyle.color,
+                }}
+              >
+                To:
+              </h5>
+              <h3 style={{ margin: "0", color: styles.textStyle.color }}>
+                {order.customerName}
+              </h3>
+              <div>{order.address}</div>
+            </div>
           </div>
         </div>
         <div style={{ padding: "20px" }}>
@@ -183,62 +233,48 @@ const Invoice = () => {
                 </tr>
               </thead>
               <tbody>
-                {order.test_id &&
-                order.test_id.tests &&
-                order.test_id.tests.length > 0 ? (
-                  order.test_id.tests.map((test, index) => (
-                    <tr key={index}>
-                      {" "}
-                      {/* Make sure to use a unique key for list items */}
-                      <td>{index + 1}</td>
-                      <td>{test.name || "No data"}</td>
-                      <td>{test.payment_type || "No data"}</td>
-                      <td>{test.date || "No data"}</td>
-                      <td>${parseFloat(order.total_price).toFixed(2)}</td>
-                    </tr>
-                  ))
-                ) : (
+                {order.items.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.name}</td>
+                    <td>{item.paymentType}</td>
+                    <td>{item.date}</td>
+                    <td>{item.qty}</td>
+                    <td>${item.price.toFixed(2)}</td>
+                  </tr>
+                ))}
+                {order.items.length === 0 && (
                   <tr>
-                    <td colSpan="5">No tests found</td>
+                    <td colSpan="5">No items found</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
         </div>
-        {/* billing */}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        {/* Billing Details */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+          }}
+        >
           <table style={{ ...styles.tableStyle, width: "auto" }}>
             <tbody>
               <tr>
                 <td>Subtotal</td>
-                <td>
-                  $
-                  {order.total_price
-                    ? parseFloat(order.total_price).toFixed(2)
-                    : "No data"}
-                </td>
+                <td>${order.subtotal.toFixed(2)}</td>
               </tr>
               <tr>
                 <td>Discount</td>
-                <td>
-                  $
-                  {order.discount_price
-                    ? parseFloat(order.discount_price).toFixed(2)
-                    : "No data"}
-                </td>
+                <td>-${order.discount.toFixed(2)}</td>
               </tr>
               <tr>
                 <td>
                   <strong>Total</strong>
                 </td>
                 <td>
-                  <strong>
-                    $
-                    {order.payable_amount
-                      ? parseFloat(order.payable_amount).toFixed(2)
-                      : "No data"}
-                  </strong>
+                  <strong>${order.totalAmount.toFixed(2)}</strong>
                 </td>
               </tr>
             </tbody>
@@ -250,7 +286,7 @@ const Invoice = () => {
         Print/Download PDF
       </button>
       <style>
-{`
+        {`
   @media print {
     body, html {
       width: 100%;
@@ -281,9 +317,7 @@ const Invoice = () => {
     }
   }
 `}
-</style>
-
-
+      </style>
     </div>
   );
 };

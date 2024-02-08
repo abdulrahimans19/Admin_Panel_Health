@@ -74,7 +74,7 @@ function App() {
         <Route element={<Home />} path="">
           {/* <Route element={<Notification />} path="/notification" /> */}
           <Route element={<OrdeeDetails />} path="/order/:orderId/:type/details" />
-          <Route element={<Invoice />} path="/invoice/:orderId/details" />
+          <Route element={<Invoice />} path="/invoice/details" />
 
           <Route element={<Dashboard />} path="/dashboard" />
           <Route element={<TeleMedicine />} path="/telemedicine/category" />
