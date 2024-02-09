@@ -1,5 +1,5 @@
 import logo from "./logo.svg";
-import "./App.css";
+import "./App.css"; 
 import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./Pages/Login";
 import LoggedInUser from "./ProtectedRoutes/AdminLoggedOut";
